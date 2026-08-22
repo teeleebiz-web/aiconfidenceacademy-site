@@ -1,477 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Confidence Academy — Learn AI Without Fear</title>
-  <meta name="description" content="AI Confidence Academy teaches everyday adults to use AI with clarity, confidence, and purpose. No tech background needed. Just you and the tools that can change your life.">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --navy: #0F1F3D;
-      --navy-mid: #1A3260;
-      --gold: #C8963E;
-      --gold-light: #E8B86D;
-      --cream: #FDFAF5;
-      --card: #FFFFFF;
-      --border: #E8E0D0;
-      --text-dark: #0F1F3D;
-      --text-mid: #3A4A6B;
-      --text-mute: #7A8A9B;
-      --green: #2E7D52;
-    }
-    html { scroll-behavior: smooth; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--cream); color: var(--text-dark); line-height: 1.7; }
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" as="image" imageSrcSet="/aca-official-seal.png 43w" fetchPriority="high"/><link rel="preload" as="image" imageSrcSet="/aca-official-seal.png 260w" fetchPriority="high"/><link rel="stylesheet" href="/assets/index-B8oyWxv_.css"/><title>AI Confidence Academy | AI Confidence for Everyday Life</title><meta name="description" content="Human-centered, guided AI learning for everyday people—especially adults 40 and over."/><link rel="shortcut icon" href="/favicon.svg"/><link rel="icon" href="/favicon.svg"/><meta name="codex-preview" content="development"/><link rel="preload" href="/assets/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-8ac0455e797f/geist-98bbbccb.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44745446.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2" as="font" type="font/woff2" crossorigin />
+<style data-vinext-fonts>/* cyrillic-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-8ac0455e797f/geist-ff2310f5.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-8ac0455e797f/geist-875ccdd4.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-8ac0455e797f/geist-52306abf.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-8ac0455e797f/geist-001175b1.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-8ac0455e797f/geist-98bbbccb.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-    /* NAV */
-    nav { background: var(--navy); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-    .nav-brand { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
-    .nav-brand span { color: var(--gold); }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--gold-light); }
-    .nav-cta { background: var(--gold); color: var(--navy); padding: 10px 22px; border-radius: 24px; font-size: 14px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
-    .nav-cta:hover { background: var(--gold-light); }
+.__font_geist_0tvmz3h { font-family: 'Geist', sans-serif; }
 
-    /* HERO */
-    .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); padding: 100px 40px 80px; text-align: center; }
-    .hero-eyebrow { display: inline-block; background: rgba(200,150,62,0.2); color: var(--gold-light); font-size: 13px; font-weight: 700; letter-spacing: 2px; padding: 6px 18px; border-radius: 20px; margin-bottom: 28px; border: 1px solid rgba(200,150,62,0.3); }
-    .hero h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 800; color: #fff; line-height: 1.15; max-width: 780px; margin: 0 auto 24px; letter-spacing: -1px; }
-    .hero h1 em { color: var(--gold); font-style: normal; }
-    .hero-sub { font-size: clamp(17px, 2.5vw, 20px); color: rgba(255,255,255,0.75); max-width: 580px; margin: 0 auto 44px; line-height: 1.7; }
-    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary { background: var(--gold); color: var(--navy); padding: 16px 36px; border-radius: 32px; font-size: 16px; font-weight: 800; text-decoration: none; display: inline-block; transition: transform 0.2s, background 0.2s; }
-    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-    .btn-outline { border: 2px solid rgba(255,255,255,0.4); color: #fff; padding: 14px 32px; border-radius: 32px; font-size: 16px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.2s; }
-    .btn-outline:hover { border-color: var(--gold-light); color: var(--gold-light); }
-    .hero-trust { margin-top: 56px; display: flex; gap: 36px; justify-content: center; flex-wrap: wrap; }
-    .trust-item { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.65); font-size: 14px; }
-    .trust-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+.__variable_geist_0tvmz3h { --font-geist-sans: 'Geist', sans-serif; }
 
-    /* SECTION BASICS */
-    section { padding: 88px 40px; }
-    .container { max-width: 1080px; margin: 0 auto; }
-    .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 2.5px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
-    .section-title { font-size: clamp(28px, 4vw, 42px); font-weight: 800; color: var(--text-dark); line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; }
-    .section-sub { font-size: 17px; color: var(--text-mute); max-width: 560px; line-height: 1.7; }
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-f6b33328.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44e03052.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* symbols2 */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-0638449e.woff2) format('woff2');
+  unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-971fb274.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-44745446.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/assets/_vinext_fonts/geist-mono-00e989178794/geist-mono-013b2f2f.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-    /* FOR WHO */
-    .for-who { background: var(--card); }
-    .for-who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 52px; }
-    .who-card { background: var(--cream); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
-    .who-icon { font-size: 32px; margin-bottom: 14px; }
-    .who-card h3 { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
-    .who-card p { font-size: 14px; color: var(--text-mute); line-height: 1.7; }
+.__font_geist_mono_1diim1n { font-family: 'Geist Mono', sans-serif; }
 
-    /* HOW IT WORKS */
-    .how { background: var(--cream); }
-    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; margin-top: 52px; }
-    .step { text-align: center; }
-    .step-num { width: 52px; height: 52px; border-radius: 50%; background: var(--navy); color: var(--gold); font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
-    .step h3 { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
-    .step p { font-size: 14px; color: var(--text-mute); line-height: 1.7; }
-    .step-connector { display: none; }
-
-    /* CLEAR METHOD */
-    .clear-section { background: var(--navy); }
-    .clear-section .section-title { color: #fff; }
-    .clear-section .section-sub { color: rgba(255,255,255,0.65); }
-    .clear-section .eyebrow { color: var(--gold-light); }
-    .clear-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 52px; }
-    .clear-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 28px 20px; text-align: center; }
-    .clear-letter { font-size: 48px; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 10px; }
-    .clear-word { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-    .clear-desc { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; }
-
-    /* CURRICULUM */
-    .curriculum { background: var(--card); }
-    .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 52px; }
-    .module { background: var(--cream); border: 1px solid var(--border); border-radius: 16px; padding: 24px; display: flex; gap: 18px; align-items: flex-start; }
-    .module-num { background: var(--navy); color: var(--gold); font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 10px; flex-shrink: 0; letter-spacing: 0.5px; }
-    .module-content h4 { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-    .module-content p { font-size: 13px; color: var(--text-mute); line-height: 1.6; }
-
-    /* MANTRA */
-    .mantra { background: var(--gold); padding: 64px 40px; text-align: center; }
-    .mantra blockquote { font-size: clamp(22px, 4vw, 36px); font-weight: 800; color: var(--navy); max-width: 720px; margin: 0 auto 16px; line-height: 1.3; letter-spacing: -0.5px; }
-    .mantra cite { font-size: 14px; color: rgba(15,31,61,0.65); font-style: normal; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
-
-    /* FEATURES */
-    .features { background: var(--cream); }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; margin-top: 52px; }
-    .feat { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
-    .feat-icon { font-size: 28px; margin-bottom: 14px; }
-    .feat h4 { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
-    .feat p { font-size: 14px; color: var(--text-mute); line-height: 1.7; }
-
-    /* PRICING */
-    .pricing { background: var(--card); }
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 52px; max-width: 720px; }
-    .price-card { background: var(--cream); border: 2px solid var(--border); border-radius: 20px; padding: 36px 30px; }
-    .price-card.featured { border-color: var(--gold); background: var(--navy); }
-    .price-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; color: var(--text-mute); text-transform: uppercase; margin-bottom: 8px; }
-    .price-card.featured .price-label { color: var(--gold); }
-    .price-name { font-size: 24px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
-    .price-card.featured .price-name { color: #fff; }
-    .price-amount { font-size: 42px; font-weight: 900; color: var(--navy); line-height: 1; margin: 16px 0 4px; }
-    .price-card.featured .price-amount { color: var(--gold); }
-    .price-period { font-size: 14px; color: var(--text-mute); margin-bottom: 28px; }
-    .price-card.featured .price-period { color: rgba(255,255,255,0.5); }
-    .price-features { list-style: none; margin-bottom: 32px; }
-    .price-features li { font-size: 14px; color: var(--text-mid); padding: 7px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
-    .price-card.featured .price-features li { color: rgba(255,255,255,0.8); border-bottom-color: rgba(255,255,255,0.1); }
-    .price-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
-    .price-card.featured .price-features li::before { color: var(--gold); }
-    .price-btn { display: block; text-align: center; padding: 14px; border-radius: 24px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
-    .price-btn-outline { border: 2px solid var(--navy); color: var(--navy); }
-    .price-btn-outline:hover { background: var(--navy); color: #fff; }
-    .price-btn-solid { background: var(--gold); color: var(--navy); }
-    .price-btn-solid:hover { background: var(--gold-light); }
-
-    /* CTA */
-    .cta-section { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); padding: 96px 40px; text-align: center; }
-    .cta-section h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 800; color: #fff; max-width: 640px; margin: 0 auto 20px; line-height: 1.2; letter-spacing: -0.5px; }
-    .cta-section p { font-size: 17px; color: rgba(255,255,255,0.7); max-width: 480px; margin: 0 auto 44px; }
-
-    /* FOOTER */
-    footer { background: var(--navy); padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); }
-    footer p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.8; }
-    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
-    footer a:hover { color: var(--gold-light); }
-
-    @media (max-width: 640px) {
-      nav { padding: 16px 20px; }
-      .nav-links { display: none; }
-      section { padding: 64px 20px; }
-      .hero { padding: 72px 20px 56px; }
-      .mantra { padding: 48px 20px; }
-      .cta-section { padding: 72px 20px; }
-      footer { padding: 36px 20px; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-brand">AI Confidence <span>Academy</span></div>
-  <ul class="nav-links">
-    <li><a href="#who">Who It's For</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#curriculum">Curriculum</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-  </ul>
-  <a href="#pricing" class="nav-cta">Get Started</a>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-eyebrow">AI Confidence Academy</div>
-  <h1>Learn AI Without Fear.<br><em>Use It With Confidence.</em></h1>
-  <p class="hero-sub">You don't need a tech background. You don't need to be young. You just need the right guide — and a willingness to try. AI Confidence Academy teaches everyday adults to work with AI clearly, confidently, and on their own terms.</p>
-  <div class="hero-btns">
-    <a href="#pricing" class="btn-primary">Start the Academy</a>
-    <a href="#how" class="btn-outline">See How It Works</a>
-  </div>
-  <div class="hero-trust">
-    <div class="trust-item"><div class="trust-dot"></div>No tech background needed</div>
-    <div class="trust-item"><div class="trust-dot"></div>Learn at your own pace</div>
-    <div class="trust-item"><div class="trust-dot"></div>People first. AI is the tool.</div>
-    <div class="trust-item"><div class="trust-dot"></div>Real skills. Real confidence.</div>
-  </div>
-</section>
-
-<!-- WHO IT'S FOR -->
-<section class="for-who" id="who">
-  <div class="container">
-    <p class="eyebrow">Who It's For</p>
-    <h2 class="section-title">This academy was built for you.</h2>
-    <p class="section-sub">If you've ever felt like AI is moving too fast, or that it wasn't made for people like you — this is your place.</p>
-    <div class="for-who-grid">
-      <div class="who-card">
-        <div class="who-icon">👩‍💼</div>
-        <h3>Professionals & Entrepreneurs</h3>
-        <p>You run your business or career. You've heard AI can help — but you don't know where to start without wasting time or looking foolish.</p>
-      </div>
-      <div class="who-card">
-        <div class="who-icon">🎓</div>
-        <h3>Lifelong Learners 40+</h3>
-        <p>You've built a life through hard work and learning. AI is one more tool to master — and you've mastered harder things than this.</p>
-      </div>
-      <div class="who-card">
-        <div class="who-icon">✍️</div>
-        <h3>Creators & Communicators</h3>
-        <p>Writers, coaches, speakers, teachers. AI can amplify your voice — once you know how to direct it without losing yourself in the process.</p>
-      </div>
-      <div class="who-card">
-        <div class="who-icon">🏡</div>
-        <h3>Anyone Who Feels Left Behind</h3>
-        <p>You've watched the AI wave build. You know it matters. You just haven't found a guide who speaks your language — until now.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="how" id="how">
-  <div class="container">
-    <p class="eyebrow">How It Works</p>
-    <h2 class="section-title">Simple steps. Real results.</h2>
-    <p class="section-sub">No overwhelm. No jargon. Just a guided path from "I don't know where to start" to "I use AI every day."</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>Start at the Beginning</h3>
-        <p>Module 00 meets you exactly where you are — no assumptions, no judgment. Just a warm, honest introduction to what AI really is and what it isn't.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>Practice, Don't Just Watch</h3>
-        <p>Every lesson includes real prompts you type, real responses you read, and real decisions you make. Learning by doing — not by watching someone else do it.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>Build Your Confidence Portfolio</h3>
-        <p>Every module produces something you save: a real artifact that shows you've moved from learner to practitioner. Your portfolio grows as your confidence does.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <h3>Use It in Your Real Life</h3>
-        <p>Every lesson connects to something you actually do — your work, your writing, your business, your family. AI becomes useful, not abstract.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- C.L.E.A.R. METHOD -->
-<section class="clear-section">
-  <div class="container">
-    <p class="eyebrow">The C.L.E.A.R. Method</p>
-    <h2 class="section-title">One framework. Every conversation.</h2>
-    <p class="section-sub">The C.L.E.A.R. method is the backbone of ACA. It gives you a repeatable, memorable way to talk to AI — and get back answers that actually help.</p>
-    <div class="clear-grid">
-      <div class="clear-card">
-        <div class="clear-letter">C</div>
-        <div class="clear-word">Context</div>
-        <div class="clear-desc">What does the AI need to know before helping me?</div>
-      </div>
-      <div class="clear-card">
-        <div class="clear-letter">L</div>
-        <div class="clear-word">Listener / Level</div>
-        <div class="clear-desc">Who is this for, and how simple or advanced should it be?</div>
-      </div>
-      <div class="clear-card">
-        <div class="clear-letter">E</div>
-        <div class="clear-word">Exact Task</div>
-        <div class="clear-desc">What job do I want the AI to do?</div>
-      </div>
-      <div class="clear-card">
-        <div class="clear-letter">A</div>
-        <div class="clear-word">Answer Format</div>
-        <div class="clear-desc">What shape should the answer come in?</div>
-      </div>
-      <div class="clear-card">
-        <div class="clear-letter">R</div>
-        <div class="clear-word">Review & Refine</div>
-        <div class="clear-desc">How do I check it, improve it, or make it more useful?</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CURRICULUM -->
-<section class="curriculum" id="curriculum">
-  <div class="container">
-    <p class="eyebrow">The Curriculum</p>
-    <h2 class="section-title">11 modules. One transformation.</h2>
-    <p class="section-sub">From your very first conversation with AI to a full 90-day practice plan — every step is designed to build on the last.</p>
-    <div class="modules">
-      <div class="module">
-        <div class="module-num">MOD 00</div>
-        <div class="module-content">
-          <h4>The Doorway</h4>
-          <p>Your very first AI conversation. Gentle, honest, and designed to turn anxiety into curiosity.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 01</div>
-        <div class="module-content">
-          <h4>Understanding AI Without Fear</h4>
-          <p>What AI actually is, what it isn't, and why it doesn't have to be intimidating.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 02</div>
-        <div class="module-content">
-          <h4>Your First Real Conversations</h4>
-          <p>Practice talking to AI like you'd talk to a knowledgeable friend — not a search engine.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 03</div>
-        <div class="module-content">
-          <h4>The C.L.E.A.R. Prompting Method</h4>
-          <p>The one framework that makes every AI conversation more useful, more focused, and more you.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 04</div>
-        <div class="module-content">
-          <h4>Everyday Uses That Actually Help</h4>
-          <p>Email, research, planning, decision-making. AI in the moments that matter most in your day.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 05</div>
-        <div class="module-content">
-          <h4>When AI Gets It Wrong</h4>
-          <p>How to spot errors, push back, and stay in the driver's seat — because you always should be.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 06</div>
-        <div class="module-content">
-          <h4>Work, Business & Side-Hustle Support</h4>
-          <p>Proposals, client emails, content, planning. AI as your behind-the-scenes business partner.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 07</div>
-        <div class="module-content">
-          <h4>Creative Content & Digital Assets</h4>
-          <p>Write, design, record, and publish — with AI as your creative collaborator, not your replacement.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 08</div>
-        <div class="module-content">
-          <h4>Verification, Privacy & Safety</h4>
-          <p>What to trust, what to check, and how to use AI responsibly — including what to keep private.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 09</div>
-        <div class="module-content">
-          <h4>Building Your AI Toolkit</h4>
-          <p>Discover the tools beyond the basics and build a personal stack that fits your real life.</p>
-        </div>
-      </div>
-      <div class="module">
-        <div class="module-num">MOD 10</div>
-        <div class="module-content">
-          <h4>Capstone & 90-Day Practice Plan</h4>
-          <p>Complete your Confidence Portfolio and build a personal plan to keep growing beyond the academy.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- MANTRA -->
-<div class="mantra">
-  <blockquote>"People come first. AI is the tool. Confidence is the product."</blockquote>
-  <cite>The AI Confidence Academy Philosophy</cite>
-</div>
-
-<!-- FEATURES -->
-<section class="features">
-  <div class="container">
-    <p class="eyebrow">What Makes ACA Different</p>
-    <h2 class="section-title">Built for real people. Not tech people.</h2>
-    <p class="section-sub">Most AI courses are made by engineers, for engineers. ACA was built from the ground up for people who have never written a line of code — and never will.</p>
-    <div class="features-grid">
-      <div class="feat">
-        <div class="feat-icon">🧭</div>
-        <h4>You Stay in Charge</h4>
-        <p>Every lesson is built around your judgment. AI is the assistant. You are the decision-maker. Always.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">🗣️</div>
-        <h4>Plain Language Throughout</h4>
-        <p>No jargon, no acronyms you haven't been taught, no talking down to you. Just clear, warm, adult language that respects your intelligence.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">🛠️</div>
-        <h4>Practice-First Learning</h4>
-        <p>Every lesson has you typing real prompts and reading real responses. No passive watching. You learn by doing.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">💼</div>
-        <h4>Real-Life Application</h4>
-        <p>Every module connects to something you actually do — your work, your writing, your business. No abstract theory.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">📁</div>
-        <h4>Your Confidence Portfolio</h4>
-        <p>Every module produces a real artifact you save. By Module 10, you have proof of what you've learned — not just a certificate.</p>
-      </div>
-      <div class="feat">
-        <div class="feat-icon">🔒</div>
-        <h4>Privacy & Safety Built In</h4>
-        <p>You'll always know what's safe to share, what to verify, and how to use AI responsibly. No shortcuts on what matters.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section class="pricing" id="pricing">
-  <div class="container">
-    <p class="eyebrow">Pricing</p>
-    <h2 class="section-title">Start learning today.</h2>
-    <p class="section-sub">Honest pricing. No hidden fees. No pressure. Just the education that changes how you work and live.</p>
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="price-label">Self-Paced</div>
-        <div class="price-name">Academy Access</div>
-        <div class="price-amount">$97</div>
-        <div class="price-period">one-time payment</div>
-        <ul class="price-features">
-          <li>All 11 modules (00–10)</li>
-          <li>C.L.E.A.R. method training</li>
-          <li>Practice prompts & exercises</li>
-          <li>Confidence Portfolio artifacts</li>
-          <li>90-Day practice plan</li>
-          <li>Lifetime access</li>
-        </ul>
-        <a href="#" class="price-btn price-btn-outline">Enroll Now</a>
-      </div>
-      <div class="price-card featured">
-        <div class="price-label">Most Popular</div>
-        <div class="price-name">Academy + Coaching</div>
-        <div class="price-amount">$197</div>
-        <div class="price-period">one-time payment</div>
-        <ul class="price-features">
-          <li>Everything in Academy Access</li>
-          <li>1-on-1 onboarding session</li>
-          <li>Direct feedback on your prompts</li>
-          <li>Private community access</li>
-          <li>Monthly live Q&A sessions</li>
-          <li>Priority support</li>
-        </ul>
-        <a href="#" class="price-btn price-btn-solid">Enroll Now</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-  <div class="container">
-    <h2>You don't have to figure this out alone.</h2>
-    <p>The AI Confidence Academy was built to walk with you — from curious and cautious to capable and confident. Start today.</p>
-    <a href="#pricing" class="btn-primary">Start the Academy</a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <p>
-    &copy; 2026 AI Confidence Academy. All rights reserved.<br>
-    <a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="terms.html">Terms of Service</a> &nbsp;·&nbsp;
-    Built with purpose by Terrence Lee.
-  </p>
-</footer>
-
-</body>
-</html>
+.__variable_geist_mono_1diim1n { --font-geist-mono: 'Geist Mono', sans-serif; }
+</style>
+</head><body class="__variable_geist_0tvmz3h __variable_geist_mono_1diim1n antialiased"><header class="site-header"><a href="/" class="brand" aria-label="AI Confidence Academy home"><img src="/aca-official-seal.png" alt="" width="43" height="43" loading="eager" fetchPriority="high" decoding="async" srcSet="/aca-official-seal.png 43w" class="mini-seal" data-nimg="1" aria-hidden="true"/><span class="brand-copy"><strong>AI Confidence Academy</strong><small>People-first learning</small></span></a><button class="menu-button" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="Toggle navigation"><span></span><span></span><span></span></button><nav id="site-navigation" class="nav" aria-label="Primary navigation"><a href="/about" class="">Our Story</a><a href="/programs" class="">Programs</a><a href="/library" class="">Books &amp; Resources</a><a href="/videos" class="">Videos</a><a href="/reflections" class="">Reflections</a><a href="/enroll" class="nav-cta">Enroll</a></nav></header><main><section class="home-hero"><div class="home-hero-copy"><p class="eyebrow">A human-centered academy for an AI-powered world</p><h1>Understand AI.<br/><em>Grow with confidence.</em></h1><p class="hero-intro">Practical, guided learning for everyday people—especially adults 40 and over—who want to understand AI and use it meaningfully in daily life.</p><div class="hero-actions"><a href="/programs" class="button button-gold">Explore Programs</a></div><div class="mantra" aria-label="Academy mantra"><span>People come first.</span><span>AI is the tool.</span><span>Confidence is the product.</span></div></div><div class="home-hero-mark"><div class="seal-aura"></div><img src="/aca-official-seal.png" alt="AI Confidence Academy seal: Human, AI, Confidence" width="260" height="260" loading="eager" fetchPriority="high" decoding="async" srcSet="/aca-official-seal.png 260w" data-nimg="1"/></div></section><section class="intro-split section-pad"><p class="section-kicker">An invitation to participate</p><div><h2>You do not need to become a technologist to belong in the future.</h2><p>ACA meets you where you are with plain language, patient guidance, and hands-on experience—helping you learn to think <em>with</em> AI without handing your thinking over to it.</p></div></section><section class="principle-row" aria-label="Academy learning principles"><article><span>0<!-- -->1</span><h3>Human first</h3><p>Your experience, judgment, values, and voice remain at the center.</p></article><article><span>0<!-- -->2</span><h3>Guided practice</h3><p>Confidence grows through clear guidance, repetition, and meaningful use.</p></article><article><span>0<!-- -->3</span><h3>Lasting principles</h3><p>We teach ways of thinking and collaborating that outlast any one platform.</p></article></section><section class="program-feature section-pad"><div class="section-heading"><p class="section-kicker">The guided pathway</p><h2>From recognition<br/>to real capability.</h2><p>The books create recognition and readiness. ACA creates capability and confidence.</p><a href="/programs" class="button button-outline">View the learning pathway</a></div><div class="stack-list"><article><span>0<!-- -->1</span><div><small>Phase One</small><h3>Understanding &amp; Confidence</h3><p>For everyday learners ready to understand AI, practice with purpose, and build genuine confidence through paced lessons, labs, reflection, and supported use.</p></div><a href="/programs" aria-label="Learn about Phase One">↗</a></article><article><span>0<!-- -->2</span><div><small>Phase Two</small><h3>Capability &amp; Application</h3><p>A practical next step that turns understanding into thoughtful application across work, home, creativity, business, service, and community.</p></div><a href="/programs" aria-label="Learn about Phase Two">↗</a></article></div></section><section class="library-preview section-pad"><div class="section-title-row"><div><p class="section-kicker">The ACA library</p><h2>Begin with understanding.</h2></div><a href="/library" class="arrow-link">Browse books &amp; resources <span>→</span></a></div><div class="resource-grid"><article class="resource-card"><div class="book-cover navy"><small>AI Confidence Academy</small><strong>AI Confidence Academy</strong><span>Digital Edition</span></div><div><small>Flagship digital book</small><h3>AI Confidence Academy</h3><p>A human-first introduction to understanding AI and participating with confidence in an AI-powered world.</p></div></article><article class="resource-card"><div class="book-cover gold"><small>AI Confidence Academy</small><strong>AI Works for You</strong><span>Digital Edition</span></div><div><small>Digital guide</small><h3>AI Works for You</h3><p>A practical doorway into seeing where AI can support daily life while human judgment remains in charge.</p></div></article><article class="resource-card"><div class="book-cover blue"><small>AI Confidence Academy</small><strong>The AI Reality Check</strong><span>Digital Edition</span></div><div><small>Digital guide</small><h3>The AI Reality Check</h3><p>A clear, grounded resource for understanding what AI can do, what it cannot do, and why verification matters.</p></div></article></div></section><section class="video-feature section-pad"><div class="video-frame"><span aria-hidden="true">▶</span><small>ACA Video Learning Center</small></div><div><p class="section-kicker">Watch. Practice. Grow.</p><h2>Learning that feels clear, warm, and useful.</h2><p>Teaching videos, practical demonstrations, founder conversations, and learner support will live in one organized place.</p><a href="/videos" class="button button-light">Visit the video center</a></div></section><section class="story-callout section-pad"><div class="story-quote"><span>“</span><blockquote>We are living the concept we are building.</blockquote></div><div><p class="section-kicker">The story behind ACA</p><h2>A conversation in the Philippines became a promise at a kitchen table.</h2><p>Terrence Lee watched his friend Jeff work naturally with an AI companion named Bartholomew—using it not as a novelty, but as a practical partner in planning a home and navigating everyday life. Terrence returned home determined to learn for himself. His sustained collaboration with Knowledge helped turn that decision into books, curriculum, and a human-centered academy. Today, Terrence and Jeff stand together as ACA’s co-founders.</p><a href="/about" class="arrow-link">Read how ACA began <span>→</span></a></div></section><section class="closing-cta section-pad"><p class="section-kicker">The next step</p><h2>Your confidence journey can begin here.</h2><p>Explore the Academy, discover the learning pathway, and be among the first to hear when enrollment opens.</p><div><a href="/enroll" class="button button-gold">Join the interest list</a><a href="/contact" class="text-link light">Contact ACA</a></div></section></main><footer class="site-footer"><div class="footer-lead"><div class="footer-brand"><img src="/aca-official-seal.png" alt="" width="43" height="43" loading="lazy" decoding="async" srcSet="/aca-official-seal.png 43w" class="mini-seal" data-nimg="1" aria-hidden="true"/><div><strong>AI Confidence Academy</strong><small>Human-guided. AI-assisted. People-first.</small></div></div><p>Practical, guided AI learning for everyday people—especially adults 40 and over.</p></div><div class="footer-links"><div><strong>Explore</strong><a href="/about">About ACA</a><a href="/programs">Programs</a><a href="/library">Books &amp; Resources</a><a href="/videos">Videos</a><a href="/reflections">Founder Reflections</a></div><div><strong>Connect</strong><a href="/enroll">Enroll</a><a href="/faq">FAQ</a><a href="/contact">Contact</a></div><div><strong>Policies</strong><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/refund-policy">Refund Policy</a><a href="/accessibility">Accessibility</a><a href="/ai-learning-disclaimer">AI Learning Disclaimer</a></div></div><div class="footer-bottom"><p>© 2026 AI Confidence Academy. All rights reserved.</p><p>People come first. AI is the tool. Confidence is the product.</p></div></footer><script src="/site.js" defer></script></body></html>
