@@ -1,0 +1,31 @@
+{
+  "name": "ai-confidence-academy-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite --config portal/vite.config.ts",
+    "build": "vite build --config portal/vite.config.ts",
+    "typecheck": "tsc --project portal/tsconfig.json --noEmit",
+    "test": "vitest run --config portal/vitest.config.ts",
+    "check": "npm run typecheck && npm run test && npm run build"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.112.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.6",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "jsdom": "30.0.1",
+    "typescript": "7.0.2",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  }
+}

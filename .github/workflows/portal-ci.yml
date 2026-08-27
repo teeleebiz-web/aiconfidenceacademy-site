@@ -1,0 +1,39 @@
+name: ACA learner portal checks
+
+on:
+  pull_request:
+    paths:
+      - 'portal/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/portal-ci.yml'
+  push:
+    branches:
+      - aca-learning-portal
+    paths:
+      - 'portal/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/portal-ci.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Type-check, test, and build
+        run: npm run check
