@@ -130,6 +130,15 @@ export function App() {
     if (signInError) throw signInError
   }
 
+  async function signInWithPassword(email: string, password: string) {
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (signInError) throw signInError
+  }
+
   async function openLesson(lesson: Lesson) {
     setSelectedLesson(lesson)
     setArtifact('')
@@ -216,7 +225,12 @@ export function App() {
   }
 
   if (!session) {
-    return <SignIn onRequestLink={requestSignInLink} />
+    return (
+      <SignIn
+        onRequestLink={requestSignInLink}
+        onPasswordSignIn={signInWithPassword}
+      />
+    )
   }
 
   return (
