@@ -338,6 +338,49 @@ textarea {
   color: #5d6f68;
 }
 
+.journey-welcome-button {
+  align-items: center;
+  background: linear-gradient(135deg, #17342e, #245f53);
+  border: 1px solid rgba(211, 167, 85, 0.55);
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(23, 52, 46, 0.16);
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin: 1.25rem 0 1.5rem;
+  padding: 1.2rem 1.35rem;
+  text-align: left;
+  width: 100%;
+}
+
+.journey-welcome-button:hover {
+  background: linear-gradient(135deg, #20483f, #2d6a5d);
+}
+
+.journey-welcome-button > span {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.journey-welcome-button small {
+  color: #e4ca8c;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.journey-welcome-button strong {
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+}
+
+.journey-welcome-button b {
+  color: #fff;
+  white-space: nowrap;
+}
+
 .lesson-row {
   align-items: center;
   background: #f4f0e8;
@@ -413,6 +456,165 @@ textarea {
 
 .lesson-article > section:last-child {
   border-bottom: 0;
+}
+
+.introduction-article {
+  background: #fffdf8;
+  border: 1px solid #d9d3c7;
+  border-radius: 30px;
+  box-shadow: 0 28px 76px rgba(23, 52, 46, 0.1);
+  margin-top: 1.5rem;
+  overflow: hidden;
+}
+
+.introduction-article > section,
+.introduction-next,
+.introduction-hero {
+  border-bottom: 1px solid #e0dbd0;
+  padding: clamp(1.6rem, 5vw, 3.5rem);
+}
+
+.introduction-hero {
+  align-items: start;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(211, 167, 85, 0.23), transparent 20rem),
+    #17342e;
+  color: #fff;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.introduction-hero h1 {
+  max-width: 14ch;
+}
+
+.introduction-hero p:last-child {
+  color: #d7e0dc;
+  font-size: 1.05rem;
+  max-width: 64ch;
+}
+
+.introduction-hero > span {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: #efd28c;
+  font-weight: 850;
+  padding: 0.7rem 0.9rem;
+  white-space: nowrap;
+}
+
+.introduction-media {
+  background: #0f2823;
+  color: #fff;
+}
+
+.introduction-media video,
+.introduction-media audio {
+  border-radius: 16px;
+  display: block;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.introduction-outcomes {
+  background: #edf3f0;
+}
+
+.introduction-outcomes ul {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.introduction-outcomes li {
+  background: #fffdf8;
+  border-left: 4px solid #c7a45c;
+  border-radius: 12px;
+  padding: 1.1rem;
+}
+
+.roadmap-list {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.roadmap-list li {
+  align-items: start;
+  border-top: 1px solid #ded8cc;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 54px minmax(0, 1fr);
+  padding: 1.2rem 0;
+}
+
+.roadmap-list li > span {
+  align-items: center;
+  background: #17342e;
+  border-radius: 50%;
+  color: #f0ce80;
+  display: flex;
+  font-size: 0.78rem;
+  font-weight: 850;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.roadmap-list h3 {
+  font-size: 1.22rem;
+  margin-bottom: 0.25rem;
+}
+
+.roadmap-list p {
+  color: #5d6f68;
+  margin-bottom: 0;
+}
+
+.transcript-panel {
+  background: #f4f0e8;
+}
+
+.transcript-panel summary {
+  color: #9b432d;
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.transcript-copy {
+  border-left: 3px solid #c7a45c;
+  margin-top: 1.5rem;
+  max-width: 78ch;
+  padding-left: 1.25rem;
+}
+
+.transcript-copy time {
+  color: #9b432d;
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 850;
+  margin-bottom: 0.2rem;
+}
+
+.introduction-next {
+  align-items: center;
+  background: #fff7df;
+  border-bottom: 0;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.introduction-next p {
+  margin-bottom: 0;
+  max-width: 68ch;
 }
 
 .lesson-hero {
@@ -539,7 +741,18 @@ textarea {
   }
 
   .section-heading,
-  .lesson-hero {
+  .lesson-hero,
+  .introduction-hero,
+  .introduction-next {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .introduction-outcomes ul {
+    grid-template-columns: 1fr;
+  }
+
+  .journey-welcome-button {
     align-items: start;
     flex-direction: column;
   }

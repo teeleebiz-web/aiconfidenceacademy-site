@@ -1,12 +1,14 @@
-import type { Enrollment, Journey, Lesson, LessonProgress } from '../types'
+import type { Enrollment, Journey, JourneyIntroduction, Lesson, LessonProgress } from '../types'
 
 type DashboardProps = {
   enrollment: Enrollment
   journeys: Journey[]
   lessons: Lesson[]
   progress: LessonProgress[]
+  introductions: JourneyIntroduction[]
   learnerName: string
   onOpenLesson: (lesson: Lesson) => void
+  onOpenIntroduction: (introduction: JourneyIntroduction) => void
 }
 
 export function Dashboard({
@@ -14,8 +16,10 @@ export function Dashboard({
   journeys,
   lessons,
   progress,
+  introductions,
   learnerName,
   onOpenLesson,
+  onOpenIntroduction,
 }: DashboardProps) {
   const completed = progress.filter((item) => item.status === 'completed').length
   const progressPercent = lessons.length ? Math.round((completed / lessons.length) * 100) : 0
@@ -48,6 +52,7 @@ export function Dashboard({
 
         {journeys.map((journey) => {
           const journeyLessons = lessons.filter((lesson) => lesson.journey_id === journey.id)
+          const introduction = introductions.find((item) => item.journey_id === journey.id)
 
           return (
             <article className="journey-card" key={journey.id}>
@@ -56,6 +61,19 @@ export function Dashboard({
                 <small>Week {journey.week_number}</small>
                 <h3>{journey.title}</h3>
                 <p>{journey.promise}</p>
+                {introduction ? (
+                  <button
+                    className="journey-welcome-button"
+                    type="button"
+                    onClick={() => onOpenIntroduction(introduction)}
+                  >
+                    <span>
+                      <small>Journey welcome · {Math.ceil(introduction.duration_seconds / 60)} minutes</small>
+                      <strong>{introduction.content.title}</strong>
+                    </span>
+                    <b>Begin Journey</b>
+                  </button>
+                ) : null}
                 <div className="lesson-list">
                   {journeyLessons.map((lesson) => {
                     const lessonProgress = progress.find((item) => item.lesson_id === lesson.id)

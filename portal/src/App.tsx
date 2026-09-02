@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import sealUrl from '../../aca-official-seal.png'
 import { Dashboard } from './components/Dashboard'
+import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
 import { supabase } from './lib/supabase'
-import type { Enrollment, Journey, Lesson, LessonProgress } from './types'
+import type { Enrollment, Journey, JourneyIntroduction, Lesson, LessonProgress } from './types'
 
 type PortalData = {
   enrollment: Enrollment | null
   journeys: Journey[]
   lessons: Lesson[]
   progress: LessonProgress[]
+  introductions: JourneyIntroduction[]
   learnerName: string
 }
 
@@ -20,6 +22,7 @@ const emptyPortalData: PortalData = {
   journeys: [],
   lessons: [],
   progress: [],
+  introductions: [],
   learnerName: '',
 }
 
@@ -28,6 +31,9 @@ export function App() {
   const [loading, setLoading] = useState(true)
   const [portalData, setPortalData] = useState<PortalData>(emptyPortalData)
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null)
+  const [selectedIntroduction, setSelectedIntroduction] = useState<JourneyIntroduction | null>(null)
+  const [introductionMediaUrl, setIntroductionMediaUrl] = useState<string | null>(null)
+  const [introductionCaptionUrl, setIntroductionCaptionUrl] = useState<string | null>(null)
   const [artifact, setArtifact] = useState('')
   const [error, setError] = useState('')
 
@@ -84,7 +90,7 @@ export function App() {
       return
     }
 
-    const [journeyResult, lessonResult, progressResult] = await Promise.all([
+    const [journeyResult, lessonResult, progressResult, introductionResult] = await Promise.all([
       supabase
         .from('course_journeys')
         .select('id, course_id, journey_number, week_number, title, promise, release_offset_days')
@@ -99,9 +105,12 @@ export function App() {
         .from('lesson_progress')
         .select('id, lesson_id, status, last_step, artifact_saved')
         .eq('enrollment_id', enrollment.id),
+      supabase
+        .from('journey_introductions')
+        .select('id, journey_id, media_kind, media_path, caption_path, duration_seconds, content, status, source_version'),
     ])
 
-    const queryError = journeyResult.error ?? lessonResult.error ?? progressResult.error
+    const queryError = journeyResult.error ?? lessonResult.error ?? progressResult.error ?? introductionResult.error
     if (queryError) {
       setError(queryError.message)
       setLoading(false)
@@ -113,6 +122,7 @@ export function App() {
       journeys: (journeyResult.data ?? []) as Journey[],
       lessons: (lessonResult.data ?? []) as unknown as Lesson[],
       progress: (progressResult.data ?? []) as LessonProgress[],
+      introductions: (introductionResult.data ?? []) as unknown as JourneyIntroduction[],
       learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '',
     })
     setLoading(false)
@@ -140,6 +150,8 @@ export function App() {
   }
 
   async function openLesson(lesson: Lesson) {
+    setError('')
+    setSelectedIntroduction(null)
     setSelectedLesson(lesson)
     setArtifact('')
 
@@ -157,6 +169,40 @@ export function App() {
 
     const content = data?.content as { response?: string } | null
     setArtifact(content?.response ?? '')
+  }
+
+  async function openIntroduction(introduction: JourneyIntroduction) {
+    setError('')
+    setSelectedLesson(null)
+    setSelectedIntroduction(introduction)
+    setIntroductionMediaUrl(null)
+    setIntroductionCaptionUrl(null)
+
+    if (!introduction.media_path) return
+
+    const [mediaResult, captionResult] = await Promise.all([
+      supabase.storage.from('aca-learning-media').createSignedUrl(introduction.media_path, 3600),
+      introduction.caption_path
+        ? supabase.storage.from('aca-learning-media').createSignedUrl(introduction.caption_path, 3600)
+        : Promise.resolve({ data: null, error: null }),
+    ])
+
+    if (mediaResult.error) {
+      setError('The welcome media is temporarily unavailable. The transcript remains available below.')
+      return
+    }
+
+    setIntroductionMediaUrl(mediaResult.data.signedUrl)
+    setIntroductionCaptionUrl(captionResult.data?.signedUrl ?? null)
+  }
+
+  function continueFromIntroduction() {
+    if (!selectedIntroduction) return
+    const firstLesson = portalData.lessons.find(
+      (lesson) => lesson.journey_id === selectedIntroduction.journey_id,
+    )
+
+    if (firstLesson) void openLesson(firstLesson)
   }
 
   async function saveLesson(response: string) {
@@ -218,6 +264,7 @@ export function App() {
   async function signOut() {
     await supabase.auth.signOut()
     setSelectedLesson(null)
+    setSelectedIntroduction(null)
   }
 
   if (loading) {
@@ -250,7 +297,15 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {selectedLesson ? (
+      {selectedIntroduction ? (
+        <JourneyIntroductionView
+          introduction={selectedIntroduction}
+          mediaUrl={introductionMediaUrl}
+          captionUrl={introductionCaptionUrl}
+          onBack={() => setSelectedIntroduction(null)}
+          onContinue={continueFromIntroduction}
+        />
+      ) : selectedLesson ? (
         <LessonView
           lesson={selectedLesson}
           progress={portalData.progress.find((item) => item.lesson_id === selectedLesson.id)}
@@ -264,8 +319,10 @@ export function App() {
           journeys={portalData.journeys}
           lessons={portalData.lessons}
           progress={portalData.progress}
+          introductions={portalData.introductions}
           learnerName={portalData.learnerName}
           onOpenLesson={openLesson}
+          onOpenIntroduction={openIntroduction}
         />
       ) : (
         <main className="access-shell">

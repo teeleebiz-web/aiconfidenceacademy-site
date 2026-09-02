@@ -42,6 +42,36 @@ export type Journey = {
   release_offset_days: number
 }
 
+export type JourneyIntroductionContent = {
+  eyebrow: string
+  title: string
+  lead: string
+  outcomes: string[]
+  roadmap: Array<{
+    page_id: string
+    title: string
+    purpose: string
+  }>
+  transcript: Array<{
+    timecode?: string
+    speaker?: string
+    text: string
+  }>
+  closing: string
+}
+
+export type JourneyIntroduction = {
+  id: string
+  journey_id: string
+  media_kind: 'video' | 'audio'
+  media_path: string | null
+  caption_path: string | null
+  duration_seconds: number
+  content: JourneyIntroductionContent
+  status: 'draft' | 'published' | 'archived'
+  source_version: string
+}
+
 export type Lesson = {
   id: string
   course_id: string
