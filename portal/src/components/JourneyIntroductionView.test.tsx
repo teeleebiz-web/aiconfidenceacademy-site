@@ -4,8 +4,8 @@ import { JourneyIntroductionView } from './JourneyIntroductionView'
 import type { JourneyIntroduction } from '../types'
 
 const introduction: JourneyIntroduction = {
-  id: 'intro-1',
-  journey_id: 'journey-1',
+  id: 'intro-4',
+  journey_id: 'journey-4',
   media_kind: 'video',
   media_path: null,
   caption_path: null,
@@ -13,12 +13,12 @@ const introduction: JourneyIntroduction = {
   status: 'draft',
   source_version: 'synthetic-test-v1',
   content: {
-    eyebrow: 'Begin Journey 1',
+    eyebrow: 'Begin Journey 4',
     title: 'A Synthetic Journey Welcome',
     lead: 'This fixture verifies the learner experience without embedding protected curriculum.',
     outcomes: ['Know how the journey will work.'],
     roadmap: [{
-      page_id: '1.1',
+      page_id: '4.1',
       title: 'A Synthetic First Lesson',
       purpose: 'Test the roadmap display.',
     }],
@@ -48,11 +48,12 @@ describe('JourneyIntroductionView', () => {
     expect(screen.queryByRole('video')).toBeNull()
     expect(screen.getByText('A Synthetic Journey Welcome')).toBeTruthy()
     expect(screen.getByText('A Synthetic First Lesson')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: /journey 4/i })).toBeTruthy()
 
     await user.click(screen.getByText(/read the complete transcript/i))
     expect(screen.getByText(/no-media welcome remains accessible/i)).toBeTruthy()
 
-    await user.click(screen.getByRole('button', { name: /continue to lesson 1.1/i }))
+    await user.click(screen.getByRole('button', { name: /continue to lesson 4.1/i }))
     expect(continued).toBe(true)
   })
 })

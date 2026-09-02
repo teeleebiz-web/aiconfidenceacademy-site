@@ -43,5 +43,19 @@ Do not merge the learner portal into `main` until:
    database;
 5. Terrence approves the learner-facing preview.
 
-The remaining 35 Phase One lessons should be installed only after that vertical
-slice proves the full learner path.
+The Phase One database now contains all six journeys and all 36 lessons. Only
+approved rows are visible to ordinary learners. An owner account with
+`app_metadata.academy_role = owner` may review the complete working build under
+additional read-only RLS policies; this review mode does not save lesson progress
+or learner artifacts.
+
+Before enabling owner review in production:
+
+1. apply the owner-review RLS migration;
+2. assign the owner role through trusted administration, never user metadata;
+3. require the owner to sign out and sign back in so the refreshed JWT contains
+   the authorization claim;
+4. verify that an ordinary authenticated learner still sees published material
+   only; and
+5. verify the complete owner view on desktop and mobile before any curriculum
+   status changes.

@@ -14,6 +14,7 @@ const lesson: Lesson = {
   course_position: 1,
   journey_position: 1,
   unlock_offset_days: 0,
+  status: 'published',
   content: {
     outcomes: ['Complete a guided practice and save a reflection.'],
     vocabulary: { Reflection: 'A short record of what the learner noticed.' },
@@ -51,7 +52,7 @@ describe('LessonView', () => {
     expect(screen.getByRole('status').textContent).toMatch(/thoughtful words/i)
 
     await user.type(
-      screen.getByLabelText(/two-sentence starting reason/i),
+      screen.getByLabelText(/evidence you want to save/i),
       'I want to use AI with better judgment. I want confidence to shape and verify what it gives me.',
     )
     await user.click(screen.getByRole('button', { name: /save and complete/i }))
@@ -73,5 +74,29 @@ describe('LessonView', () => {
 
     expect(screen.getByText('Who makes the final decision about using an AI response?')).toBeTruthy()
     expect(screen.queryByText(/^The learner\.$/)).toBeNull()
+  })
+
+  it('keeps owner review read-only and supports adjacent-lesson navigation', async () => {
+    const user = userEvent.setup()
+    const nextLesson = { ...lesson, id: 'lesson-2', page_id: '1.2', status: 'draft' as const }
+    const opened: string[] = []
+
+    render(
+      <LessonView
+        lesson={{ ...lesson, status: 'draft' }}
+        reviewMode
+        nextLesson={nextLesson}
+        onBack={() => undefined}
+        onSave={async () => { throw new Error('Review mode must not save.') }}
+        onOpenLesson={(item) => opened.push(item.id)}
+      />,
+    )
+
+    expect(screen.getByText(/unpublished draft/i)).toBeTruthy()
+    expect(screen.queryByLabelText(/evidence you want to save/i)).toBeNull()
+    expect(screen.getByText(/learner evidence target/i)).toBeTruthy()
+
+    await user.click(screen.getByRole('button', { name: /lesson 1.2/i }))
+    expect(opened).toEqual(['lesson-2'])
   })
 })

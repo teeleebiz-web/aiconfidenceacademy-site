@@ -5,14 +5,19 @@ export type LessonContent = {
   examples: string[]
   practice_prompt: string
   practice_steps: string[]
-  revision: string
+  revision?: string
+  required_revision?: string
   artifact: string
   stay_engaged: string
-  optional: string
+  optional?: string
+  optional_practice?: string
   knowledge_check: Array<{ q: string }>
   review_questions: string[]
   rhythm: string
   accessibility: string
+  practice_material?: string | null
+  support?: string
+  completion_gate?: string
 }
 
 export type Course = {
@@ -40,6 +45,7 @@ export type Journey = {
   title: string
   promise: string
   release_offset_days: number
+  status: 'draft' | 'published' | 'archived'
 }
 
 export type JourneyIntroductionContent = {
@@ -83,6 +89,7 @@ export type Lesson = {
   course_position: number
   journey_position: number
   unlock_offset_days: number
+  status: 'draft' | 'published' | 'archived'
   content: LessonContent
 }
 

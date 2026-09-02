@@ -239,6 +239,36 @@ textarea {
   padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2.5rem);
 }
 
+.owner-review-banner {
+  align-items: center;
+  background: #fff7df;
+  border: 1px solid #d3a755;
+  border-left: 7px solid #9b432d;
+  border-radius: 20px;
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+}
+
+.owner-review-banner h2 {
+  font-size: clamp(1.55rem, 3vw, 2.25rem);
+  margin-bottom: 0.5rem;
+}
+
+.owner-review-banner p:last-child {
+  color: #5d665f;
+  margin-bottom: 0;
+  max-width: 68ch;
+}
+
+.owner-review-banner > strong {
+  color: #9b432d;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
 .welcome-panel {
   align-items: end;
   display: grid;
@@ -265,6 +295,11 @@ textarea {
   color: #e0bf72;
   font-family: Georgia, serif;
   font-size: 2.3rem;
+}
+
+.review-summary-card small {
+  color: #d7e0dc;
+  line-height: 1.5;
 }
 
 .progress-track {
@@ -322,10 +357,21 @@ textarea {
   border-radius: 16px;
   color: #17342e;
   display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
   font-weight: 850;
   justify-content: center;
   min-height: 120px;
   text-align: center;
+}
+
+.journey-number small {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.55rem;
+  text-transform: uppercase;
 }
 
 .journey-copy > small {
@@ -446,6 +492,28 @@ textarea {
   box-shadow: 0 25px 70px rgba(23, 52, 46, 0.08);
   margin-top: 1.5rem;
   overflow: hidden;
+}
+
+.lesson-review-banner {
+  align-items: center;
+  background: #fff7df;
+  border: 1px solid #d3a755;
+  border-radius: 14px;
+  color: #17342e;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 1.2rem;
+  padding: 0.9rem 1rem;
+}
+
+.lesson-review-banner strong {
+  color: #9b432d;
+}
+
+.lesson-review-banner span {
+  color: #5d665f;
+  font-size: 0.88rem;
 }
 
 .lesson-article > section,
@@ -676,6 +744,16 @@ textarea {
   background: #f0eadf;
 }
 
+.example-panel {
+  background: #fffaf0;
+}
+
+.example-panel ul {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 0;
+}
+
 .prompt-box {
   background: #17342e;
   border-radius: 16px;
@@ -707,6 +785,38 @@ textarea {
 
 .artifact-panel button {
   margin-top: 1rem;
+}
+
+.review-only-panel {
+  background: #fffdf8;
+  border: 1px dashed #b99b5f;
+  border-radius: 14px;
+  margin-top: 1.25rem;
+  padding: 1.2rem;
+}
+
+.review-only-panel p {
+  color: #5d665f;
+  margin: 0.4rem 0 0;
+}
+
+.support-note {
+  background: #edf3f0;
+  border-left: 4px solid #245f53;
+  padding: 1rem;
+}
+
+.lesson-review-navigation {
+  align-items: center;
+  background: #17342e;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: clamp(1.6rem, 5vw, 3.5rem);
+}
+
+.lesson-review-navigation button {
+  border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
 .global-error {
@@ -743,7 +853,9 @@ textarea {
   .section-heading,
   .lesson-hero,
   .introduction-hero,
-  .introduction-next {
+  .introduction-next,
+  .owner-review-banner,
+  .lesson-review-banner {
     align-items: start;
     flex-direction: column;
   }
@@ -763,6 +875,15 @@ textarea {
 
   .lesson-row b {
     grid-column: 2;
+  }
+
+  .lesson-review-navigation {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .lesson-review-navigation span {
+    display: none;
   }
 
   .portal-brand strong {

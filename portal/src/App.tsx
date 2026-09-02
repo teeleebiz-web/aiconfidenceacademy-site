@@ -36,6 +36,7 @@ export function App() {
   const [introductionCaptionUrl, setIntroductionCaptionUrl] = useState<string | null>(null)
   const [artifact, setArtifact] = useState('')
   const [error, setError] = useState('')
+  const reviewMode = session?.user.app_metadata?.academy_role === 'owner'
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -93,12 +94,12 @@ export function App() {
     const [journeyResult, lessonResult, progressResult, introductionResult] = await Promise.all([
       supabase
         .from('course_journeys')
-        .select('id, course_id, journey_number, week_number, title, promise, release_offset_days')
+        .select('id, course_id, journey_number, week_number, title, promise, release_offset_days, status')
         .eq('course_id', enrollment.course_id)
         .order('journey_number'),
       supabase
         .from('lessons')
-        .select('id, course_id, journey_id, page_id, title, purpose, estimated_minutes, course_position, journey_position, unlock_offset_days, content')
+        .select('id, course_id, journey_id, page_id, title, purpose, estimated_minutes, course_position, journey_position, unlock_offset_days, status, content')
         .eq('course_id', enrollment.course_id)
         .order('course_position'),
       supabase
@@ -155,7 +156,7 @@ export function App() {
     setSelectedLesson(lesson)
     setArtifact('')
 
-    if (!portalData.enrollment) return
+    if (!portalData.enrollment || reviewMode) return
 
     const { data } = await supabase
       .from('learner_artifacts')
@@ -210,6 +211,10 @@ export function App() {
       throw new Error('Your secure session has ended. Please sign in again.')
     }
 
+    if (reviewMode) {
+      throw new Error('Owner review mode is read-only and does not alter learner progress.')
+    }
+
     const identity = {
       learner_id: session.user.id,
       enrollment_id: portalData.enrollment.id,
@@ -231,12 +236,12 @@ export function App() {
     const artifactResult = existingArtifact
       ? await supabase
           .from('learner_artifacts')
-          .update({ content: { response }, title: 'My ACA Starting Reason' })
+          .update({ content: { response }, title: `My ACA Lesson ${selectedLesson.page_id} Evidence` })
           .eq('id', existingArtifact.id)
       : await supabase.from('learner_artifacts').insert({
           ...identity,
           artifact_kind: 'reflection',
-          title: 'My ACA Starting Reason',
+          title: `My ACA Lesson ${selectedLesson.page_id} Evidence`,
           content: { response },
         })
 
@@ -249,7 +254,7 @@ export function App() {
         last_step: 7,
         artifact_saved: true,
         required_revision_completed: true,
-        evidence_summary: 'Saved My ACA Starting Reason after guided practice and revision.',
+        evidence_summary: `Saved Lesson ${selectedLesson.page_id} evidence after guided practice and revision.`,
         started_at: new Date().toISOString(),
         completed_at: new Date().toISOString(),
       },
@@ -310,8 +315,12 @@ export function App() {
           lesson={selectedLesson}
           progress={portalData.progress.find((item) => item.lesson_id === selectedLesson.id)}
           initialArtifact={artifact}
+          reviewMode={reviewMode}
+          previousLesson={portalData.lessons[portalData.lessons.findIndex((item) => item.id === selectedLesson.id) - 1]}
+          nextLesson={portalData.lessons[portalData.lessons.findIndex((item) => item.id === selectedLesson.id) + 1]}
           onBack={() => setSelectedLesson(null)}
           onSave={saveLesson}
+          onOpenLesson={openLesson}
         />
       ) : portalData.enrollment ? (
         <Dashboard
@@ -321,6 +330,7 @@ export function App() {
           progress={portalData.progress}
           introductions={portalData.introductions}
           learnerName={portalData.learnerName}
+          reviewMode={reviewMode}
           onOpenLesson={openLesson}
           onOpenIntroduction={openIntroduction}
         />

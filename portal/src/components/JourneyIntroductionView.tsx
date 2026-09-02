@@ -22,12 +22,21 @@ export function JourneyIntroductionView({
   onContinue,
 }: JourneyIntroductionViewProps) {
   const { content } = introduction
+  const firstLessonId = content.roadmap[0]?.page_id ?? ''
+  const journeyNumber = firstLessonId.split('.')[0] || 'this'
 
   return (
     <main className="lesson-main introduction-main">
       <button className="back-link" type="button" onClick={onBack}>
         ← Back to learning home
       </button>
+
+      {introduction.status === 'draft' ? (
+        <aside className="lesson-review-banner" aria-label="Owner review notice">
+          <strong>Owner review · Unpublished journey welcome</strong>
+          <span>This draft is visible only through protected review access.</span>
+        </aside>
+      ) : null}
 
       <article className="introduction-article">
         <header className="introduction-hero">
@@ -68,7 +77,7 @@ export function JourneyIntroductionView({
 
         <section aria-labelledby="journey-roadmap-heading">
           <p className="eyebrow">Your roadmap</p>
-          <h2 id="journey-roadmap-heading">Six steady steps through Journey 1</h2>
+          <h2 id="journey-roadmap-heading">Six steady steps through Journey {journeyNumber}</h2>
           <ol className="roadmap-list">
             {content.roadmap.map((item) => (
               <li key={item.page_id}>
@@ -98,7 +107,9 @@ export function JourneyIntroductionView({
 
         <footer className="introduction-next">
           <p>{content.closing}</p>
-          <button type="button" onClick={onContinue}>Continue to Lesson 1.1</button>
+          <button type="button" onClick={onContinue}>
+            {firstLessonId ? `Continue to Lesson ${firstLessonId}` : 'Continue to the first lesson'}
+          </button>
         </footer>
       </article>
     </main>

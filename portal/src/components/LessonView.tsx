@@ -5,16 +5,24 @@ type LessonViewProps = {
   lesson: Lesson
   progress?: LessonProgress
   initialArtifact?: string
+  reviewMode?: boolean
+  previousLesson?: Lesson
+  nextLesson?: Lesson
   onBack: () => void
   onSave: (response: string) => Promise<void>
+  onOpenLesson?: (lesson: Lesson) => void
 }
 
 export function LessonView({
   lesson,
   progress,
   initialArtifact = '',
+  reviewMode = false,
+  previousLesson,
+  nextLesson,
   onBack,
   onSave,
+  onOpenLesson,
 }: LessonViewProps) {
   const [response, setResponse] = useState(initialArtifact)
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>(
@@ -37,18 +45,28 @@ export function LessonView({
     try {
       await onSave(response.trim())
       setStatus('saved')
-      setMessage('Your starting reason is saved. Lesson 1.1 is complete.')
+      setMessage(`Your work is saved. Lesson ${lesson.page_id} is complete.`)
     } catch (error) {
       setStatus('error')
       setMessage(error instanceof Error ? error.message : 'Your work could not be saved.')
     }
   }
 
+  const revision = lesson.content.required_revision ?? lesson.content.revision
+  const optionalPractice = lesson.content.optional_practice ?? lesson.content.optional
+
   return (
     <main className="lesson-main">
       <button className="back-link" type="button" onClick={onBack}>
         ← Back to my learning home
       </button>
+
+      {reviewMode ? (
+        <aside className="lesson-review-banner" aria-label="Owner review notice">
+          <strong>Owner review · {lesson.status === 'draft' ? 'Unpublished draft' : 'Published lesson'}</strong>
+          <span>Review mode is read-only and does not alter learner progress.</span>
+        </aside>
+      ) : null}
 
       <article className="lesson-article">
         <header className="lesson-hero">
@@ -75,6 +93,16 @@ export function LessonView({
             <p key={paragraph}>{paragraph}</p>
           ))}
         </section>
+
+        {lesson.content.examples.length ? (
+          <section className="example-panel">
+            <p className="eyebrow">See it in everyday life</p>
+            <h2>Examples to make the idea concrete</h2>
+            <ul>
+              {lesson.content.examples.map((example) => <li key={example}>{example}</li>)}
+            </ul>
+          </section>
+        ) : null}
 
         <section>
           <h2>Words you will use</h2>
@@ -118,28 +146,37 @@ export function LessonView({
               <li key={question}>{question}</li>
             ))}
           </ul>
-          <p><strong>Your revision:</strong> {lesson.content.revision}</p>
+          {revision ? <p><strong>Your required revision:</strong> {revision}</p> : null}
         </section>
 
         <section className="artifact-panel">
           <p className="eyebrow">Save evidence of your growth</p>
           <h2>{lesson.content.artifact}</h2>
-          <label htmlFor="starting-reason">Write your two-sentence starting reason</label>
-          <textarea
-            id="starting-reason"
-            rows={6}
-            value={response}
-            onChange={(event) => setResponse(event.target.value)}
-            placeholder="I want to learn ChatGPT because…"
-          />
-          <button type="button" onClick={saveProgress} disabled={status === 'saving'}>
-            {status === 'saving' ? 'Saving…' : 'Save and complete Lesson 1.1'}
-          </button>
-          {message ? (
-            <p className={`form-message ${status}`} role="status">
-              {message}
-            </p>
-          ) : null}
+          {reviewMode ? (
+            <div className="review-only-panel">
+              <strong>Learner evidence target</strong>
+              <p>{lesson.content.completion_gate ?? 'Complete the practice, revise the result, and save the named evidence item.'}</p>
+            </div>
+          ) : (
+            <>
+              <label htmlFor="lesson-evidence">Write or paste the evidence you want to save</label>
+              <textarea
+                id="lesson-evidence"
+                rows={6}
+                value={response}
+                onChange={(event) => setResponse(event.target.value)}
+                placeholder="Write your reflection, plan, or completed practice evidence here…"
+              />
+              <button type="button" onClick={saveProgress} disabled={status === 'saving'}>
+                {status === 'saving' ? 'Saving…' : `Save and complete Lesson ${lesson.page_id}`}
+              </button>
+              {message ? (
+                <p className={`form-message ${status}`} role="status">
+                  {message}
+                </p>
+              ) : null}
+            </>
+          )}
         </section>
 
         <section>
@@ -150,8 +187,28 @@ export function LessonView({
             ))}
           </ul>
           <p><strong>Stay engaged:</strong> {lesson.content.stay_engaged}</p>
-          <p><strong>Optional continuation:</strong> {lesson.content.optional}</p>
+          {optionalPractice ? <p><strong>Optional continuation:</strong> {optionalPractice}</p> : null}
+          {lesson.content.support ? (
+            <p className="support-note"><strong>If you need support:</strong> {lesson.content.support}</p>
+          ) : null}
         </section>
+
+        {reviewMode && onOpenLesson ? (
+          <nav className="lesson-review-navigation" aria-label="Review adjacent lessons">
+            {previousLesson ? (
+              <button type="button" onClick={() => onOpenLesson(previousLesson)}>
+                ← Lesson {previousLesson.page_id}
+              </button>
+            ) : <span />}
+            {nextLesson ? (
+              <button type="button" onClick={() => onOpenLesson(nextLesson)}>
+                Lesson {nextLesson.page_id} →
+              </button>
+            ) : (
+              <button type="button" onClick={onBack}>Return to Phase One overview</button>
+            )}
+          </nav>
+        ) : null}
       </article>
     </main>
   )

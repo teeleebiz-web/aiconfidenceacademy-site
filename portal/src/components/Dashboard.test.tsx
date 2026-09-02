@@ -21,6 +21,7 @@ const journey: Journey = {
   title: 'Sample Journey',
   promise: 'A synthetic promise.',
   release_offset_days: 0,
+  status: 'published',
 }
 
 const introduction: JourneyIntroduction = {
@@ -75,5 +76,25 @@ describe('Dashboard', () => {
 
     await user.click(welcomeButton)
     expect(opened).toEqual(['intro-1'])
+  })
+
+  it('labels unpublished material in protected owner review mode', () => {
+    render(
+      <Dashboard
+        enrollment={enrollment}
+        journeys={[{ ...journey, status: 'draft' }]}
+        lessons={[{ ...lesson, status: 'draft' }]}
+        progress={[]}
+        introductions={[{ ...introduction, status: 'draft' }]}
+        learnerName="Owner"
+        reviewMode
+        onOpenLesson={() => undefined}
+        onOpenIntroduction={() => undefined}
+      />,
+    )
+
+    expect(screen.getByText(/protected owner review/i)).toBeTruthy()
+    expect(screen.getByText(/1 journeys · 1 lessons · 1 drafts/i)).toBeTruthy()
+    expect(screen.getAllByText(/draft/i).length).toBeGreaterThan(1)
   })
 })
