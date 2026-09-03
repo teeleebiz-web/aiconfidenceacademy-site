@@ -36,7 +36,7 @@ export function App() {
   const [introductionCaptionUrl, setIntroductionCaptionUrl] = useState<string | null>(null)
   const [artifact, setArtifact] = useState('')
   const [error, setError] = useState('')
-  const reviewMode = session?.user.app_metadata?.academy_role === 'owner'
+  const [reviewMode, setReviewMode] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -54,6 +54,7 @@ export function App() {
   useEffect(() => {
     if (!session?.user) {
       setPortalData(emptyPortalData)
+      setReviewMode(false)
       return
     }
 
@@ -64,7 +65,7 @@ export function App() {
     setLoading(true)
     setError('')
 
-    const [profileResult, enrollmentResult] = await Promise.all([
+    const [profileResult, enrollmentResult, ownerResult] = await Promise.all([
       supabase.from('profiles').select('first_name, display_name').eq('id', userId).maybeSingle(),
       supabase
         .from('enrollments')
@@ -72,13 +73,21 @@ export function App() {
         .eq('learner_id', userId)
         .in('status', ['active', 'completed'])
         .maybeSingle(),
+      supabase.rpc('is_aca_curriculum_owner'),
     ])
 
-    if (profileResult.error || enrollmentResult.error) {
-      setError(profileResult.error?.message ?? enrollmentResult.error?.message ?? 'Unable to load ACA access.')
+    if (profileResult.error || enrollmentResult.error || ownerResult.error) {
+      setError(
+        profileResult.error?.message ??
+          enrollmentResult.error?.message ??
+          ownerResult.error?.message ??
+          'Unable to load ACA access.',
+      )
       setLoading(false)
       return
     }
+
+    setReviewMode(ownerResult.data === true)
 
     const enrollment = enrollmentResult.data as unknown as Enrollment | null
 
