@@ -19,6 +19,23 @@ the secure learner portal.
 The browser receives only the Supabase publishable key. Service-role and Resend
 credentials remain server-side.
 
+## ACA visual identity
+
+Portal and curriculum surfaces must extend the established ACA website palette:
+
+- Navy: `#102D4F`
+- Soft navy: `#1C4267`
+- Ink blue: `#18324A`
+- Cream/tan: `#F8F3E9`
+- Ivory/white: `#FFFDF9`
+- Gold: `#B48632`
+- Light gold: `#D4B36B`
+- Mist blue-gray: `#EEF2F4`
+
+Dark green and rust are not ACA brand colors and must not be introduced into
+learner-facing or curriculum production work. Red is reserved only for genuine
+error messaging.
+
 ## Local validation
 
 ```bash
