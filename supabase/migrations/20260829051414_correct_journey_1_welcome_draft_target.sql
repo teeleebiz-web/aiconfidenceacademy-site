@@ -1,0 +1,5 @@
+-- Protected ACA curriculum correction marker.
+--
+-- This production migration associated journey-1-welcome-v1.0 with Journey 1
+-- of phase-one-chatgpt-foundations. The record remains draft/unpublished and
+-- its protected content is intentionally omitted from this public repository.

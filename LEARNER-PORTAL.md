@@ -19,6 +19,23 @@ the secure learner portal.
 The browser receives only the Supabase publishable key. Service-role and Resend
 credentials remain server-side.
 
+## ACA visual identity
+
+Portal and curriculum surfaces must extend the established ACA website palette:
+
+- Navy: `#102D4F`
+- Soft navy: `#1C4267`
+- Ink blue: `#18324A`
+- Cream/tan: `#F8F3E9`
+- Ivory/white: `#FFFDF9`
+- Gold: `#B48632`
+- Light gold: `#D4B36B`
+- Mist blue-gray: `#EEF2F4`
+
+Dark green and rust are not ACA brand colors and must not be introduced into
+learner-facing or curriculum production work. Red is reserved only for genuine
+error messaging.
+
 ## Local validation
 
 ```bash
@@ -43,5 +60,19 @@ Do not merge the learner portal into `main` until:
    database;
 5. Terrence approves the learner-facing preview.
 
-The remaining 35 Phase One lessons should be installed only after that vertical
-slice proves the full learner path.
+The Phase One database now contains all six journeys and all 36 lessons. Only
+approved rows are visible to ordinary learners. An owner account with
+`app_metadata.academy_role = owner` may review the complete working build under
+additional read-only RLS policies; this review mode does not save lesson progress
+or learner artifacts.
+
+Before enabling owner review in production:
+
+1. apply the owner-review RLS migration;
+2. assign the owner role through trusted administration, never user metadata;
+3. require the owner to sign out and sign back in so the refreshed JWT contains
+   the authorization claim;
+4. verify that an ordinary authenticated learner still sees published material
+   only; and
+5. verify the complete owner view on desktop and mobile before any curriculum
+   status changes.

@@ -1,0 +1,6 @@
+-- Protected ACA curriculum data migration marker.
+--
+-- The Journey 1 welcome record was installed in the production project as an
+-- unpublished draft. Its transcript and production copy are intentionally not
+-- stored in this public repository. The protected source is versioned as
+-- journey-1-welcome-v1.0 in the ACA curriculum production package.

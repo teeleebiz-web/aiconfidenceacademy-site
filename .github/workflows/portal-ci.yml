@@ -9,7 +9,7 @@ on:
       - '.github/workflows/portal-ci.yml'
   push:
     branches:
-      - aca-learning-portal
+      - main
     paths:
       - 'portal/**'
       - 'package.json'
