@@ -78,6 +78,13 @@ export function Dashboard({
         {journeys.map((journey) => {
           const journeyLessons = lessons.filter((lesson) => lesson.journey_id === journey.id)
           const introduction = introductions.find((item) => item.journey_id === journey.id)
+          const journeyCompleted = journeyLessons.filter((lesson) =>
+            progress.some((item) => item.lesson_id === lesson.id && item.status === 'completed'),
+          ).length
+          const journeyMinutes = journeyLessons.reduce(
+            (total, lesson) => total + Math.min(60, Math.max(45, lesson.estimated_minutes)),
+            0,
+          )
 
           return (
             <article className="journey-card" key={journey.id}>
@@ -89,6 +96,11 @@ export function Dashboard({
                 <small>Week {journey.week_number}</small>
                 <h3>{journey.title}</h3>
                 <p>{journey.promise}</p>
+                <p className="journey-session-summary">
+                  <strong>{journeyLessons.length} guided sessions</strong>
+                  <span>{formatLearningTime(journeyMinutes)}</span>
+                  <span>{reviewMode ? 'Owner review is read-only' : `${journeyCompleted} of ${journeyLessons.length} complete`}</span>
+                </p>
                 {introduction ? (
                   <button
                     className="journey-welcome-button"
@@ -98,7 +110,7 @@ export function Dashboard({
                     <span>
                       <small>
                         {reviewMode && introduction.status === 'draft' ? 'Draft welcome' : 'Journey welcome'}
-                        {' · '}{Math.ceil(introduction.duration_seconds / 60)} minutes
+                        {' · '}Founder video + Knowledge audio · about {Math.ceil(introduction.duration_seconds / 60)} minutes
                       </small>
                       <strong>{introduction.content.title}</strong>
                     </span>
@@ -123,7 +135,7 @@ export function Dashboard({
                         <span>
                           <strong>{lesson.title}</strong>
                           <small>
-                            {lesson.estimated_minutes} minutes
+                            {Math.min(60, Math.max(45, lesson.estimated_minutes))} minute session
                             {reviewMode && lesson.status === 'draft' ? ' · Draft' : ''}
                           </small>
                         </span>
@@ -139,4 +151,10 @@ export function Dashboard({
       </section>
     </main>
   )
+}
+
+function formatLearningTime(totalMinutes: number) {
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+  return minutes ? `${hours} hr ${minutes} min core learning` : `${hours} hr core learning`
 }

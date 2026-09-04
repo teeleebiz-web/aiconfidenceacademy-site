@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Lesson, LessonProgress } from '../types'
 
 type LessonViewProps = {
@@ -31,6 +31,14 @@ export function LessonView({
   const [message, setMessage] = useState(
     progress?.status === 'completed' ? 'This lesson is complete.' : '',
   )
+  const [promptCopied, setPromptCopied] = useState(false)
+
+  useEffect(() => {
+    setResponse(initialArtifact)
+    setStatus(progress?.status === 'completed' ? 'saved' : 'idle')
+    setMessage(progress?.status === 'completed' ? 'This lesson is complete.' : '')
+    setPromptCopied(false)
+  }, [initialArtifact, lesson.id, progress?.status])
 
   async function saveProgress() {
     if (response.trim().length < 20) {
@@ -54,6 +62,8 @@ export function LessonView({
 
   const revision = lesson.content.required_revision ?? lesson.content.revision
   const optionalPractice = lesson.content.optional_practice ?? lesson.content.optional
+  const sessionMinutes = Math.min(60, Math.max(45, lesson.estimated_minutes))
+  const sessionPlan = buildSessionPlan(sessionMinutes)
 
   return (
     <main className="lesson-main">
@@ -75,10 +85,24 @@ export function LessonView({
             <h1>{lesson.title}</h1>
             <p>{lesson.purpose}</p>
           </div>
-          <span>{lesson.estimated_minutes} minutes</span>
+          <span>{sessionMinutes} minute session</span>
         </header>
 
-        <section>
+        <section className="session-map" aria-labelledby="session-map-heading">
+          <p className="eyebrow">Your session at a glance</p>
+          <h2 id="session-map-heading">A complete learning rhythm—not just a reading</h2>
+          <ol>
+            {sessionPlan.map((step) => (
+              <li key={step.label}>
+                <strong>{step.minutes} min</strong>
+                <span>{step.label}</span>
+              </li>
+            ))}
+          </ol>
+          <p>Optional continuation is available after the core session and is not included in this estimate.</p>
+        </section>
+
+        <section id="lesson-outcomes">
           <h2>What you will be able to do</h2>
           <ul className="outcome-list">
             {lesson.content.outcomes.map((outcome) => (
@@ -87,7 +111,9 @@ export function LessonView({
           </ul>
         </section>
 
-        <section>
+        <section id="lesson-teaching">
+          <p className="eyebrow">Learn and understand</p>
+          <h2>Build the idea in plain language</h2>
           <p className="rhythm">{lesson.content.rhythm}</p>
           {lesson.content.teaching.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
@@ -95,16 +121,16 @@ export function LessonView({
         </section>
 
         {lesson.content.examples.length ? (
-          <section className="example-panel">
+          <section className="example-panel" aria-labelledby="examples-heading">
             <p className="eyebrow">See it in everyday life</p>
-            <h2>Examples to make the idea concrete</h2>
+            <h2 id="examples-heading">Examples to make the idea concrete</h2>
             <ul>
               {lesson.content.examples.map((example) => <li key={example}>{example}</li>)}
             </ul>
           </section>
         ) : null}
 
-        <section>
+        <section id="lesson-vocabulary">
           <h2>Words you will use</h2>
           <dl className="vocabulary-grid">
             {Object.entries(lesson.content.vocabulary).map(([term, definition]) => (
@@ -116,17 +142,23 @@ export function LessonView({
           </dl>
         </section>
 
-        <section className="practice-panel">
+        <section className="practice-panel" id="lesson-practice">
           <p className="eyebrow">Guided practice</p>
           <h2>Begin with one purposeful conversation.</h2>
           <div className="prompt-box">
             <code>{lesson.content.practice_prompt}</code>
             <button
               type="button"
-              onClick={() => navigator.clipboard.writeText(lesson.content.practice_prompt)}
+              onClick={async () => {
+                await navigator.clipboard.writeText(lesson.content.practice_prompt)
+                setPromptCopied(true)
+              }}
             >
-              Copy prompt
+              {promptCopied ? 'Prompt copied' : 'Copy prompt'}
             </button>
+            <span className="visually-hidden" aria-live="polite">
+              {promptCopied ? 'The practice prompt was copied to your clipboard.' : ''}
+            </span>
           </div>
           <ol>
             {lesson.content.practice_steps.map((step) => (
@@ -139,7 +171,8 @@ export function LessonView({
           </p>
         </section>
 
-        <section>
+        <section id="lesson-verification">
+          <p className="eyebrow">Verify and revise</p>
           <h2>Check the response with human judgment</h2>
           <ul>
             {lesson.content.review_questions.map((question) => (
@@ -149,7 +182,7 @@ export function LessonView({
           {revision ? <p><strong>Your required revision:</strong> {revision}</p> : null}
         </section>
 
-        <section className="artifact-panel">
+        <section className="artifact-panel" id="lesson-reflection">
           <p className="eyebrow">Save evidence of your growth</p>
           <h2>{lesson.content.artifact}</h2>
           {reviewMode ? (
@@ -179,7 +212,8 @@ export function LessonView({
           )}
         </section>
 
-        <section>
+        <section id="lesson-check">
+          <p className="eyebrow">Reflect and continue</p>
           <h2>Before you continue</h2>
           <ul>
             {lesson.content.knowledge_check.map((item) => (
@@ -193,23 +227,76 @@ export function LessonView({
           ) : null}
         </section>
 
-        {reviewMode && onOpenLesson ? (
-          <nav className="lesson-review-navigation" aria-label="Review adjacent lessons">
+        {onOpenLesson ? (
+          <nav className="lesson-review-navigation" aria-label={reviewMode ? 'Review adjacent lessons' : 'Continue through Phase One'}>
             {previousLesson ? (
-              <button type="button" onClick={() => onOpenLesson(previousLesson)}>
-                ← Lesson {previousLesson.page_id}
+              <button
+                type="button"
+                aria-label={`Previous lesson ${previousLesson.page_id}: ${previousLesson.title}`}
+                onClick={() => onOpenLesson(previousLesson)}
+              >
+                <small>Previous lesson</small>
+                <span>← {previousLesson.page_id} · {previousLesson.title}</span>
               </button>
             ) : <span />}
             {nextLesson ? (
-              <button type="button" onClick={() => onOpenLesson(nextLesson)}>
-                Lesson {nextLesson.page_id} →
+              <button
+                type="button"
+                aria-label={`${nextLesson.journey_id === lesson.journey_id ? 'Next lesson' : 'Next Journey, lesson'} ${nextLesson.page_id}: ${nextLesson.title}`}
+                onClick={() => onOpenLesson(nextLesson)}
+              >
+                <small>{nextLesson.journey_id === lesson.journey_id ? 'Next lesson' : 'Next Journey'}</small>
+                <span>{nextLesson.page_id} · {nextLesson.title} →</span>
               </button>
             ) : (
-              <button type="button" onClick={onBack}>Return to Phase One overview</button>
+              <button type="button" onClick={onBack}>
+                <small>Phase One complete</small>
+                <span>Return to the course overview</span>
+              </button>
             )}
           </nav>
         ) : null}
       </article>
     </main>
   )
+}
+
+function buildSessionPlan(totalMinutes: number) {
+  if (totalMinutes >= 60) {
+    return [
+      { label: 'Settle in and focus', minutes: 3 },
+      { label: 'Learn and see examples', minutes: 15 },
+      { label: 'Complete guided practice', minutes: 22 },
+      { label: 'Verify and revise', minutes: 10 },
+      { label: 'Reflect, check, and save', minutes: 10 },
+    ]
+  }
+
+  if (totalMinutes >= 55) {
+    return [
+      { label: 'Settle in and focus', minutes: 3 },
+      { label: 'Learn and see examples', minutes: 15 },
+      { label: 'Complete guided practice', minutes: 20 },
+      { label: 'Verify and revise', minutes: 9 },
+      { label: 'Reflect, check, and save', minutes: totalMinutes - 47 },
+    ]
+  }
+
+  if (totalMinutes >= 50) {
+    return [
+      { label: 'Settle in and focus', minutes: 3 },
+      { label: 'Learn and see examples', minutes: 15 },
+      { label: 'Complete guided practice', minutes: 15 },
+      { label: 'Verify and revise', minutes: 8 },
+      { label: 'Reflect, check, and save', minutes: totalMinutes - 41 },
+    ]
+  }
+
+  return [
+    { label: 'Settle in and focus', minutes: 3 },
+    { label: 'Learn and see examples', minutes: 12 },
+    { label: 'Complete guided practice', minutes: 15 },
+    { label: 'Verify and revise', minutes: 8 },
+    { label: 'Reflect, check, and save', minutes: totalMinutes - 38 },
+  ]
 }
