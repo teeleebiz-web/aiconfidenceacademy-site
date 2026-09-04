@@ -61,17 +61,40 @@ Do not merge the learner portal into `main` until:
 5. Terrence approves the learner-facing preview.
 
 The Phase One database now contains all six journeys and all 36 lessons. Only
-approved rows are visible to ordinary learners. An owner account with
-`app_metadata.academy_role = owner` may review the complete working build under
-additional read-only RLS policies; this review mode does not save lesson progress
-or learner artifacts.
+approved rows are visible to ordinary learners. A server-controlled reviewer
+allowlist in the private database grants the ACA owner access to the complete
+working build under additional read-only RLS policies; this review mode does not
+save lesson progress or learner artifacts.
+
+## Integrated Phase One owner review
+
+The protected owner-review experience is assembled as one connected course:
+
+- 6 journeys and 36 guided sessions;
+- 45–60 minutes of core learning per session, with optional continuation kept
+  outside the core estimate;
+- teaching, guided practice, reflection, verification, and a completion gate in
+  every session;
+- previous/next navigation across lesson and journey boundaries;
+- a visible session map and consistent transition into the next lesson; and
+- read-only owner review with no progress or artifact writes.
+
+Each Journey welcome has two independent protected media positions:
+
+1. a short founder or avatar video featuring Terrence; and
+2. a companion audio overview voiced by Knowledge.
+
+Until final recordings are attached, branded production placeholders remain in
+those positions. Founder and companion transcripts are stored with the protected
+curriculum records, displayed independently, and ready to support captions. The
+public repository contains the presentation code and schema history, but not the
+protected curriculum scripts or media.
 
 Before enabling owner review in production:
 
 1. apply the owner-review RLS migration;
-2. assign the owner role through trusted administration, never user metadata;
-3. require the owner to sign out and sign back in so the refreshed JWT contains
-   the authorization claim;
+2. add the owner to the private reviewer allowlist through trusted administration;
+3. verify the portal recognizes that server-controlled authorization;
 4. verify that an ordinary authenticated learner still sees published material
    only; and
 5. verify the complete owner view on desktop and mobile before any curriculum

@@ -48,6 +48,12 @@ export type Journey = {
   status: 'draft' | 'published' | 'archived'
 }
 
+export type TranscriptSegment = {
+  timecode?: string
+  speaker?: string
+  text: string
+}
+
 export type JourneyIntroductionContent = {
   eyebrow: string
   title: string
@@ -58,11 +64,9 @@ export type JourneyIntroductionContent = {
     title: string
     purpose: string
   }>
-  transcript: Array<{
-    timecode?: string
-    speaker?: string
-    text: string
-  }>
+  transcript: TranscriptSegment[]
+  avatar_transcript?: TranscriptSegment[]
+  audio_transcript?: TranscriptSegment[]
   closing: string
 }
 
@@ -72,6 +76,8 @@ export type JourneyIntroduction = {
   media_kind: 'video' | 'audio'
   media_path: string | null
   caption_path: string | null
+  companion_audio_path?: string | null
+  companion_caption_path?: string | null
   duration_seconds: number
   content: JourneyIntroductionContent
   status: 'draft' | 'published' | 'archived'

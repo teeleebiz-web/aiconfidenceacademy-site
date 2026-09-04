@@ -48,6 +48,10 @@ describe('LessonView', () => {
       />,
     )
 
+    expect(screen.getByText(/45 minute session/i)).toBeTruthy()
+    expect(screen.getByRole('heading', { name: /complete learning rhythm/i })).toBeTruthy()
+    expect(screen.getByText(/optional continuation is available after the core session/i)).toBeTruthy()
+
     await user.click(screen.getByRole('button', { name: /save and complete/i }))
     expect(screen.getByRole('status').textContent).toMatch(/thoughtful words/i)
 

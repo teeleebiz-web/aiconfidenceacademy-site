@@ -1,0 +1,9 @@
+-- Protected ACA curriculum data migration marker.
+--
+-- The production migration synchronized all 36 Phase One lesson estimates to
+-- the approved 45-60 minute range, restored the Journey 1 continuation and
+-- completion gate, and installed separate founder/avatar and Knowledge-audio
+-- transcript structures for all six Journey welcomes.
+--
+-- Protected scripts and curriculum text are intentionally omitted from this
+-- public repository. The controlling sources are versioned in the ACA Vault.

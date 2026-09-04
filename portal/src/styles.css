@@ -384,6 +384,23 @@ textarea {
   color: #536879;
 }
 
+.journey-session-summary {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.8rem;
+  margin: 0.8rem 0 0;
+}
+
+.journey-session-summary strong,
+.journey-session-summary span {
+  background: #eef2f4;
+  border-radius: 999px;
+  color: #1c4267;
+  font-size: 0.78rem;
+  padding: 0.38rem 0.65rem;
+}
+
 .journey-welcome-button {
   align-items: center;
   background: linear-gradient(135deg, #102d4f, #1c4267);
@@ -578,6 +595,78 @@ textarea {
   color: #fff;
 }
 
+.media-stage-lead {
+  color: #c2cdd4;
+  max-width: 68ch;
+}
+
+.media-stage-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1.5rem;
+}
+
+.media-stage-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(212, 179, 107, 0.45);
+  border-radius: 18px;
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+}
+
+.media-stage-card header {
+  align-items: center;
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.media-stage-card header > span {
+  align-items: center;
+  background: #b48632;
+  border-radius: 50%;
+  color: #102d4f;
+  display: flex;
+  font-size: 0.78rem;
+  font-weight: 900;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.media-stage-card small {
+  color: #d4b36b;
+  font-weight: 800;
+}
+
+.media-stage-card h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin: 0.2rem 0 0;
+}
+
+.media-placeholder {
+  align-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px dashed rgba(255, 255, 255, 0.42);
+  border-radius: 14px;
+  display: grid;
+  gap: 0.35rem;
+  min-height: 150px;
+  padding: 1.2rem;
+}
+
+.media-placeholder strong {
+  color: #d4b36b;
+}
+
+.media-placeholder span {
+  color: #d9e0e5;
+  line-height: 1.55;
+}
+
 .introduction-media video,
 .introduction-media audio {
   border-radius: 16px;
@@ -656,6 +745,20 @@ textarea {
   font-weight: 850;
 }
 
+.transcript-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1.25rem;
+}
+
+.transcript-grid details {
+  background: #fffdf9;
+  border: 1px solid #d7dee4;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
 .transcript-copy {
   border-left: 3px solid #b48632;
   margin-top: 1.5rem;
@@ -669,6 +772,13 @@ textarea {
   font-size: 0.78rem;
   font-weight: 850;
   margin-bottom: 0.2rem;
+}
+
+.transcript-copy strong {
+  color: #1c4267;
+  display: block;
+  font-size: 0.82rem;
+  margin-bottom: 0.25rem;
 }
 
 .introduction-next {
@@ -710,6 +820,45 @@ textarea {
 .lesson-article li::marker {
   color: #b48632;
   font-weight: 900;
+}
+
+.session-map {
+  background: #eef2f4;
+}
+
+.session-map > p:last-child {
+  color: #576b7a;
+  font-size: 0.9rem;
+  margin: 1rem 0 0;
+}
+
+.session-map ol {
+  display: grid;
+  gap: 0.7rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  list-style: none;
+  margin: 1.4rem 0 0;
+  padding: 0;
+}
+
+.session-map li {
+  background: #fffdf9;
+  border-top: 4px solid #b48632;
+  border-radius: 12px;
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+}
+
+.session-map li strong {
+  color: #9a722f;
+  font-size: 0.82rem;
+}
+
+.session-map li span {
+  color: #102d4f;
+  font-weight: 750;
+  line-height: 1.35;
 }
 
 .rhythm {
@@ -817,6 +966,35 @@ textarea {
 
 .lesson-review-navigation button {
   border: 1px solid rgba(255, 255, 255, 0.45);
+  display: grid;
+  gap: 0.3rem;
+  max-width: 46%;
+  text-align: left;
+}
+
+.lesson-review-navigation button:last-child {
+  text-align: right;
+}
+
+.lesson-review-navigation button small {
+  color: #102d4f;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lesson-review-navigation button span {
+  line-height: 1.35;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 .global-error {
@@ -864,6 +1042,12 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .media-stage-grid,
+  .transcript-grid,
+  .session-map ol {
+    grid-template-columns: 1fr;
+  }
+
   .journey-welcome-button {
     align-items: start;
     flex-direction: column;
@@ -883,7 +1067,17 @@ textarea {
   }
 
   .lesson-review-navigation span {
-    display: none;
+    display: initial;
+  }
+
+  .lesson-review-navigation button {
+    max-width: none;
+    text-align: left;
+    width: 100%;
+  }
+
+  .lesson-review-navigation button:last-child {
+    text-align: left;
   }
 
   .portal-brand strong {

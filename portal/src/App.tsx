@@ -34,6 +34,8 @@ export function App() {
   const [selectedIntroduction, setSelectedIntroduction] = useState<JourneyIntroduction | null>(null)
   const [introductionMediaUrl, setIntroductionMediaUrl] = useState<string | null>(null)
   const [introductionCaptionUrl, setIntroductionCaptionUrl] = useState<string | null>(null)
+  const [companionAudioUrl, setCompanionAudioUrl] = useState<string | null>(null)
+  const [companionCaptionUrl, setCompanionCaptionUrl] = useState<string | null>(null)
   const [artifact, setArtifact] = useState('')
   const [error, setError] = useState('')
   const [reviewMode, setReviewMode] = useState(false)
@@ -117,7 +119,7 @@ export function App() {
         .eq('enrollment_id', enrollment.id),
       supabase
         .from('journey_introductions')
-        .select('id, journey_id, media_kind, media_path, caption_path, duration_seconds, content, status, source_version'),
+        .select('id, journey_id, media_kind, media_path, caption_path, companion_audio_path, companion_caption_path, duration_seconds, content, status, source_version'),
     ])
 
     const queryError = journeyResult.error ?? lessonResult.error ?? progressResult.error ?? introductionResult.error
@@ -187,23 +189,34 @@ export function App() {
     setSelectedIntroduction(introduction)
     setIntroductionMediaUrl(null)
     setIntroductionCaptionUrl(null)
+    setCompanionAudioUrl(null)
+    setCompanionCaptionUrl(null)
 
-    if (!introduction.media_path) return
+    if (!introduction.media_path && !introduction.companion_audio_path) return
 
-    const [mediaResult, captionResult] = await Promise.all([
-      supabase.storage.from('aca-learning-media').createSignedUrl(introduction.media_path, 3600),
+    const [mediaResult, captionResult, audioResult, audioCaptionResult] = await Promise.all([
+      introduction.media_path
+        ? supabase.storage.from('aca-learning-media').createSignedUrl(introduction.media_path, 3600)
+        : Promise.resolve({ data: null, error: null }),
       introduction.caption_path
         ? supabase.storage.from('aca-learning-media').createSignedUrl(introduction.caption_path, 3600)
         : Promise.resolve({ data: null, error: null }),
+      introduction.companion_audio_path
+        ? supabase.storage.from('aca-learning-media').createSignedUrl(introduction.companion_audio_path, 3600)
+        : Promise.resolve({ data: null, error: null }),
+      introduction.companion_caption_path
+        ? supabase.storage.from('aca-learning-media').createSignedUrl(introduction.companion_caption_path, 3600)
+        : Promise.resolve({ data: null, error: null }),
     ])
 
-    if (mediaResult.error) {
-      setError('The welcome media is temporarily unavailable. The transcript remains available below.')
-      return
+    if (mediaResult.error || audioResult.error) {
+      setError('One of the welcome recordings is temporarily unavailable. Both transcripts remain available below.')
     }
 
-    setIntroductionMediaUrl(mediaResult.data.signedUrl)
+    setIntroductionMediaUrl(mediaResult.data?.signedUrl ?? null)
     setIntroductionCaptionUrl(captionResult.data?.signedUrl ?? null)
+    setCompanionAudioUrl(audioResult.data?.signedUrl ?? null)
+    setCompanionCaptionUrl(audioCaptionResult.data?.signedUrl ?? null)
   }
 
   function continueFromIntroduction() {
@@ -316,11 +329,14 @@ export function App() {
           introduction={selectedIntroduction}
           mediaUrl={introductionMediaUrl}
           captionUrl={introductionCaptionUrl}
+          companionAudioUrl={companionAudioUrl}
+          companionCaptionUrl={companionCaptionUrl}
           onBack={() => setSelectedIntroduction(null)}
           onContinue={continueFromIntroduction}
         />
       ) : selectedLesson ? (
         <LessonView
+          key={selectedLesson.id}
           lesson={selectedLesson}
           progress={portalData.progress.find((item) => item.lesson_id === selectedLesson.id)}
           initialArtifact={artifact}
