@@ -48,10 +48,11 @@ describe('JourneyIntroductionView', () => {
     expect(screen.queryByRole('video')).toBeNull()
     expect(screen.getByText('A Synthetic Journey Welcome')).toBeTruthy()
     expect(screen.getByText('A Synthetic First Lesson')).toBeTruthy()
-    expect(screen.getByRole('heading', { name: /journey 4/i })).toBeTruthy()
-    expect(screen.getAllByText(/production placeholder/i)).toHaveLength(2)
+    expect(screen.getByRole('heading', { name: 'Lessons in Journey 4' })).toBeTruthy()
+    expect(screen.getByText('Video coming soon')).toBeTruthy()
+    expect(screen.getByText('Audio coming soon')).toBeTruthy()
 
-    await user.click(screen.getByText(/founder\/avatar welcome transcript/i))
+    await user.click(screen.getByText('Video transcript'))
     expect(screen.getByText(/no-media welcome remains accessible/i)).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: /continue to lesson 4.1/i }))
