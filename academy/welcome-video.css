@@ -1,0 +1,18 @@
+.welcome-video-button {
+  justify-content: flex-start;
+}
+
+.welcome-video-button .welcome-play-icon {
+  color: #d4b36b;
+  font-size: 1.65rem;
+  flex-shrink: 0;
+}
+
+.welcome-video-button .welcome-video-copy {
+  gap: 0.45rem;
+}
+
+.welcome-video-button .welcome-video-title {
+  color: #f8f3e9;
+  font-style: italic;
+}
