@@ -5,6 +5,18 @@ the secure learner portal.
 
 ## Production architecture
 
+The official learner entry is https://aiconfidenceacademy.org/learn/.
+It is part of this website, not a separate preview project. Introduction records
+are loaded from Supabase when the signed-in portal loads. Opening an introduction
+requests temporary media and caption URLs from the private `aca-learning-media`
+bucket. Updating those database paths does not require rebuilding the portal;
+an already-open portal must reload to receive the updated records. Changes to
+the player or other presentation code require a tested production build.
+
+Do not infer successful authenticated playback from a saved database row or a
+successful website build. Verify the owner experience and learner permissions
+before reporting the integration complete.
+
 - Public website: static pages published by GitHub Pages at the repository root.
 - Learner portal source: `portal/`.
 - Learner portal production build: `learn/`, served at `/learn/`.
