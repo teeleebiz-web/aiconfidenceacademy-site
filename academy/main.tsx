@@ -20,7 +20,7 @@ function Academy() {
   const [welcome, setWelcome] = useState<Welcome | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-  const [setup, setSetup] = useState(false)
+  const [setup, setSetup] = useState(() => new URLSearchParams(window.location.search).get('view') === 'getting-started')
   useEffect(() => { read<Curriculum>('/api/academy/phase-one').then(setData).catch(e => setError(e.message)) }, [])
   async function openWelcome(id: string) {
     setBusy(true); setError('')
