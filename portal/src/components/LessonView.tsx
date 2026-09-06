@@ -3,6 +3,7 @@ import type { Lesson, LessonProgress } from '../types'
 
 type LessonViewProps = {
   lesson: Lesson
+  audioSrc?: string
   progress?: LessonProgress
   initialArtifact?: string
   reviewMode?: boolean
@@ -15,6 +16,7 @@ type LessonViewProps = {
 
 export function LessonView({
   lesson,
+  audioSrc,
   progress,
   initialArtifact = '',
   reviewMode = false,
@@ -87,6 +89,15 @@ export function LessonView({
           </div>
           <span>{sessionMinutes} minute session</span>
         </header>
+
+        {audioSrc ? (
+          <section className="practice-panel" aria-labelledby="lesson-audio-heading">
+            <h2 id="lesson-audio-heading">Listen to Lesson {lesson.page_id}</h2>
+            <audio key={audioSrc} controls preload="none" src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
+              Your browser does not support audio playback.
+            </audio>
+          </section>
+        ) : null}
 
         <section className="session-map" aria-labelledby="session-map-heading">
           <p className="eyebrow">Your session at a glance</p>
