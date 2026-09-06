@@ -1,5 +1,7 @@
 import { cp, mkdir, readFile, writeFile, readdir } from 'node:fs/promises'
 const pages = ['', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'faq', 'library', 'privacy', 'programs', 'reflections', 'refund-policy', 'terms', 'videos']
+// Public output is deliberately empty: all website bytes go through the password gate.
+await mkdir('vercel-public', { recursive: true })
 for (const page of pages) {
   const source = page ? `${page}/index.html` : 'index.html'
   const target = page ? `private-dist/${page}` : 'private-dist'
