@@ -10,5 +10,5 @@
       "maxDuration": 60
     }
   },
-  "rewrites": [{ "source": "/:path*", "destination": "/api/site?__aca_path=:path*" }]
+  "rewrites": [{ "source": "/:path*", "destination": "/api/site.mjs?__aca_path=:path*" }]
 }
