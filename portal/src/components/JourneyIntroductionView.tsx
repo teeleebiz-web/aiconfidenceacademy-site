@@ -68,7 +68,7 @@ export function JourneyIntroductionView({
                 </div>
               </header>
               {mediaUrl && introduction.media_kind === 'video' ? (
-                <video controls preload="metadata">
+                <video controls preload="metadata" crossOrigin="anonymous">
                   <source src={mediaUrl} />
                   {captionUrl ? (
                     <track kind="captions" src={captionUrl} srcLang="en" label="English" default />
@@ -92,7 +92,7 @@ export function JourneyIntroductionView({
                 </div>
               </header>
               {companionAudioUrl ? (
-                <audio controls preload="metadata">
+                <audio controls preload="metadata" crossOrigin="anonymous">
                   <source src={companionAudioUrl} />
                   {companionCaptionUrl ? (
                     <track kind="captions" src={companionCaptionUrl} srcLang="en" label="English" default />
