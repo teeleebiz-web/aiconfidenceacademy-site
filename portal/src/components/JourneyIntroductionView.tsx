@@ -81,7 +81,7 @@ export function JourneyIntroductionView({
                 <span aria-hidden="true">02</span>
                 <div>
                   <small>Audio</small>
-                  <h3>Journey overview with Knowledge</h3>
+                  <h3>Journey overview</h3>
                 </div>
               </header>
               {companionAudioUrl ? (
@@ -95,7 +95,7 @@ export function JourneyIntroductionView({
               ) : (
                 <div className="media-placeholder" role="status">
                   <strong>Audio coming soon</strong>
-                  <span>Knowledge will give you an overview of this journey.</span>
+                  <span>An audio overview of this journey will be available here.</span>
                 </div>
               )}
             </article>
@@ -134,10 +134,12 @@ export function JourneyIntroductionView({
               title="Video transcript"
               segments={content.avatar_transcript ?? (content.audio_transcript ? [] : content.transcript)}
             />
-            <TranscriptDetails
-              title="Knowledge’s audio transcript"
-              segments={content.audio_transcript ?? []}
-            />
+            {companionAudioUrl ? (
+              <TranscriptDetails
+                title="Audio transcript"
+                segments={content.audio_transcript ?? []}
+              />
+            ) : null}
           </div>
         </section>
 
