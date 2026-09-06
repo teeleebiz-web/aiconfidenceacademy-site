@@ -1,4 +1,5 @@
 export type LessonContent = {
+  teaching_heading?: string
   audio_path?: string | null
   outcomes: string[]
   vocabulary: Record<string, string>

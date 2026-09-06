@@ -124,7 +124,7 @@ export function LessonView({
 
         <section id="lesson-teaching">
           <p className="eyebrow">Learn and understand</p>
-          <h2>Build the idea in plain language</h2>
+          <h2>{lesson.content.teaching_heading ?? 'Build the idea in plain language'}</h2>
           <p className="rhythm">{lesson.content.rhythm}</p>
           {lesson.content.teaching.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
