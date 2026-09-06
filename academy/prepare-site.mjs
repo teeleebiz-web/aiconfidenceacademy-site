@@ -11,6 +11,7 @@ for (const page of pages) {
   await writeFile(`${target}/index.html`, html)
 }
 await cp('assets', 'private-dist/assets', { recursive: true })
+await cp('site.js', 'private-dist/site.js')
 for (const file of await readdir('.')) {
   if (/\.(png|svg|jpg|jpeg|webp|ico|pdf)$/.test(file)) await cp(file, `private-dist/${file}`)
 }

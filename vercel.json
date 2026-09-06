@@ -10,8 +10,8 @@
       "maxDuration": 60
     }
   },
-  "rewrites": [
-    { "source": "/", "destination": "/api/site.mjs?__aca_path=index.html" },
-    { "source": "/:path+", "destination": "/api/site.mjs?__aca_path=:path+" }
+  "routes": [
+    { "src": "^/$", "dest": "/api/site.mjs?__aca_path=index.html" },
+    { "src": "^/(.*)$", "dest": "/api/site.mjs?__aca_path=$1" }
   ]
 }
