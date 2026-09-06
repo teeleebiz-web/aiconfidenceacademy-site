@@ -5,9 +5,10 @@
   "buildCommand": "npm run build:academy",
   "outputDirectory": "vercel-public",
   "functions": {
-    "server.mjs": {
+    "api/site.mjs": {
       "includeFiles": "private-dist/**",
       "maxDuration": 60
     }
-  }
+  },
+  "rewrites": [{ "source": "/:path*", "destination": "/api/site?__aca_path=:path*" }]
 }

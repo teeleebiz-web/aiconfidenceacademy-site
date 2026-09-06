@@ -12,4 +12,4 @@ Activation requires a Node-capable HTTPS host, securely configured environment, 
 
 ## Vercel configuration
 
-Use the Other application preset and repository root. The committed `vercel.json` sets the install/build commands and an empty public output directory. Vercel captures the root `server.mjs` HTTP server; `private-dist` is included inside the function, never as public static output. Configure the four server environment variables above before deployment. Verify the resulting deployment before attaching the official domain. This configuration has not yet been validated on a hosted Vercel deployment.
+Use the Other application preset and repository root. The committed `vercel.json` sets the install/build commands and an empty public output directory. Vercel invokes `api/site.mjs` through a catch-all rewrite; `private-dist` is included inside the function, never as public static output. Configure the four server environment variables above before deployment. Verify the resulting deployment before attaching the official domain. This configuration has not yet been validated on a hosted Vercel deployment.
