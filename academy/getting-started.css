@@ -28,3 +28,6 @@
 .setup-help summary { font-weight: 750; cursor: pointer; padding: .3rem 0; }
 .setup-help p { margin-top: 1rem; }
 @media (max-width: 540px) { .setup-devices { display: grid; } .setup-link, .setup-prompt button, .setup-ready button { width: 100%; text-align: center; } }
+
+.setup-watch { margin: 1.5rem 0; }
+.setup-watch video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #102d4f; border-radius: 12px; }

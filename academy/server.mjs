@@ -6,7 +6,7 @@ import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 
 const digest = value => createHash('sha256').update(value).digest()
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf' }
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
 export function createAcademyServer({ password, root, db, courseId }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
@@ -69,6 +69,18 @@ export function createAcademyServer({ password, root, db, courseId }) {
       const file = resolve(publicRoot, '.' + path + (path.endsWith('/') ? 'index.html' : !extname(path) ? '/index.html' : ''))
       if (!file.startsWith(publicRoot + sep) || !types[extname(file)]) { res.writeHead(404); res.end(); return }
       const body = await readFile(file)
+      if (extname(file) === '.mp4' && req.headers.range) {
+        const match = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range)
+        let start = match?.[1] ? Number(match[1]) : Math.max(0, body.length - Number(match?.[2]))
+        let end = match?.[1] && match[2] ? Math.min(Number(match[2]), body.length - 1) : body.length - 1
+        if (!match || (!match[1] && !match[2]) || !Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 0 || start >= body.length || end < start) {
+          res.writeHead(416, { 'Content-Range': `bytes */${body.length}` }); res.end(); return
+        }
+        end = Math.min(end, start + 1024 * 1024 - 1)
+        res.writeHead(206, { 'Content-Type': 'video/mp4', 'Accept-Ranges': 'bytes', 'Content-Range': `bytes ${start}-${end}/${body.length}`, 'Content-Length': end - start + 1 })
+        res.end(req.method === 'HEAD' ? undefined : body.subarray(start, end + 1)); return
+      }
+      if (extname(file) === '.mp4') res.setHeader('Accept-Ranges', 'bytes')
       res.writeHead(200, { 'Content-Type': types[extname(file)] }); res.end(req.method === 'HEAD' ? undefined : body)
     } catch (error) {
       res.writeHead(error.code === 'ENOENT' ? 404 : 503, { 'Content-Type': 'text/plain' })
