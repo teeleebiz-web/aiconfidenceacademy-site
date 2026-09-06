@@ -183,14 +183,29 @@ export function App() {
     setArtifact(content?.response ?? '')
   }
 
-  async function openIntroduction(introduction: JourneyIntroduction) {
+  async function openIntroduction(savedIntroduction: JourneyIntroduction) {
     setError('')
     setSelectedLesson(null)
-    setSelectedIntroduction(introduction)
+    setSelectedIntroduction(null)
     setIntroductionMediaUrl(null)
     setIntroductionCaptionUrl(null)
     setCompanionAudioUrl(null)
     setCompanionCaptionUrl(null)
+
+    // Read the saved revision on every opening, including after an owner uploads media.
+    const { data, error: introductionError } = await supabase
+      .from('journey_introductions')
+      .select('id, journey_id, media_kind, media_path, caption_path, companion_audio_path, companion_caption_path, duration_seconds, content, status, source_version')
+      .eq('id', savedIntroduction.id)
+      .single()
+
+    if (introductionError || !data) {
+      setError('This journey welcome is temporarily unavailable. Please try again.')
+      return
+    }
+
+    const introduction = data as unknown as JourneyIntroduction
+    setSelectedIntroduction(introduction)
 
     if (!introduction.media_path && !introduction.companion_audio_path) return
 
