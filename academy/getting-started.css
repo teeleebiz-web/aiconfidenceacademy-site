@@ -1,0 +1,30 @@
+.setup-entry { margin: 1.5rem 0; padding: clamp(1.5rem,4vw,2.5rem); border: 1px solid #d7c6a1; border-left: 5px solid #b48632; border-radius: 18px; background: #fff; }
+.setup-entry h2 { font-size: clamp(1.6rem,3vw,2.2rem); }
+.setup-guide { max-width: 980px; }
+.setup-guide header { margin: 2rem 0; max-width: 760px; }
+.setup-guide h1 { font-size: clamp(2.2rem,5vw,3.5rem); }
+.setup-guide h2 { font-size: clamp(1.5rem,3vw,2rem); }
+.setup-guide .eyebrow { font-size: .875rem; }
+.setup-back { background: #102d4f; }
+.setup-devices { display: flex; flex-wrap: wrap; gap: 1rem; border: 1px solid #d7c6a1; border-radius: 16px; padding: 1.25rem; background: #fff; }
+.setup-devices legend { font-weight: 750; padding: 0 .4rem; }
+.setup-devices label { display: flex; align-items: center; gap: .6rem; padding: .7rem; cursor: pointer; }
+.setup-guide input { width: 1.25rem; height: 1.25rem; accent-color: #102d4f; flex-shrink: 0; }
+.setup-steps { list-style: none; counter-reset: setup; padding: 0; }
+.setup-steps > li { counter-increment: setup; background: #fff; border: 1px solid #ded8cd; border-radius: 18px; margin: 1.25rem 0; padding: clamp(1.3rem,4vw,2.3rem); }
+.setup-steps h2::before { content: counter(setup) '. '; color: #8b6320; }
+.setup-link { display: inline-block; background: #102d4f; color: #fff; border-radius: 12px; padding: 1rem 1.2rem; font-weight: 750; text-decoration: none; margin-bottom: 1rem; }
+.setup-prompt { border-left: 3px solid #b48632; background: #f8f3e9; padding: 1.25rem; margin: 1rem 0; }
+.setup-prompt > p:first-child { font-size: 1.125rem; font-weight: 650; }
+.setup-prompt [role=status]:empty { display: none; }
+.setup-prompt [role=status] { margin: .75rem 0 0; }
+.setup-guide figure { margin: 1.5rem 0; }
+.setup-guide figure img { display: block; width: 100%; height: auto; border: 1px solid #ddd; border-radius: 10px; }
+.setup-guide figcaption { font-size: .875rem; line-height: 1.6; margin-top: .6rem; }
+.setup-ready { background: #102d4f; color: #fff; border-radius: 18px; padding: clamp(1.3rem,4vw,2.3rem); }
+.setup-ready label { display: flex; align-items: flex-start; gap: .75rem; line-height: 1.6; padding: .7rem 0; }
+.setup-ready button { margin-top: 1.25rem; }
+.setup-help { padding: 1.2rem; border-bottom: 1px solid #d7c6a1; }
+.setup-help summary { font-weight: 750; cursor: pointer; padding: .3rem 0; }
+.setup-help p { margin-top: 1rem; }
+@media (max-width: 540px) { .setup-devices { display: grid; } .setup-link, .setup-prompt button, .setup-ready button { width: 100%; text-align: center; } }
