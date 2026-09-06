@@ -7,6 +7,9 @@
     "node": ">=22"
   },
   "scripts": {
+    "build:academy": "vite build --config academy/vite.config.ts && node academy/prepare-site.mjs",
+    "start:academy": "node academy/server.mjs",
+    "test:academy": "node --test academy/server.test.mjs",
     "dev": "vite --config portal/vite.config.ts",
     "build": "vite build --config portal/vite.config.ts",
     "typecheck": "tsc --project portal/tsconfig.json --noEmit",

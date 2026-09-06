@@ -1,0 +1,1 @@
+{"extends":"../portal/tsconfig.json","include":["main.tsx","vite.config.ts","../portal/src/components/LessonView.tsx","../portal/src/components/JourneyIntroductionView.tsx","../portal/src/types.ts"]}
