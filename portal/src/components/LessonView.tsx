@@ -90,12 +90,25 @@ export function LessonView({
           <span>{sessionMinutes} minute session</span>
         </header>
 
-        {audioSrc ? (
+        {audioSrc || lesson.content.audio_overview_script ? (
           <section className="practice-panel" aria-labelledby="lesson-audio-heading">
             <h2 id="lesson-audio-heading">Listen to Lesson {lesson.page_id}</h2>
-            <audio key={audioSrc} controls preload="none" src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
+            {audioSrc ? <audio key={audioSrc} controls preload="none" src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
               Your browser does not support audio playback.
-            </audio>
+            </audio> : <p className="review-only-panel">Audio overview coming soon.</p>}
+            {lesson.content.audio_overview_script ? (
+              <details>
+                <summary>{audioSrc ? 'Read the audio overview' : 'Read the overview script'}</summary>
+                {lesson.content.audio_overview_script.split('\n\n').map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              </details>
+            ) : null}
+          </section>
+        ) : null}
+
+        {lesson.content.written_introduction ? (
+          <section aria-labelledby="lesson-starting-point-heading">
+            <h2 id="lesson-starting-point-heading">Your starting point</h2>
+            <p>{lesson.content.written_introduction}</p>
           </section>
         ) : null}
 

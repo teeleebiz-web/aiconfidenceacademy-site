@@ -1,6 +1,8 @@
 export type LessonContent = {
   teaching_heading?: string
   audio_path?: string | null
+  audio_overview_script?: string
+  written_introduction?: string
   outcomes: string[]
   vocabulary: Record<string, string>
   teaching: string[]
