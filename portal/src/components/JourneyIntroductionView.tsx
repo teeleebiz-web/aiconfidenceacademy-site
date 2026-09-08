@@ -1,4 +1,5 @@
 import type { JourneyIntroduction } from '../types'
+import { AcademyMedia } from './AcademyMedia'
 
 type JourneyIntroductionViewProps = {
   introduction: JourneyIntroduction
@@ -50,12 +51,7 @@ export function JourneyIntroductionView({
           <section className="practice-panel" aria-labelledby="welcome-media-heading">
             <h2 id="welcome-media-heading">Welcome to Journey {journeyNumber}</h2>
             {mediaUrl && introduction.media_kind === 'video' ? (
-              <video controls playsInline preload="metadata" crossOrigin="anonymous" poster={content.poster_url}
-                style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 16px' }}>
-                <source src={mediaUrl} />
-                {captionUrl ? <track kind="captions" src={captionUrl} srcLang="en" label="English" default /> : null}
-                Your browser does not support video playback. Read the introduction below.
-              </video>
+              <AcademyMedia kind="video" src={mediaUrl} label={`Journey ${journeyNumber} welcome video`} poster={content.poster_url} captionUrl={captionUrl} />
             ) : (
               <div className="welcome-video-placeholder">
                 {content.poster_url ? <img src={content.poster_url} alt={content.poster_alt ?? 'Your ACA instructor'} /> : null}
@@ -80,13 +76,7 @@ export function JourneyIntroductionView({
                 </div>
               </header>
               {mediaUrl && introduction.media_kind === 'video' ? (
-                <video controls preload="metadata" crossOrigin="anonymous">
-                  <source src={mediaUrl} />
-                  {captionUrl ? (
-                    <track kind="captions" src={captionUrl} srcLang="en" label="English" default />
-                  ) : null}
-                  Your browser does not support the video player. Use the transcript below.
-                </video>
+                <AcademyMedia kind="video" src={mediaUrl} label={`Journey ${journeyNumber} welcome video`} captionUrl={captionUrl} />
               ) : (
                 <div className="media-placeholder" role="status">
                   <strong>Video coming soon</strong>
@@ -104,13 +94,7 @@ export function JourneyIntroductionView({
                 </div>
               </header>
               {companionAudioUrl ? (
-                <audio controls preload="metadata" crossOrigin="anonymous">
-                  <source src={companionAudioUrl} />
-                  {companionCaptionUrl ? (
-                    <track kind="captions" src={companionCaptionUrl} srcLang="en" label="English" default />
-                  ) : null}
-                  Your browser does not support the audio player. Use the transcript below.
-                </audio>
+                <AcademyMedia kind="audio" src={companionAudioUrl} label={`Journey ${journeyNumber} audio`} captionUrl={companionCaptionUrl} />
               ) : (
                 <div className="media-placeholder" role="status">
                   <strong>Audio coming soon</strong>

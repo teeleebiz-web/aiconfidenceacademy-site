@@ -1,0 +1,14 @@
+.academy-media {
+  --plyr-color-main: #b48632;
+  --plyr-video-background: #102d4f;
+  --plyr-audio-controls-background: #eef2f4;
+  --plyr-audio-control-color: #102d4f;
+  width: 100%;
+  margin: 0 auto 1rem;
+}
+.academy-media .plyr { border-radius: 12px; }
+.academy-media video { display: block; width: 100%; height: auto; }
+.introduction-media .academy-media video { margin-top: 0; }
+.academy-media .plyr button { min-height: 0; margin: 0; letter-spacing: normal; text-transform: none; }
+.academy-media .plyr input[type="range"] { margin: 0; padding: 0; min-height: 0; }
+.academy-media-error { margin-top: .75rem; }

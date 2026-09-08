@@ -110,7 +110,7 @@ describe('LessonView', () => {
   expect(container.querySelectorAll('video')).toHaveLength(1)
   expect(container.querySelector('audio')).toBeNull()
   expect(container.querySelector('video')?.getAttribute('src')).toBe('/video.mp4')
-  expect(container.querySelector('video')?.style.maxWidth).toBe('640px')
+  expect(container.querySelector<HTMLElement>('.academy-media--video')?.style.maxWidth).toBe('640px')
  })
 
 it('does not offer backward navigation even when a prior lesson is supplied', () => {
