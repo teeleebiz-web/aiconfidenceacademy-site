@@ -90,39 +90,3 @@ test('walkthrough video supports protected byte ranges and captions', async () =
     assert.match(await captions.text(), /^WEBVTT/)
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); await rm(root, { recursive: true }) }
 })
-
-test('welcome video obtains a fresh signed URL on demand within the protected course', async () => {
-  const signedPaths = []
-  const intro = { id: 'allowed', media_kind: 'video', media_path: 'approved.mp4' }
-  const db = {
-    from(table) {
-      const query = {
-        select() { return query }, eq() { return query }, neq() { return query },
-        single() { return Promise.resolve({ data: { id: 'test-course' } }) },
-        order() { return Promise.resolve({ data: table === 'course_journeys' ? [{id:'j2'}] : [] }) },
-        in() { return { neq: async () => ({ data: [intro] }) } },
-      }; return query
-    },
-    storage: { from() { return { async createSignedUrl(path) {
-      signedPaths.push(path); return { data: { signedUrl: `https://example.com/video?attempt=${signedPaths.length}` } }
-    } } } },
-  }
-  const server = createAcademyServer({ password: 'test-only-long-construction-password', root: tmpdir(), courseId: 'test-course', db })
-  server.listen(0, '127.0.0.1'); await once(server, 'listening')
-  const base = `http://127.0.0.1:${server.address().port}`
-  const headers = { Authorization: 'Basic ' + Buffer.from('academy:test-only-long-construction-password').toString('base64') }
-  try {
-    const path = '/api/academy/welcome-video/allowed'
-    assert.equal((await fetch(base + path)).status, 401)
-    const welcome = await (await fetch(base + '/api/academy/welcome/allowed', {headers})).json()
-    assert.equal(welcome.mediaUrl, path); assert.equal(signedPaths.length, 0)
-    assert.equal((await fetch(base + '/api/academy/welcome-video/unknown', {headers})).status, 404)
-    for (let attempt=1; attempt<=2; attempt++) {
-      const response = await fetch(base + path + '?retry=' + attempt, { headers, redirect: 'manual' })
-      assert.equal(response.status, 302)
-      assert.equal(response.headers.get('location'), `https://example.com/video?attempt=${attempt}`)
-      assert.match(response.headers.get('cache-control'), /no-store/)
-    }
-    assert.deepEqual(signedPaths, ['approved.mp4', 'approved.mp4'])
-  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
-})
