@@ -40,8 +40,15 @@ export function createAcademyServer({ password, root, db, courseId }) {
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return }
     try {
       const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)
-      if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
+      if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/welcome-video/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
         const data = await curriculum()
+        if (path.startsWith('/api/academy/welcome-video/')) {
+          const introduction = data.introductions.find(i => i.id === path.slice('/api/academy/welcome-video/'.length))
+          if (!introduction?.media_path || introduction.media_kind !== 'video') { res.writeHead(404); res.end(); return }
+          const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(introduction.media_path, 3600)
+          if (error || !signed?.signedUrl) throw new Error('Welcome video unavailable')
+          res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
+        }
         if (path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
           const isVideo = path.startsWith('/api/academy/lesson-video/')
           const prefix = isVideo ? '/api/academy/lesson-video/' : '/api/academy/lesson-audio/'
@@ -62,7 +69,10 @@ export function createAcademyServer({ password, root, db, courseId }) {
             if (error) throw new Error('Media unavailable')
             return signed.signedUrl
           }
-          const [mediaUrl, captionUrl, companionAudioUrl, companionCaptionUrl] = await Promise.all([introduction.media_path, introduction.caption_path, introduction.companion_audio_path, introduction.companion_caption_path].map(sign))
+          const [captionUrl, companionAudioUrl, companionCaptionUrl] = await Promise.all([introduction.caption_path, introduction.companion_audio_path, introduction.companion_caption_path].map(sign))
+          const mediaUrl = introduction.media_path && introduction.media_kind === 'video'
+            ? '/api/academy/welcome-video/' + encodeURIComponent(introduction.id)
+            : await sign(introduction.media_path)
           result = { introduction, mediaUrl, captionUrl, companionAudioUrl, companionCaptionUrl }
         }
         res.writeHead(200, { 'Content-Type': 'application/json' }); res.end(req.method === 'HEAD' ? undefined : JSON.stringify(result)); return

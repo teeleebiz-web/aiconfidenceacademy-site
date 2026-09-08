@@ -105,8 +105,10 @@ describe('LessonView', () => {
   })
 })
 
- it('uses one video player instead of a duplicate audio player', () => {
+ it('opens one video player when chosen, without a duplicate audio player', async () => {
   const { container } = render(<LessonView lesson={lesson} videoSrc="/video.mp4" audioSrc="/audio.mp3" onBack={() => undefined} onSave={async () => undefined} />)
+  expect(container.querySelectorAll('video')).toHaveLength(0)
+  await userEvent.setup().click(screen.getByRole('button', { name: 'Watch Lesson 1.1 video' }))
   expect(container.querySelectorAll('video')).toHaveLength(1)
   expect(container.querySelector('audio')).toBeNull()
   expect(container.querySelector('video')?.getAttribute('src')).toBe('/video.mp4')

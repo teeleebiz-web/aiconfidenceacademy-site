@@ -14,7 +14,7 @@ async function read<T>(path: string): Promise<T> {
   if (!response.ok) throw new Error('The academy could not load this material. Please try again.')
   return response.json()
 }
-function Academy() {
+export function Academy() {
   const [data, setData] = useState<Curriculum | null>(null)
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [welcome, setWelcome] = useState<Welcome | null>(null)
@@ -24,16 +24,23 @@ function Academy() {
   useEffect(() => { read<Curriculum>('/api/academy/phase-one').then(curriculum => { setData(curriculum); const page = new URLSearchParams(window.location.search).get('lesson'); const requested = curriculum.lessons.find(item => item.page_id === page); if (requested) { setSetup(false); setLesson(requested) } }).catch(e => setError(e.message)) }, [])
   async function openWelcome(id: string) {
     setBusy(true); setError('')
-    try { setWelcome(await read<Welcome>('/api/academy/welcome/' + encodeURIComponent(id))); setLesson(null) }
+    try { setWelcome(await read<Welcome>('/api/academy/welcome/' + encodeURIComponent(id))); setLesson(null); window.scrollTo(0, 0) }
     catch(e) { setError((e as Error).message) }
     finally { setBusy(false) }
   }
   function openLesson(next: Lesson) { setSetup(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0) }
+  const currentIntroduction = lesson && data?.introductions.find(item => item.journey_id === lesson.journey_id)
+  const previousLesson = lesson && data?.lessons[data.lessons.findIndex(item => item.id === lesson.id) - 1]
   return <div className="portal-shell">
     <header className="portal-header"><a className="portal-brand" href="/">AI Confidence Academy</a><a href="/academy/phase-one/">Phase One</a></header>
     {error && <p role="alert" className="global-error">{error}</p>}
     {!data && !error && <p className="loading-screen">Loading Phase One…</p>}
-    {data && (setup ? <GettingStarted onBack={() => setSetup(false)} onContinue={data.lessons.some(l => l.page_id === '1.1') ? () => openLesson(data.lessons.find(l => l.page_id === '1.1')!) : undefined} /> : welcome ? <JourneyIntroductionView {...welcome} onBack={() => setWelcome(null)} onContinue={() => { const next = data.lessons.find(l => l.journey_id === welcome.introduction.journey_id); if(next) openLesson(next) }} />
+    {data && (lesson || welcome) ? <nav className="lesson-main" aria-label="Page navigation">
+      <button type="button" className="back-link" onClick={() => { setLesson(null); setWelcome(null); window.scrollTo(0, 0) }}>← Phase One</button>
+      {lesson && currentIntroduction ? <button type="button" className="back-link" disabled={busy} onClick={() => openWelcome(currentIntroduction.id)}>← Journey {lesson.page_id.split('.')[0]} opening</button> : null}
+      {previousLesson ? <button type="button" className="back-link" onClick={() => openLesson(previousLesson)}>← Lesson {previousLesson.page_id}</button> : null}
+    </nav> : null}
+    {data && (setup ? <GettingStarted onBack={() => setSetup(false)} onContinue={data.lessons.some(l => l.page_id === '1.1') ? () => openLesson(data.lessons.find(l => l.page_id === '1.1')!) : undefined} /> : welcome ? <JourneyIntroductionView {...welcome} hideBack onBack={() => setWelcome(null)} onContinue={() => { const next = data.lessons.find(l => l.journey_id === welcome.introduction.journey_id); if(next) openLesson(next) }} />
       : lesson ? <LessonView key={lesson.id} lesson={lesson} videoSrc={lesson.content.video_path ? `/api/academy/lesson-video/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.video_path)}` : undefined} audioSrc={lesson.content.audio_path ? `/api/academy/lesson-audio/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.audio_path)}` : undefined} reviewMode previousLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)-1]} nextLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)+1]} onBack={() => setLesson(null)} onOpenLesson={openLesson} onSave={async () => { throw new Error('Progress recording is unavailable during construction review.') }} />
       : <main className="portal-main"><section className="welcome-panel"><div><p className="eyebrow">Phase One</p><h1>{data.course.title}</h1><p>{data.course.summary}</p></div></section><section className="setup-entry"><p className="eyebrow">Before your first lesson</p><h2>Getting Started with ChatGPT</h2><p>Choose your device, send your first message, and practice asking for a change.</p><button onClick={() => { setSetup(true); window.scrollTo(0, 0) }}>Open the step-by-step guide</button></section><section className="course-panel">{data.journeys.map(journey => {
         const intro = data.introductions.find(i => i.journey_id === journey.id)
