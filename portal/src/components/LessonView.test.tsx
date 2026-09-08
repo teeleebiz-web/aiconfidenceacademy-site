@@ -96,9 +96,9 @@ describe('LessonView', () => {
       />,
     )
 
-    expect(screen.getByText(/unpublished draft/i)).toBeTruthy()
+    expect(screen.queryByText(/unpublished draft|owner review|review mode is read-only/i)).toBeNull()
     expect(screen.queryByLabelText(/evidence you want to save/i)).toBeNull()
-    expect(screen.getByText(/learner evidence target/i)).toBeTruthy()
+    expect(screen.getByText(/what to save/i)).toBeTruthy()
 
     await user.click(screen.getByRole('button', { name: /lesson 1.2/i }))
     expect(opened).toEqual(['lesson-2'])

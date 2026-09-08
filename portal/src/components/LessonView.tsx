@@ -73,13 +73,6 @@ export function LessonView({
         ← Back to my learning home
       </button>
 
-      {reviewMode ? (
-        <aside className="lesson-review-banner" aria-label="Owner review notice">
-          <strong>Owner review · {lesson.status === 'draft' ? 'Unpublished draft' : 'Published lesson'}</strong>
-          <span>Review mode is read-only and does not alter learner progress.</span>
-        </aside>
-      ) : null}
-
       <article className="lesson-article">
         <header className="lesson-hero">
           <div>
@@ -95,10 +88,10 @@ export function LessonView({
             <h2 id="lesson-audio-heading">Listen to Lesson {lesson.page_id}</h2>
             {audioSrc ? <audio key={audioSrc} controls preload="none" src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
               Your browser does not support audio playback.
-            </audio> : <p className="review-only-panel">Audio overview coming soon.</p>}
+            </audio> : <p className="review-only-panel">Audio will be available here.</p>}
             {lesson.content.audio_overview_script ? (
               <details>
-                <summary>{audioSrc ? 'Read the audio overview' : 'Read the overview script'}</summary>
+                <summary>Read the lesson introduction</summary>
                 {lesson.content.audio_overview_script.split('\n\n').map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
               </details>
             ) : null}
@@ -211,7 +204,7 @@ export function LessonView({
           <h2>{lesson.content.artifact}</h2>
           {reviewMode ? (
             <div className="review-only-panel">
-              <strong>Learner evidence target</strong>
+              <strong>What to save</strong>
               <p>{lesson.content.completion_gate ?? 'Complete the practice, revise the result, and save the named evidence item.'}</p>
             </div>
           ) : (
@@ -252,7 +245,7 @@ export function LessonView({
         </section>
 
         {onOpenLesson ? (
-          <nav className="lesson-review-navigation" aria-label={reviewMode ? 'Review adjacent lessons' : 'Continue through Phase One'}>
+          <nav className="lesson-review-navigation" aria-label="Continue through Phase One">
             {previousLesson ? (
               <button
                 type="button"
@@ -275,7 +268,7 @@ export function LessonView({
             ) : (
               <button type="button" onClick={onBack}>
                 <small>Phase One complete</small>
-                <span>Return to the course overview</span>
+                <span>Return to the course home</span>
               </button>
             )}
           </nav>
