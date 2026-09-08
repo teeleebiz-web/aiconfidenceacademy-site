@@ -7,7 +7,6 @@ type JourneyIntroductionViewProps = {
   companionAudioUrl?: string | null
   companionCaptionUrl?: string | null
   onBack: () => void
-  hideBack?: boolean
   onContinue: () => void
 }
 
@@ -18,7 +17,6 @@ export function JourneyIntroductionView({
   companionAudioUrl = null,
   companionCaptionUrl = null,
   onBack,
-  hideBack = false,
   onContinue,
 }: JourneyIntroductionViewProps) {
   const { content } = introduction
@@ -28,7 +26,7 @@ export function JourneyIntroductionView({
 
   return (
     <main className="lesson-main introduction-main">
-      {!singleVideo && !hideBack ? <button className="back-link" type="button" onClick={onBack}>
+      {!singleVideo ? <button className="back-link" type="button" onClick={onBack}>
         ← Back to learning home
       </button> : null}
 
