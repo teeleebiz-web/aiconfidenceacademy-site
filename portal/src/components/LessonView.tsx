@@ -22,9 +22,7 @@ export function LessonView({
   progress,
   initialArtifact = '',
   reviewMode = false,
-  previousLesson,
   nextLesson,
-  onBack,
   onSave,
   onOpenLesson,
 }: LessonViewProps) {
@@ -71,10 +69,6 @@ export function LessonView({
 
   return (
     <main className="lesson-main">
-      <button className="back-link" type="button" onClick={onBack}>
-        ← Back to my learning home
-      </button>
-
       <article className="lesson-article">
         <header className="lesson-hero">
           <div>
@@ -248,16 +242,6 @@ export function LessonView({
 
         {onOpenLesson ? (
           <nav className="lesson-review-navigation" aria-label="Continue through Phase One">
-            {previousLesson ? (
-              <button
-                type="button"
-                aria-label={`Previous lesson ${previousLesson.page_id}: ${previousLesson.title}`}
-                onClick={() => onOpenLesson(previousLesson)}
-              >
-                <small>Previous lesson</small>
-                <span>← {previousLesson.page_id} · {previousLesson.title}</span>
-              </button>
-            ) : <span />}
             {nextLesson ? (
               <button
                 type="button"
@@ -268,10 +252,7 @@ export function LessonView({
                 <span>{nextLesson.page_id} · {nextLesson.title} →</span>
               </button>
             ) : (
-              <button type="button" onClick={onBack}>
-                <small>Phase One complete</small>
-                <span>Return to the course home</span>
-              </button>
+              <p>Phase One complete</p>
             )}
           </nav>
         ) : null}

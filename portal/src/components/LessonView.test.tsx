@@ -112,3 +112,9 @@ describe('LessonView', () => {
   expect(container.querySelector('video')?.getAttribute('src')).toBe('/video.mp4')
   expect(container.querySelector('video')?.style.maxWidth).toBe('640px')
  })
+
+it('does not offer backward navigation even when a prior lesson is supplied', () => {
+ render(<LessonView lesson={lesson} previousLesson={{...lesson, page_id:'1.0'}} nextLesson={{...lesson,page_id:'1.2'}} onBack={() => undefined} onOpenLesson={() => undefined} onSave={async () => undefined} />)
+ expect(screen.queryByRole('button', {name:/previous lesson|back to|return to/i})).toBeNull()
+ expect(screen.getByRole('button', {name:/next lesson 1.2/i})).toBeTruthy()
+})
