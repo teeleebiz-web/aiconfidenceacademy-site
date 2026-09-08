@@ -16,3 +16,10 @@
   color: #f8f3e9;
   font-style: italic;
 }
+
+.single-video-introduction .lesson-hero .eyebrow { color: #d4b36b; }
+.welcome-video-placeholder { max-width: 640px; margin: 0 auto 1rem; }
+.welcome-video-placeholder img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.welcome-video-placeholder p { margin: .6rem 0 0; }
+.single-video-introduction details summary { cursor: pointer; font-weight: 700; }
+.single-video-introduction details summary:focus-visible { outline: 3px solid #d4b36b; outline-offset: 3px; }

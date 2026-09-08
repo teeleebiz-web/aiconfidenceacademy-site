@@ -158,6 +158,14 @@ export function LessonView({
         <section className="practice-panel" id="lesson-practice">
           <p className="eyebrow">Guided practice</p>
           <h2>Begin with one purposeful conversation.</h2>
+          {lesson.content.practice_material ? (
+            <div className="practice-material" aria-labelledby="practice-material-heading">
+              <h3 id="practice-material-heading">Your practice material</h3>
+              {lesson.content.practice_material.split('\n\n').map((paragraph) => (
+                <p key={paragraph} style={{ whiteSpace: 'pre-wrap' }}>{paragraph}</p>
+              ))}
+            </div>
+          ) : null}
           <div className="prompt-box">
             <code>{lesson.content.practice_prompt}</code>
             <button
@@ -239,6 +247,17 @@ export function LessonView({
             <p className="support-note"><strong>If you need support:</strong> {lesson.content.support}</p>
           ) : null}
         </section>
+
+        {lesson.content.sources?.length ? (
+          <section aria-labelledby="lesson-sources-heading">
+            <h2 id="lesson-sources-heading">Check current guidance</h2>
+            <ul>
+              {lesson.content.sources.map((source) => (
+                <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.title}</a></li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         {onOpenLesson ? (
           <nav className="lesson-review-navigation" aria-label="Continue through Phase One">

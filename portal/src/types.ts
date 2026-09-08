@@ -23,6 +23,7 @@ export type LessonContent = {
   practice_material?: string | null
   support?: string
   completion_gate?: string
+  sources?: Array<{ title: string; url: string }>
 }
 
 export type Course = {
@@ -60,6 +61,11 @@ export type TranscriptSegment = {
 }
 
 export type JourneyIntroductionContent = {
+  presentation?: 'single_video'
+  poster_url?: string
+  poster_alt?: string
+  instructor_avatar_id?: string
+  rhythm?: string
   eyebrow: string
   title: string
   lead: string

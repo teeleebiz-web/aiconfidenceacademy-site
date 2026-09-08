@@ -22,22 +22,23 @@ export function JourneyIntroductionView({
   const { content } = introduction
   const firstLessonId = content.roadmap[0]?.page_id ?? ''
   const journeyNumber = firstLessonId.split('.')[0] || 'this'
+  const singleVideo = content.presentation === 'single_video'
 
   return (
     <main className="lesson-main introduction-main">
-      <button className="back-link" type="button" onClick={onBack}>
+      {!singleVideo ? <button className="back-link" type="button" onClick={onBack}>
         ← Back to learning home
-      </button>
+      </button> : null}
 
-      {introduction.status === 'draft' ? (
+      {!singleVideo && introduction.status === 'draft' ? (
         <aside className="lesson-review-banner" aria-label="Owner review notice">
           <strong>Owner review · Unpublished journey welcome</strong>
           <span>This draft is visible only through protected review access.</span>
         </aside>
       ) : null}
 
-      <article className="introduction-article">
-        <header className="introduction-hero">
+      <article className={`introduction-article${singleVideo ? ' single-video-introduction' : ''}`}>
+        <header className={singleVideo ? 'lesson-hero' : 'introduction-hero'}>
           <div>
             <p className="eyebrow">{content.eyebrow}</p>
             <h1>{content.title}</h1>
@@ -45,7 +46,25 @@ export function JourneyIntroductionView({
           </div>
         </header>
 
-        <section className="introduction-media" aria-labelledby="welcome-media-heading">
+        {singleVideo ? (
+          <section className="practice-panel" aria-labelledby="welcome-media-heading">
+            <h2 id="welcome-media-heading">Welcome to Journey {journeyNumber}</h2>
+            {mediaUrl && introduction.media_kind === 'video' ? (
+              <video controls playsInline preload="metadata" crossOrigin="anonymous" poster={content.poster_url}
+                style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 16px' }}>
+                <source src={mediaUrl} />
+                {captionUrl ? <track kind="captions" src={captionUrl} srcLang="en" label="English" default /> : null}
+                Your browser does not support video playback. Read the introduction below.
+              </video>
+            ) : (
+              <div className="welcome-video-placeholder">
+                {content.poster_url ? <img src={content.poster_url} alt={content.poster_alt ?? 'Your ACA instructor'} /> : null}
+                <p>Video will be available here.</p>
+              </div>
+            )}
+            <TranscriptDetails title="Read the journey introduction" segments={content.transcript} />
+          </section>
+        ) : <section className="introduction-media" aria-labelledby="welcome-media-heading">
           <p className="eyebrow">Video and audio</p>
           <h2 id="welcome-media-heading">Start Journey {journeyNumber}</h2>
           <p className="media-stage-lead">
@@ -100,11 +119,12 @@ export function JourneyIntroductionView({
               )}
             </article>
           </div>
-        </section>
+        </section>}
 
         <section className="introduction-outcomes" aria-labelledby="welcome-outcomes-heading">
           <p className="eyebrow">Before you begin</p>
           <h2 id="welcome-outcomes-heading">About this journey</h2>
+          {singleVideo && content.rhythm ? <p className="rhythm">{content.rhythm}</p> : null}
           <ul>
             {content.outcomes.map((outcome) => <li key={outcome}>{outcome}</li>)}
           </ul>
@@ -126,7 +146,7 @@ export function JourneyIntroductionView({
           </ol>
         </section>
 
-        <section className="transcript-panel" aria-labelledby="transcript-heading">
+        {!singleVideo ? <section className="transcript-panel" aria-labelledby="transcript-heading">
           <p className="eyebrow">Transcripts</p>
           <h2 id="transcript-heading">Read the video and audio transcripts</h2>
           <div className="transcript-grid">
@@ -141,7 +161,7 @@ export function JourneyIntroductionView({
               />
             ) : null}
           </div>
-        </section>
+        </section> : null}
 
         <footer className="introduction-next">
           <p>{content.closing}</p>
