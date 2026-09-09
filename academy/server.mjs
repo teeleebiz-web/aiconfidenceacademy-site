@@ -7,7 +7,21 @@ import { createClient } from '@supabase/supabase-js'
 
 const digest = value => createHash('sha256').update(value).digest()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
-export function createAcademyServer({ password, root, db, courseId }) {
+const VIDEO_CHUNK_BYTES = 1024 * 1024
+function boundedVideoRange(range) {
+  if (!range) return `bytes=0-${VIDEO_CHUNK_BYTES - 1}`
+  const match = /^bytes=(\d*)-(\d*)$/.exec(range)
+  if (!match || (!match[1] && !match[2])) return null
+  if (!match[1]) {
+    const suffix = Number(match[2])
+    return Number.isSafeInteger(suffix) && suffix > 0 ? `bytes=-${Math.min(suffix, VIDEO_CHUNK_BYTES)}` : null
+  }
+  const start = Number(match[1])
+  const requestedEnd = match[2] ? Number(match[2]) : start + VIDEO_CHUNK_BYTES - 1
+  if (!Number.isSafeInteger(start) || !Number.isSafeInteger(requestedEnd) || start < 0 || requestedEnd < start) return null
+  return `bytes=${start}-${Math.min(requestedEnd, start + VIDEO_CHUNK_BYTES - 1)}`
+}
+export function createAcademyServer({ password, root, db, courseId, fetchImpl = fetch }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
@@ -40,14 +54,46 @@ export function createAcademyServer({ password, root, db, courseId }) {
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return }
     try {
       const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)
-      if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
+      if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/welcome-video/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
         const data = await curriculum()
+        const deliverVideo = async name => {
+          const range = boundedVideoRange(req.headers.range)
+          if (!range) { res.writeHead(416); res.end(); return }
+          const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(name, 3600)
+          if (error || !signed?.signedUrl) throw new Error('Video unavailable')
+          const upstream = await fetchImpl(signed.signedUrl, { headers: { Range: range } })
+          if (upstream.status !== 206 || !upstream.headers.get('content-range')) {
+            await upstream.body?.cancel()
+            throw new Error('Video range unavailable')
+          }
+          const body = Buffer.from(await upstream.arrayBuffer())
+          if (body.length > VIDEO_CHUNK_BYTES) throw new Error('Video range exceeded delivery limit')
+          const responseHeaders = {
+            'Content-Type': upstream.headers.get('content-type') || 'video/mp4',
+            'Accept-Ranges': 'bytes',
+            'Content-Range': upstream.headers.get('content-range'),
+            'Content-Length': String(body.length),
+            'Cache-Control': 'private, no-store',
+          }
+          const etag = upstream.headers.get('etag')
+          const lastModified = upstream.headers.get('last-modified')
+          if (etag) responseHeaders.ETag = etag
+          if (lastModified) responseHeaders['Last-Modified'] = lastModified
+          res.writeHead(206, responseHeaders)
+          res.end(req.method === 'HEAD' ? undefined : body)
+        }
+        if (path.startsWith('/api/academy/welcome-video/')) {
+          const introduction = data.introductions.find(i => i.id === path.slice('/api/academy/welcome-video/'.length))
+          if (!introduction?.media_path || introduction.media_kind !== 'video') { res.writeHead(404); res.end(); return }
+          await deliverVideo(introduction.media_path); return
+        }
         if (path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
           const isVideo = path.startsWith('/api/academy/lesson-video/')
           const prefix = isVideo ? '/api/academy/lesson-video/' : '/api/academy/lesson-audio/'
           const lesson = data.lessons.find(l => l.id === path.slice(prefix.length))
           const name = isVideo ? lesson?.content?.video_path : lesson?.content?.audio_path
           if (!name || typeof name !== 'string') { res.writeHead(404); res.end(); return }
+          if (isVideo) { await deliverVideo(name); return }
           const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(name, 3600)
           if (error || !signed?.signedUrl) throw new Error('Lesson audio unavailable')
           res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
@@ -62,7 +108,10 @@ export function createAcademyServer({ password, root, db, courseId }) {
             if (error) throw new Error('Media unavailable')
             return signed.signedUrl
           }
-          const [mediaUrl, captionUrl, companionAudioUrl, companionCaptionUrl] = await Promise.all([introduction.media_path, introduction.caption_path, introduction.companion_audio_path, introduction.companion_caption_path].map(sign))
+          const [captionUrl, companionAudioUrl, companionCaptionUrl] = await Promise.all([introduction.caption_path, introduction.companion_audio_path, introduction.companion_caption_path].map(sign))
+          const mediaUrl = introduction.media_path && introduction.media_kind === 'video'
+            ? '/api/academy/welcome-video/' + encodeURIComponent(introduction.id)
+            : await sign(introduction.media_path)
           result = { introduction, mediaUrl, captionUrl, companionAudioUrl, companionCaptionUrl }
         }
         res.writeHead(200, { 'Content-Type': 'application/json' }); res.end(req.method === 'HEAD' ? undefined : JSON.stringify(result)); return

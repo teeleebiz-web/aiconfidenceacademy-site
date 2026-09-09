@@ -66,6 +66,69 @@ test('lesson audio signs only a saved path for a lesson in the configured course
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
 })
 
+test('private videos remain on the Academy origin and use bounded byte ranges', async () => {
+  const signedPaths = []
+  const upstreamRanges = []
+  const introduction = { id: 'intro-one', media_kind: 'video', media_path: 'welcome.mp4', caption_path: null, companion_audio_path: null, companion_caption_path: null }
+  const db = {
+    from(table) {
+      const query = {
+        select() { return query },
+        eq() { return query },
+        neq() { return table === 'journey_introductions' ? Promise.resolve({ data: [introduction], error: null }) : query },
+        in() { return query },
+        single() { return Promise.resolve({ data: { id: 'test-course' } }) },
+        order() {
+          if (table === 'course_journeys') return Promise.resolve({ data: [{ id: 'journey-one' }] })
+          if (table === 'lessons') return Promise.resolve({ data: [{ id: 'video-lesson', content: { video_path: 'lesson.mp4' } }] })
+          return Promise.resolve({ data: [] })
+        },
+      }
+      return query
+    },
+    storage: { from(bucket) {
+      assert.equal(bucket, 'aca-learning-media')
+      return { async createSignedUrl(path) { signedPaths.push(path); return { data: { signedUrl: `https://storage.example/${path}` } } } }
+    } },
+  }
+  const fetchImpl = async (url, options) => {
+    upstreamRanges.push([url, options.headers.Range])
+    const start = Number(options.headers.Range.match(/^bytes=(\d+)-/)?.[1] ?? 0)
+    const length = 1024 * 1024
+    return new Response(Buffer.alloc(length, 9), { status: 206, headers: {
+      'Content-Type': 'video/mp4',
+      'Content-Range': `bytes ${start}-${start + length - 1}/5000000`,
+      'Content-Length': String(length),
+      ETag: 'test-video-etag',
+    } })
+  }
+  const server = createAcademyServer({ password: 'test-only-long-construction-password', root: tmpdir(), courseId: 'test-course', db, fetchImpl })
+  server.listen(0, '127.0.0.1'); await once(server, 'listening')
+  const base = `http://127.0.0.1:${server.address().port}`
+  const headers = { Authorization: 'Basic ' + Buffer.from('academy:test-only-long-construction-password').toString('base64') }
+  try {
+    const welcome = await (await fetch(base + '/api/academy/welcome/intro-one', { headers })).json()
+    assert.equal(welcome.mediaUrl, '/api/academy/welcome-video/intro-one')
+    assert.doesNotMatch(welcome.mediaUrl, /storage\.example/)
+
+    const lessonVideo = await fetch(base + '/api/academy/lesson-video/video-lesson', { headers: { ...headers, Range: 'bytes=0-' } })
+    assert.equal(lessonVideo.status, 206)
+    assert.equal(lessonVideo.headers.get('accept-ranges'), 'bytes')
+    assert.equal(lessonVideo.headers.get('content-range'), 'bytes 0-1048575/5000000')
+    assert.equal((await lessonVideo.arrayBuffer()).byteLength, 1024 * 1024)
+
+    const welcomeVideo = await fetch(base + '/api/academy/welcome-video/intro-one', { headers: { ...headers, Range: 'bytes=2097152-' } })
+    assert.equal(welcomeVideo.status, 206)
+    assert.equal(welcomeVideo.headers.get('content-range'), 'bytes 2097152-3145727/5000000')
+    assert.equal((await welcomeVideo.arrayBuffer()).byteLength, 1024 * 1024)
+    assert.deepEqual(signedPaths, ['lesson.mp4', 'welcome.mp4'])
+    assert.deepEqual(upstreamRanges, [
+      ['https://storage.example/lesson.mp4', 'bytes=0-1048575'],
+      ['https://storage.example/welcome.mp4', 'bytes=2097152-3145727'],
+    ])
+  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
+})
+
 test('walkthrough video supports protected byte ranges and captions', async () => {
   const root = await mkdtemp(join(tmpdir(), 'aca-media-'))
   const video = Buffer.alloc(2 * 1024 * 1024, 7)
