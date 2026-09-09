@@ -1,5 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import { createServer } from 'node:http'
 import { mkdtemp, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -34,8 +35,30 @@ test('construction gate refuses missing or short passwords', () => {
   assert.throws(() => createAcademyServer({ password: 'short' }), /24 characters/)
 })
 
-test('lesson audio signs only a saved path for a lesson in the configured course', async () => {
+test('lesson audio relays only a saved path and preserves byte ranges', async () => {
   const signedPaths = []
+  const audio = Buffer.from([0x49, 0x44, 0x33, 1, 2, 3, 4, 5])
+  const upstreamRequests = []
+  const upstream = createServer((request, response) => {
+    upstreamRequests.push({ range: request.headers.range, authorization: request.headers.authorization })
+    if (request.headers.range === 'bytes=3-5') {
+      response.writeHead(206, {
+        'Content-Type': 'audio/mpeg',
+        'Accept-Ranges': 'bytes',
+        'Content-Range': `bytes 3-5/${audio.length}`,
+        'Content-Length': 3,
+      })
+      response.end(audio.subarray(3, 6)); return
+    }
+    response.writeHead(200, {
+      'Content-Type': 'audio/mpeg',
+      'Accept-Ranges': 'bytes',
+      'Content-Length': audio.length,
+    })
+    response.end(request.method === 'HEAD' ? undefined : audio)
+  })
+  upstream.listen(0, '127.0.0.1'); await once(upstream, 'listening')
+  const upstreamUrl = `http://127.0.0.1:${upstream.address().port}/signed-audio`
   const db = {
     from(table) {
       const query = {
@@ -49,7 +72,7 @@ test('lesson audio signs only a saved path for a lesson in the configured course
     },
     storage: { from(bucket) {
       assert.equal(bucket, 'aca-learning-media')
-      return { async createSignedUrl(path) { signedPaths.push(path); return { data: { signedUrl: 'https://example.com/signed-audio' } } } }
+      return { async createSignedUrl(path) { signedPaths.push(path); return { data: { signedUrl: upstreamUrl } } } }
     } },
   }
   const server = createAcademyServer({ password: 'test-only-long-construction-password', root: tmpdir(), courseId: 'test-course', db })
@@ -59,11 +82,19 @@ test('lesson audio signs only a saved path for a lesson in the configured course
   try {
     for (const id of ['unknown', 'no-audio']) assert.equal((await fetch(base + id, { headers })).status, 404)
     assert.deepEqual(signedPaths, [])
-    const response = await fetch(base + 'allowed?path=other.mp3', { headers, redirect: 'manual' })
-    assert.equal(response.status, 302)
-    assert.equal(response.headers.get('location'), 'https://example.com/signed-audio')
+    const response = await fetch(base + 'allowed?path=other.mp3', { headers: { ...headers, Range: 'bytes=3-5' } })
+    assert.equal(response.status, 206)
+    assert.equal(response.headers.get('content-type'), 'audio/mpeg')
+    assert.equal(response.headers.get('accept-ranges'), 'bytes')
+    assert.equal(response.headers.get('content-range'), `bytes 3-5/${audio.length}`)
+    assert.equal(response.headers.get('content-disposition'), 'inline')
+    assert.deepEqual(Buffer.from(await response.arrayBuffer()), audio.subarray(3, 6))
     assert.deepEqual(signedPaths, ['lesson.mp3'])
-  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
+    assert.deepEqual(upstreamRequests, [{ range: 'bytes=3-5', authorization: undefined }])
+  } finally {
+    server.closeAllConnections(); await new Promise(resolve => server.close(resolve))
+    upstream.closeAllConnections(); await new Promise(resolve => upstream.close(resolve))
+  }
 })
 
 test('walkthrough video supports protected byte ranges and captions', async () => {

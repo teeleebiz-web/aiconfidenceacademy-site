@@ -50,7 +50,29 @@ export function createAcademyServer({ password, root, db, courseId }) {
           if (!name || typeof name !== 'string') { res.writeHead(404); res.end(); return }
           const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(name, 3600)
           if (error || !signed?.signedUrl) throw new Error('Lesson audio unavailable')
-          res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
+          if (isVideo) {
+            res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
+          }
+
+          // Relay lesson audio through the protected Academy origin instead of
+          // sending the native player through a second, cross-origin redirect.
+          // Forward byte ranges so playback and seeking remain native behavior.
+          const upstreamHeaders = {}
+          if (typeof req.headers.range === 'string') upstreamHeaders.Range = req.headers.range
+          if (typeof req.headers['if-range'] === 'string') upstreamHeaders['If-Range'] = req.headers['if-range']
+          const upstream = await fetch(signed.signedUrl, { method: req.method, headers: upstreamHeaders })
+          if (!upstream.ok && upstream.status !== 206) throw new Error('Lesson audio unavailable')
+
+          const responseHeaders = { 'Content-Disposition': 'inline' }
+          for (const header of ['content-type', 'content-length', 'content-range', 'accept-ranges', 'etag', 'last-modified']) {
+            const value = upstream.headers.get(header)
+            if (value) responseHeaders[header] = value
+          }
+          if (!responseHeaders['content-type']) responseHeaders['content-type'] = 'audio/mpeg'
+          res.writeHead(upstream.status, responseHeaders)
+          if (req.method === 'HEAD' || !upstream.body) { res.end(); return }
+          for await (const chunk of upstream.body) res.write(chunk)
+          res.end(); return
         }
         let result = data
         if (path.startsWith('/api/academy/welcome/')) {
