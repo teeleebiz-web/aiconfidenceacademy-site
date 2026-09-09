@@ -71,12 +71,12 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(2.25rem, 6vw, 4.7rem);
+  font-size: clamp(2.1rem, 4vw, 3.5rem);
   letter-spacing: -0.045em;
 }
 
 h2 {
-  font-size: clamp(1.7rem, 4vw, 2.7rem);
+  font-size: clamp(1.55rem, 2.5vw, 2.25rem);
   letter-spacing: -0.025em;
 }
 
@@ -235,8 +235,8 @@ textarea {
 .portal-main,
 .lesson-main {
   margin: 0 auto;
-  max-width: 1180px;
-  padding: clamp(2rem, 6vw, 5rem) clamp(1rem, 4vw, 2.5rem);
+  max-width: 1040px;
+  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1rem, 3vw, 2rem);
 }
 
 .owner-review-banner {
@@ -536,7 +536,7 @@ textarea {
 .lesson-article > section,
 .lesson-hero {
   border-bottom: 1px solid #d7dee4;
-  padding: clamp(1.6rem, 5vw, 3.5rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .lesson-article > section:last-child {
@@ -556,7 +556,7 @@ textarea {
 .introduction-next,
 .introduction-hero {
   border-bottom: 1px solid #d7dee4;
-  padding: clamp(1.6rem, 5vw, 3.5rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .introduction-hero {
@@ -961,7 +961,7 @@ textarea {
   display: flex;
   gap: 1rem;
   justify-content: space-between;
-  padding: clamp(1.6rem, 5vw, 3.5rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .lesson-review-navigation button {
