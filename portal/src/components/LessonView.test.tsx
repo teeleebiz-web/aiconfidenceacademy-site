@@ -82,6 +82,7 @@ describe('LessonView', () => {
 
   it('keeps owner review read-only and supports adjacent-lesson navigation', async () => {
     const user = userEvent.setup()
+    const previousLesson = { ...lesson, id: 'lesson-0', page_id: '1.0', status: 'draft' as const }
     const nextLesson = { ...lesson, id: 'lesson-2', page_id: '1.2', status: 'draft' as const }
     const opened: string[] = []
 
@@ -89,6 +90,7 @@ describe('LessonView', () => {
       <LessonView
         lesson={{ ...lesson, status: 'draft' }}
         reviewMode
+        previousLesson={previousLesson}
         nextLesson={nextLesson}
         onBack={() => undefined}
         onSave={async () => { throw new Error('Review mode must not save.') }}
@@ -100,8 +102,28 @@ describe('LessonView', () => {
     expect(screen.queryByLabelText(/evidence you want to save/i)).toBeNull()
     expect(screen.getByText(/what to save/i)).toBeTruthy()
 
+    await user.click(screen.getByRole('button', { name: /previous page, lesson 1.0/i }))
     await user.click(screen.getByRole('button', { name: /lesson 1.2/i }))
-    expect(opened).toEqual(['lesson-2'])
+    expect(opened).toEqual(['lesson-0', 'lesson-2'])
+  })
+
+  it('returns from the first lesson to that journey opening during owner review', async () => {
+    const user = userEvent.setup()
+    let returnedToOpening = false
+
+    render(
+      <LessonView
+        lesson={{ ...lesson, journey_position: 2, page_id: '2.1' }}
+        reviewMode
+        previousLesson={{ ...lesson, journey_id: 'journey-0', page_id: '1.6' }}
+        onBack={() => { returnedToOpening = true }}
+        onSave={async () => undefined}
+        onOpenLesson={() => undefined}
+      />,
+    )
+
+    await user.click(screen.getByRole('button', { name: /previous page, journey 2 opening/i }))
+    expect(returnedToOpening).toBe(true)
   })
 })
 

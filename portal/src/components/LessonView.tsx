@@ -22,7 +22,9 @@ export function LessonView({
   progress,
   initialArtifact = '',
   reviewMode = false,
+  previousLesson,
   nextLesson,
+  onBack,
   onSave,
   onOpenLesson,
 }: LessonViewProps) {
@@ -66,6 +68,9 @@ export function LessonView({
   const optionalPractice = lesson.content.optional_practice ?? lesson.content.optional
   const sessionMinutes = Math.min(60, Math.max(45, lesson.estimated_minutes))
   const sessionPlan = buildSessionPlan(sessionMinutes)
+  const previousLessonInJourney = previousLesson?.journey_id === lesson.journey_id
+    ? previousLesson
+    : undefined
 
   return (
     <main className="lesson-main">
@@ -261,6 +266,20 @@ export function LessonView({
 
         {onOpenLesson ? (
           <nav className="lesson-review-navigation" aria-label="Continue through Phase One">
+            {reviewMode ? (
+              <button
+                type="button"
+                aria-label={previousLessonInJourney
+                  ? `Previous Page, lesson ${previousLessonInJourney.page_id}: ${previousLessonInJourney.title}`
+                  : `Previous Page, Journey ${lesson.journey_position} opening`}
+                onClick={() => previousLessonInJourney ? onOpenLesson(previousLessonInJourney) : onBack()}
+              >
+                <small>Previous Page</small>
+                <span>{previousLessonInJourney
+                  ? `← ${previousLessonInJourney.page_id} · ${previousLessonInJourney.title}`
+                  : `← Journey ${lesson.journey_position} opening`}</span>
+              </button>
+            ) : null}
             {nextLesson ? (
               <button
                 type="button"
