@@ -14,13 +14,14 @@ vi.mock('../vendor/plyr/plyr.mjs', () => ({
 
 afterEach(() => { cleanup(); instances.length = 0 })
 
-it('provides the video source immediately, with sound enabled and no autoplay', () => {
+it('provides the video source immediately with one explicit play control', () => {
   render(<AcademyMedia kind="video" src="/api/academy/lesson-video/test" label="Lesson video" />)
   const media = screen.getByLabelText('Lesson video') as HTMLVideoElement
   expect(media.getAttribute('src')).toBe('/api/academy/lesson-video/test')
-  expect(media.controls).toBe(true)
+  expect(media.controls).toBe(false)
   expect(media.hasAttribute('playsinline')).toBe(true)
-  expect(instances[0].options).toMatchObject({ autoplay: false, muted: false, volume: 1, storage: { enabled: false } })
+  expect(screen.getAllByRole('button', { name: /play video/i })).toHaveLength(1)
+  expect(instances).toHaveLength(0)
   expect(screen.queryByRole('button', { name: /open|watch/i })).toBeNull()
 })
 
@@ -42,7 +43,7 @@ it('keeps captions attached and requests CORS only when a caption track needs it
   expect(document.querySelector('video')?.crossOrigin).toBe('anonymous')
   rerender(<AcademyMedia kind="video" src="/movie.mp4" label="Video" />)
   expect(document.querySelector('track')).toBeNull()
-  expect(document.querySelector('video')?.hasAttribute('crossorigin')).toBe(false)
+  expect(document.querySelector('video')?.crossOrigin).toBe('anonymous')
 })
 
 it('shows a playback failure and retries only on an explicit click', () => {
