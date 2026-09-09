@@ -13,7 +13,8 @@ export default function handler(request, response) {
       auth: { persistSession: false, autoRefreshToken: false },
     })
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
-      root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID })
+      root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
+      diagnosticsEnabled: process.env.VERCEL_ENV === 'preview' })
   }
   const path = request.query?.__aca_path
     ?? new URL(request.url, 'http://localhost').searchParams.get('__aca_path')

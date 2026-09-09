@@ -6,6 +6,9 @@ import type { Course, Journey, JourneyIntroduction, Lesson } from '../portal/src
 import '../portal/src/styles.css'
 import './welcome-video.css'
 import { GettingStarted } from './GettingStarted'
+import { observePlayback } from './playback-observer'
+
+if (import.meta.env.ACA_PLAYBACK_DIAGNOSTICS) observePlayback()
 
 type Curriculum = { course: Course; journeys: Journey[]; lessons: Lesson[]; introductions: JourneyIntroduction[] }
 type Welcome = { introduction: JourneyIntroduction; mediaUrl: string | null; captionUrl: string | null; companionAudioUrl: string | null; companionCaptionUrl: string | null }

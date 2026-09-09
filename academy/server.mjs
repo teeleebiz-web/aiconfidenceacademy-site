@@ -4,10 +4,11 @@ import { readFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
+import { cleanPlaybackEvents } from './playback-diagnostics.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
-export function createAcademyServer({ password, root, db, courseId }) {
+export function createAcademyServer({ password, root, db, courseId, diagnosticsEnabled = false }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
@@ -37,9 +38,26 @@ export function createAcademyServer({ password, root, db, courseId }) {
       res.writeHead(401, { 'WWW-Authenticate': 'Basic realm="ACA construction review", charset="UTF-8"' })
       res.end('This website is private during construction.'); return
     }
-    if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return }
     try {
       const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)
+      if (diagnosticsEnabled && path === '/api/academy/playback-diagnostics' && req.method === 'POST') {
+        if (!String(req.headers['content-type'] ?? '').startsWith('application/json')
+          || (req.headers['sec-fetch-site'] && req.headers['sec-fetch-site'] !== 'same-origin')) {
+          res.writeHead(400); res.end(); return
+        }
+        let text = req.body === undefined ? '' : typeof req.body === 'string' ? req.body : JSON.stringify(req.body)
+        if (req.body === undefined) for await (const chunk of req) {
+          text += chunk.toString()
+          if (text.length > 8192) break
+        }
+        if (text.length > 8192) { res.writeHead(413); res.end(); return }
+        let events
+        try { events = cleanPlaybackEvents(JSON.parse(text)) } catch { events = null }
+        if (!events) { res.writeHead(400); res.end(); return }
+        for (const event of events) console.info('ACA_PLAYBACK', JSON.stringify(event))
+        res.writeHead(204); res.end(); return
+      }
+      if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return }
       if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
         const data = await curriculum()
         if (path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
