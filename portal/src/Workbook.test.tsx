@@ -75,3 +75,12 @@ it('lesson 3.2 opens its Task and Context section and preserves existing respons
   expect((screen.getByRole('textbox',{name:'My task'}) as HTMLTextAreaElement).value).toBe('Plan two dinners')
   expect(screen.getByText('Page 7 of 10')).toBeTruthy()
 })
+
+it('lesson 3.3 opens page 11 with its saved answers',async()=>{
+  const record={answers:{'third-11':'My reader','third-7':'Earlier response'},last_page:7,revision:3,updated_at:'2026-09-10T00:00:00Z',allowedPages:Array.from({length:14},(_,i)=>i+1),scope:'owner-review',workbook:{key:'journey-three',version:3,title:'Journey Three workbook',navigationLabel:'Journey Three workbook',pageCount:14,contents:[{page:11,text:'Format and Tone'}],pages:[{number:7,kicker:'Practice',title:'Earlier lesson',blocks:[]},{number:11,kicker:'Format and Tone',title:'Lesson 3.3 practice',blocks:[{type:'field',id:'third-11',label:'Reader'}]}]}}
+  vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
+  render(<Workbook workbookKey="journey-three" lessonId="3.3" />)
+  await screen.findByRole('heading',{level:1,name:'Lesson 3.3 practice'})
+  expect((screen.getByRole('textbox',{name:'Reader'}) as HTMLTextAreaElement).value).toBe('My reader')
+  expect(screen.getByText('Page 11 of 14')).toBeTruthy()
+})
