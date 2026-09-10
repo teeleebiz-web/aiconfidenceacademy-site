@@ -83,8 +83,6 @@ export function LessonView({
           <span>{sessionMinutes} minute session</span>
         </header>
 
-        {workbookHref && <a className="workbook-entry-link" href={workbookHref} target="_blank" rel="noopener noreferrer">Open Workbook</a>}
-
         {videoSrc || audioSrc || lesson.content.audio_overview_script ? (
           <section className="practice-panel" aria-labelledby="lesson-audio-heading">
             <h2 id="lesson-audio-heading">{videoSrc ? 'Watch' : 'Listen to'} Lesson {lesson.page_id}</h2>
@@ -172,6 +170,8 @@ export function LessonView({
               ))}
             </div>
           ) : null}
+          {workbookHref && <a className="workbook-entry-link" href={workbookHref} target="_blank" rel="noopener noreferrer">Open Workbook</a>}
+
           <div className="prompt-box">
             <code>{lesson.content.practice_prompt}</code>
             <button
