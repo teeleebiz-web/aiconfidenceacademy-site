@@ -21,14 +21,35 @@ function Academy() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [setup, setSetup] = useState(() => new URLSearchParams(window.location.search).get('view') === 'getting-started')
-  useEffect(() => { read<Curriculum>('/api/academy/phase-one').then(curriculum => { setData(curriculum); const page = new URLSearchParams(window.location.search).get('lesson'); const requested = curriculum.lessons.find(item => item.page_id === page); if (requested) { setSetup(false); setLesson(requested) } }).catch(e => setError(e.message)) }, [])
-  async function openWelcome(id: string) {
+  useEffect(() => { read<Curriculum>('/api/academy/phase-one').then(async curriculum => {
+    setData(curriculum)
+    const params = new URLSearchParams(window.location.search)
+    const requested = curriculum.lessons.find(item => item.page_id === params.get('lesson'))
+    if (requested) { setSetup(false); setLesson(requested); return }
+    if (params.get('journey') === '2') {
+      const journey = curriculum.journeys.find(item => item.journey_number === 2)
+      const introduction = curriculum.introductions.find(item => item.journey_id === journey?.id)
+      if (!introduction) throw new Error('The Journey Two introduction could not load. Please try again.')
+      await openWelcome(introduction.id, 2)
+    }
+  }).catch(e => setError(e.message)) }, [])
+  async function openWelcome(id: string, journeyNumber?: number) {
     setBusy(true); setError('')
-    try { setWelcome(await read<Welcome>('/api/academy/welcome/' + encodeURIComponent(id))); setLesson(null) }
+    try {
+      const next = await read<Welcome>('/api/academy/welcome/' + encodeURIComponent(id))
+      setSetup(false); setWelcome(next); setLesson(null)
+      if (journeyNumber === 2) window.history.replaceState(null, '', '/academy/phase-one/?journey=2')
+    }
     catch(e) { setError((e as Error).message) }
     finally { setBusy(false) }
   }
-  function openLesson(next: Lesson) { setSetup(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0) }
+  function openLesson(next: Lesson) {
+    const params = new URLSearchParams(window.location.search)
+    if (next.page_id.startsWith('2.') || params.get('lesson')?.startsWith('2.') || params.get('journey') === '2') {
+      window.history.replaceState(null, '', '/academy/phase-one/?lesson=' + encodeURIComponent(next.page_id))
+    }
+    setSetup(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0)
+  }
   return <div className="portal-shell">
     <header className="portal-header"><a className="portal-brand" href="/">AI Confidence Academy</a><a href="/academy/phase-one/">Phase One</a></header>
     {error && <p role="alert" className="global-error">{error}</p>}
@@ -37,7 +58,7 @@ function Academy() {
       : lesson ? <LessonView key={lesson.id} lesson={lesson} videoSrc={lesson.content.video_path ? `/api/academy/lesson-video/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.video_path)}` : undefined} audioSrc={lesson.content.audio_path ? `/api/academy/lesson-audio/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.audio_path)}` : undefined} reviewMode previousLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)-1]} nextLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)+1]} onBack={() => setLesson(null)} onOpenLesson={openLesson} onSave={async () => { throw new Error('Progress recording is unavailable during construction review.') }} />
       : <main className="portal-main"><section className="welcome-panel"><div><p className="eyebrow">Phase One</p><h1>{data.course.title}</h1><p>{data.course.summary}</p></div></section><section className="setup-entry"><p className="eyebrow">Before your first lesson</p><h2>Getting Started with ChatGPT</h2><p>Choose your device, send your first message, and practice asking for a change.</p><button onClick={() => { setSetup(true); window.scrollTo(0, 0) }}>Open the step-by-step guide</button></section><section className="course-panel">{data.journeys.map(journey => {
         const intro = data.introductions.find(i => i.journey_id === journey.id)
-        return <article className="journey-card" key={journey.id}><div className="journey-number">Journey {journey.journey_number}</div><div className="journey-copy"><h2>{journey.title}</h2><p>{journey.promise}</p>{intro && <button className={`journey-welcome-button${intro.media_path ? " welcome-video-button" : ""}`} disabled={busy} onClick={() => openWelcome(intro.id)}>{intro.media_path ? <><span className="welcome-play-icon" aria-hidden="true">▶</span><span className="welcome-video-copy"><strong>Watch Journey {journey.journey_number} Welcome Video</strong><span className="welcome-video-title">{intro.content.title}</span></span></> : intro.content.title}</button>}<div className="lesson-list">{data.lessons.filter(l => l.journey_id === journey.id).map(l => <button className="lesson-row" key={l.id} onClick={() => openLesson(l)}><span>{l.page_id}</span><strong>{l.title}</strong><span>Open lesson</span></button>)}</div></div></article>
+        return <article className="journey-card" key={journey.id}><div className="journey-number">Journey {journey.journey_number}</div><div className="journey-copy"><h2>{journey.title}</h2><p>{journey.promise}</p>{intro && <button className={`journey-welcome-button${intro.media_path ? " welcome-video-button" : ""}`} disabled={busy} onClick={() => openWelcome(intro.id, journey.journey_number)}>{intro.media_path ? <><span className="welcome-play-icon" aria-hidden="true">▶</span><span className="welcome-video-copy"><strong>Watch Journey {journey.journey_number} Welcome Video</strong><span className="welcome-video-title">{intro.content.title}</span></span></> : intro.content.title}</button>}<div className="lesson-list">{data.lessons.filter(l => l.journey_id === journey.id).map(l => <button className="lesson-row" key={l.id} onClick={() => openLesson(l)}><span>{l.page_id}</span><strong>{l.title}</strong><span>Open lesson</span></button>)}</div></div></article>
       })}</section></main>)}
   </div>
 }
