@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
+import { handleWorkbook } from './workbook/api.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
@@ -36,6 +37,9 @@ export function createAcademyServer({ password, root, db, courseId }) {
     if (!timingSafeEqual(digest(supplied), expected)) {
       res.writeHead(401, { 'WWW-Authenticate': 'Basic realm="ACA construction review", charset="UTF-8"' })
       res.end('This website is private during construction.'); return
+    }
+    if (new URL(req.url, 'http://localhost').pathname === '/api/academy/workbooks/journey-one') {
+      await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: true }); return
     }
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return }
     try {
