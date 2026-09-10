@@ -5,6 +5,8 @@ import { WorkbookStore, type RecordState, type Transport } from './store'
 import './workbook.css'
 
 type Block = { type: string; id?: string; label?: string; hint?: string; lines?: number; text?: string; title?: string; intro?: string; theme?: string; page?: number; items?: Block[]; headers?: string[]; rows?: { label: string; fields: Block[] }[] }
+const dateFields = new Set(['p02-f002', 'p05-f003', 'p09-f016', 'p13-f035', 'p17-f047', 'p21-f059', 'p25-f075', 'p31-f089', 'p32-f094'])
+const shortAnswerFields = new Set([...dateFields, 'p02-f001', 'p05-f004', 'p09-f017', 'p31-f090', 'p32-f095'])
 const transport: Transport = async (method, patch): Promise<RecordState> => {
   const { data: { session } } = await supabase.auth.getSession()
   if (patch && patch.scope !== (session?.user.id ?? 'owner-review')) throw new Error('Your Academy account changed. Reopen your workbook before continuing.')
@@ -47,10 +49,10 @@ export function Workbook() {
     requestAnimationFrame(() => titleRef.current?.focus())
   }
   const render = (block: Block, i: number): React.ReactNode => {
-    if (block.type === 'field') return <div className="wb-answer" key={block.id}>
+    if (block.type === 'field') return <div className={`wb-answer${shortAnswerFields.has(block.id!) ? ' wb-answer-compact' : ''}${dateFields.has(block.id!) ? ' wb-answer-date' : ''}`} key={block.id}>
       <label htmlFor={block.id}>{block.label}</label>
       {block.hint && <p className="wb-hint" id={`${block.id}-hint`}>{block.hint}</p>}
-      <textarea id={block.id} aria-describedby={block.hint ? `${block.id}-hint` : undefined} rows={Math.max(3, block.lines ?? 3)} maxLength={4000} value={state.answers[block.id!] ?? ''} onChange={e => store.change(block.id!, e.target.value)} />
+      <textarea id={block.id} aria-describedby={block.hint ? `${block.id}-hint` : undefined} rows={shortAnswerFields.has(block.id!) ? 1 : Math.max(3, block.lines ?? 3)} maxLength={4000} value={state.answers[block.id!] ?? ''} onChange={e => store.change(block.id!, e.target.value)} />
     </div>
     if (block.type === 'heading') return <h2 className="wb-section-title" key={i}>{block.text}</h2>
     if (block.type === 'text') return <p className="wb-copy" key={i}>{block.text}</p>

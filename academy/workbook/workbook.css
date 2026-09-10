@@ -27,6 +27,10 @@
 .wb-answer label { display:block; font-size:1.05rem; font-weight:720; line-height:1.65; margin-bottom:1rem; }
 .wb-hint { font-size:.96rem; color:#536879; line-height:1.75; margin:0 0 1.25rem; }
 .wb-answer textarea { display:block; width:100%; min-height:108px; resize:vertical; border:1px solid #c1cdd5; border-radius:7px; background:#fcfdff; color:#102d4f; padding:1rem; font:inherit; font-size:1.05rem; line-height:1.9; }
+.wb-answer-compact { width:100%; max-width:30rem; padding:1rem 1.25rem; }
+.wb-answer-date { max-width:20rem; }
+.wb-answer-compact label { margin-bottom:.6rem; }
+.wb-answer-compact textarea { min-height:48px; padding:.5rem .75rem; line-height:1.6; }
 .wb-note { padding:1.6rem; border:1px solid #d4b36b; border-left:4px solid #b48632; border-radius:10px; background:#f8f3e9; }
 .wb-note h2 { color:#896322; font-family:inherit; font-size:.9rem; font-weight:750; letter-spacing:.035em; text-transform:uppercase; line-height:1.6; margin:0 0 1rem; }
 .wb-note p { line-height:1.8; white-space:pre-line; margin:0; font-size:1.02rem; }
