@@ -65,3 +65,13 @@ it('opens and saves the third workbook through its own endpoint with compact fie
   expect(record.answers['third-name']).toBe('Practice learner')
   expect(request.mock.calls.every(([url])=>url==='/api/academy/workbooks/journey-three')).toBe(true)
 })
+
+
+it('lesson 3.2 opens its Task and Context section and preserves existing responses',async()=>{
+  const record={answers:{'j32-task':'Plan two dinners','j3-first-prompt':'Keep earlier work'},last_page:2,revision:3,updated_at:'2026-09-10T00:00:00Z',allowedPages:[1,2,3,4,5,6,7,8,9,10],scope:'owner-review',workbook:{key:'journey-three',version:2,title:'Journey Three workbook',navigationLabel:'Journey Three workbook',pageCount:10,contents:[{page:7,text:'Task and Context'}],pages:[{number:2,kicker:'Practice',title:'Earlier work',blocks:[]},{number:7,kicker:'Task and Context',title:'Start with the task',blocks:[{type:'field',id:'j32-task',label:'My task'}]}]}}
+  vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
+  render(<Workbook workbookKey="journey-three" lessonId="3.2" />)
+  await screen.findByRole('heading',{level:1,name:'Start with the task'})
+  expect((screen.getByRole('textbox',{name:'My task'}) as HTMLTextAreaElement).value).toBe('Plan two dinners')
+  expect(screen.getByText('Page 7 of 10')).toBeTruthy()
+})
