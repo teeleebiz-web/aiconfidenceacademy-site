@@ -28,3 +28,21 @@ it('opens the approved pages, saves typed answers and restores the page after re
   expect((document.getElementById(fieldId) as HTMLTextAreaElement).value).toBe('I want to use AI with confidence.')
   expect(request.mock.calls.every(([url])=>url==='/api/academy/workbooks/journey-one')).toBe(true)
 })
+
+it.each([[1,5],[2,9],[3,13],[4,17],[5,21],[6,25]])('opens lesson 1.%i at its workbook section without losing saved answers',async(lessonNumber,pageNumber)=>{
+  const record={answers:{[`field-${pageNumber}`]:'My saved work'},last_page:6,revision:3,updated_at:'2026-09-10T00:00:00Z',allowedPages:Array.from({length:32},(_,i)=>i+1),scope:'owner-review',workbook:{key:'journey-one',version:1,title:'Workbook test fixture',pages:Array.from({length:32},(_,i)=>({number:i+1,kicker:'Practice',title:`Practice page ${i+1}`,blocks:[{type:'field',id:`field-${i+1}`,label:'My answer'}]}))}}
+  vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
+  const view=render(<StrictMode><Workbook lessonId={`1.${lessonNumber}`} /></StrictMode>)
+  await screen.findByRole('heading',{level:1,name:`Practice page ${pageNumber}`})
+  expect((screen.getByRole('textbox',{name:'My answer'}) as HTMLTextAreaElement).value).toBe('My saved work')
+  view.unmount()
+})
+
+it('does not open a workbook section outside the account’s allowed pages',async()=>{
+  const record={answers:{},last_page:5,revision:0,updated_at:null,allowedPages:[5],scope:'learner-test',workbook:{key:'journey-one',version:1,title:'Workbook test fixture',pages:[{number:5,kicker:'Practice',title:'Available section',blocks:[]}]}}
+  vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
+  const view=render(<Workbook lessonId="1.6" />)
+  await screen.findByRole('heading',{level:1,name:'Available section'})
+  expect((screen.getByLabelText('Choose a page') as HTMLSelectElement).value).toBe('5')
+  view.unmount()
+})

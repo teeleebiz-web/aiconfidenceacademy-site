@@ -106,11 +106,14 @@ describe('LessonView', () => {
 })
 
  it('uses one video player instead of a duplicate audio player', () => {
-  const { container } = render(<LessonView lesson={lesson} videoSrc="/video.mp4" audioSrc="/audio.mp3" onBack={() => undefined} onSave={async () => undefined} />)
+  const { container } = render(<LessonView lesson={lesson} videoSrc="/video.mp4" audioSrc="/audio.mp3" workbookHref="/academy/phase-one/?workbook=journey-one&lesson=1.1" onBack={() => undefined} onSave={async () => undefined} />)
   expect(container.querySelectorAll('video')).toHaveLength(1)
   expect(container.querySelector('audio')).toBeNull()
   expect(container.querySelector('video')?.getAttribute('src')).toBe('/video.mp4')
   expect(container.querySelector('video')?.style.maxWidth).toBe('640px')
+  const workbook=screen.getByRole('link',{name:'Open Workbook'})
+  expect(workbook.getAttribute('target')).toBe('_blank')
+  expect(workbook.getAttribute('href')).toBe('/academy/phase-one/?workbook=journey-one&lesson=1.1')
  })
 
 it('does not offer backward navigation even when a prior lesson is supplied', () => {

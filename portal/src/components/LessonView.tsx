@@ -6,6 +6,7 @@ type LessonViewProps = {
   videoSrc?: string
   audioSrc?: string
   audioPreload?: 'none' | 'metadata'
+  workbookHref?: string
   progress?: LessonProgress
   initialArtifact?: string
   reviewMode?: boolean
@@ -21,6 +22,7 @@ export function LessonView({
   audioSrc,
   audioPreload = 'none',
   videoSrc,
+  workbookHref,
   progress,
   initialArtifact = '',
   reviewMode = false,
@@ -80,6 +82,8 @@ export function LessonView({
           </div>
           <span>{sessionMinutes} minute session</span>
         </header>
+
+        {workbookHref && <a className="workbook-entry-link" href={workbookHref} target="_blank" rel="noopener noreferrer">Open Workbook</a>}
 
         {videoSrc || audioSrc || lesson.content.audio_overview_script ? (
           <section className="practice-panel" aria-labelledby="lesson-audio-heading">

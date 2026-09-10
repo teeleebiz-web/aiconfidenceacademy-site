@@ -21,11 +21,18 @@ const transport: Transport = async (method, patch): Promise<RecordState> => {
   return result
 }
 
-export function Workbook() {
+export function Workbook({ lessonId }: { lessonId?: string | null }) {
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  useEffect(() => { void store.load(); return () => store.dispose() }, [store])
+  const openingPage = /^1\.[1-6]$/.test(lessonId ?? '') ? 5 + (Number(lessonId!.split('.')[1]) - 1) * 4 : undefined
+  useEffect(() => {
+    let active = true
+    void store.load().then(() => {
+      if (active && openingPage !== undefined && store.state.last_page !== openingPage) store.page(openingPage)
+    })
+    return () => { active = false; store.dispose() }
+  }, [store, openingPage])
   useEffect(() => {
     let previous: string | null | undefined
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
