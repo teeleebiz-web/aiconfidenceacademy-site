@@ -6,6 +6,7 @@ type JourneyIntroductionViewProps = {
   captionUrl: string | null
   companionAudioUrl?: string | null
   companionCaptionUrl?: string | null
+  workbookHref?: string
   onBack: () => void
   onContinue: () => void
 }
@@ -16,6 +17,7 @@ export function JourneyIntroductionView({
   captionUrl,
   companionAudioUrl = null,
   companionCaptionUrl = null,
+  workbookHref,
   onBack,
   onContinue,
 }: JourneyIntroductionViewProps) {
@@ -162,6 +164,8 @@ export function JourneyIntroductionView({
             ) : null}
           </div>
         </section> : null}
+
+        {workbookHref && <section className="practice-panel" aria-label="Workbook"><a className="workbook-entry-link" href={workbookHref} target="_blank" rel="noopener noreferrer">Open Workbook</a></section>}
 
         <footer className="introduction-next">
           <p>{content.closing}</p>

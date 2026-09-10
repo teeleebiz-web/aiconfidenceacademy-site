@@ -1,4 +1,4 @@
-export type WorkbookDocument = { key: string; version: number; title: string; pages: { number: number; kicker: string; title: string; blocks: unknown[] }[] }
+export type WorkbookDocument = { key: string; version: number; title: string; navigationLabel?: string; subtitle?: string; pageCount?: number; contents?: { page: number; text: string }[]; pages: { number: number; kicker: string; title: string; blocks: unknown[] }[] }
 export type RecordState = { workbook?: WorkbookDocument; answers: Record<string, string>; last_page: number; revision: number; updated_at: string | null; allowedPages: number[]; scope: string }
 export type WorkbookState = RecordState & { status: 'loading' | 'saved' | 'unsaved' | 'saving' | 'error' | 'conflict'; message: string }
 export type Transport = (method: 'GET' | 'PATCH', patch?: { answers: Record<string, string>; baseRevision: number; page: number; scope: string }) => Promise<RecordState>

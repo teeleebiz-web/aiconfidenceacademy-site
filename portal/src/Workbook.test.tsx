@@ -46,3 +46,22 @@ it('does not open a workbook section outside the account’s allowed pages',asyn
   expect((screen.getByLabelText('Choose a page') as HTMLSelectElement).value).toBe('5')
   view.unmount()
 })
+
+
+it('opens and saves the third workbook through its own endpoint with compact fields',async()=>{
+  let record={answers:{} as Record<string,string>,last_page:1,revision:0,updated_at:null as string|null,allowedPages:[1,2,3,4,5,6],scope:'owner-review',workbook:{key:'journey-three',version:1,title:'Separate workbook',navigationLabel:'Third workbook',subtitle:'Opening practice',pageCount:6,contents:[{page:1,text:'First practice'}],pages:[{number:1,kicker:'Practice',title:'First practice',blocks:[{type:'field',id:'third-name',label:'Name',compact:true}]}]}}
+  const request=vi.spyOn(globalThis,'fetch').mockImplementation(async(_url,init)=>{
+    if(init?.method==='PATCH'){const p=JSON.parse(init.body as string);record={...record,answers:p.answers,revision:1,updated_at:'2026-09-10T00:00:00Z'}}
+    return {ok:true,json:async()=>structuredClone(record)} as Response
+  })
+  render(<Workbook workbookKey="journey-three" lessonId="3.1" />)
+  await screen.findByRole('heading',{name:'First practice',level:1})
+  expect(screen.getByText('Page 1 of 6')).toBeTruthy()
+  const input=screen.getByRole('textbox',{name:'Name'}) as HTMLTextAreaElement
+  expect(input.rows).toBe(1)
+  fireEvent.change(input,{target:{value:'Practice learner'}})
+  fireEvent.click(screen.getByRole('button',{name:'Save',exact:true}))
+  await waitFor(()=>expect(screen.getByText('Saved',{exact:true})).toBeTruthy())
+  expect(record.answers['third-name']).toBe('Practice learner')
+  expect(request.mock.calls.every(([url])=>url==='/api/academy/workbooks/journey-three')).toBe(true)
+})

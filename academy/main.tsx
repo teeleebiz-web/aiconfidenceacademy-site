@@ -16,7 +16,9 @@ async function read<T>(path: string): Promise<T> {
   return response.json()
 }
 function Academy() {
-  const isWorkbook = new URLSearchParams(window.location.search).get('workbook') === 'journey-one'
+  const requestedWorkbook = new URLSearchParams(window.location.search).get('workbook')
+  const workbookKey = requestedWorkbook === 'journey-three' ? 'journey-three' : 'journey-one'
+  const isWorkbook = requestedWorkbook === 'journey-one' || requestedWorkbook === 'journey-three'
   const [data, setData] = useState<Curriculum | null>(null)
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [welcome, setWelcome] = useState<Welcome | null>(null)
@@ -28,6 +30,13 @@ function Academy() {
     const params = new URLSearchParams(window.location.search)
     const requested = curriculum.lessons.find(item => item.page_id === params.get('lesson'))
     if (requested) { setSetup(false); setLesson(requested); return }
+    if (params.get('journey') === '3') {
+      const journey = curriculum.journeys.find(item => item.journey_number === 3)
+      const intro = curriculum.introductions.find(item => item.journey_id === journey?.id)
+      if (!intro) throw new Error('Journey Three could not load. Please try again.')
+      setSetup(false); setWelcome(await read<Welcome>('/api/academy/welcome/' + encodeURIComponent(intro.id)))
+      return
+    }
     if (params.get('journey') === '2') {
       const journey = curriculum.journeys.find(item => item.journey_number === 2)
       const firstLesson = curriculum.lessons.find(item => item.journey_id === journey?.id && item.page_id === '2.1')
@@ -45,6 +54,7 @@ function Academy() {
     try {
       const next = await read<Welcome>('/api/academy/welcome/' + encodeURIComponent(id))
       setSetup(false); setWelcome(next); setLesson(null)
+      if (journeyNumber === 3) window.history.replaceState(null, '', '/academy/phase-one/?journey=3')
     }
     catch(e) { setError((e as Error).message) }
     finally { setBusy(false) }
@@ -54,16 +64,17 @@ function Academy() {
     if (next.page_id.startsWith('2.') || params.get('lesson')?.startsWith('2.') || params.get('journey') === '2') {
       window.history.replaceState(null, '', '/academy/phase-one/?lesson=' + encodeURIComponent(next.page_id))
     }
+    if (next.page_id.startsWith('3.') || params.get('journey') === '3' || params.get('lesson')?.startsWith('3.')) window.history.replaceState(null, '', '/academy/phase-one/?lesson=' + encodeURIComponent(next.page_id))
     setSetup(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0)
   }
   return <div className="portal-shell">
     <header className="portal-header"><a className="portal-brand" href="/">AI Confidence Academy</a><a href="/academy/phase-one/">Phase One</a></header>
     {error && <p role="alert" className="global-error">{error}</p>}
-    {isWorkbook && <Workbook lessonId={new URLSearchParams(window.location.search).get('lesson')} />}
+    {isWorkbook && <Workbook key={workbookKey} workbookKey={workbookKey} lessonId={new URLSearchParams(window.location.search).get('lesson')} />}
     {!isWorkbook && !data && !error && <p className="loading-screen">Loading Phase One…</p>}
-    {!isWorkbook && data && (setup ? <GettingStarted onBack={() => setSetup(false)} onContinue={data.lessons.some(l => l.page_id === '1.1') ? () => openLesson(data.lessons.find(l => l.page_id === '1.1')!) : undefined} /> : welcome ? <JourneyIntroductionView {...welcome} onBack={() => setWelcome(null)} onContinue={() => { const next = data.lessons.find(l => l.journey_id === welcome.introduction.journey_id); if(next) openLesson(next) }} />
+    {!isWorkbook && data && (setup ? <GettingStarted onBack={() => setSetup(false)} onContinue={data.lessons.some(l => l.page_id === '1.1') ? () => openLesson(data.lessons.find(l => l.page_id === '1.1')!) : undefined} /> : welcome ? <JourneyIntroductionView {...welcome} workbookHref={welcome.introduction.content.roadmap[0]?.page_id === '3.1' ? '/academy/phase-one/?workbook=journey-three&lesson=3.1' : undefined} onBack={() => setWelcome(null)} onContinue={() => { const next = data.lessons.find(l => l.journey_id === welcome.introduction.journey_id); if(next) openLesson(next) }} />
       : lesson ? <>
-        <LessonView key={lesson.id} lesson={lesson} workbookHref={/^1\.[1-6]$/.test(lesson.page_id) ? `/academy/phase-one/?workbook=journey-one&lesson=${encodeURIComponent(lesson.page_id)}` : undefined} videoSrc={lesson.content.video_path ? `/api/academy/lesson-video/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.video_path)}` : undefined} audioSrc={lesson.content.audio_path ? `/api/academy/lesson-audio/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.audio_path)}` : undefined} audioPreload={data.journeys.some(journey => journey.journey_number === 2 && journey.id === lesson.journey_id) ? 'metadata' : 'none'} reviewMode previousLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)-1]} nextLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)+1]} onBack={() => setLesson(null)} onOpenLesson={openLesson} onSave={async () => { throw new Error('Progress recording is unavailable during construction review.') }} />
+        <LessonView key={lesson.id} lesson={lesson} workbookHref={/^1\.[1-6]$/.test(lesson.page_id) ? `/academy/phase-one/?workbook=journey-one&lesson=${encodeURIComponent(lesson.page_id)}` : lesson.page_id === '3.1' ? '/academy/phase-one/?workbook=journey-three&lesson=3.1' : undefined} videoSrc={lesson.content.video_path ? `/api/academy/lesson-video/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.video_path)}` : undefined} audioSrc={lesson.content.audio_path ? `/api/academy/lesson-audio/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.audio_path)}` : undefined} audioPreload={data.journeys.some(journey => journey.journey_number === 2 && journey.id === lesson.journey_id) ? 'metadata' : 'none'} reviewMode previousLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)-1]} nextLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)+1]} onBack={() => setLesson(null)} onOpenLesson={openLesson} onSave={async () => { throw new Error('Progress recording is unavailable during construction review.') }} />
       </>
       : <main className="portal-main"><section className="welcome-panel"><div><p className="eyebrow">Phase One</p><h1>{data.course.title}</h1><p>{data.course.summary}</p></div></section><section className="setup-entry"><p className="eyebrow">Before your first lesson</p><h2>Getting Started with ChatGPT</h2><p>Choose your device, send your first message, and practice asking for a change.</p><button onClick={() => { setSetup(true); window.scrollTo(0, 0) }}>Open the step-by-step guide</button></section><section className="course-panel">{data.journeys.map(journey => {
         const intro = data.introductions.find(i => i.journey_id === journey.id)

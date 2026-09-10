@@ -59,3 +59,16 @@ describe('JourneyIntroductionView', () => {
     expect(continued).toBe(true)
   })
 })
+
+
+it('shows one approved video and keeps workbook access below the roadmap',()=>{
+  const current={...introduction,status:'published' as const,content:{...introduction.content,presentation:'single_video' as const,roadmap:[{page_id:'3.1',title:'First lesson',purpose:'Practice'}]}}
+  const {container}=render(<JourneyIntroductionView introduction={current} mediaUrl="/approved-video.mp4" captionUrl={null} workbookHref="/academy/phase-one/?workbook=journey-three&lesson=3.1" onBack={()=>undefined} onContinue={()=>undefined} />)
+  expect(container.querySelectorAll('video')).toHaveLength(1)
+  expect(container.querySelector('video source')?.getAttribute('src')).toBe('/approved-video.mp4')
+  expect(screen.queryByText('Audio coming soon')).toBeNull()
+  expect(screen.queryByText('Video coming soon')).toBeNull()
+  const link=screen.getByRole('link',{name:'Open Workbook'})
+  expect(link.getAttribute('target')).toBe('_blank')
+  expect(container.querySelector('.roadmap-list')!.compareDocumentPosition(link)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+})

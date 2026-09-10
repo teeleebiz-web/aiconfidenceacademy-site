@@ -1,7 +1,7 @@
--- Journey One workbook responses. Curriculum and lesson progress are untouched.
+-- Independent workbook responses. Curriculum and lesson progress are untouched.
 create table public.aca_workbook_responses (
   course_id uuid not null references public.courses(id),
-  workbook_key text not null check (workbook_key = 'journey-one'),
+  workbook_key text not null check (workbook_key in ('journey-one', 'journey-three')),
   scope_key text not null,
   learner_id uuid references auth.users(id) on delete cascade,
   answers jsonb not null default '{}'::jsonb check (jsonb_typeof(answers) = 'object' and octet_length(answers::text) <= 2000000),
@@ -29,7 +29,7 @@ create policy "Learners read only their own workbook answers"
 -- Workbook text is stored privately, outside the public source repository.
 create table public.aca_workbook_definitions (
   course_id uuid not null references public.courses(id),
-  workbook_key text not null check (workbook_key = 'journey-one'),
+  workbook_key text not null check (workbook_key in ('journey-one', 'journey-three')),
   content jsonb not null check (jsonb_typeof(content) = 'object'),
   primary key (course_id, workbook_key)
 );
