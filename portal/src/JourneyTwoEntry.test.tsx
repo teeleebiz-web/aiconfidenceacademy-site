@@ -50,7 +50,7 @@ it('opens lesson 2.1 with its video and continues through all six complete lesso
   const user = userEvent.setup()
   const view = render(entry.element)
   await screen.findByRole('heading', { level: 1, name: 'Review lesson 1' })
-  expect(screen.getByRole('navigation', { name: 'Journey Two lessons' }).querySelectorAll('button')).toHaveLength(6)
+  expect(screen.queryByRole('navigation', { name: 'Journey Two lessons' })).toBeNull()
   for (let number = 1; number <= 6; number++) {
     expect(screen.getByRole('heading', { level: 1, name: `Review lesson ${number}` })).toBeTruthy()
     expect(window.location.search).toBe(`?lesson=2.${number}`)
@@ -85,11 +85,11 @@ it('preserves the general curriculum entry and connects its existing Journey Two
   expect(window.location.search).toBe('?lesson=2.1')
 })
 
-it('opens lesson 2.2 from the Journey Two lesson selector with its audio and full teaching', async () => {
+it('continues to lesson 2.2 with its audio and full teaching', async () => {
   window.history.replaceState(null, '', '/academy/phase-one/?journey=2')
   const user = userEvent.setup()
   render(entry.element)
-  await user.click(await screen.findByRole('button', { name: 'Open Lesson 2.2: Review lesson 2' }))
+  await user.click(await screen.findByRole('button', { name: 'Next lesson 2.2: Review lesson 2' }))
   expect(screen.getByLabelText('Lesson 2.2 audio').tagName).toBe('AUDIO')
   expect(screen.getByText('Approved teaching fixture.')).toBeTruthy()
   expect(screen.getByRole('heading', { name: 'Build the idea in plain language' })).toBeTruthy()
