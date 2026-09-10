@@ -4,6 +4,7 @@ import type { Lesson, LessonProgress } from '../types'
 type LessonViewProps = {
   lesson: Lesson
   videoSrc?: string
+  videoPoster?: string
   audioSrc?: string
   audioPreload?: 'none' | 'metadata'
   workbookHref?: string
@@ -22,6 +23,7 @@ export function LessonView({
   audioSrc,
   audioPreload = 'none',
   videoSrc,
+  videoPoster,
   workbookHref,
   progress,
   initialArtifact = '',
@@ -86,7 +88,7 @@ export function LessonView({
         {videoSrc || audioSrc || lesson.content.audio_overview_script ? (
           <section className="practice-panel" aria-labelledby="lesson-audio-heading">
             <h2 id="lesson-audio-heading">{videoSrc ? 'Watch' : 'Listen to'} Lesson {lesson.page_id}</h2>
-            {videoSrc ? <video key={videoSrc} controls playsInline preload="metadata" src={videoSrc} aria-label={`Lesson ${lesson.page_id} video`} style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 1rem' }}>Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
+            {videoSrc ? <video key={videoSrc} controls playsInline preload="metadata" src={videoSrc} poster={videoPoster} onEnded={videoPoster ? event => event.currentTarget.load() : undefined} aria-label={`Lesson ${lesson.page_id} video`} style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 1rem' }}>Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
               Your browser does not support audio playback.
             </audio> : <p className="review-only-panel">Audio will be available here.</p>}
             {lesson.content.audio_overview_script ? (

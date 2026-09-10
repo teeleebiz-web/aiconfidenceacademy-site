@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { LessonView } from './LessonView'
 import type { Lesson } from '../types'
@@ -121,4 +121,30 @@ it('does not offer backward navigation even when a prior lesson is supplied', ()
  render(<LessonView lesson={lesson} previousLesson={{...lesson, page_id:'1.0'}} nextLesson={{...lesson,page_id:'1.2'}} onBack={() => undefined} onOpenLesson={() => undefined} onSave={async () => undefined} />)
  expect(screen.queryByRole('button', {name:/previous lesson|back to|return to/i})).toBeNull()
  expect(screen.getByRole('button', {name:/next lesson 1.2/i})).toBeTruthy()
+})
+
+it('returns the same native video element to its ACA cover only when playback ends', () => {
+  render(<LessonView lesson={{...lesson, page_id:'3.1'}} videoSrc="/approved.mp4" videoPoster="/aca-cover.svg" onBack={() => undefined} onSave={async () => undefined} />)
+  const video=screen.getByLabelText('Lesson 3.1 video') as HTMLVideoElement
+  const reload=vi.spyOn(video,'load').mockImplementation(() => {})
+  fireEvent.pause(video)
+  expect(reload).not.toHaveBeenCalled()
+  fireEvent.ended(video)
+  expect(reload).toHaveBeenCalledTimes(1)
+  expect(screen.getByLabelText('Lesson 3.1 video')).toBe(video)
+  expect(video.getAttribute('poster')).toBe('/aca-cover.svg')
+  expect(video.getAttribute('src')).toBe('/approved.mp4')
+  expect(video.controls).toBe(true)
+  expect(video.playsInline).toBe(true)
+  reload.mockRestore()
+})
+
+it('preserves the existing end behavior when no cover was assigned', () => {
+  render(<LessonView lesson={lesson} videoSrc="/existing.mp4" onBack={() => undefined} onSave={async () => undefined} />)
+  const video=screen.getByLabelText('Lesson 1.1 video') as HTMLVideoElement
+  const reload=vi.spyOn(video,'load').mockImplementation(() => {})
+  fireEvent.ended(video)
+  expect(reload).not.toHaveBeenCalled()
+  expect(video.getAttribute('poster')).toBeNull()
+  reload.mockRestore()
 })
