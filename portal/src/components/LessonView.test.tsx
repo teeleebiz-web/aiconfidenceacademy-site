@@ -114,6 +114,7 @@ describe('LessonView', () => {
   const workbook=screen.getByRole('link',{name:'Open Workbook'})
   expect(workbook.getAttribute('target')).toBe('_blank')
   expect(workbook.getAttribute('href')).toBe('/academy/phase-one/?workbook=journey-one&lesson=1.1')
+  expect(workbook.nextElementSibling?.textContent).toBe('Guided practice')
  })
 
 it('does not offer backward navigation even when a prior lesson is supplied', () => {

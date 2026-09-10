@@ -160,6 +160,7 @@ export function LessonView({
         </section>
 
         <section className="practice-panel" id="lesson-practice">
+          {workbookHref && <a className="workbook-entry-link" href={workbookHref} target="_blank" rel="noopener noreferrer">Open Workbook</a>}
           <p className="eyebrow">Guided practice</p>
           <h2>Begin with one purposeful conversation.</h2>
           {lesson.content.practice_material ? (
@@ -170,8 +171,6 @@ export function LessonView({
               ))}
             </div>
           ) : null}
-          {workbookHref && <a className="workbook-entry-link" href={workbookHref} target="_blank" rel="noopener noreferrer">Open Workbook</a>}
-
           <div className="prompt-box">
             <code>{lesson.content.practice_prompt}</code>
             <button
