@@ -13,7 +13,7 @@ const lessons = Array.from({ length: 6 }, (_, index) => ({
     outcomes: [], vocabulary: {}, teaching: ['Approved teaching fixture.'], examples: [],
     practice_prompt: 'Practice fixture.', practice_steps: [], artifact: 'Reflection',
     stay_engaged: 'Continue.', knowledge_check: [], review_questions: [], rhythm: '', accessibility: '',
-    video_path: [2, 5].includes(index) ? `video-${index + 1}.mp4` : null,
+    video_path: [0, 2, 5].includes(index) ? `video-${index + 1}.mp4` : null,
     audio_path: [1, 3, 4].includes(index) ? `audio-${index + 1}.mp3` : null,
   },
 }))
@@ -45,22 +45,22 @@ beforeEach(() => {
 })
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
-it('opens the existing Journey Two video and continues through all six lessons with the assigned media', async () => {
+it('opens lesson 2.1 with its video and continues through all six complete lessons with the assigned media', async () => {
   window.history.replaceState(null, '', '/academy/phase-one/?journey=2')
   const user = userEvent.setup()
   const view = render(entry.element)
-  await screen.findByRole('heading', { name: 'Approved journey opening' })
-  expect(view.container.querySelector('video source')?.getAttribute('src')).toBe('/signed-opening.mp4')
-  await user.click(screen.getByRole('button', { name: 'Continue to Lesson 2.1' }))
+  await screen.findByRole('heading', { level: 1, name: 'Review lesson 1' })
+  expect(screen.getByRole('navigation', { name: 'Journey Two lessons' }).querySelectorAll('button')).toHaveLength(6)
   for (let number = 1; number <= 6; number++) {
     expect(screen.getByRole('heading', { level: 1, name: `Review lesson ${number}` })).toBeTruthy()
     expect(window.location.search).toBe(`?lesson=2.${number}`)
-    if ([3, 6].includes(number)) {
+    if ([1, 3, 6].includes(number)) {
       const video = screen.getByLabelText(`Lesson 2.${number} video`)
       expect(video.getAttribute('src')).toBe(`/api/academy/lesson-video/lesson-two-${number}?v=video-${number}.mp4`)
       expect(view.container.querySelector('audio')).toBeNull()
     } else if ([2, 4, 5].includes(number)) {
       expect(screen.getByLabelText(`Lesson 2.${number} audio`).getAttribute('src')).toBe(`/api/academy/lesson-audio/lesson-two-${number}?v=audio-${number}.mp3`)
+      expect(screen.getByLabelText(`Lesson 2.${number} audio`).getAttribute('preload')).toBe('metadata')
     }
     if (number < 6) await user.click(screen.getByRole('button', { name: `Next lesson 2.${number + 1}: Review lesson ${number + 1}` }))
   }
@@ -80,6 +80,18 @@ it('preserves the general curriculum entry and connects its existing Journey Two
   const welcome = await screen.findByRole('button', { name: /Watch Journey 2 Welcome Video/ })
   expect(screen.getAllByRole('button', { name: /Open lesson/ })).toHaveLength(6)
   await user.click(welcome)
-  expect(await screen.findByRole('heading', { name: 'Approved journey opening' })).toBeTruthy()
-  expect(window.location.search).toBe('?journey=2')
+  expect(await screen.findByRole('heading', { level: 1, name: 'Review lesson 1' })).toBeTruthy()
+  expect(screen.getByLabelText('Lesson 2.1 video')).toBeTruthy()
+  expect(window.location.search).toBe('?lesson=2.1')
+})
+
+it('opens lesson 2.2 from the Journey Two lesson selector with its audio and full teaching', async () => {
+  window.history.replaceState(null, '', '/academy/phase-one/?journey=2')
+  const user = userEvent.setup()
+  render(entry.element)
+  await user.click(await screen.findByRole('button', { name: 'Open Lesson 2.2: Review lesson 2' }))
+  expect(screen.getByLabelText('Lesson 2.2 audio').tagName).toBe('AUDIO')
+  expect(screen.getByText('Approved teaching fixture.')).toBeTruthy()
+  expect(screen.getByRole('heading', { name: 'Build the idea in plain language' })).toBeTruthy()
+  expect(window.location.search).toBe('?lesson=2.2')
 })
