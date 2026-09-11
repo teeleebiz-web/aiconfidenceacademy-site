@@ -5,12 +5,12 @@ import { tmpdir } from 'node:os'
 import { createAcademyServer } from '../server.mjs'
 import { workbookIdentity, handleWorkbook } from './api.mjs'
 const workbook = {key:'journey-one',version:1,title:'Workbook test fixture',pages:Array.from({length:32},(_,i)=>({number:i+1,kicker:'Practice',title:`Practice page ${i+1}`,blocks:[{type:'field',id:`field-${i+1}`,label:'My answer'}]}))}
-const thirdWorkbook = {key:'journey-three',version:1,title:'Separate workbook fixture',pages:Array.from({length:18},(_,i)=>({number:i+1,kicker:'Practice',title:`Separate page ${i+1}`,blocks:[{type:'field',id:`third-${i+1}`,label:'My answer'}]}))}
+const thirdWorkbook = {key:'journey-three',version:1,title:'Separate workbook fixture',pages:Array.from({length:22},(_,i)=>({number:i+1,kicker:'Practice',title:`Separate page ${i+1}`,blocks:[{type:'field',id:`third-${i+1}`,label:'My answer'}]}))}
 const ids=[]
 function collect(block,page) { if(block.type==='field')ids.push({id:block.id,page}); for(const item of block.items??[])collect(item,page);for(const row of block.rows??[])for(const field of row.fields)collect(field,page) }
 for(const p of workbook.pages)for(const b of p.blocks)collect(b,p.number)
 const field=ids.find(f=>f.page===5).id
-function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson34Status = 'draft') {
+function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson34Status = 'draft', lesson35Status = 'draft') {
   const records=[],writes=[]
   const db={ records,writes,auth:{async getUser(token){return token==='bad'?{error:Error('invalid')}:{data:{user:{id:token,is_anonymous:false}}}}},from(table){
     let action='read',value,filters=[]
@@ -21,7 +21,7 @@ function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson3
         let rows
         if(table==='enrollments')rows=['learner-a','learner-b'].map(learner_id=>({learner_id,course_id:'course',status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}}))
         else if(table==='course_journeys')rows=[{id:'journey',course_id:'course',journey_number:1,status:'published'},{id:'third-journey',course_id:'course',journey_number:3,status:'published'}]
-        else if(table==='lessons')rows=Array.from({length:6},(_,i)=>({journey_id:'journey',course_id:'course',page_id:`1.${i+1}`,status:'published',unlock_offset_days:i})).concat([{journey_id:'third-journey',course_id:'course',page_id:'3.1',status:'published',unlock_offset_days:14},{journey_id:'third-journey',course_id:'course',page_id:'3.2',status:thirdLessonStatus,unlock_offset_days:15},{journey_id:'third-journey',course_id:'course',page_id:'3.3',status:lesson33Status,unlock_offset_days:16},{journey_id:'third-journey',course_id:'course',page_id:'3.4',status:lesson34Status,unlock_offset_days:17}])
+        else if(table==='lessons')rows=Array.from({length:6},(_,i)=>({journey_id:'journey',course_id:'course',page_id:`1.${i+1}`,status:'published',unlock_offset_days:i})).concat([{journey_id:'third-journey',course_id:'course',page_id:'3.1',status:'published',unlock_offset_days:14},{journey_id:'third-journey',course_id:'course',page_id:'3.2',status:thirdLessonStatus,unlock_offset_days:15},{journey_id:'third-journey',course_id:'course',page_id:'3.3',status:lesson33Status,unlock_offset_days:16},{journey_id:'third-journey',course_id:'course',page_id:'3.4',status:lesson34Status,unlock_offset_days:17},{journey_id:'third-journey',course_id:'course',page_id:'3.5',status:lesson35Status,unlock_offset_days:18}])
         else if(table==='aca_workbook_definitions')rows=[{course_id:'course',workbook_key:'journey-one',content:workbook},{course_id:'course',workbook_key:'journey-three',content:thirdWorkbook}]
         else if(table==='aca_workbook_responses')rows=records
         else throw Error(`Unexpected access: ${table}`)
@@ -107,10 +107,10 @@ test('the third workbook saves independently and cannot overwrite another journe
   assert.equal((await fetch(third)).status,401)
   const initial=await (await fetch(third,{headers})).json()
   assert.equal(initial.workbook.key,'journey-three');assert.equal(initial.last_page,1)
-  assert.deepEqual(initial.allowedPages,[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]);assert.deepEqual(initial.answers,{})
+  assert.deepEqual(initial.allowedPages,[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]);assert.deepEqual(initial.answers,{})
   const patch=body=>fetch(third,{method:'PATCH',headers,body:JSON.stringify(body)})
   assert.equal((await patch({baseRevision:0,page:2,answers:{'third-1':'my new practice'}})).status,200)
-  assert.equal((await patch({baseRevision:1,page:19,answers:{}})).status,400)
+  assert.equal((await patch({baseRevision:1,page:23,answers:{}})).status,400)
   assert.equal((await patch({baseRevision:1,page:2,answers:{[field]:'wrong journey field'}})).status,400)
   const reopened=await (await fetch(third,{headers})).json()
   assert.equal(reopened.answers['third-1'],'my new practice');assert.equal(reopened.last_page,2)
@@ -180,4 +180,25 @@ test('lesson 3.4 pages respect availability and preserve saved earlier answers',
   assert.equal(output.answers['third-11'],'Keep earlier response')
   assert.equal(output.answers['third-15'],'My limit')
   assert.equal(output.answers['third-18'],'My reflection')
+})
+
+test('lesson 3.5 pages respect availability and preserve saved earlier answers',async()=>{
+  const headers={'x-aca-workbook':'1','content-type':'application/json','x-aca-access-token':'learner-a'}
+  const locked=await workbookIdentity({headers},database('published','published','published'),'course',false,'journey-three')
+  assert.deepEqual(locked.allowedPages,Array.from({length:18},(_,i)=>i+1))
+  const db=database('published','published','published','published')
+  const available=await workbookIdentity({headers},db,'course',false,'journey-three')
+  assert.deepEqual(available.allowedPages,Array.from({length:22},(_,i)=>i+1))
+  let status,output
+  const res={setHeader(){},writeHead(s){status=s},end(v){output=JSON.parse(v)}}
+  const options={db,courseId:'course',ownerAuthenticated:false,workbookKey:'journey-three'}
+  await handleWorkbook({method:'PATCH',headers,body:{baseRevision:0,page:15,answers:{'third-15':'Keep earlier response'}}},res,options)
+  assert.equal(status,200)
+  await handleWorkbook({method:'PATCH',headers,body:{baseRevision:1,page:22,answers:{'third-19':'My limit','third-22':'My reflection'}}},res,options)
+  assert.equal(status,200)
+  await handleWorkbook({method:'GET',headers},res,options)
+  assert.equal(status,200);assert.equal(output.last_page,22)
+  assert.equal(output.answers['third-15'],'Keep earlier response')
+  assert.equal(output.answers['third-19'],'My limit')
+  assert.equal(output.answers['third-22'],'My reflection')
 })

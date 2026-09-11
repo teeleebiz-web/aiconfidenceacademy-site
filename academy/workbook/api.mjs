@@ -1,7 +1,7 @@
 const allPages = Array.from({ length: 32 }, (_, index) => index + 1)
 const configurations = {
   'journey-one': { journey: 1, pages: allPages, start: 5, fallback: 2 },
-  'journey-three': { journey: 3, pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], start: 1, fallback: 1 },
+  'journey-three': { journey: 3, pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], start: 1, fallback: 1 },
 }
 const columns = 'answers,last_page,revision,updated_at'
 const reply = (res, status, data) => {
@@ -54,7 +54,7 @@ export async function workbookIdentity(req, db, courseId, ownerAuthenticated, wo
   const l = await db.from('lessons').select('page_id,unlock_offset_days,status').eq('course_id', courseId).eq('journey_id', j.data.id)
   if (l.error) throw fault(503, 'Your workbook access could not be checked. Please try again.')
   const lessonNumbers = (l.data ?? []).filter(item => item.status === 'published' && (!e.course.drip_enabled || now >= Date.parse(e.starts_at ?? e.enrolled_at) + item.unlock_offset_days * 86400000)).map(item => Number(item.page_id.split('.')[1]))
-  const allowedPages = config.pages.filter(page => workbookKey === 'journey-three' ? lessonNumbers.includes(page <= 6 ? 1 : page <= 10 ? 2 : page <= 14 ? 3 : 4) : page <= 4 || page >= 29 || lessonNumbers.includes(Math.floor((page - 5) / 4) + 1))
+  const allowedPages = config.pages.filter(page => workbookKey === 'journey-three' ? lessonNumbers.includes(page <= 6 ? 1 : page <= 10 ? 2 : page <= 14 ? 3 : page <= 18 ? 4 : 5) : page <= 4 || page >= 29 || lessonNumbers.includes(Math.floor((page - 5) / 4) + 1))
   if (!allowedPages.length) throw fault(403, 'This workbook is available when its lesson opens.')
   return { scope: id, learnerId: id, allowedPages }
 }

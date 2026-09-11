@@ -93,3 +93,12 @@ it('lesson 3.3 opens page 11 with its saved answers',async()=>{
   expect((screen.getByRole('textbox',{name:'Reader'}) as HTMLTextAreaElement).value).toBe('My reader')
   expect(screen.getByText('Page 11 of 14')).toBeTruthy()
 })
+
+it('lesson 3.5 opens page 19 with its saved answers',async()=>{
+  const record={answers:{'third-19':'My boundary'},last_page:11,revision:4,updated_at:'2026-09-11T00:00:00Z',allowedPages:Array.from({length:22},(_,i)=>i+1),scope:'owner-review',workbook:{key:'journey-three',version:4,title:'Journey Three workbook',navigationLabel:'Journey Three workbook',pageCount:22,contents:[{page:19,text:'Boundaries'}],pages:[{number:11,kicker:'Practice',title:'Earlier lesson',blocks:[]},{number:19,kicker:'Boundaries',title:'Lesson 3.5 practice',blocks:[{type:'field',id:'third-19',label:'Boundary'}]}]}}
+  vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
+  render(<Workbook workbookKey="journey-three" lessonId="3.5" />)
+  await screen.findByRole('heading',{level:1,name:'Lesson 3.5 practice'})
+  expect((screen.getByLabelText('Boundary') as HTMLTextAreaElement).value).toBe('My boundary')
+  expect(screen.getByText('Page 19 of 22')).toBeTruthy()
+})
