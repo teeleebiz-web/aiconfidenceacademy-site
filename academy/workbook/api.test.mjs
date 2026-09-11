@@ -6,12 +6,12 @@ import { createAcademyServer } from '../server.mjs'
 import { workbookIdentity, handleWorkbook } from './api.mjs'
 const workbook = {key:'journey-one',version:1,title:'Workbook test fixture',pages:Array.from({length:32},(_,i)=>({number:i+1,kicker:'Practice',title:`Practice page ${i+1}`,blocks:[{type:'field',id:`field-${i+1}`,label:'My answer'}]}))}
 const thirdWorkbook = {key:'journey-three',version:1,title:'Separate workbook fixture',pages:Array.from({length:26},(_,i)=>({number:i+1,kicker:'Practice',title:`Separate page ${i+1}`,blocks:[{type:'field',id:`third-${i+1}`,label:'My answer'}]}))}
-const fourthWorkbook={key:'journey-four',version:1,title:'Fourth workbook fixture',pages:Array.from({length:4},(_,i)=>({number:i+1,kicker:'Practice',title:`Fourth page ${i+1}`,blocks:[{type:'field',id:`fourth-${i+1}`,label:'My answer'}]}))}
+const fourthWorkbook={key:'journey-four',version:2,title:'Fourth workbook fixture',pages:Array.from({length:8},(_,i)=>({number:i+1,kicker:'Practice',title:`Fourth page ${i+1}`,blocks:[{type:'field',id:`fourth-${i+1}`,label:'My answer'}]}))}
 const ids=[]
 function collect(block,page) { if(block.type==='field')ids.push({id:block.id,page}); for(const item of block.items??[])collect(item,page);for(const row of block.rows??[])for(const field of row.fields)collect(field,page) }
 for(const p of workbook.pages)for(const b of p.blocks)collect(b,p.number)
 const field=ids.find(f=>f.page===5).id
-function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson34Status = 'draft', lesson35Status = 'draft', lesson36Status = 'draft', lesson41Status = 'draft') {
+function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson34Status = 'draft', lesson35Status = 'draft', lesson36Status = 'draft', lesson41Status = 'draft', lesson42Status = 'draft') {
   const records=[],writes=[]
   const db={ records,writes,auth:{async getUser(token){return token==='bad'?{error:Error('invalid')}:{data:{user:{id:token,is_anonymous:false}}}}},from(table){
     let action='read',value,filters=[]
@@ -22,7 +22,7 @@ function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson3
         let rows
         if(table==='enrollments')rows=['learner-a','learner-b'].map(learner_id=>({learner_id,course_id:'course',status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}}))
         else if(table==='course_journeys')rows=[{id:'journey',course_id:'course',journey_number:1,status:'published'},{id:'third-journey',course_id:'course',journey_number:3,status:'published'},{id:'fourth-journey',course_id:'course',journey_number:4,status:'published'}]
-        else if(table==='lessons')rows=Array.from({length:6},(_,i)=>({journey_id:'journey',course_id:'course',page_id:`1.${i+1}`,status:'published',unlock_offset_days:i})).concat([{journey_id:'third-journey',course_id:'course',page_id:'3.1',status:'published',unlock_offset_days:14},{journey_id:'third-journey',course_id:'course',page_id:'3.2',status:thirdLessonStatus,unlock_offset_days:15},{journey_id:'third-journey',course_id:'course',page_id:'3.3',status:lesson33Status,unlock_offset_days:16},{journey_id:'third-journey',course_id:'course',page_id:'3.4',status:lesson34Status,unlock_offset_days:17},{journey_id:'third-journey',course_id:'course',page_id:'3.5',status:lesson35Status,unlock_offset_days:18},{journey_id:'third-journey',course_id:'course',page_id:'3.6',status:lesson36Status,unlock_offset_days:19},{journey_id:'fourth-journey',course_id:'course',page_id:'4.1',status:lesson41Status,unlock_offset_days:21}])
+        else if(table==='lessons')rows=Array.from({length:6},(_,i)=>({journey_id:'journey',course_id:'course',page_id:`1.${i+1}`,status:'published',unlock_offset_days:i})).concat([{journey_id:'third-journey',course_id:'course',page_id:'3.1',status:'published',unlock_offset_days:14},{journey_id:'third-journey',course_id:'course',page_id:'3.2',status:thirdLessonStatus,unlock_offset_days:15},{journey_id:'third-journey',course_id:'course',page_id:'3.3',status:lesson33Status,unlock_offset_days:16},{journey_id:'third-journey',course_id:'course',page_id:'3.4',status:lesson34Status,unlock_offset_days:17},{journey_id:'third-journey',course_id:'course',page_id:'3.5',status:lesson35Status,unlock_offset_days:18},{journey_id:'third-journey',course_id:'course',page_id:'3.6',status:lesson36Status,unlock_offset_days:19},{journey_id:'fourth-journey',course_id:'course',page_id:'4.1',status:lesson41Status,unlock_offset_days:21},{journey_id:'fourth-journey',course_id:'course',page_id:'4.2',status:lesson42Status,unlock_offset_days:22}])
         else if(table==='aca_workbook_definitions')rows=[{course_id:'course',workbook_key:'journey-one',content:workbook},{course_id:'course',workbook_key:'journey-three',content:thirdWorkbook},{course_id:'course',workbook_key:'journey-four',content:fourthWorkbook}]
         else if(table==='aca_workbook_responses')rows=records
         else throw Error(`Unexpected access: ${table}`)
@@ -226,16 +226,16 @@ test('lesson 3.6 pages require publication and preserve earlier saved answers',a
 })
 
 
-test('4.1 workbook is private, independent and restricted to its four pages',()=>fixture(async({request,url,headers})=>{
+test('Journey Four workbook is private, independent and restricted to its eight pages',()=>fixture(async({request,url,headers})=>{
   await request('PATCH',{baseRevision:0,page:5,answers:{[field]:'Keep existing answers'}})
   const fourth=url.replace('journey-one','journey-four')
   assert.equal((await fetch(fourth)).status,401)
   const initial=await (await fetch(fourth,{headers})).json()
   assert.equal(initial.workbook.key,'journey-four');assert.equal(initial.last_page,1)
-  assert.deepEqual(initial.allowedPages,[1,2,3,4])
+  assert.deepEqual(initial.allowedPages,[1,2,3,4,5,6,7,8])
   const patch=body=>fetch(fourth,{method:'PATCH',headers,body:JSON.stringify(body)})
   assert.equal((await patch({baseRevision:0,page:2,answers:{'fourth-2':'My purpose'}})).status,200)
-  assert.equal((await patch({baseRevision:1,page:5,answers:{}})).status,400)
+  assert.equal((await patch({baseRevision:1,page:9,answers:{}})).status,400)
   assert.equal((await patch({baseRevision:1,page:2,answers:{[field]:'Wrong workbook'}})).status,400)
   const reopened=await (await fetch(fourth,{headers})).json()
   assert.equal(reopened.answers['fourth-2'],'My purpose')
@@ -248,4 +248,25 @@ test('4.1 workbook learner access requires the published lesson',async()=>{
   await assert.rejects(()=>workbookIdentity(req,database(),'course',false,'journey-four'),{status:403})
   const available=await workbookIdentity(req,database(undefined,undefined,undefined,undefined,undefined,'published'),'course',false,'journey-four')
   assert.deepEqual(available.allowedPages,[1,2,3,4])
+})
+
+test('4.2 workbook pages require Lesson 4.2 and preserve earlier answers when saved',async()=>{
+  const req={headers:{'x-aca-access-token':'learner-a'}}
+  const only42=database(undefined,undefined,undefined,undefined,undefined,'draft','published')
+  assert.deepEqual((await workbookIdentity(req,only42,'course',false,'journey-four')).allowedPages,[5,6,7,8])
+  const db=database(undefined,undefined,undefined,undefined,undefined,'published','published')
+  assert.deepEqual((await workbookIdentity(req,db,'course',false,'journey-four')).allowedPages,[1,2,3,4,5,6,7,8])
+  db.records.push({course_id:'course',workbook_key:'journey-four',scope_key:'learner-a',learner_id:'learner-a',answers:{'fourth-2':'Keep my first lesson'},last_page:2,revision:1,updated_at:null})
+  const headers={'x-aca-access-token':'learner-a','x-aca-workbook':'1','content-type':'application/json'}
+  let status,output
+  const res={setHeader(){},writeHead(code){status=code},end(value){output=JSON.parse(value)}}
+  const options={db,courseId:'course',ownerAuthenticated:false,workbookKey:'journey-four'}
+  await handleWorkbook({method:'PATCH',headers,body:{baseRevision:1,page:8,answers:{'fourth-5':'My purpose','fourth-8':'My card'}}},res,options)
+  assert.equal(status,200)
+  await handleWorkbook({method:'GET',headers},res,options)
+  assert.equal(status,200)
+  assert.equal(output.last_page,8)
+  assert.equal(output.answers['fourth-2'],'Keep my first lesson')
+  assert.equal(output.answers['fourth-5'],'My purpose')
+  assert.equal(output.answers['fourth-8'],'My card')
 })
