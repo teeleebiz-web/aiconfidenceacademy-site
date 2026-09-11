@@ -34,6 +34,23 @@ const lesson: Lesson = {
 }
 
 describe('LessonView', () => {
+  it('opens 4.1 without a media placeholder and accepts the later video without replacing its curriculum',()=>{
+    const current={...lesson,page_id:'4.1'}
+    const props={lesson:current,workbookHref:'/academy/phase-one/?workbook=journey-four&lesson=4.1',reviewMode:true,onBack:()=>{},onSave:async()=>{}}
+    const {container,rerender}=render(<LessonView {...props} />)
+    expect(container.querySelector('video,audio,details')).toBeNull()
+    expect(screen.queryByRole('heading',{name:'Watch Lesson 4.1'})).toBeNull()
+    expect(screen.getByText(current.content.teaching[0])).toBeTruthy()
+    const link=screen.getByRole('link',{name:'Open Workbook'})
+    expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+    expect(link.getAttribute('target')).toBe('_blank')
+    expect(link.getAttribute('href')).toBe(props.workbookHref)
+    rerender(<LessonView {...props} videoSrc="/approved-4.1.mp4" />)
+    expect(screen.getByText(current.content.teaching[0])).toBeTruthy()
+    expect(container.querySelectorAll('video')).toHaveLength(1)
+    expect(container.querySelector('video')!.autoplay).toBe(false)
+  })
+
   it('presents 3.6 with a white title, the native video, and workbook before practice',()=>{
     const current={...lesson,page_id:'3.6'}
     const {container}=render(<LessonView lesson={current} videoSrc="/3.6.mp4" workbookHref="/academy/phase-one/?workbook=journey-three&lesson=3.6" reviewMode onBack={()=>{}} onSave={async()=>{}} />)

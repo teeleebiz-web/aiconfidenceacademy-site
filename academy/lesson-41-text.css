@@ -1,0 +1,49 @@
+/* Lesson 4.1: explicit text colors keep the embedded review readable. */
+.aca-lesson-41 {
+  color: #102d4f;
+}
+
+.aca-lesson-41 .lesson-article > section :is(p, li, dd, dt, h2, h3, strong) {
+  color: #102d4f;
+}
+
+.aca-lesson-41 .lesson-article > section :is(.eyebrow, .rhythm),
+.aca-lesson-41 .lesson-article .session-map li strong,
+.aca-lesson-41 .lesson-hero .eyebrow {
+  color: #9a722f;
+}
+
+.aca-lesson-41 .lesson-hero :is(h1, span),
+.aca-lesson-41 .portal-header .portal-brand,
+.aca-lesson-41 .prompt-box code {
+  color: #ffffff;
+}
+
+.aca-lesson-41 .lesson-hero p:not(.eyebrow) {
+  color: #c2cdd4;
+}
+
+.aca-lesson-41 .wb-shell :is(p, h1, h2, h3, strong, label),
+.aca-lesson-41 .wb-page-footer span,
+.aca-lesson-41 .wb-save [role="status"] {
+  color: #102d4f;
+}
+
+.aca-lesson-41 .wb-note h2 {
+  color: #896322;
+}
+
+.aca-lesson-41 .wb-page-hero :is(h1, p, strong),
+.aca-lesson-41 .wb-note-navy :is(p, strong),
+.aca-lesson-41 .wb-comparison h2 {
+  color: #ffffff;
+}
+
+.aca-lesson-41 .wb-page-hero .wb-eyebrow,
+.aca-lesson-41 .wb-note-navy h2 {
+  color: #d4b36b;
+}
+
+.aca-lesson-41 .wb-shell .wb-error {
+  color: #7c2917;
+}
