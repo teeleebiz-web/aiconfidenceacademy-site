@@ -8,6 +8,11 @@ import { handleWorkbook } from './workbook/api.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
+const exploreVideos = new Map([
+  ['01', 'explore-chatgpt/ACA-Explore-ChatGPT-01.mp4'],
+  ['02', 'explore-chatgpt/ACA-Explore-ChatGPT-02.mp4'],
+  ['03', 'explore-chatgpt/ACA-Explore-ChatGPT-03.mp4'],
+])
 export function createAcademyServer({ password, root, db, courseId }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
@@ -50,6 +55,13 @@ export function createAcademyServer({ password, root, db, courseId }) {
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return }
     try {
       const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)
+      if (path.startsWith('/api/academy/explore-chatgpt/')) {
+        const name = exploreVideos.get(path.slice('/api/academy/explore-chatgpt/'.length))
+        if (!name) { res.writeHead(404); res.end(); return }
+        const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(name, 3600)
+        if (error || !signed?.signedUrl) throw new Error('Walkthrough video unavailable')
+        res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
+      }
       if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
         const data = await curriculum()
         if (path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {

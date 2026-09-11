@@ -34,6 +34,40 @@ test('construction gate refuses missing or short passwords', () => {
   assert.throws(() => createAcademyServer({ password: 'short' }), /24 characters/)
 })
 
+test('Explore ChatGPT signs only its three approved videos after authentication', async () => {
+  const signedPaths = []
+  let unavailable = false
+  const db = { storage: { from(bucket) {
+    assert.equal(bucket, 'aca-learning-media')
+    return { async createSignedUrl(path, expiresIn) {
+      assert.equal(expiresIn, 3600)
+      signedPaths.push(path)
+      return unavailable ? { error: new Error('storage detail') } : { data: { signedUrl: 'https://example.com/signed-video' } }
+    } }
+  } } }
+  const server = createAcademyServer({ password: 'test-only-long-construction-password', root: tmpdir(), courseId: 'test-course', db })
+  server.listen(0, '127.0.0.1'); await once(server, 'listening')
+  const base = `http://127.0.0.1:${server.address().port}/api/academy/explore-chatgpt/`
+  const headers = { Authorization: 'Basic ' + Buffer.from('academy:test-only-long-construction-password').toString('base64') }
+  try {
+    assert.equal((await fetch(base + '01')).status, 401)
+    assert.equal((await fetch(base + '04', { headers })).status, 404)
+    assert.equal((await fetch(base + '01', { headers, method: 'POST' })).status, 405)
+    assert.deepEqual(signedPaths, [])
+    for (const id of ['01', '02', '03']) {
+      const response = await fetch(base + id + '?path=other.mp4', { headers, redirect: 'manual' })
+      assert.equal(response.status, 302)
+      assert.equal(response.headers.get('location'), 'https://example.com/signed-video')
+      assert.match(response.headers.get('cache-control'), /no-store/)
+    }
+    assert.deepEqual(signedPaths, ['01', '02', '03'].map(id => `explore-chatgpt/ACA-Explore-ChatGPT-${id}.mp4`))
+    unavailable = true
+    const failure = await fetch(base + '01', { headers })
+    assert.equal(failure.status, 503)
+    assert.doesNotMatch(await failure.text(), /storage detail/)
+  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
+})
+
 test('lesson audio signs only a saved path for a lesson in the configured course', async () => {
   const signedPaths = []
   const db = {

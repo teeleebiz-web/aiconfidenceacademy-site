@@ -1,0 +1,10 @@
+.explore-chatgpt { background: #f8f4e8; scroll-margin-top: 7rem; }
+.explore-chatgpt > .section-title-row { margin-bottom: 2.5rem; }
+.explore-chatgpt > .section-title-row p:last-child { max-width: 48rem; color: #29435b; }
+.explore-video-list { display: grid; gap: 2rem; }
+.explore-video-card { display: grid; grid-template-columns: minmax(15rem,.65fr) minmax(0,1.4fr); align-items: center; gap: clamp(1.5rem,3vw,3rem); padding: clamp(1.25rem,3vw,2.5rem); background: #fff; border: 1px solid #d7c6a1; border-radius: 20px; }
+.explore-video-card h3 { margin: 0 0 1rem; color: #102d4f; font-size: clamp(1.5rem,2.3vw,2rem); line-height: 1.25; }
+.explore-video-card p { margin: 0 0 1.25rem; color: #29435b; font-size: 1rem; line-height: 1.7; }
+.explore-video-duration { display: inline-block; padding: .4rem .8rem; color: #634813; background: #f8f4e8; border: 1px solid #d7c6a1; border-radius: 999px; font-size: .875rem; font-weight: 600; }
+.explore-video-card video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #102d4f; object-fit: contain; border-radius: 12px; }
+@media (max-width: 800px) { .explore-video-card { grid-template-columns: 1fr; } }
