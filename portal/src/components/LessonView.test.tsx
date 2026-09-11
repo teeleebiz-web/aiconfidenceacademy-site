@@ -34,6 +34,21 @@ const lesson: Lesson = {
 }
 
 describe('LessonView', () => {
+  it('presents the approved 3.4 script and workbook before audio is attached', () => {
+    const current={...lesson,page_id:'3.4',content:{...lesson.content,audio_overview_script:'Welcome to the practice.'}}
+    const {container,rerender}=render(<LessonView lesson={current} workbookHref="/academy/phase-one/?workbook=journey-three&lesson=3.4" reviewMode onBack={()=>{}} onSave={async()=>{}} />)
+    expect(screen.getByRole('heading',{name:'Lesson introduction'})).toBeTruthy()
+    expect(screen.getByText('Read the lesson introduction')).toBeTruthy()
+    expect(screen.queryByText('Audio will be available here.')).toBeNull()
+    const link=screen.getByRole('link',{name:'Open Workbook'})
+    expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+    expect(link.getAttribute('target')).toBe('_blank')
+    expect(container.querySelectorAll('video,audio').length).toBe(0)
+    rerender(<LessonView lesson={current} audioSrc="/3.4.mp3" onBack={()=>{}} onSave={async()=>{}} />)
+    expect(screen.getByRole('heading',{name:'Listen to Lesson 3.4'})).toBeTruthy()
+    expect(container.querySelector('audio')?.getAttribute('src')).toBe('/3.4.mp3')
+  })
+
   it('requires meaningful work, then saves the learner artifact', async () => {
     const user = userEvent.setup()
     const saved: string[] = []
