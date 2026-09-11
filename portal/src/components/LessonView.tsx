@@ -78,7 +78,7 @@ export function LessonView({
         <header className="lesson-hero">
           <div>
             <p className="eyebrow">Lesson {lesson.page_id}</p>
-            <h1 style={lesson.page_id === '3.5' ? { color: '#ffffff' } : undefined}>{lesson.title}</h1>
+            <h1 style={['3.5', '3.6'].includes(lesson.page_id) ? { color: '#ffffff' } : undefined}>{lesson.title}</h1>
             <p>{lesson.purpose}</p>
           </div>
           <span>{sessionMinutes} minute session</span>

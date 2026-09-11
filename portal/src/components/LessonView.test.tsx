@@ -34,6 +34,23 @@ const lesson: Lesson = {
 }
 
 describe('LessonView', () => {
+  it('presents 3.6 with a white title, the native video, and workbook before practice',()=>{
+    const current={...lesson,page_id:'3.6'}
+    const {container}=render(<LessonView lesson={current} videoSrc="/3.6.mp4" workbookHref="/academy/phase-one/?workbook=journey-three&lesson=3.6" reviewMode onBack={()=>{}} onSave={async()=>{}} />)
+    expect((screen.getByRole('heading',{name:current.title}) as HTMLElement).style.color).toBe('rgb(255, 255, 255)')
+    expect(screen.getByRole('heading',{name:'Watch Lesson 3.6'})).toBeTruthy()
+    const video=container.querySelector('video')!
+    expect(video.getAttribute('src')).toBe('/3.6.mp4')
+    expect(video.controls).toBe(true)
+    expect(video.autoplay).toBe(false)
+    expect(container.querySelectorAll('video')).toHaveLength(1)
+    expect(container.querySelector('audio,details')).toBeNull()
+    const link=screen.getByRole('link',{name:'Open Workbook'})
+    expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+    expect(link.getAttribute('target')).toBe('_blank')
+    expect(link.getAttribute('href')).toBe('/academy/phase-one/?workbook=journey-three&lesson=3.6')
+  })
+
   it('presents 3.5 with its white title, audio, script, and workbook above practice', () => {
     const current = {...lesson, page_id:'3.5', content:{...lesson.content, audio_overview_script:'Welcome to the practice.'}}
     const {container} = render(<LessonView lesson={current} audioSrc="/3.5.mp3" workbookHref="/academy/phase-one/?workbook=journey-three&lesson=3.5" reviewMode onBack={()=>{}} onSave={async()=>{}} />)

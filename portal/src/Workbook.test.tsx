@@ -102,3 +102,12 @@ it('lesson 3.5 opens page 19 with its saved answers',async()=>{
   expect((screen.getByLabelText('Boundary') as HTMLTextAreaElement).value).toBe('My boundary')
   expect(screen.getByText('Page 19 of 22')).toBeTruthy()
 })
+
+it('lesson 3.6 opens page 23 and retains its saved prompt',async()=>{
+  const record={answers:{'j36-task':'Prepare an agenda'},last_page:19,revision:5,updated_at:null,allowedPages:Array.from({length:26},(_,i)=>i+1),scope:'owner-review',workbook:{key:'journey-three',version:6,title:'Journey Three Workbook',navigationLabel:'Journey Three workbook',pageCount:26,contents:[{page:23,text:'Build your five-part prompt'}],pages:[{number:19,kicker:'Practice',title:'Earlier lesson',blocks:[]},{number:23,kicker:'Practice',title:'Build your five-part prompt',blocks:[{type:'field',id:'j36-task',label:'Task'}]}]}}
+  vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
+  render(<Workbook workbookKey="journey-three" lessonId="3.6" />)
+  await screen.findByRole('heading',{level:1,name:'Build your five-part prompt'})
+  expect((screen.getByLabelText('Task') as HTMLTextAreaElement).value).toBe('Prepare an agenda')
+  expect(screen.getByText('Page 23 of 26')).toBeTruthy()
+})

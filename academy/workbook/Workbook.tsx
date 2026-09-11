@@ -26,7 +26,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?:
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const openingPage = workbookKey === 'journey-three' ? (lessonId === '3.1' ? 1 : lessonId === '3.2' ? 7 : lessonId === '3.3' ? 11 : lessonId === '3.4' ? 15 : lessonId === '3.5' ? 19 : undefined) : /^1\.[1-6]$/.test(lessonId ?? '') ? 5 + (Number(lessonId!.split('.')[1]) - 1) * 4 : undefined
+  const openingPage = workbookKey === 'journey-three' ? (lessonId === '3.1' ? 1 : lessonId === '3.2' ? 7 : lessonId === '3.3' ? 11 : lessonId === '3.4' ? 15 : lessonId === '3.5' ? 19 : lessonId === '3.6' ? 23 : undefined) : /^1\.[1-6]$/.test(lessonId ?? '') ? 5 + (Number(lessonId!.split('.')[1]) - 1) * 4 : undefined
   useEffect(() => {
     let active = true
     void store.load().then(() => {
