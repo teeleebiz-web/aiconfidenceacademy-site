@@ -92,6 +92,19 @@ describe('LessonView', () => {
     expect(link.nextElementSibling?.textContent).toBe('Guided practice')
   })
 
+  it('presents 6.1 with its video reminder, readable narration, and workbook above practice',()=>{
+    const current={...lesson,page_id:'6.1',content:{...lesson.content,planned_media:'video' as const,audio_overview_script:'Welcome to Lesson 6.1.'}}
+    const href='/academy/phase-one/?workbook=journey-six&lesson=6.1'
+    const {container}=render(<LessonView lesson={current} workbookHref={href} reviewMode onBack={()=>{}} onSave={async()=>{}} />)
+    expect(container.querySelector('video,audio')).toBeNull()
+    expect(screen.getByRole('heading',{name:'Watch Lesson 6.1'})).toBeTruthy()
+    expect(screen.getByText('Video will be available here.')).toBeTruthy()
+    expect(screen.getByText('Read the lesson introduction')).toBeTruthy()
+    const link=screen.getByRole('link',{name:'Open Workbook'})
+    expect(link.getAttribute('href')).toBe(href)
+    expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+  })
+
   it('opens 4.1 without a media placeholder and accepts the later video without replacing its curriculum',()=>{
     const current={...lesson,page_id:'4.1'}
     const props={lesson:current,workbookHref:'/academy/phase-one/?workbook=journey-four&lesson=4.1',reviewMode:true,onBack:()=>{},onSave:async()=>{}}

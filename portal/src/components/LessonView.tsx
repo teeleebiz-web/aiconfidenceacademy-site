@@ -71,6 +71,7 @@ export function LessonView({
   const sessionMinutes = Math.min(60, Math.max(45, lesson.estimated_minutes))
   const sessionPlan = buildSessionPlan(sessionMinutes)
   const scriptOnly = lesson.page_id === '3.4' && !videoSrc && !audioSrc
+  const plannedVideo = lesson.content.planned_media === 'video'
 
   return (
     <main className="lesson-main">
@@ -86,10 +87,10 @@ export function LessonView({
 
         {videoSrc || audioSrc || lesson.content.audio_overview_script ? (
           <section className="practice-panel" aria-labelledby="lesson-audio-heading">
-            <h2 id="lesson-audio-heading">{scriptOnly ? 'Lesson introduction' : `${videoSrc ? 'Watch' : 'Listen to'} Lesson ${lesson.page_id}`}</h2>
+            <h2 id="lesson-audio-heading">{scriptOnly ? 'Lesson introduction' : `${videoSrc || plannedVideo ? 'Watch' : 'Listen to'} Lesson ${lesson.page_id}`}</h2>
             {videoSrc ? <video key={videoSrc} controls playsInline preload="metadata" src={videoSrc} aria-label={`Lesson ${lesson.page_id} video`} style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 1rem' }}>Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
               Your browser does not support audio playback.
-            </audio> : scriptOnly ? null : <p className="review-only-panel">Audio will be available here.</p>}
+            </audio> : scriptOnly ? null : <p className="review-only-panel">{plannedVideo ? 'Video will be available here.' : 'Audio will be available here.'}</p>}
             {lesson.content.audio_overview_script ? (
               <details>
                 <summary>Read the lesson introduction</summary>

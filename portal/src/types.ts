@@ -3,6 +3,7 @@ export type LessonContent = {
   video_path?: string | null
   audio_path?: string | null
   audio_overview_script?: string
+  planned_media?: 'video' | 'audio'
   written_introduction?: string
   outcomes: string[]
   vocabulary: Record<string, string>

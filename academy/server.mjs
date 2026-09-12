@@ -55,6 +55,9 @@ export function createAcademyServer({ password, root, db, courseId }) {
     if (new URL(req.url, 'http://localhost').pathname === '/api/academy/workbooks/journey-five') {
       await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: true, workbookKey: 'journey-five' }); return
     }
+    if (new URL(req.url, 'http://localhost').pathname === '/api/academy/workbooks/journey-six') {
+      await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: true, workbookKey: 'journey-six' }); return
+    }
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return }
     try {
       const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)

@@ -21,12 +21,12 @@ const makeTransport = (workbookKey: string): Transport => async (method, patch):
   return result
 }
 
-export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?: string | null; workbookKey?: 'journey-one' | 'journey-three' | 'journey-four' | 'journey-five' }) {
+export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?: string | null; workbookKey?: 'journey-one' | 'journey-three' | 'journey-four' | 'journey-five' | 'journey-six' }) {
   const transport = useMemo(() => makeTransport(workbookKey), [workbookKey])
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const openingPage = workbookKey === 'journey-five' ? (lessonId === '5.6' ? 21 : lessonId === '5.5' ? 17 : lessonId === '5.3' ? 9 : lessonId === '5.2' ? 5 : 1) : workbookKey === 'journey-four' ? (lessonId === '4.2' ? 5 : 1) : workbookKey === 'journey-three' ? (lessonId === '3.1' ? 1 : lessonId === '3.2' ? 7 : lessonId === '3.3' ? 11 : lessonId === '3.4' ? 15 : lessonId === '3.5' ? 19 : lessonId === '3.6' ? 23 : undefined) : /^1\.[1-6]$/.test(lessonId ?? '') ? 5 + (Number(lessonId!.split('.')[1]) - 1) * 4 : undefined
+  const openingPage = workbookKey === 'journey-six' ? 1 : workbookKey === 'journey-five' ? (lessonId === '5.6' ? 21 : lessonId === '5.5' ? 17 : lessonId === '5.3' ? 9 : lessonId === '5.2' ? 5 : 1) : workbookKey === 'journey-four' ? (lessonId === '4.2' ? 5 : 1) : workbookKey === 'journey-three' ? (lessonId === '3.1' ? 1 : lessonId === '3.2' ? 7 : lessonId === '3.3' ? 11 : lessonId === '3.4' ? 15 : lessonId === '3.5' ? 19 : lessonId === '3.6' ? 23 : undefined) : /^1\.[1-6]$/.test(lessonId ?? '') ? 5 + (Number(lessonId!.split('.')[1]) - 1) * 4 : undefined
   useEffect(() => {
     let active = true
     void store.load().then(() => {

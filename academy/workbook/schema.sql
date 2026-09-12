@@ -1,7 +1,7 @@
 -- Independent workbook responses. Curriculum and lesson progress are untouched.
 create table public.aca_workbook_responses (
   course_id uuid not null references public.courses(id),
-  workbook_key text not null check (workbook_key in ('journey-one', 'journey-three', 'journey-four')),
+  workbook_key text not null check (workbook_key in ('journey-one', 'journey-three', 'journey-four', 'journey-five', 'journey-six')),
   scope_key text not null,
   learner_id uuid references auth.users(id) on delete cascade,
   answers jsonb not null default '{}'::jsonb check (jsonb_typeof(answers) = 'object' and octet_length(answers::text) <= 2000000),

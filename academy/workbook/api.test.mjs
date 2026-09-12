@@ -333,3 +333,24 @@ test('Lesson 5.6 opens only its four workbook pages and preserves earlier Journe
   const db=database(undefined,undefined,undefined,undefined,undefined,undefined,undefined,'published','published','published','published','published','published')
   assert.deepEqual((await workbookIdentity(req,db,'course',false,'journey-five')).allowedPages,Array.from({length:24},(_,i)=>i+1))
 })
+
+test('Journey Six opens only the four Lesson 6.1 workbook pages',async()=>{
+  const data={
+    enrollments:{status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}},
+    course_journeys:{id:'sixth-journey',status:'published'},
+    lessons:[{page_id:'6.1',status:'published',unlock_offset_days:0}],
+  }
+  const db={
+    auth:{async getUser(){return {data:{user:{id:'learner-a',is_anonymous:false}}}}},
+    from(table){
+      const query={
+        select(){return query},eq(){return query},in(){return query},
+        async maybeSingle(){return {data:data[table],error:null}},
+        then(resolve){return resolve({data:data[table],error:null})},
+      }
+      return query
+    },
+  }
+  const req={headers:{'x-aca-access-token':'learner-a'}}
+  assert.deepEqual((await workbookIdentity(req,db,'course',false,'journey-six')).allowedPages,[1,2,3,4])
+})
