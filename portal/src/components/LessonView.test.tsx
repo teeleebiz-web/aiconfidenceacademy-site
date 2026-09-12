@@ -69,6 +69,17 @@ describe('LessonView', () => {
     expect(link.nextElementSibling?.textContent).toBe('Guided practice')
   })
 
+  it('presents 5.5 with its curriculum and workbook but no substitute media',()=>{
+    const current={...lesson,page_id:'5.5'}
+    const href='/academy/phase-one/?workbook=journey-five&lesson=5.5'
+    const {container}=render(<LessonView lesson={current} workbookHref={href} reviewMode onBack={()=>{}} onSave={async()=>{}} />)
+    expect(container.querySelector('video,audio,details')).toBeNull()
+    const link=screen.getByRole('link',{name:'Open Workbook'})
+    expect(link.getAttribute('href')).toBe(href)
+    expect(link.getAttribute('target')).toBe('_blank')
+    expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+  })
+
   it('opens 4.1 without a media placeholder and accepts the later video without replacing its curriculum',()=>{
     const current={...lesson,page_id:'4.1'}
     const props={lesson:current,workbookHref:'/academy/phase-one/?workbook=journey-four&lesson=4.1',reviewMode:true,onBack:()=>{},onSave:async()=>{}}
