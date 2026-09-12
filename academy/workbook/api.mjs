@@ -1,7 +1,7 @@
 const allPages = Array.from({ length: 32 }, (_, index) => index + 1)
 const configurations = {
   'journey-four': { journey: 4, pages: [1, 2, 3, 4, 5, 6, 7, 8], start: 1, fallback: 1 },
-  'journey-five': { journey: 5, pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], start: 1, fallback: 1 },
+  'journey-five': { journey: 5, pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24], start: 1, fallback: 1 },
   'journey-one': { journey: 1, pages: allPages, start: 5, fallback: 2 },
   'journey-three': { journey: 3, pages: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26], start: 1, fallback: 1 },
 }
