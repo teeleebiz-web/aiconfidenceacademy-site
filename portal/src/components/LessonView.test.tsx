@@ -34,6 +34,18 @@ const lesson: Lesson = {
 }
 
 describe('LessonView', () => {
+  it('presents 5.1 as a video lesson with its workbook directly above practice',()=>{
+    const current={...lesson,page_id:'5.1'}
+    const href='/academy/phase-one/?workbook=journey-five&lesson=5.1'
+    const {container}=render(<LessonView lesson={current} videoSrc="/approved-5.1.mp4" workbookHref={href} reviewMode onBack={()=>{}} onSave={async()=>{}} />)
+    expect(container.querySelectorAll('video')).toHaveLength(1)
+    expect(container.querySelector('audio,details')).toBeNull()
+    const link=screen.getByRole('link',{name:'Open Workbook'})
+    expect(link.getAttribute('href')).toBe(href)
+    expect(link.getAttribute('target')).toBe('_blank')
+    expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+  })
+
   it('opens 4.1 without a media placeholder and accepts the later video without replacing its curriculum',()=>{
     const current={...lesson,page_id:'4.1'}
     const props={lesson:current,workbookHref:'/academy/phase-one/?workbook=journey-four&lesson=4.1',reviewMode:true,onBack:()=>{},onSave:async()=>{}}
