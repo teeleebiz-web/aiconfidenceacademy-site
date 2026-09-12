@@ -46,6 +46,18 @@ describe('LessonView', () => {
     expect(link.nextElementSibling?.textContent).toBe('Guided practice')
   })
 
+  it('presents 5.2 as an audio lesson with its script and workbook above practice',()=>{
+    const current={...lesson,page_id:'5.2',content:{...lesson.content,audio_overview_script:'Welcome to Lesson 5.2.'}}
+    const href='/academy/phase-one/?workbook=journey-five&lesson=5.2'
+    const {container}=render(<LessonView lesson={current} audioSrc="/approved-5.2.mp3" workbookHref={href} reviewMode onBack={()=>{}} onSave={async()=>{}} />)
+    expect(container.querySelectorAll('audio')).toHaveLength(1)
+    expect(container.querySelector('video')).toBeNull()
+    expect(screen.getByText('Read the lesson introduction')).toBeTruthy()
+    const link=screen.getByRole('link',{name:'Open Workbook'})
+    expect(link.getAttribute('href')).toBe(href)
+    expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+  })
+
   it('opens 4.1 without a media placeholder and accepts the later video without replacing its curriculum',()=>{
     const current={...lesson,page_id:'4.1'}
     const props={lesson:current,workbookHref:'/academy/phase-one/?workbook=journey-four&lesson=4.1',reviewMode:true,onBack:()=>{},onSave:async()=>{}}
