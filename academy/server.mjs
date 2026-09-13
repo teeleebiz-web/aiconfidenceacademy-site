@@ -77,7 +77,15 @@ export function createAcademyServer({ password, root, db, courseId }) {
           const name = isVideo ? lesson?.content?.video_path : lesson?.content?.audio_path
           if (!name || typeof name !== 'string') { res.writeHead(404); res.end(); return }
           const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(name, 3600)
-          if (error || !signed?.signedUrl) throw new Error('Lesson audio unavailable')
+          if (error || !signed?.signedUrl) {
+            console.error('Lesson media signing failed', {
+              lessonId: lesson?.id,
+              mediaKind: isVideo ? 'video' : 'audio',
+              objectName: name,
+              storageError: error?.message ?? 'No signed URL returned',
+            })
+            throw new Error(isVideo ? 'Lesson video unavailable' : 'Lesson audio unavailable')
+          }
           res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
         }
         let result = data
