@@ -37,12 +37,15 @@ beforeEach(() => {
 })
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
-it('places the Academy welcome film at the default Phase One entry', async () => {
+it('places the Academy welcome film before Getting Started with ChatGPT', async () => {
   window.history.replaceState(null, '', '/academy/phase-one/')
+  const user = userEvent.setup()
   const view = render(entry.element)
   expect(await screen.findByRole('heading', { level: 1, name: 'Welcome to the Academy' })).toBeTruthy()
   expect(view.container.querySelector('video')?.getAttribute('src')).toBe('/api/academy/academy-welcome-video')
-  expect(screen.getByRole('button', { name: 'Begin Journey 1' })).toBeTruthy()
+  await user.click(screen.getByRole('button', { name: 'Begin Journey 1' }))
+  expect(await screen.findByRole('heading', { level: 1, name: 'Getting Started with ChatGPT' })).toBeTruthy()
+  expect(window.location.search).toBe('?view=getting-started')
 })
 
 it('opens the approved 3.1 video from the old welcome address after the duplicate is removed', async () => {
