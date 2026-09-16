@@ -37,6 +37,14 @@ beforeEach(() => {
 })
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
+it('places the Academy welcome film at the default Phase One entry', async () => {
+  window.history.replaceState(null, '', '/academy/phase-one/')
+  const view = render(entry.element)
+  expect(await screen.findByRole('heading', { level: 1, name: 'Welcome to the Academy' })).toBeTruthy()
+  expect(view.container.querySelector('video')?.getAttribute('src')).toBe('/api/academy/academy-welcome-video')
+  expect(screen.getByRole('button', { name: 'Begin Journey 1' })).toBeTruthy()
+})
+
 it('opens the approved 3.1 video from the old welcome address after the duplicate is removed', async () => {
   window.history.replaceState(null, '', '/academy/phase-one/?journey=3')
   const view = render(entry.element)
@@ -51,7 +59,7 @@ it('opens the approved 3.1 video from the old welcome address after the duplicat
 
 it('offers one lesson entry even if an obsolete welcome is returned, and opens the approved video', async () => {
   curriculum.introductions = [obsoleteIntroduction]
-  window.history.replaceState(null, '', '/academy/phase-one/')
+  window.history.replaceState(null, '', '/academy/phase-one/?view=overview')
   const user = userEvent.setup()
   render(entry.element)
   const lessonButton = await screen.findByRole('button', { name: /Opening lesson.*Open lesson/ })

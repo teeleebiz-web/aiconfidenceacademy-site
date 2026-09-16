@@ -74,7 +74,7 @@ it('reopens lesson 2.6 and its video directly when the current review address is
 })
 
 it('preserves the general curriculum entry and connects its existing Journey Two welcome button', async () => {
-  window.history.replaceState(null, '', '/academy/phase-one/')
+  window.history.replaceState(null, '', '/academy/phase-one/?view=overview')
   const user = userEvent.setup()
   render(entry.element)
   const welcome = await screen.findByRole('button', { name: /Watch Journey 2 Welcome Video/ })

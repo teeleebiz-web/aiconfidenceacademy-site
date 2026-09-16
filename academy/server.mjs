@@ -13,6 +13,7 @@ const exploreVideos = new Map([
   ['02', 'explore-chatgpt/ACA-Explore-ChatGPT-02.mp4'],
   ['03', 'explore-chatgpt/ACA-Explore-ChatGPT-03.mp4'],
 ])
+const academyWelcomeVideo = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
 export function createAcademyServer({ password, root, db, courseId }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
@@ -66,6 +67,11 @@ export function createAcademyServer({ password, root, db, courseId }) {
         if (!name) { res.writeHead(404); res.end(); return }
         const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(name, 3600)
         if (error || !signed?.signedUrl) throw new Error('Walkthrough video unavailable')
+        res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
+      }
+      if (path === '/api/academy/academy-welcome-video') {
+        const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(academyWelcomeVideo, 3600)
+        if (error || !signed?.signedUrl) throw new Error('Academy welcome video unavailable')
         res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
       }
       if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {

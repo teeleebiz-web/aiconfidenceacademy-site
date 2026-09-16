@@ -68,6 +68,30 @@ test('Explore ChatGPT signs only its three approved videos after authentication'
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
 })
 
+test('Academy welcome endpoint signs only the approved film after authentication', async () => {
+  const signedPaths = []
+  const db = { storage: { from(bucket) {
+    assert.equal(bucket, 'aca-learning-media')
+    return { async createSignedUrl(path, expiresIn) {
+      signedPaths.push(path)
+      assert.equal(expiresIn, 3600)
+      return { data: { signedUrl: 'https://example.com/signed-academy-welcome' } }
+    } }
+  } } }
+  const server = createAcademyServer({ password: 'test-only-long-construction-password', root: tmpdir(), courseId: 'test-course', db })
+  server.listen(0, '127.0.0.1'); await once(server, 'listening')
+  const url = `http://127.0.0.1:${server.address().port}/api/academy/academy-welcome-video`
+  const headers = { Authorization: 'Basic ' + Buffer.from('academy:test-only-long-construction-password').toString('base64') }
+  try {
+    assert.equal((await fetch(url)).status, 401)
+    assert.equal((await fetch(url, { headers, method: 'POST' })).status, 405)
+    const response = await fetch(url + '?path=other.mp4', { headers, redirect: 'manual' })
+    assert.equal(response.status, 302)
+    assert.equal(response.headers.get('location'), 'https://example.com/signed-academy-welcome')
+    assert.deepEqual(signedPaths, ['academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'])
+  } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
+})
+
 test('lesson audio signs only a saved path for a lesson in the configured course', async () => {
   const signedPaths = []
   const db = {

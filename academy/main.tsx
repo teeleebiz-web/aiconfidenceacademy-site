@@ -17,6 +17,7 @@ async function read<T>(path: string): Promise<T> {
   return response.json()
 }
 function Academy() {
+  const initialParams = new URLSearchParams(window.location.search)
   const requestedWorkbook = new URLSearchParams(window.location.search).get('workbook')
   const workbookKey = requestedWorkbook === 'journey-six' ? 'journey-six' : requestedWorkbook === 'journey-five' ? 'journey-five' : requestedWorkbook === 'journey-four' ? 'journey-four' : requestedWorkbook === 'journey-three' ? 'journey-three' : 'journey-one'
   const isWorkbook = requestedWorkbook === 'journey-one' || requestedWorkbook === 'journey-three' || requestedWorkbook === 'journey-four' || requestedWorkbook === 'journey-five' || requestedWorkbook === 'journey-six'
@@ -26,11 +27,15 @@ function Academy() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [setup, setSetup] = useState(() => new URLSearchParams(window.location.search).get('view') === 'getting-started')
+  const [academyWelcome, setAcademyWelcome] = useState(() => {
+    const view = initialParams.get('view')
+    return view === 'welcome' || (!view && !initialParams.has('lesson') && !initialParams.has('journey') && !initialParams.has('workbook'))
+  })
   useEffect(() => { if (isWorkbook) return; read<Curriculum>('/api/academy/phase-one').then(async curriculum => {
     setData(curriculum)
     const params = new URLSearchParams(window.location.search)
     const requested = curriculum.lessons.find(item => item.page_id === params.get('lesson'))
-    if (requested) { setSetup(false); setLesson(requested); return }
+    if (requested) { setSetup(false); setAcademyWelcome(false); setLesson(requested); return }
     if (params.get('journey') === '3') {
       const journey = curriculum.journeys.find(item => item.journey_number === 3)
       const firstLesson = curriculum.lessons.find(item => item.journey_id === journey?.id && item.page_id === '3.1')
@@ -65,20 +70,15 @@ function Academy() {
     finally { setBusy(false) }
   }
   function openLesson(next: Lesson) {
-    const params = new URLSearchParams(window.location.search)
-    if (next.page_id.startsWith('2.') || params.get('lesson')?.startsWith('2.') || params.get('journey') === '2') {
-      window.history.replaceState(null, '', '/academy/phase-one/?lesson=' + encodeURIComponent(next.page_id))
-    }
-    if (next.page_id.startsWith('3.') || params.get('journey') === '3' || params.get('lesson')?.startsWith('3.')) window.history.replaceState(null, '', '/academy/phase-one/?lesson=' + encodeURIComponent(next.page_id))
-    if (/^[456]\.[1-6]$/.test(next.page_id)) window.history.replaceState(null, '', `/academy/phase-one/?lesson=${encodeURIComponent(next.page_id)}`)
-    setSetup(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0)
+    window.history.replaceState(null, '', '/academy/phase-one/?lesson=' + encodeURIComponent(next.page_id))
+    setSetup(false); setAcademyWelcome(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0)
   }
   return <div className={`portal-shell${(isWorkbook && ['journey-four', 'journey-five', 'journey-six'].includes(workbookKey)) || (!isWorkbook && !setup && !welcome && /^[456]\.[1-6]$/.test(lesson?.page_id ?? '')) ? ' aca-lesson-41' : ''}`}>
     <header className="portal-header"><a className="portal-brand" href="/">AI Confidence Academy</a><a href="/academy/phase-one/">Phase One</a></header>
     {error && <p role="alert" className="global-error">{error}</p>}
     {isWorkbook && <Workbook key={workbookKey} workbookKey={workbookKey} lessonId={new URLSearchParams(window.location.search).get('lesson')} />}
     {!isWorkbook && !data && !error && <p className="loading-screen">Loading Phase One…</p>}
-    {!isWorkbook && data && (setup ? <GettingStarted onBack={() => setSetup(false)} onContinue={data.lessons.some(l => l.page_id === '1.1') ? () => openLesson(data.lessons.find(l => l.page_id === '1.1')!) : undefined} /> : welcome ? <JourneyIntroductionView {...welcome} workbookHref={welcome.introduction.content.roadmap[0]?.page_id === '3.1' ? '/academy/phase-one/?workbook=journey-three&lesson=3.1' : undefined} onBack={() => setWelcome(null)} onContinue={() => { const next = data.lessons.find(l => l.journey_id === welcome.introduction.journey_id); if(next) openLesson(next) }} />
+    {!isWorkbook && data && (academyWelcome ? <main className="academy-welcome-main"><section className="academy-welcome-panel" aria-labelledby="academy-welcome-title"><p className="eyebrow">AI Confidence Academy</p><h1 id="academy-welcome-title">Welcome to the Academy</h1><p className="academy-welcome-introduction">Before you begin Journey 1, hear from the founders and instructors who will accompany you through Phase One.</p><div className="academy-welcome-player"><video controls preload="metadata" playsInline src="/api/academy/academy-welcome-video">Your browser does not support the Academy welcome film.</video></div><button className="academy-welcome-continue" onClick={() => { const firstLesson = data.lessons.find(l => l.page_id === '1.1'); if (firstLesson) openLesson(firstLesson); else setError('Journey One could not load. Please try again.') }}>Begin Journey 1</button></section></main> : setup ? <GettingStarted onBack={() => setSetup(false)} onContinue={data.lessons.some(l => l.page_id === '1.1') ? () => openLesson(data.lessons.find(l => l.page_id === '1.1')!) : undefined} /> : welcome ? <JourneyIntroductionView {...welcome} workbookHref={welcome.introduction.content.roadmap[0]?.page_id === '3.1' ? '/academy/phase-one/?workbook=journey-three&lesson=3.1' : undefined} onBack={() => setWelcome(null)} onContinue={() => { const next = data.lessons.find(l => l.journey_id === welcome.introduction.journey_id); if(next) openLesson(next) }} />
       : lesson ? <>
         <LessonView key={lesson.id} lesson={lesson} workbookHref={/^6\.[1-6]$/.test(lesson.page_id) ? `/academy/phase-one/?workbook=journey-six&lesson=${encodeURIComponent(lesson.page_id)}` : /^5\.[1-6]$/.test(lesson.page_id) ? `/academy/phase-one/?workbook=journey-five&lesson=${encodeURIComponent(lesson.page_id)}` : /^4\.[1-6]$/.test(lesson.page_id) ? `/academy/phase-one/?workbook=journey-four&lesson=${encodeURIComponent(lesson.page_id)}` : /^1\.[1-6]$/.test(lesson.page_id) ? `/academy/phase-one/?workbook=journey-one&lesson=${encodeURIComponent(lesson.page_id)}` : ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6'].includes(lesson.page_id) ? `/academy/phase-one/?workbook=journey-three&lesson=${encodeURIComponent(lesson.page_id)}` : undefined} videoSrc={lesson.content.video_path ? `/api/academy/lesson-video/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.video_path)}` : undefined} audioSrc={lesson.content.audio_path ? `/api/academy/lesson-audio/${encodeURIComponent(lesson.id)}?v=${encodeURIComponent(lesson.content.audio_path)}` : undefined} audioPreload={data.journeys.some(journey => journey.journey_number === 2 && journey.id === lesson.journey_id) ? 'metadata' : 'none'} reviewMode previousLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)-1]} nextLesson={data.lessons[data.lessons.findIndex(l => l.id === lesson.id)+1]} onBack={() => setLesson(null)} onOpenLesson={openLesson} onSave={async () => { throw new Error('Progress recording is unavailable during construction review.') }} />
       </>
