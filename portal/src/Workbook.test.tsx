@@ -16,11 +16,11 @@ it('opens the approved pages, saves typed answers and restores the page after re
   await screen.findByRole('heading',{level:1,name:'Practice page 5'})
   const input=screen.getByRole('textbox',{name:'My answer'}) as HTMLTextAreaElement
   fireEvent.change(input,{target:{value:'I want to use AI with confidence.'}})
-  fireEvent.click(screen.getByRole('button',{name:'Save',exact:true}))
+  fireEvent.click(screen.getByRole('button',{name:/^Save$/}))
   await waitFor(()=>expect(screen.getByText('Saved',{exact:true})).not.toBeNull())
   const fieldId=input.id
   fireEvent.change(screen.getByLabelText('Choose a page'),{target:{value:'6'}})
-  fireEvent.click(screen.getByRole('button',{name:'Save',exact:true}))
+  fireEvent.click(screen.getByRole('button',{name:/^Save$/}))
   await waitFor(()=>expect(record.last_page).toBe(6))
   first.unmount();render(<Workbook />)
   await waitFor(()=>expect((screen.getByLabelText('Choose a page') as HTMLSelectElement).value).toBe('6'))
@@ -60,7 +60,7 @@ it('opens and saves the third workbook through its own endpoint with compact fie
   const input=screen.getByRole('textbox',{name:'Name'}) as HTMLTextAreaElement
   expect(input.rows).toBe(1)
   fireEvent.change(input,{target:{value:'Practice learner'}})
-  fireEvent.click(screen.getByRole('button',{name:'Save',exact:true}))
+  fireEvent.click(screen.getByRole('button',{name:/^Save$/}))
   await waitFor(()=>expect(screen.getByText('Saved',{exact:true})).toBeTruthy())
   expect(record.answers['third-name']).toBe('Practice learner')
   expect(request.mock.calls.every(([url])=>url==='/api/academy/workbooks/journey-three')).toBe(true)
