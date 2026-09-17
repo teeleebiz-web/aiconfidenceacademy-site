@@ -77,6 +77,7 @@ it('preserves the general curriculum entry and connects its existing Journey Two
   window.history.replaceState(null, '', '/academy/phase-one/?view=overview')
   const user = userEvent.setup()
   render(entry.element)
+  expect(screen.getByRole('link', { name: 'Full Curriculum' }).getAttribute('href')).toBe('/academy/phase-one/?view=curriculum')
   const welcome = await screen.findByRole('button', { name: /Watch Journey 2 Welcome Video/ })
   expect(screen.getAllByRole('button', { name: /Open lesson/ })).toHaveLength(6)
   await user.click(welcome)
