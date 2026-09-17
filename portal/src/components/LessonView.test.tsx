@@ -110,6 +110,8 @@ describe('LessonView', () => {
     const {container}=render(<LessonView lesson={current} videoSrc="/approved-6.1.mp4" reviewMode onBack={()=>{}} onSave={async()=>{}} />)
     const video=container.querySelector('video')!
     Object.defineProperty(video,'duration',{configurable:true,value:259.2})
+    expect(video.getAttribute('preload')).toBe('auto')
+    expect(decodeURIComponent(video.getAttribute('poster')!)).toContain('From Random Use to a')
 
     const pause=vi.spyOn(video,'pause')
     Object.defineProperty(video,'paused',{configurable:true,value:false})
