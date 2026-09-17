@@ -16,10 +16,16 @@ export class WorkbookStore {
   snapshot = () => this.state
   private update(next: Partial<WorkbookState>) { this.state = { ...this.state, ...next }; this.listeners.forEach(fn => fn()) }
   get pending() { return Object.keys(this.dirty).length > 0 || this.pageDirty }
-  async load() {
+  async load(openingPage?: number) {
     this.active = true
     const generation = ++this.loadGeneration
-    try { const record = await this.transport('GET'); if (this.active && generation === this.loadGeneration) this.update({ ...record, status: 'saved', message: '' }) }
+    try {
+      const record = await this.transport('GET')
+      if (this.active && generation === this.loadGeneration) {
+        const last_page = openingPage !== undefined && record.allowedPages.includes(openingPage) ? openingPage : record.last_page
+        this.update({ ...record, last_page, status: 'saved', message: '' })
+      }
+    }
     catch (e) { if (this.active && generation === this.loadGeneration) this.update({ status: 'error', message: (e as Error).message }) }
   }
   change(id: string, value: string) {
