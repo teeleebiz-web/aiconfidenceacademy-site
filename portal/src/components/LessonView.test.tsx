@@ -111,11 +111,19 @@ describe('LessonView', () => {
     const video=container.querySelector('video')!
     Object.defineProperty(video,'duration',{configurable:true,value:259.2})
 
-    fireEvent.ended(video)
-    expect(video.currentTime).toBeCloseTo(258.95)
+    const pause=vi.spyOn(video,'pause')
+    Object.defineProperty(video,'paused',{configurable:true,value:false})
+    video.currentTime=258.3
+    fireEvent.timeUpdate(video)
+    expect(pause).toHaveBeenCalledOnce()
+    expect(video.currentTime).toBeCloseTo(257.95)
 
     fireEvent.play(video)
     expect(video.currentTime).toBe(0)
+
+    video.currentTime=259.2
+    fireEvent.ended(video)
+    expect(video.currentTime).toBeCloseTo(257.95)
   })
 
   it('opens 4.1 without a media placeholder and accepts the later video without replacing its curriculum',()=>{
