@@ -1,6 +1,23 @@
 import { useEffect, useState } from 'react'
 import type { Lesson, LessonProgress } from '../types'
 
+const lesson61OpeningPoster = `data:image/svg+xml,${encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <rect width="1920" height="1080" fill="#0f2a45"/>
+    <rect x="50" y="50" width="1820" height="980" fill="none" stroke="#d4b36b" stroke-width="2"/>
+    <rect x="75" y="75" width="1770" height="930" fill="none" stroke="#8f7745" stroke-width="1"/>
+    <path d="M75 150V75h75 M1770 75h75v75 M75 930v75h75 M1770 1005h75v-75" fill="none" stroke="#657185" stroke-width="2"/>
+    <image href="/academy/phase-one/assets/aca-official-seal-IUAiN9gn.png" x="160" y="285" width="510" height="510" preserveAspectRatio="xMidYMid meet"/>
+    <text x="825" y="367" fill="#d4b36b" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" letter-spacing="8">LESSON 6.1</text>
+    <text x="820" y="468" fill="#ffffff" font-family="DejaVu Serif,Georgia,serif" font-size="66">
+      <tspan x="820" dy="0">From Random Use to a</tspan>
+      <tspan x="820" dy="90">Personal Workflow</tspan>
+    </text>
+    <line x1="825" y1="680" x2="945" y2="680" stroke="#d4b36b" stroke-width="3"/>
+    <text x="825" y="752" fill="#dce3ec" font-family="DejaVu Sans,Arial,sans-serif" font-size="31" letter-spacing="1.5">AI Confidence Academy</text>
+  </svg>
+`)}`
+
 type LessonViewProps = {
   lesson: Lesson
   videoSrc?: string
@@ -92,7 +109,8 @@ export function LessonView({
               key={videoSrc}
               controls
               playsInline
-              preload="metadata"
+              preload={lesson.page_id === '6.1' ? 'auto' : 'metadata'}
+              poster={lesson.page_id === '6.1' ? lesson61OpeningPoster : undefined}
               src={videoSrc}
               aria-label={`Lesson ${lesson.page_id} video`}
               onTimeUpdate={(event) => {
