@@ -6,7 +6,7 @@ it('offers the official device links and the relevant return instructions', asyn
   const user = userEvent.setup()
   render(<GettingStarted onBack={() => {}} />)
   expect(screen.getByRole('link', { name: 'Open ChatGPT in a new tab' }).getAttribute('href')).toBe('https://chatgpt.com')
-  await user.click(screen.getByRole('radio', { name: 'iPhone', exact: true }))
+  await user.click(screen.getByRole('radio', { name: /^iPhone$/ }))
   expect(screen.getByRole('link', { name: 'Open ChatGPT in the App Store' }).getAttribute('href')).toContain('id6448311069')
   expect(screen.queryByRole('img')).toBeNull()
   await user.click(screen.getByRole('radio', { name: 'Android phone' }))
