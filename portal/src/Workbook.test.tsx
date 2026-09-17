@@ -1,10 +1,21 @@
 import { StrictMode } from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
-import { Workbook } from '../../academy/workbook/Workbook'
+import { Workbook, workbookOpeningPage } from '../../academy/workbook/Workbook'
 const auth=vi.hoisted(()=>({getSession:vi.fn(async()=>({data:{session:null}})),onAuthStateChange:vi.fn(()=>({data:{subscription:{unsubscribe:vi.fn()}}}))}))
 vi.mock('./lib/supabase',()=>({supabase:{auth}}))
 afterEach(()=>vi.restoreAllMocks())
+it('maps every journey lesson to its exact workbook section',()=>{
+  const starts={
+    'journey-one':[5,9,13,17,21,25],
+    'journey-two':[1,5,9,13,17,21],
+    'journey-three':[1,7,11,15,19,23],
+    'journey-four':[1,5,9,13,17,21],
+    'journey-five':[1,5,9,13,17,21],
+    'journey-six':[1,5,9,13,17,21],
+  } as const
+  Object.entries(starts).forEach(([key,pages],journeyIndex)=>pages.forEach((page,lessonIndex)=>expect(workbookOpeningPage(key as keyof typeof starts,`${journeyIndex+1}.${lessonIndex+1}`)).toBe(page)))
+})
 it('opens the approved pages, saves typed answers and restores the page after reopening',async()=>{
   let record={answers:{} as Record<string,string>,last_page:5,revision:0,updated_at:null as string|null,allowedPages:Array.from({length:32},(_,i)=>i+1),scope:'owner-review',workbook:{key:'journey-one',version:1,title:'Workbook test fixture',pages:Array.from({length:32},(_,i)=>({number:i+1,kicker:'Practice',title:`Practice page ${i+1}`,blocks:[{type:'field',id:`field-${i+1}`,label:'My answer'}]}))}}
   const request=vi.spyOn(globalThis,'fetch').mockImplementation(async(_url,init)=>{
@@ -16,15 +27,17 @@ it('opens the approved pages, saves typed answers and restores the page after re
   await screen.findByRole('heading',{level:1,name:'Practice page 5'})
   const input=screen.getByRole('textbox',{name:'My answer'}) as HTMLTextAreaElement
   fireEvent.change(input,{target:{value:'I want to use AI with confidence.'}})
-  fireEvent.click(screen.getByRole('button',{name:/^Save$/}))
+  fireEvent.click(screen.getByRole('button',{name:'Save',exact:true}))
   await waitFor(()=>expect(screen.getByText('Saved',{exact:true})).not.toBeNull())
   const fieldId=input.id
-  fireEvent.change(screen.getByLabelText('Choose a page'),{target:{value:'6'}})
-  fireEvent.click(screen.getByRole('button',{name:/^Save$/}))
+  fireEvent.click(screen.getByRole('button',{name:'Next page →'}))
+  fireEvent.click(screen.getByRole('button',{name:'Save',exact:true}))
   await waitFor(()=>expect(record.last_page).toBe(6))
   first.unmount();render(<Workbook />)
-  await waitFor(()=>expect((screen.getByLabelText('Choose a page') as HTMLSelectElement).value).toBe('6'))
-  fireEvent.change(screen.getByLabelText('Choose a page'),{target:{value:'5'}})
+  await screen.findByRole('heading',{level:1,name:'Practice page 6'})
+  expect((screen.getByLabelText('Choose a lesson') as HTMLSelectElement).value).toBe('5')
+  expect(screen.getAllByRole('option')).toHaveLength(6)
+  fireEvent.change(screen.getByLabelText('Choose a lesson'),{target:{value:'5'}})
   expect((document.getElementById(fieldId) as HTMLTextAreaElement).value).toBe('I want to use AI with confidence.')
   expect(request.mock.calls.every(([url])=>url==='/api/academy/workbooks/journey-one')).toBe(true)
 })
@@ -43,7 +56,7 @@ it('does not open a workbook section outside the account’s allowed pages',asyn
   vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
   const view=render(<Workbook lessonId="1.6" />)
   await screen.findByRole('heading',{level:1,name:'Available section'})
-  expect((screen.getByLabelText('Choose a page') as HTMLSelectElement).value).toBe('5')
+  expect((screen.getByLabelText('Choose a lesson') as HTMLSelectElement).value).toBe('5')
   view.unmount()
 })
 
@@ -60,7 +73,7 @@ it('opens and saves the third workbook through its own endpoint with compact fie
   const input=screen.getByRole('textbox',{name:'Name'}) as HTMLTextAreaElement
   expect(input.rows).toBe(1)
   fireEvent.change(input,{target:{value:'Practice learner'}})
-  fireEvent.click(screen.getByRole('button',{name:/^Save$/}))
+  fireEvent.click(screen.getByRole('button',{name:'Save',exact:true}))
   await waitFor(()=>expect(screen.getByText('Saved',{exact:true})).toBeTruthy())
   expect(record.answers['third-name']).toBe('Practice learner')
   expect(request.mock.calls.every(([url])=>url==='/api/academy/workbooks/journey-three')).toBe(true)
