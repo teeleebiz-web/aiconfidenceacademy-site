@@ -95,13 +95,24 @@ export function LessonView({
               preload="metadata"
               src={videoSrc}
               aria-label={`Lesson ${lesson.page_id} video`}
+              onTimeUpdate={(event) => {
+                if (
+                  lesson.page_id === '6.1' &&
+                  Number.isFinite(event.currentTarget.duration) &&
+                  !event.currentTarget.paused &&
+                  event.currentTarget.currentTime >= event.currentTarget.duration - 1
+                ) {
+                  event.currentTarget.pause()
+                  event.currentTarget.currentTime = Math.max(0, event.currentTarget.duration - 1.25)
+                }
+              }}
               onEnded={(event) => {
                 if (lesson.page_id === '6.1') {
-                  event.currentTarget.currentTime = Math.max(0, event.currentTarget.duration - 0.25)
+                  event.currentTarget.currentTime = Math.max(0, event.currentTarget.duration - 1.25)
                 }
               }}
               onPlay={(event) => {
-                if (lesson.page_id === '6.1' && event.currentTarget.currentTime >= event.currentTarget.duration - 0.3) {
+                if (lesson.page_id === '6.1' && event.currentTarget.currentTime >= event.currentTarget.duration - 1.3) {
                   event.currentTarget.currentTime = 0
                 }
               }}
