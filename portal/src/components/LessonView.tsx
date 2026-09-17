@@ -88,7 +88,25 @@ export function LessonView({
         {videoSrc || audioSrc || lesson.content.audio_overview_script ? (
           <section className="practice-panel" aria-labelledby="lesson-audio-heading">
             <h2 id="lesson-audio-heading">{scriptOnly ? 'Lesson introduction' : `${videoSrc || plannedVideo ? 'Watch' : 'Listen to'} Lesson ${lesson.page_id}`}</h2>
-            {videoSrc ? <video key={videoSrc} controls playsInline preload="metadata" src={videoSrc} aria-label={`Lesson ${lesson.page_id} video`} style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 1rem' }}>Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
+            {videoSrc ? <video
+              key={videoSrc}
+              controls
+              playsInline
+              preload="metadata"
+              src={videoSrc}
+              aria-label={`Lesson ${lesson.page_id} video`}
+              onEnded={(event) => {
+                if (lesson.page_id === '6.1') {
+                  event.currentTarget.currentTime = Math.max(0, event.currentTarget.duration - 0.25)
+                }
+              }}
+              onPlay={(event) => {
+                if (lesson.page_id === '6.1' && event.currentTarget.currentTime >= event.currentTarget.duration - 0.3) {
+                  event.currentTarget.currentTime = 0
+                }
+              }}
+              style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 1rem' }}
+            >Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
               Your browser does not support audio playback.
             </audio> : scriptOnly ? null : <p className="review-only-panel">{plannedVideo ? 'Video will be available here.' : 'Audio will be available here.'}</p>}
             {lesson.content.audio_overview_script ? (
