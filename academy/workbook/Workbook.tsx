@@ -21,19 +21,32 @@ const makeTransport = (workbookKey: string): Transport => async (method, patch):
   return result
 }
 
-export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?: string | null; workbookKey?: 'journey-one' | 'journey-two' | 'journey-three' | 'journey-four' | 'journey-five' | 'journey-six' }) {
+type WorkbookKey = 'journey-one' | 'journey-two' | 'journey-three' | 'journey-four' | 'journey-five' | 'journey-six'
+const lessonStartPages: Record<WorkbookKey, number[]> = {
+  'journey-one': [5, 9, 13, 17, 21, 25],
+  'journey-two': [1, 5, 9, 13, 17, 21],
+  'journey-three': [1, 7, 11, 15, 19, 23],
+  'journey-four': [1, 5, 9, 13, 17, 21],
+  'journey-five': [1, 5, 9, 13, 17, 21],
+  'journey-six': [1, 5, 9, 13, 17, 21],
+}
+const journeyNumbers: Record<WorkbookKey, number> = { 'journey-one': 1, 'journey-two': 2, 'journey-three': 3, 'journey-four': 4, 'journey-five': 5, 'journey-six': 6 }
+export const workbookOpeningPage = (workbookKey: WorkbookKey, lessonId?: string | null) => {
+  const journeyNumber = journeyNumbers[workbookKey]
+  const match = lessonId?.match(/^(\d)\.([1-6])$/)
+  if (!match || Number(match[1]) !== journeyNumber) return undefined
+  return lessonStartPages[workbookKey][Number(match[2]) - 1]
+}
+
+export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?: string | null; workbookKey?: WorkbookKey }) {
   const transport = useMemo(() => makeTransport(workbookKey), [workbookKey])
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
   const titleRef = useRef<HTMLHeadingElement>(null)
-  const fourPageJourney = ['journey-two', 'journey-four', 'journey-five', 'journey-six'].includes(workbookKey)
-  const openingPage = fourPageJourney && /^[2456]\.[1-6]$/.test(lessonId ?? '') ? 1 + (Number(lessonId!.split('.')[1]) - 1) * 4 : workbookKey === 'journey-three' ? (lessonId === '3.1' ? 1 : lessonId === '3.2' ? 7 : lessonId === '3.3' ? 11 : lessonId === '3.4' ? 15 : lessonId === '3.5' ? 19 : lessonId === '3.6' ? 23 : undefined) : /^1\.[1-6]$/.test(lessonId ?? '') ? 5 + (Number(lessonId!.split('.')[1]) - 1) * 4 : undefined
+  const openingPage = workbookOpeningPage(workbookKey, lessonId)
   useEffect(() => {
-    let active = true
-    void store.load().then(() => {
-      if (active && openingPage !== undefined && store.state.last_page !== openingPage) store.page(openingPage)
-    })
-    return () => { active = false; store.dispose() }
+    void store.load(openingPage)
+    return () => store.dispose()
   }, [store, openingPage])
   useEffect(() => {
     let previous: string | null | undefined
@@ -52,6 +65,14 @@ export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?:
   }, [store])
   const data = state.workbook
   const page = data?.pages.find(p => p.number === state.last_page)
+  const journeyNumber = journeyNumbers[workbookKey]
+  const lessonStarts = lessonStartPages[workbookKey]
+  const currentLessonStart = lessonStarts.find((start, index) => state.last_page >= start && state.last_page < (lessonStarts[index + 1] ?? Number.POSITIVE_INFINITY)) ?? lessonStarts[0]
+  const lessonLinks = lessonStarts.map((start, index) => ({
+    page: start,
+    lesson: `${journeyNumber}.${index + 1}`,
+    title: data?.pages.find(item => item.number === start)?.title ?? `Lesson ${journeyNumber}.${index + 1}`,
+  }))
   const move = (number: number) => {
     store.page(number)
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -82,7 +103,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?:
     </div>
     {state.message && <p className="wb-error" role="alert">{state.message}</p>}
     <div className="wb-layout">
-      <nav className="wb-navigation" aria-label="Workbook pages"><p className="wb-eyebrow">{data.navigationLabel ?? 'Journey One workbook'}</p><label htmlFor="wb-page-select">Choose a page</label><select id="wb-page-select" value={state.last_page} onChange={e => move(Number(e.target.value))}>{data.pages.map(p => <option key={p.number} value={p.number} disabled={!state.allowedPages.includes(p.number)}>{p.number}. {p.title}</option>)}</select><p>Your answers save as you write. You can also select Save.</p><div className="wb-chapters">{(data.contents ?? [{ page:2, text:'Your workbook guide' }, ...[1,2,3,4,5,6].map(n => ({ page:5+(n-1)*4, text:`${n}. ${data.pages.find(p => p.number === 5+(n-1)*4)?.title ?? 'Lesson available later'}` })),{ page:29, text:'Self Check Guide' },{ page:31, text:'Practice Log' }]).map(item => <button key={item.page} onClick={() => move(item.page)} disabled={!state.allowedPages.includes(item.page)} aria-current={(workbookKey !== 'journey-one' ? state.last_page === item.page : state.last_page >= item.page && state.last_page < (item.page <= 25 && item.page >= 5 ? item.page+4 : item.page+2)) ? 'page' : undefined}>{item.text}</button>)}</div></nav>
+      <nav className="wb-navigation" aria-label={`Journey ${journeyNumber} workbook lessons`}><p className="wb-eyebrow">{data.navigationLabel ?? 'Journey One workbook'}</p><label htmlFor="wb-page-select">Choose a lesson</label><select id="wb-page-select" value={currentLessonStart} onChange={e => move(Number(e.target.value))}>{lessonLinks.map(item => <option key={item.lesson} value={item.page} disabled={!state.allowedPages.includes(item.page)}>{item.lesson}. {item.title}</option>)}</select><p>Your answers save as you write. You can also select Save.</p><div className="wb-chapters">{lessonLinks.map(item => <button key={item.lesson} onClick={() => move(item.page)} disabled={!state.allowedPages.includes(item.page)} aria-current={currentLessonStart === item.page ? 'page' : undefined}><strong>Lesson {item.lesson}</strong><span>{item.title}</span></button>)}</div></nav>
       <article className="wb-paper" aria-label={`Workbook page ${page.number}`}>
         <header className="wb-page-hero"><p className="wb-eyebrow">{page.kicker.replaceAll('  /  ', ' · ')}</p><h1 ref={titleRef} tabIndex={-1}>{page.title}</h1>{page.number === 1 && <><img src={sealUrl} alt="AI Confidence Academy seal" /><p>{data.subtitle ?? 'Learner Workbook and Practice Log · Lessons 1.1–1.6'}</p></>}</header>
         <div className="wb-page-body">{page.blocks.map((block, i) => render(block as Block, i))}</div>
