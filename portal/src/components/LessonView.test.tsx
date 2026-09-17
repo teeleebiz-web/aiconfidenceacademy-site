@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { LessonView } from './LessonView'
 import type { Lesson } from '../types'
@@ -103,6 +103,19 @@ describe('LessonView', () => {
     const link=screen.getByRole('link',{name:'Open Workbook'})
     expect(link.getAttribute('href')).toBe(href)
     expect(link.nextElementSibling?.textContent).toBe('Guided practice')
+  })
+
+  it('holds the Lesson 6.1 ending card and restarts cleanly when replayed',()=>{
+    const current={...lesson,page_id:'6.1'}
+    const {container}=render(<LessonView lesson={current} videoSrc="/approved-6.1.mp4" reviewMode onBack={()=>{}} onSave={async()=>{}} />)
+    const video=container.querySelector('video')!
+    Object.defineProperty(video,'duration',{configurable:true,value:259.2})
+
+    fireEvent.ended(video)
+    expect(video.currentTime).toBeCloseTo(258.95)
+
+    fireEvent.play(video)
+    expect(video.currentTime).toBe(0)
   })
 
   it('opens 4.1 without a media placeholder and accepts the later video without replacing its curriculum',()=>{
