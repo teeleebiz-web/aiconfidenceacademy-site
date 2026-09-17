@@ -74,7 +74,7 @@ function Academy() {
     setSetup(false); setAcademyWelcome(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0)
   }
   return <div className={`portal-shell${(isWorkbook && ['journey-two', 'journey-four', 'journey-five', 'journey-six'].includes(workbookKey)) || (!isWorkbook && !setup && !welcome && /^[456]\.[1-6]$/.test(lesson?.page_id ?? '')) ? ' aca-lesson-41' : ''}`}>
-    <header className="portal-header"><a className="portal-brand" href="/">AI Confidence Academy</a><a href="/academy/phase-one/">Phase One</a></header>
+    <header className="portal-header"><a className="portal-brand" href="/">AI Confidence Academy</a><a href="/academy/phase-one/">Phase One</a><a href="/academy/phase-one/?view=curriculum">Full Curriculum</a></header>
     {error && <p role="alert" className="global-error">{error}</p>}
     {isWorkbook && <Workbook key={workbookKey} workbookKey={workbookKey} lessonId={new URLSearchParams(window.location.search).get('lesson')} />}
     {!isWorkbook && !data && !error && <p className="loading-screen">Loading Phase One…</p>}
