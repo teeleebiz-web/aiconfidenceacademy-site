@@ -6,6 +6,7 @@ import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
 import { supabase } from './lib/supabase'
+import { learnerAccessView } from './learnerAccess'
 import type { Enrollment, Journey, JourneyIntroduction, Lesson, LessonProgress } from './types'
 
 type PortalData = {
@@ -309,6 +310,10 @@ export function App() {
     setSelectedIntroduction(null)
   }
 
+  const visiblePortalData = reviewMode
+    ? portalData
+    : { ...portalData, ...learnerAccessView(portalData) }
+
   if (loading) {
     return <div className="loading-screen">Preparing your ACA learning space…</div>
   }
@@ -353,11 +358,11 @@ export function App() {
         <LessonView
           key={selectedLesson.id}
           lesson={selectedLesson}
-          progress={portalData.progress.find((item) => item.lesson_id === selectedLesson.id)}
+          progress={visiblePortalData.progress.find((item) => item.lesson_id === selectedLesson.id)}
           initialArtifact={artifact}
           reviewMode={reviewMode}
-          previousLesson={portalData.lessons[portalData.lessons.findIndex((item) => item.id === selectedLesson.id) - 1]}
-          nextLesson={portalData.lessons[portalData.lessons.findIndex((item) => item.id === selectedLesson.id) + 1]}
+          previousLesson={visiblePortalData.lessons[visiblePortalData.lessons.findIndex((item) => item.id === selectedLesson.id) - 1]}
+          nextLesson={visiblePortalData.lessons[visiblePortalData.lessons.findIndex((item) => item.id === selectedLesson.id) + 1]}
           onBack={() => setSelectedLesson(null)}
           onSave={saveLesson}
           onOpenLesson={openLesson}
@@ -365,10 +370,10 @@ export function App() {
       ) : portalData.enrollment ? (
         <Dashboard
           enrollment={portalData.enrollment}
-          journeys={portalData.journeys}
-          lessons={portalData.lessons}
-          progress={portalData.progress}
-          introductions={portalData.introductions}
+          journeys={visiblePortalData.journeys}
+          lessons={visiblePortalData.lessons}
+          progress={visiblePortalData.progress}
+          introductions={visiblePortalData.introductions}
           learnerName={portalData.learnerName}
           reviewMode={reviewMode}
           onOpenLesson={openLesson}
