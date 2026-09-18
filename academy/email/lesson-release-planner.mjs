@@ -51,3 +51,29 @@ export function planLessonReleaseNotifications({
 
   return candidates.sort((a, b) => a.releaseAt.localeCompare(b.releaseAt) || a.pageId.localeCompare(b.pageId))
 }
+
+export async function loadLessonReleaseCandidates(config, { windowStart, now }) {
+  if (!config?.db) throw new Error('Lesson release planning requires the Academy database')
+
+  const { data: enrollments, error: enrollmentError } = await config.db.from('enrollments')
+    .select('id,learner_id,course_id,status,starts_at,enrolled_at,access_expires_at').eq('status', 'active')
+  if (enrollmentError) throw enrollmentError
+  if (!enrollments?.length) return []
+
+  const courseIds = [...new Set(enrollments.map(item => item.course_id))]
+  const [{ data: lessons, error: lessonError }, { data: events, error: eventError }] = await Promise.all([
+    config.db.from('lessons')
+      .select('id,course_id,page_id,title,unlock_offset_days,status').in('course_id', courseIds).eq('status', 'published'),
+    config.db.from('aca_email_events').select('event_key').eq('template_key', 'lesson_release'),
+  ])
+  if (lessonError) throw lessonError
+  if (eventError) throw eventError
+
+  return planLessonReleaseNotifications({
+    enrollments,
+    lessons,
+    existingEventKeys: (events || []).map(item => item.event_key),
+    windowStart,
+    now,
+  })
+}
