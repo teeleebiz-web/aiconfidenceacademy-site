@@ -5,6 +5,7 @@ import { Dashboard } from './components/Dashboard'
 import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
+import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
 import type { Enrollment, Journey, JourneyIntroduction, Lesson, LessonProgress } from './types'
@@ -40,6 +41,7 @@ export function App() {
   const [artifact, setArtifact] = useState('')
   const [error, setError] = useState('')
   const [reviewMode, setReviewMode] = useState(false)
+  const [lessonAccess, setLessonAccess] = useState<LessonAccess | null>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -164,6 +166,15 @@ export function App() {
 
   async function openLesson(lesson: Lesson) {
     setError('')
+    if (portalData.enrollment && !reviewMode) {
+      const access = await refreshLessonAccess(lesson)
+      if (!access || access.access_status === 'expired') {
+        setError('This lesson window has ended. Contact ACA support for assistance.')
+        return
+      }
+    } else {
+      setLessonAccess(null)
+    }
     setSelectedIntroduction(null)
     setSelectedLesson(lesson)
     setArtifact('')
@@ -182,6 +193,21 @@ export function App() {
 
     const content = data?.content as { response?: string } | null
     setArtifact(content?.response ?? '')
+  }
+
+  async function refreshLessonAccess(lesson = selectedLesson) {
+    if (!lesson || !portalData.enrollment || reviewMode) return null
+    const { data, error: accessError } = await supabase.rpc('touch_lesson_access', {
+      p_enrollment_id: portalData.enrollment.id,
+      p_lesson_id: lesson.id,
+    })
+    if (accessError) {
+      setError('Your lesson time could not be verified. Please try again.')
+      return null
+    }
+    const access = (data?.[0] ?? null) as LessonAccess | null
+    setLessonAccess(access)
+    return access
   }
 
   async function openIntroduction(savedIntroduction: JourneyIntroduction) {
@@ -300,6 +326,11 @@ export function App() {
     )
 
     if (progressError) throw progressError
+    const { error: completionError } = await supabase.rpc('complete_lesson_access', {
+      p_enrollment_id: portalData.enrollment.id,
+      p_lesson_id: selectedLesson.id,
+    })
+    if (completionError) throw completionError
     setArtifact(response)
     await loadPortal(session.user.id)
   }
@@ -366,6 +397,8 @@ export function App() {
           onBack={() => setSelectedLesson(null)}
           onSave={saveLesson}
           onOpenLesson={openLesson}
+          lessonAccess={lessonAccess}
+          onRefreshAccess={async () => { await refreshLessonAccess() }}
         />
       ) : portalData.enrollment ? (
         <Dashboard

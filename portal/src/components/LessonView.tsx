@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Lesson, LessonProgress } from '../types'
+import { LessonClock, type LessonAccess } from './LessonClock'
 
 const lesson61OpeningPoster = `data:image/svg+xml,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
@@ -32,6 +33,8 @@ type LessonViewProps = {
   onBack: () => void
   onSave: (response: string) => Promise<void>
   onOpenLesson?: (lesson: Lesson) => void
+  lessonAccess?: LessonAccess | null
+  onRefreshAccess?: () => Promise<void>
 }
 
 export function LessonView({
@@ -46,6 +49,8 @@ export function LessonView({
   nextLesson,
   onSave,
   onOpenLesson,
+  lessonAccess,
+  onRefreshAccess,
 }: LessonViewProps) {
   const [response, setResponse] = useState(initialArtifact)
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>(
@@ -93,6 +98,7 @@ export function LessonView({
   return (
     <main className="lesson-main">
       <article className="lesson-article">
+        {lessonAccess && onRefreshAccess ? <LessonClock access={lessonAccess} onHeartbeat={onRefreshAccess} /> : null}
         <header className="lesson-hero">
           <div>
             <p className="eyebrow">Lesson {lesson.page_id}</p>

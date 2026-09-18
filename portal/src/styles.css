@@ -371,6 +371,23 @@ textarea {
   padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1rem, 3vw, 2rem);
 }
 
+.lesson-clock {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .2rem 1rem;
+  align-items: center;
+  margin: 0 0 1rem;
+  padding: .9rem 1rem;
+  border: 1px solid rgba(212, 179, 107, .55);
+  border-radius: 14px;
+  background: #0f2a45;
+  color: #fff;
+}
+.lesson-clock span { font-weight: 700; }
+.lesson-clock strong { color: #d4b36b; font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+.lesson-clock small { grid-column: 1 / -1; color: #dce3ec; }
+.lesson-clock-expired { border-color: #b94a48; }
+
 .owner-review-banner {
   align-items: center;
   background: #f8f3e9;
