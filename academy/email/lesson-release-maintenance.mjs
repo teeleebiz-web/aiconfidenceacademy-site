@@ -7,8 +7,14 @@ const json = (res, status, payload) => {
 
 export async function handleLessonReleaseMaintenance(req, res, config) {
   if (req.method !== 'GET') return json(res, 405, { error: 'Method not allowed' })
-  if (!config?.cronSecret || !config?.lessonReleaseMessage || !config?.resend || !config?.emailFrom) {
-    return json(res, 503, { error: 'Lesson release maintenance is not configured' })
+  const missing = []
+  if (!config?.cronSecret) missing.push('CRON_SECRET')
+  if (!config?.lessonReleaseMessage) missing.push('ACA_LESSON_RELEASE_MESSAGE')
+  if (!config?.resend) missing.push('RESEND_API_KEY')
+  if (!config?.emailFrom) missing.push('ACA_EMAIL_FROM')
+  if (!config?.appUrl) missing.push('ACA_APP_URL')
+  if (missing.length) {
+    return json(res, 503, { error: 'Lesson release maintenance is not configured', missing })
   }
   if (req.headers.authorization !== `Bearer ${config.cronSecret}`) {
     return json(res, 401, { error: 'Unauthorized' })
