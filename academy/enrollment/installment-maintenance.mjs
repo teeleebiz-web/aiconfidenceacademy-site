@@ -1,4 +1,5 @@
 import { upcomingInstallmentHtml } from './installment-plan.mjs'
+import { sendOperationalEmail } from '../email/operational-email.mjs'
 
 const json = (res, status, payload) => {
   res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' })
@@ -25,16 +26,17 @@ export async function handleInstallmentMaintenance(req, res, config) {
   let remindersSent = 0
   for (const plan of reminders || []) {
     const dueAt = new Date(plan.next_due_at)
-    const result = await config.resend.emails.send({
-      from: config.emailFrom,
-      to: plan.customer_email,
-      subject: 'Your upcoming ACA installment',
-      html: upcomingInstallmentHtml({ amount: plan.next_amount, dueAt }),
-    })
-    if (!result.error) {
+    try {
+      await sendOperationalEmail(config, {
+        eventKey: `installment-reminder:${plan.id}:${plan.next_due_at}`,
+        templateKey: 'installment_reminder', enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
+        to: plan.customer_email,
+        subject: 'Your upcoming ACA installment',
+        html: upcomingInstallmentHtml({ amount: plan.next_amount, dueAt }),
+      })
       await config.db.from('aca_installment_plans').update({ reminder_sent_for_due_at: plan.next_due_at }).eq('id', plan.id)
       remindersSent++
-    }
+    } catch { /* The email event records the failure for administrative follow-up. */ }
   }
 
   const { data: expired, error: graceError } = await config.db.from('aca_installment_plans')

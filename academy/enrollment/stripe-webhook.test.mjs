@@ -17,6 +17,9 @@ const database = () => {
       if (table === 'enrollments') {
         return { select() { return this }, async single() { return { data: { id: 'enrollment' }, error: null } } }
       }
+      if (table === 'aca_email_events') {
+        return { select() { return this }, async single() { return { data: { id: 'mail-1', attempts: 0 }, error: null } } }
+      }
       return Promise.resolve({ error: null })
     },
     update(value) { writes.push([table, 'update', value]); return { eq: async () => ({ error: null }) } },
@@ -55,7 +58,7 @@ test('activates one paid Phase One enrollment and sends its secure entrance', as
   req.emit('data', Buffer.from('{}')); req.emit('end'); await work
   assert.equal(res.status, 200)
   assert.equal(JSON.parse(res.payload).enrolled, true)
-  assert.equal(sent[0].to, 'Learner@example.com')
+  assert.equal(sent[0].to, 'learner@example.com')
   assert.match(sent[0].html, /secure\.example\/invite/)
   assert.equal(db.writes.some(([table, action, value]) => table === 'enrollments' && action === 'upsert' && value.status === 'active'), true)
 })

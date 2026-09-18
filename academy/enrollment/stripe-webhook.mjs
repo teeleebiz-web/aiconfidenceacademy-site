@@ -1,4 +1,5 @@
 import { attachApprovedInstallmentSchedule, failedInstallmentHtml, installmentConfirmationHtml } from './installment-plan.mjs'
+import { sendOperationalEmail } from '../email/operational-email.mjs'
 
 const json = (res, status, payload) => {
   res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' })
@@ -14,11 +15,6 @@ const names = fullName => {
   const parts = String(fullName ?? '').trim().split(/\s+/).filter(Boolean)
   return { first_name: parts[0] || null, last_name: parts.slice(1).join(' ') || null }
 }
-const send = async (config, message) => {
-  const result = await config.resend.emails.send({ from: config.emailFrom, ...message })
-  if (result.error) throw new Error('Academy email could not be sent')
-}
-
 async function activateEnrollment(config, session, email) {
   const { data: course, error: courseError } = await config.db.from('courses')
     .select('id,status,default_access_days').eq('id', config.courseId).single()
@@ -42,7 +38,9 @@ async function activateEnrollment(config, session, email) {
     access_expires_at: expiresAt, completed_at: null,
   }, { onConflict: 'learner_id,course_id' }).select('id').single()
   if (enrollmentError) throw enrollmentError
-  await send(config, {
+  await sendOperationalEmail(config, {
+    eventKey: `enrollment-access:${session.id}`, templateKey: 'enrollment_access',
+    enrollmentId: enrollment.id, learnerId: link.user.id,
     to: email, subject: 'Your AI Confidence Academy access is ready',
     html: `<div style="font-family:Arial,sans-serif;color:#173d62;line-height:1.6"><h1>Welcome to AI Confidence Academy</h1><p>Your Phase One enrollment is active.</p><p><a href="${link.properties.action_link}" style="background:#173d62;color:#fff;padding:12px 18px;text-decoration:none">Open your learner portal</a></p><p>This secure link signs you in. You may also use your Academy password from the learner sign-in page.</p><p>People come first. AI is the tool. Confidence is the product.</p></div>`,
   })
@@ -86,7 +84,11 @@ async function checkoutCompleted(event, config) {
       next_due_at: schedule.secondDueAt.toISOString(), next_amount: 5000, grace_until: null,
     }, { onConflict: 'stripe_subscription_id' })
     if (planError) throw planError
-    await send(config, { to: email, subject: 'Your ACA installment schedule is confirmed', html: installmentConfirmationHtml(schedule) })
+    await sendOperationalEmail(config, {
+      eventKey: `installment-confirmed:${subscriptionId}`, templateKey: 'installment_confirmation',
+      enrollmentId: access.enrollmentId, learnerId: access.learnerId,
+      to: email, subject: 'Your ACA installment schedule is confirmed', html: installmentConfirmationHtml(schedule),
+    })
   }
   await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
   return { received: true, enrolled: true, plan: isInstallment ? 'installments' : 'paid_in_full' }
@@ -130,7 +132,11 @@ async function invoiceFailed(event, config) {
   await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency, status: 'completed' })
   const { error } = await config.db.from('aca_installment_plans').update({ status: 'grace', grace_until: graceUntil.toISOString() }).eq('id', plan.id)
   if (error) throw error
-  await send(config, { to: plan.customer_email, subject: 'Action needed for your ACA installment', html: failedInstallmentHtml({ amount, graceUntil }) })
+  await sendOperationalEmail(config, {
+    eventKey: `installment-failed:${invoice.id}`, templateKey: 'installment_failed',
+    enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
+    to: plan.customer_email, subject: 'Action needed for your ACA installment', html: failedInstallmentHtml({ amount, graceUntil }),
+  })
   return { received: true, graceUntil: graceUntil.toISOString() }
 }
 
