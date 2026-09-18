@@ -13,7 +13,10 @@ function config(overrides = {}) {
   const sent = []
   return {
     sent,
-    db: { auth: { admin: { getUserById: async () => ({ data: { user: { email: 'learner@example.com' } }, error: null }) } } },
+    db: {
+      auth: { admin: { getUserById: async () => ({ data: { user: { email: 'learner@example.com' } }, error: null }) } },
+      from() { return { select() { return this }, eq() { return this }, maybeSingle: async () => ({ data: { first_name: 'Jordan' }, error: null }) } },
+    },
     loadLessonReleaseCandidates: async () => [candidate],
     lessonReleaseMessage: lesson => ({ subject: `Approved ${lesson.pageId}`, html: '<p>Approved message</p>' }),
     sendOperationalEmail: async (_config, message) => { sent.push(message) },
@@ -44,7 +47,10 @@ test('refuses to dispatch before learner-facing wording is approved and configur
 
 test('skips a learner record without a deliverable email address', async () => {
   const options = config({
-    db: { auth: { admin: { getUserById: async () => ({ data: { user: {} }, error: null }) } } },
+    db: {
+      auth: { admin: { getUserById: async () => ({ data: { user: {} }, error: null }) } },
+      from() { return { select() { return this }, eq() { return this }, maybeSingle: async () => ({ data: null, error: null }) } },
+    },
   })
   const result = await dispatchLessonReleaseNotifications(options, {
     windowStart: '2026-09-02T08:00:00.000Z', now: '2026-09-02T10:00:00.000Z',

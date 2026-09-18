@@ -20,7 +20,7 @@ describe('LessonClock', () => {
   it('clearly reports an ended lesson window', () => {
     render(<LessonClock access={{
       access_status: 'expired',
-      active_seconds: 5400,
+      active_seconds: 7200,
       remaining_seconds: 0,
       hard_expires_at: '2026-09-19T00:00:00Z',
       recovery_used: true,

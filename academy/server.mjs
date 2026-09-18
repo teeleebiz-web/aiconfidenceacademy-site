@@ -9,6 +9,7 @@ import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollment/installment-plan.mjs'
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
 import { handleResendWebhook } from './email/resend-webhook.mjs'
+import { handleLessonReleaseMaintenance } from './email/lesson-release-maintenance.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
@@ -57,6 +58,9 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     }
     if (requestPath === '/api/enrollment/installment-maintenance') {
       await handleInstallmentMaintenance(req, res, enrollmentAutomation); return
+    }
+    if (requestPath === '/api/email/lesson-release-maintenance') {
+      await handleLessonReleaseMaintenance(req, res, enrollmentAutomation); return
     }
     const header = req.headers.authorization || ''
     const supplied = header.startsWith('Basic ') ? Buffer.from(header.slice(6), 'base64').toString() : ''

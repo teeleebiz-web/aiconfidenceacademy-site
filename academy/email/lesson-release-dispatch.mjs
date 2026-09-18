@@ -23,7 +23,12 @@ export async function dispatchLessonReleaseNotifications(config, window) {
         continue
       }
 
-      const approved = config.lessonReleaseMessage(candidate)
+      const { data: profile } = await config.db.from('profiles')
+        .select('first_name').eq('id', candidate.learnerId).maybeSingle()
+      const approved = config.lessonReleaseMessage(candidate, {
+        appUrl: config.appUrl,
+        learnerFirstName: profile?.first_name || null,
+      })
       await send(config, {
         eventKey: candidate.eventKey,
         templateKey: 'lesson_release',

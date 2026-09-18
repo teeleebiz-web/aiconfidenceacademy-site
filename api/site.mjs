@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createAcademyServer } from '../academy/server.mjs'
+import { lessonReleaseMessage } from '../academy/email/lesson-release-message.mjs'
 
 let server
 export default function handler(request, response) {
@@ -28,6 +29,7 @@ export default function handler(request, response) {
           cronSecret: process.env.CRON_SECRET,
           db,
           courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
+          lessonReleaseMessage,
         }
       : null
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
