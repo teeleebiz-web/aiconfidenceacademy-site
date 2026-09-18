@@ -12,6 +12,42 @@
     }));
   }
 
+  const enrollmentPage = document.querySelector('form[name="aca-interest-list"]')?.closest('.enrollment-layout');
+  if (enrollmentPage) {
+    const paymentStatus = new URLSearchParams(window.location.search).get('payment');
+    const section = document.createElement('section');
+    section.className = 'enrollment-layout section-pad';
+    section.setAttribute('aria-labelledby', 'phase-one-enrollment-title');
+    section.innerHTML = `
+      <div>
+        <p class="section-kicker">Phase One enrollment</p>
+        <h2 id="phase-one-enrollment-title">Choose the payment option that works for you.</h2>
+        <p><strong>Pay in full: $129</strong></p>
+        <p>One secure payment provides Phase One access.</p>
+        <form method="post" action="/api/enrollment/phase-one/paid-in-full">
+          <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank">Terms of Service</a>, <a href="/privacy" target="_blank">Privacy Policy</a>, and <a href="/refund-policy" target="_blank">Refund Policy</a>.</span></label>
+          <button class="button button-gold" type="submit">Pay $129 in full</button>
+        </form>
+      </div>
+      <div class="interest-form">
+        <p class="section-kicker">Three installments · $149 total</p>
+        <h2>$50 today, $50 in 7 days, then $49 in 14 days.</h2>
+        <p>Your payment method is securely handled by Stripe and authorized only for this schedule. ACA does not store your full card number.</p>
+        <p>We send a reminder two days before payments two and three. If a scheduled payment fails, you receive a 48-hour correction period. Access pauses after that period if the payment remains unpaid and resumes when the account is brought current. Correcting a payment does not move the remaining scheduled date.</p>
+        <p>The recurring authorization ends automatically after the third successful payment.</p>
+        <form method="post" action="/api/enrollment/phase-one/installments">
+          <label class="consent"><input type="checkbox" required><span>I authorize the three-payment schedule above and agree to the <a href="/terms" target="_blank">Terms of Service</a>, <a href="/privacy" target="_blank">Privacy Policy</a>, and <a href="/refund-policy" target="_blank">Refund Policy</a>.</span></label>
+          <button class="button button-gold" type="submit">Start with $50 today</button>
+        </form>
+      </div>`;
+    if (paymentStatus === 'success') {
+      section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Payment received.</span><p>Check your email for your secure Academy access.</p></div>');
+    } else if (paymentStatus === 'canceled') {
+      section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
+    }
+    enrollmentPage.before(section);
+  }
+
   const form = document.querySelector('form[name="aca-interest-list"]');
   if (!form) return;
 

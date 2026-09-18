@@ -10,6 +10,12 @@
       "maxDuration": 60
     }
   },
+  "crons": [
+    {
+      "path": "/api/enrollment/installment-maintenance",
+      "schedule": "0 * * * *"
+    }
+  ],
   "routes": [
     { "src": "^/$", "dest": "/api/site.mjs?__aca_path=index.html" },
     { "src": "^/(.*)$", "dest": "/api/site.mjs?__aca_path=$1" }

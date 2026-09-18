@@ -12,7 +12,13 @@ const database = () => {
     select() { return this }, eq() { return this },
     maybeSingle: async () => ({ data: null, error: null }),
     single: async () => ({ data: { id: 'course', status: 'published', default_access_days: 30 }, error: null }),
-    upsert: async value => { writes.push([table, 'upsert', value]); return { error: null } },
+    upsert(value) {
+      writes.push([table, 'upsert', value])
+      if (table === 'enrollments') {
+        return { select() { return this }, async single() { return { data: { id: 'enrollment' }, error: null } } }
+      }
+      return Promise.resolve({ error: null })
+    },
     update(value) { writes.push([table, 'update', value]); return { eq: async () => ({ error: null }) } },
   })
   return {

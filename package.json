@@ -10,12 +10,12 @@
     "build:academy": "vite build --config academy/vite.config.ts && node academy/prepare-site.mjs",
     "build:site": "npm run build && npm run build:academy",
     "start:academy": "node academy/server.mjs",
-    "test:academy": "node --test academy/server.test.mjs",
+    "test:academy": "node --test academy/server.test.mjs academy/enrollment/*.test.mjs",
     "dev": "vite --config portal/vite.config.ts",
     "build": "vite build --config portal/vite.config.ts",
     "typecheck": "tsc --project portal/tsconfig.json --noEmit",
     "test": "vitest run --config portal/vitest.config.ts",
-    "check": "npm run typecheck && npm run test && npm run build"
+    "check": "npm run typecheck && npm run test && npm run test:academy && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.112.4",
