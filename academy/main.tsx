@@ -8,6 +8,7 @@ import './welcome-video.css'
 import './lesson-41-text.css'
 import { GettingStarted } from './GettingStarted'
 import { Workbook } from './workbook/Workbook'
+import { AcademyShell } from '../portal/src/components/AcademyShell'
 
 type Curriculum = { course: Course; journeys: Journey[]; lessons: Lesson[]; introductions: JourneyIntroduction[] }
 type Welcome = { introduction: JourneyIntroduction; mediaUrl: string | null; captionUrl: string | null; companionAudioUrl: string | null; companionCaptionUrl: string | null }
@@ -73,8 +74,12 @@ function Academy() {
     window.history.replaceState(null, '', '/academy/phase-one/?lesson=' + encodeURIComponent(next.page_id))
     setSetup(false); setAcademyWelcome(false); setWelcome(null); setLesson(next); window.scrollTo(0, 0)
   }
-  return <div className={`portal-shell${(isWorkbook && ['journey-two', 'journey-four', 'journey-five', 'journey-six'].includes(workbookKey)) || (!isWorkbook && !setup && !welcome && /^[456]\.[1-6]$/.test(lesson?.page_id ?? '')) ? ' aca-lesson-41' : ''}`}>
-    <header className="portal-header"><a className="portal-brand" href="/">AI Confidence Academy</a><a href="/academy/phase-one/">Phase One</a><a href="/academy/phase-one/?view=curriculum">Full Curriculum</a></header>
+  const activeSection = isWorkbook ? 'workbook' : (!academyWelcome && !setup && !welcome && !lesson ? 'curriculum' : 'home')
+  const activeWorkbookHref = lesson?.page_id
+    ? `/academy/phase-one/?workbook=journey-${['one', 'two', 'three', 'four', 'five', 'six'][Number(lesson.page_id.split('.')[0]) - 1]}&lesson=${encodeURIComponent(lesson.page_id)}`
+    : `/academy/phase-one/?workbook=${workbookKey}`
+  return <AcademyShell activeSection={activeSection} workbookHref={activeWorkbookHref}>
+    <div className={`${(isWorkbook && ['journey-two', 'journey-four', 'journey-five', 'journey-six'].includes(workbookKey)) || (!isWorkbook && !setup && !welcome && /^[456]\.[1-6]$/.test(lesson?.page_id ?? '')) ? 'aca-lesson-41' : ''}`}>
     {error && <p role="alert" className="global-error">{error}</p>}
     {isWorkbook && <Workbook key={workbookKey} workbookKey={workbookKey} lessonId={new URLSearchParams(window.location.search).get('lesson')} />}
     {!isWorkbook && !data && !error && <p className="loading-screen">Loading Phase One…</p>}
@@ -86,6 +91,7 @@ function Academy() {
         const intro = journey.journey_number === 3 ? undefined : data.introductions.find(i => i.journey_id === journey.id)
         return <article className="journey-card" key={journey.id}><div className="journey-number">Journey {journey.journey_number}</div><div className="journey-copy"><h2>{journey.title}</h2><p>{journey.promise}</p>{intro && <button className={`journey-welcome-button${intro.media_path ? " welcome-video-button" : ""}`} disabled={busy} onClick={() => openWelcome(intro.id, journey.journey_number)}>{intro.media_path ? <><span className="welcome-play-icon" aria-hidden="true">▶</span><span className="welcome-video-copy"><strong>Watch Journey {journey.journey_number} Welcome Video</strong><span className="welcome-video-title">{intro.content.title}</span></span></> : intro.content.title}</button>}<div className="lesson-list">{data.lessons.filter(l => l.journey_id === journey.id).map(l => <button className="lesson-row" key={l.id} onClick={() => openLesson(l)}><span>{l.page_id}</span><strong>{l.title}</strong><span>Open lesson</span></button>)}</div></div></article>
       })}</section></main>)}
-  </div>
+    </div>
+  </AcademyShell>
 }
 createRoot(document.getElementById('root')!).render(<React.StrictMode><Academy /></React.StrictMode>)
