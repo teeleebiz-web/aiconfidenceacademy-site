@@ -5,6 +5,7 @@ import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import { handleWorkbook } from './workbook/api.mjs'
+import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
@@ -14,7 +15,7 @@ const exploreVideos = new Map([
   ['03', 'explore-chatgpt/ACA-Explore-ChatGPT-03.mp4'],
 ])
 const academyWelcomeVideo = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
-export function createAcademyServer({ password, root, db, courseId }) {
+export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
@@ -38,6 +39,10 @@ export function createAcademyServer({ password, root, db, courseId }) {
     res.setHeader('Referrer-Policy', 'no-referrer')
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
+    const requestPath = new URL(req.url, 'http://localhost').pathname
+    if (requestPath === '/api/webhooks/stripe') {
+      await handleStripeEnrollment(req, res, enrollmentAutomation); return
+    }
     const header = req.headers.authorization || ''
     const supplied = header.startsWith('Basic ') ? Buffer.from(header.slice(6), 'base64').toString() : ''
     if (!timingSafeEqual(digest(supplied), expected)) {
