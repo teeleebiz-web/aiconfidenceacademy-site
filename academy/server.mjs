@@ -8,6 +8,7 @@ import { handleWorkbook } from './workbook/api.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollment/installment-plan.mjs'
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
+import { handleResendWebhook } from './email/resend-webhook.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
@@ -44,6 +45,9 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     const requestPath = new URL(req.url, 'http://localhost').pathname
     if (requestPath === '/api/webhooks/stripe') {
       await handleStripeEnrollment(req, res, enrollmentAutomation); return
+    }
+    if (requestPath === '/api/webhooks/resend') {
+      await handleResendWebhook(req, res, enrollmentAutomation); return
     }
     if (requestPath === '/api/enrollment/phase-one/installments') {
       await handleInstallmentCheckout(req, res, enrollmentAutomation); return

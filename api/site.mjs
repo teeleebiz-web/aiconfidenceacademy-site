@@ -22,6 +22,7 @@ export default function handler(request, response) {
           installment50PriceId: process.env.ACA_INSTALLMENT_50_PRICE_ID,
           installment49PriceId: process.env.ACA_INSTALLMENT_49_PRICE_ID,
           resend: new Resend(process.env.RESEND_API_KEY),
+          resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET,
           emailFrom: process.env.ACA_EMAIL_FROM,
           appUrl: process.env.ACA_APP_URL,
           cronSecret: process.env.CRON_SECRET,
