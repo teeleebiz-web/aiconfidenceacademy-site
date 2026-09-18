@@ -15,14 +15,13 @@ export default function handler(request, response) {
     const db = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
       auth: { persistSession: false, autoRefreshToken: false },
     })
-    const enrollmentAutomation = process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET && process.env.ACA_PHASE_ONE_PRICE_ID && process.env.RESEND_API_KEY && process.env.ACA_EMAIL_FROM && process.env.ACA_APP_URL
-      ? {
-          stripe: new Stripe(process.env.STRIPE_SECRET_KEY),
+    const enrollmentAutomation = {
+          stripe: process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null,
           webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
           phaseOnePriceId: process.env.ACA_PHASE_ONE_PRICE_ID,
           installment50PriceId: process.env.ACA_INSTALLMENT_50_PRICE_ID,
           installment49PriceId: process.env.ACA_INSTALLMENT_49_PRICE_ID,
-          resend: new Resend(process.env.RESEND_API_KEY),
+          resend: process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null,
           resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET,
           emailFrom: process.env.ACA_EMAIL_FROM,
           appUrl: process.env.ACA_APP_URL,
@@ -31,7 +30,6 @@ export default function handler(request, response) {
           courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
           lessonReleaseMessage,
         }
-      : null
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
       root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation })
   }
