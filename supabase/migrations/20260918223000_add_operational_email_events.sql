@@ -1,3 +1,4 @@
+-- ACA Phase 7: private operational email delivery ledger.
 create table if not exists public.aca_email_events (
   id uuid primary key default gen_random_uuid(),
   event_key text not null unique,
