@@ -4,6 +4,19 @@ const json = (res, status, payload) => {
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const safeProviderText = value => value
+  ? String(value).replace(/re_[A-Za-z0-9_-]+/g, '[redacted]').slice(0, 500)
+  : null
+
+const providerDiagnostic = error => {
+  const diagnostic = {
+    name: safeProviderText(error?.name),
+    message: safeProviderText(error?.message),
+    statusCode: Number.isFinite(error?.statusCode) ? error.statusCode : null,
+    cause: safeProviderText(error?.cause?.message),
+  }
+  return Object.fromEntries(Object.entries(diagnostic).filter(([, value]) => value !== null))
+}
 
 async function readJson(req) {
   let body = ''
@@ -58,13 +71,21 @@ export async function handleLessonReleaseTest(req, res, config) {
       subject: `[TEST] ${approved.subject}`,
       html,
     }, { idempotencyKey: `aca-email-test:${recipient}:${Date.now()}` })
-    if (result.error) throw new Error('Email provider rejected the test')
+    if (result.error) {
+      return json(res, 502, {
+        error: 'ACA test email could not be sent',
+        provider: providerDiagnostic(result.error),
+      })
+    }
     return json(res, 200, {
       ok: true,
       recipient,
       providerMessageId: result.data?.id || result.id || null,
     })
-  } catch {
-    return json(res, 502, { error: 'ACA test email could not be sent' })
+  } catch (error) {
+    return json(res, 502, {
+      error: 'ACA test email could not be sent',
+      provider: providerDiagnostic(error),
+    })
   }
 }

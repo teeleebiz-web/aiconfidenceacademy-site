@@ -85,5 +85,21 @@ test('returns a safe error when the email provider rejects the test', async () =
   const res = response()
   await handleLessonReleaseTest(request('{"to":"owner@example.com"}'), res, config)
   assert.equal(res.status, 502)
-  assert.deepEqual(JSON.parse(res.payload), { error: 'ACA test email could not be sent' })
+  assert.deepEqual(JSON.parse(res.payload), {
+    error: 'ACA test email could not be sent',
+    provider: { message: 'provider detail' },
+  })
+})
+
+test('redacts an API key if a provider error unexpectedly includes it', async () => {
+  const config = configuration({
+    resend: { emails: { send: async () => { throw new Error('Rejected re_exampleSecretValue') } } },
+  })
+  const res = response()
+  await handleLessonReleaseTest(request('{"to":"owner@example.com"}'), res, config)
+  assert.equal(res.status, 502)
+  assert.deepEqual(JSON.parse(res.payload), {
+    error: 'ACA test email could not be sent',
+    provider: { name: 'Error', message: 'Rejected [redacted]' },
+  })
 })
