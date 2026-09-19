@@ -1,4 +1,4 @@
-import type { Enrollment, Journey, JourneyIntroduction, Lesson, LessonProgress } from '../types'
+import type { Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from '../types'
 
 type DashboardProps = {
   enrollment: Enrollment
@@ -8,6 +8,7 @@ type DashboardProps = {
   introductions: JourneyIntroduction[]
   learnerName: string
   reviewMode?: boolean
+  accessState?: LearnerLessonAccess | null
   onOpenLesson: (lesson: Lesson) => void
   onOpenIntroduction: (introduction: JourneyIntroduction) => void
 }
@@ -20,11 +21,14 @@ export function Dashboard({
   introductions,
   learnerName,
   reviewMode = false,
+  accessState = null,
   onOpenLesson,
   onOpenIntroduction,
 }: DashboardProps) {
-  const completed = progress.filter((item) => item.status === 'completed').length
-  const progressPercent = lessons.length ? Math.round((completed / lessons.length) * 100) : 0
+  const completed = accessState?.completed_lessons
+    ?? progress.filter((item) => item.status === 'completed').length
+  const total = accessState?.total_lessons ?? lessons.length
+  const progressPercent = total ? Math.round((completed / total) * 100) : 0
   const draftLessons = lessons.filter((lesson) => lesson.status === 'draft').length
 
   return (
@@ -74,6 +78,23 @@ export function Dashboard({
           </div>
           <span className="access-badge">Active enrollment</span>
         </div>
+
+        {!reviewMode && journeys.length === 0 ? (
+          <div className="journey-card learner-waiting-card" role="status">
+            <div className="journey-copy">
+              <h3>{accessState?.access_status === 'course_completed' ? 'Phase One lessons complete' : 'Your next lesson is not open yet'}</h3>
+              <p>
+                {accessState?.access_status === 'course_completed'
+                  ? 'Your released workbook work remains available to review, print, or save.'
+                  : accessState?.access_status === 'access_ended'
+                    ? 'Your lesson access period has ended. Your released workbook work remains available.'
+                    : accessState?.available_at
+                      ? `Your next lesson will appear here on ${new Date(accessState.available_at).toLocaleString()}.`
+                      : 'Your next lesson will appear here at its scheduled release time.'}
+              </p>
+            </div>
+          </div>
+        ) : null}
 
         {journeys.map((journey) => {
           const journeyLessons = lessons.filter((lesson) => lesson.journey_id === journey.id)

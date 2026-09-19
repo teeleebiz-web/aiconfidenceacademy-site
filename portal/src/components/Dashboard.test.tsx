@@ -97,4 +97,34 @@ describe('Dashboard', () => {
     expect(screen.getByText(/1 journeys · 1 lessons · 1 drafts/i)).toBeTruthy()
     expect(screen.getAllByText(/draft/i).length).toBeGreaterThan(1)
   })
+
+  it('shows a scheduled release without exposing a lesson row', () => {
+    render(
+      <Dashboard
+        enrollment={enrollment}
+        journeys={[]}
+        lessons={[]}
+        progress={[]}
+        introductions={[]}
+        learnerName="Learner"
+        accessState={{
+          current_lesson_id: 'lesson-2',
+          current_journey_id: 'journey-1',
+          access_status: 'scheduled',
+          available_at: '2026-09-20T09:00:00.000Z',
+          active_seconds: 0,
+          remaining_seconds: 7200,
+          completed_lessons: 1,
+          total_lessons: 36,
+          released_lesson_ids: ['lesson-1'],
+        }}
+        onOpenLesson={() => undefined}
+        onOpenIntroduction={() => undefined}
+      />,
+    )
+
+    expect(screen.getByText(/next lesson is not open yet/i)).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /open lesson/i })).toBeNull()
+    expect(screen.getByLabelText('3% complete')).toBeTruthy()
+  })
 })

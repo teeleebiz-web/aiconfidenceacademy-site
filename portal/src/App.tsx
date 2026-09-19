@@ -8,7 +8,7 @@ import { SignIn } from './components/SignIn'
 import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
-import type { Enrollment, Journey, JourneyIntroduction, Lesson, LessonProgress } from './types'
+import type { Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from './types'
 
 type PortalData = {
   enrollment: Enrollment | null
@@ -16,6 +16,7 @@ type PortalData = {
   lessons: Lesson[]
   progress: LessonProgress[]
   introductions: JourneyIntroduction[]
+  accessState: LearnerLessonAccess | null
   learnerName: string
 }
 
@@ -25,7 +26,18 @@ const emptyPortalData: PortalData = {
   lessons: [],
   progress: [],
   introductions: [],
+  accessState: null,
   learnerName: '',
+}
+
+const journeyWords = ['one', 'two', 'three', 'four', 'five', 'six'] as const
+
+function workbookHrefForLesson(pageId: string) {
+  const journeyNumber = Number(pageId.split('.')[0])
+  const journeyWord = journeyWords[journeyNumber - 1]
+  return journeyWord
+    ? `/academy/phase-one/?workbook=journey-${journeyWord}&lesson=${encodeURIComponent(pageId)}`
+    : undefined
 }
 
 export function App() {
@@ -92,7 +104,8 @@ export function App() {
       return
     }
 
-    setReviewMode(ownerResult.data === true)
+    const isOwner = ownerResult.data === true
+    setReviewMode(isOwner)
 
     const enrollment = enrollmentResult.data as unknown as Enrollment | null
 
@@ -105,7 +118,7 @@ export function App() {
       return
     }
 
-    const [journeyResult, lessonResult, progressResult, introductionResult] = await Promise.all([
+    const [journeyResult, lessonResult, progressResult, introductionResult, accessResult] = await Promise.all([
       supabase
         .from('course_journeys')
         .select('id, course_id, journey_number, week_number, title, promise, release_offset_days, status')
@@ -123,9 +136,16 @@ export function App() {
       supabase
         .from('journey_introductions')
         .select('id, journey_id, media_kind, media_path, caption_path, companion_audio_path, companion_caption_path, duration_seconds, content, status, source_version'),
+      isOwner
+        ? Promise.resolve({ data: null, error: null })
+        : supabase.rpc('get_learner_lesson_access', { p_enrollment_id: enrollment.id }),
     ])
 
-    const queryError = journeyResult.error ?? lessonResult.error ?? progressResult.error ?? introductionResult.error
+    const queryError = journeyResult.error
+      ?? lessonResult.error
+      ?? progressResult.error
+      ?? introductionResult.error
+      ?? accessResult.error
     if (queryError) {
       setError(queryError.message)
       setLoading(false)
@@ -138,6 +158,9 @@ export function App() {
       lessons: (lessonResult.data ?? []) as unknown as Lesson[],
       progress: (progressResult.data ?? []) as LessonProgress[],
       introductions: (introductionResult.data ?? []) as unknown as JourneyIntroduction[],
+      accessState: isOwner
+        ? null
+        : ((accessResult.data?.[0] ?? null) as LearnerLessonAccess | null),
       learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '',
     })
     setLoading(false)
@@ -167,9 +190,9 @@ export function App() {
   async function openLesson(lesson: Lesson) {
     setError('')
     if (portalData.enrollment && !reviewMode) {
-      const access = await refreshLessonAccess(lesson)
-      if (!access || access.access_status === 'expired') {
-        setError('This lesson window has ended. Contact ACA support for assistance.')
+      const access = await startOrResumeLessonAccess(lesson)
+      if (!access || access.access_status !== 'active') {
+        setError('This lesson is not available right now. Return to your learning home for the current session.')
         return
       }
     } else {
@@ -195,7 +218,7 @@ export function App() {
     setArtifact(content?.response ?? '')
   }
 
-  async function refreshLessonAccess(lesson = selectedLesson) {
+  async function startOrResumeLessonAccess(lesson = selectedLesson) {
     if (!lesson || !portalData.enrollment || reviewMode) return null
     const { data, error: accessError } = await supabase.rpc('touch_lesson_access', {
       p_enrollment_id: portalData.enrollment.id,
@@ -207,6 +230,29 @@ export function App() {
     }
     const access = (data?.[0] ?? null) as LessonAccess | null
     setLessonAccess(access)
+    return access
+  }
+
+  async function heartbeatLessonAccess(lesson = selectedLesson) {
+    if (!lesson || !portalData.enrollment || reviewMode) return null
+    const { data, error: accessError } = await supabase.rpc('heartbeat_lesson_access', {
+      p_enrollment_id: portalData.enrollment.id,
+      p_lesson_id: lesson.id,
+    })
+    if (accessError) {
+      setError('Your lesson time could not be verified. Your session has been paused; please reopen the lesson.')
+      setSelectedLesson(null)
+      setLessonAccess(null)
+      return null
+    }
+    const access = (data?.[0] ?? null) as LessonAccess | null
+    setLessonAccess(access)
+    if (access?.access_status === 'expired') {
+      setSelectedLesson(null)
+      setLessonAccess(null)
+      setError('Your two active lesson hours have been used. The lesson is now closed, and your workbook remains available.')
+      if (session?.user) await loadPortal(session.user.id)
+    }
     return access
   }
 
@@ -263,7 +309,7 @@ export function App() {
 
   function continueFromIntroduction() {
     if (!selectedIntroduction) return
-    const firstLesson = portalData.lessons.find(
+    const firstLesson = visiblePortalData.lessons.find(
       (lesson) => lesson.journey_id === selectedIntroduction.journey_id,
     )
 
@@ -332,6 +378,8 @@ export function App() {
     })
     if (completionError) throw completionError
     setArtifact(response)
+    setSelectedLesson(null)
+    setLessonAccess(null)
     await loadPortal(session.user.id)
   }
 
@@ -389,16 +437,21 @@ export function App() {
         <LessonView
           key={selectedLesson.id}
           lesson={selectedLesson}
+          workbookHref={workbookHrefForLesson(selectedLesson.page_id)}
           progress={visiblePortalData.progress.find((item) => item.lesson_id === selectedLesson.id)}
           initialArtifact={artifact}
           reviewMode={reviewMode}
           previousLesson={visiblePortalData.lessons[visiblePortalData.lessons.findIndex((item) => item.id === selectedLesson.id) - 1]}
           nextLesson={visiblePortalData.lessons[visiblePortalData.lessons.findIndex((item) => item.id === selectedLesson.id) + 1]}
-          onBack={() => setSelectedLesson(null)}
+          onBack={() => {
+            setSelectedLesson(null)
+            setLessonAccess(null)
+          }}
           onSave={saveLesson}
-          onOpenLesson={openLesson}
+          onOpenLesson={reviewMode ? openLesson : undefined}
           lessonAccess={lessonAccess}
-          onRefreshAccess={async () => { await refreshLessonAccess() }}
+          onRefreshAccess={async () => { await heartbeatLessonAccess() }}
+          onResumeAccess={async () => { await startOrResumeLessonAccess() }}
         />
       ) : portalData.enrollment ? (
         <Dashboard
@@ -409,6 +462,7 @@ export function App() {
           introductions={visiblePortalData.introductions}
           learnerName={portalData.learnerName}
           reviewMode={reviewMode}
+          accessState={portalData.accessState}
           onOpenLesson={openLesson}
           onOpenIntroduction={openIntroduction}
         />

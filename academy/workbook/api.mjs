@@ -45,19 +45,27 @@ export async function workbookIdentity(req, db, courseId, ownerAuthenticated, wo
   if (error || !data?.user || data.user.is_anonymous) throw fault(401, 'Your Academy session has ended. Please sign in again.')
   const id = data.user.id
   const result = await db.from('enrollments')
-    .select('status,starts_at,enrolled_at,access_expires_at,course:courses(status,drip_enabled)')
+    .select('id,status,starts_at,enrolled_at,access_expires_at,course:courses(status,drip_enabled)')
     .eq('learner_id', id).eq('course_id', courseId).in('status', ['active', 'completed']).maybeSingle()
   if (result.error) throw fault(503, 'Your workbook access could not be checked. Please try again.')
   const e = result.data; const now = Date.now()
-  if (!e || e.course?.status !== 'published' || (e.starts_at && Date.parse(e.starts_at) > now) || (e.access_expires_at && Date.parse(e.access_expires_at) <= now)) {
+  if (!e || e.course?.status !== 'published' || (e.starts_at && Date.parse(e.starts_at) > now)) {
     throw fault(403, 'This workbook is available with your active Phase One enrollment.')
   }
+  const access = await db.rpc('get_enrollment_lesson_access', {
+    p_enrollment_id: e.id,
+    p_at: new Date(now).toISOString(),
+  })
+  if (access.error) throw fault(503, 'Your workbook access could not be checked. Please try again.')
+  const releasedLessonIds = new Set(access.data?.[0]?.released_lesson_ids ?? [])
   const j = await db.from('course_journeys').select('id,status').eq('course_id', courseId).eq('journey_number', config.journey).maybeSingle()
   if (j.error) throw fault(503, 'Your workbook access could not be checked. Please try again.')
   if (j.data?.status !== 'published') throw fault(403, 'This journey is not available yet.')
-  const l = await db.from('lessons').select('page_id,unlock_offset_days,status').eq('course_id', courseId).eq('journey_id', j.data.id)
+  const l = await db.from('lessons').select('id,page_id,status').eq('course_id', courseId).eq('journey_id', j.data.id)
   if (l.error) throw fault(503, 'Your workbook access could not be checked. Please try again.')
-  const lessonNumbers = (l.data ?? []).filter(item => item.status === 'published' && (!e.course.drip_enabled || now >= Date.parse(e.starts_at ?? e.enrolled_at) + item.unlock_offset_days * 86400000)).map(item => Number(item.page_id.split('.')[1]))
+  const lessonNumbers = (l.data ?? [])
+    .filter(item => item.status === 'published' && releasedLessonIds.has(item.id))
+    .map(item => Number(item.page_id.split('.')[1]))
   const allowedPages = config.pages.filter(page => ['journey-two', 'journey-four', 'journey-five', 'journey-six'].includes(workbookKey) ? lessonNumbers.includes(Math.floor((page - 1) / 4) + 1) : workbookKey === 'journey-three' ? lessonNumbers.includes(page <= 6 ? 1 : page <= 10 ? 2 : page <= 14 ? 3 : page <= 18 ? 4 : page <= 22 ? 5 : 6) : page <= 4 || page >= 29 || lessonNumbers.includes(Math.floor((page - 5) / 4) + 1))
   if (!allowedPages.length) throw fault(403, 'This workbook is available when its lesson opens.')
   return { scope: id, learnerId: id, allowedPages }

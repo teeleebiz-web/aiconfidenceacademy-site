@@ -99,7 +99,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?:
   return <main className="wb-shell">
     <div className="wb-toolbar">
       <a className="wb-back" href="/academy/phase-one/" onClick={async event => { event.preventDefault(); await store.save(); if (!store.pending) window.location.assign('/academy/phase-one/') }}>← Back to Phase One</a>
-      <div className="wb-save"><span role="status" aria-live="polite">{state.status === 'saved' ? (state.updated_at ? 'Saved' : 'Ready for your answers') : state.status === 'saving' ? 'Saving…' : state.status === 'error' || state.status === 'conflict' ? 'Not saved yet' : 'Changes to save'}</span><button disabled={state.status === 'saving'} onClick={() => void store.save()}>Save</button></div>
+      <div className="wb-save"><span role="status" aria-live="polite">{state.status === 'saved' ? (state.updated_at ? 'Saved' : 'Ready for your answers') : state.status === 'saving' ? 'Saving…' : state.status === 'error' || state.status === 'conflict' ? 'Not saved yet' : 'Changes to save'}</span><button className="wb-print" type="button" onClick={() => window.print()}>Print / Save PDF</button><button disabled={state.status === 'saving'} onClick={() => void store.save()}>Save</button></div>
     </div>
     {state.message && <p className="wb-error" role="alert">{state.message}</p>}
     <div className="wb-layout">

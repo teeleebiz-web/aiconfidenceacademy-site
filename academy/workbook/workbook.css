@@ -3,6 +3,7 @@
 .wb-back { color:#102d4f; font-weight:650; text-underline-offset:5px; }
 .wb-save { display:flex; align-items:center; gap:1rem; min-height:48px; }
 .wb-save [role=status] { color:#425a6e; font-size:.95rem; }
+.wb-save .wb-print { background:#eef2f5; }
 .wb-shell button { color:#102d4f; background:#d4b36b; min-height:46px; }
 .wb-shell button:hover { background:#e3c887; }
 .wb-shell button:disabled { cursor:default; opacity:.5; transform:none; }
@@ -54,3 +55,10 @@
 .workbook-entry-link { display:inline-block; margin:1.5rem 0 .5rem; padding:.9rem 1.4rem; border:1px solid #b48632; border-radius:999px; color:#102d4f; background:#f8f3e9; font-weight:700; text-decoration:none; }
 @media(max-width:950px) { .wb-layout { grid-template-columns:1fr; } .wb-navigation { position:static; } .wb-chapters { display:none; } .wb-grid { grid-template-columns:1fr; } }
 @media(max-width:520px) { .wb-toolbar { align-items:flex-start; } .wb-save { width:100%; justify-content:space-between; } .wb-answer,.wb-check,.wb-note { padding:1.1rem; } .wb-page-actions { padding:1rem; } .wb-page-actions button { font-size:.9rem; padding:.8rem; } .wb-page-footer { padding:1.25rem; } }
+@media print {
+  .wb-shell { max-width:none; padding:0; }
+  .wb-toolbar,.wb-navigation,.wb-page-actions { display:none!important; }
+  .wb-layout { display:block; }
+  .wb-paper { border:0; border-radius:0; box-shadow:none; }
+  .wb-answer textarea { border:1px solid #8c98a2; min-height:120px; }
+}

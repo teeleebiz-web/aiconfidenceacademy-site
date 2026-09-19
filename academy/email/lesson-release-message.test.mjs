@@ -9,7 +9,9 @@ test('renders the approved lesson-release wording with the two-hour access windo
   assert.equal(message.subject, 'Your next ACA lesson is ready')
   assert.match(message.html, /Hello Jordan,/)
   assert.match(message.html, /Lesson 2\.1: Shape Your Request/)
-  assert.match(message.html, /two-hour lesson access window starts when you open the lesson/)
+  assert.match(message.html, /two-hour lesson timer starts when you open the lesson/)
+  assert.match(message.html, /pauses when you leave/)
+  assert.match(message.html, /workbook pages remain available/)
   assert.match(message.html, /https:\/\/aiconfidenceacademy\.com\/learn\//)
 })
 
