@@ -16,7 +16,13 @@ test('removes copied environment syntax and surrounding quotation marks', () => 
   )
 })
 
-test('refuses a sender value without a valid email address', () => {
-  assert.equal(formatAcademyEmailFrom('AI Confidence Academy notifications'), null)
-  assert.equal(formatAcademyEmailFrom(null), null)
+test('uses the official verified sender when the stored value has no email address', () => {
+  assert.equal(
+    formatAcademyEmailFrom('AI Confidence Academy notifications'),
+    'AI Confidence Academy <notifications@updates.aiconfidenceacademy.org>',
+  )
+  assert.equal(
+    formatAcademyEmailFrom(null),
+    'AI Confidence Academy <notifications@updates.aiconfidenceacademy.org>',
+  )
 })
