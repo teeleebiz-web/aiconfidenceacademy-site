@@ -35,6 +35,7 @@ type LessonViewProps = {
   onOpenLesson?: (lesson: Lesson) => void
   lessonAccess?: LessonAccess | null
   onRefreshAccess?: () => Promise<void>
+  onResumeAccess?: () => Promise<void>
 }
 
 export function LessonView({
@@ -51,6 +52,7 @@ export function LessonView({
   onOpenLesson,
   lessonAccess,
   onRefreshAccess,
+  onResumeAccess,
 }: LessonViewProps) {
   const [response, setResponse] = useState(initialArtifact)
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>(
@@ -98,7 +100,13 @@ export function LessonView({
   return (
     <main className="lesson-main">
       <article className="lesson-article">
-        {lessonAccess && onRefreshAccess ? <LessonClock access={lessonAccess} onHeartbeat={onRefreshAccess} /> : null}
+        {lessonAccess && onRefreshAccess && onResumeAccess ? (
+          <LessonClock
+            access={lessonAccess}
+            onHeartbeat={onRefreshAccess}
+            onResume={onResumeAccess}
+          />
+        ) : null}
         <header className="lesson-hero">
           <div>
             <p className="eyebrow">Lesson {lesson.page_id}</p>

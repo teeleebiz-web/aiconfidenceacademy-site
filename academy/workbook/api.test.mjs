@@ -15,16 +15,20 @@ for(const p of workbook.pages)for(const b of p.blocks)collect(b,p.number)
 const field=ids.find(f=>f.page===5).id
 function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson34Status = 'draft', lesson35Status = 'draft', lesson36Status = 'draft', lesson41Status = 'draft', lesson42Status = 'draft', lesson51Status = 'draft', lesson52Status = 'draft', lesson53Status = 'draft', lesson54Status = 'draft', lesson55Status = 'draft', lesson56Status = 'draft') {
   const records=[],writes=[]
-  const db={ records,writes,auth:{async getUser(token){return token==='bad'?{error:Error('invalid')}:{data:{user:{id:token,is_anonymous:false}}}}},from(table){
+  const lessonRows=Array.from({length:6},(_,i)=>({id:`lesson-1-${i+1}`,journey_id:'journey',course_id:'course',page_id:`1.${i+1}`,status:'published',unlock_offset_days:i})).concat([{id:'lesson-3-1',journey_id:'third-journey',course_id:'course',page_id:'3.1',status:'published',unlock_offset_days:14},{id:'lesson-3-2',journey_id:'third-journey',course_id:'course',page_id:'3.2',status:thirdLessonStatus,unlock_offset_days:15},{id:'lesson-3-3',journey_id:'third-journey',course_id:'course',page_id:'3.3',status:lesson33Status,unlock_offset_days:16},{id:'lesson-3-4',journey_id:'third-journey',course_id:'course',page_id:'3.4',status:lesson34Status,unlock_offset_days:17},{id:'lesson-3-5',journey_id:'third-journey',course_id:'course',page_id:'3.5',status:lesson35Status,unlock_offset_days:18},{id:'lesson-3-6',journey_id:'third-journey',course_id:'course',page_id:'3.6',status:lesson36Status,unlock_offset_days:19},{id:'lesson-4-1',journey_id:'fourth-journey',course_id:'course',page_id:'4.1',status:lesson41Status,unlock_offset_days:21},{id:'lesson-4-2',journey_id:'fourth-journey',course_id:'course',page_id:'4.2',status:lesson42Status,unlock_offset_days:22},{id:'lesson-5-1',journey_id:'fifth-journey',course_id:'course',page_id:'5.1',status:lesson51Status,unlock_offset_days:28},{id:'lesson-5-2',journey_id:'fifth-journey',course_id:'course',page_id:'5.2',status:lesson52Status,unlock_offset_days:29},{id:'lesson-5-3',journey_id:'fifth-journey',course_id:'course',page_id:'5.3',status:lesson53Status,unlock_offset_days:30},{id:'lesson-5-4',journey_id:'fifth-journey',course_id:'course',page_id:'5.4',status:lesson54Status,unlock_offset_days:31},{id:'lesson-5-5',journey_id:'fifth-journey',course_id:'course',page_id:'5.5',status:lesson55Status,unlock_offset_days:32},{id:'lesson-5-6',journey_id:'fifth-journey',course_id:'course',page_id:'5.6',status:lesson56Status,unlock_offset_days:33}])
+  const db={ records,writes,auth:{async getUser(token){return token==='bad'?{error:Error('invalid')}:{data:{user:{id:token,is_anonymous:false}}}}},async rpc(name){
+    if(name!=='get_enrollment_lesson_access')throw Error(`Unexpected RPC: ${name}`)
+    return {data:[{released_lesson_ids:lessonRows.filter(row=>row.status==='published').map(row=>row.id)}],error:null}
+  },from(table){
     let action='read',value,filters=[]
     const query={
       select(){return query},eq(k,v){filters.push(row=>row[k]===v);return query},in(k,values){filters.push(row=>values.includes(row[k]));return query},
       insert(v){action='insert';value=v;return query},update(v){action='update';value=v;return query},
       async run(single){
         let rows
-        if(table==='enrollments')rows=['learner-a','learner-b'].map(learner_id=>({learner_id,course_id:'course',status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}}))
+        if(table==='enrollments')rows=['learner-a','learner-b'].map(learner_id=>({id:`enrollment-${learner_id}`,learner_id,course_id:'course',status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}}))
         else if(table==='course_journeys')rows=[{id:'journey',course_id:'course',journey_number:1,status:'published'},{id:'third-journey',course_id:'course',journey_number:3,status:'published'},{id:'fourth-journey',course_id:'course',journey_number:4,status:'published'},{id:'fifth-journey',course_id:'course',journey_number:5,status:'published'}]
-        else if(table==='lessons')rows=Array.from({length:6},(_,i)=>({journey_id:'journey',course_id:'course',page_id:`1.${i+1}`,status:'published',unlock_offset_days:i})).concat([{journey_id:'third-journey',course_id:'course',page_id:'3.1',status:'published',unlock_offset_days:14},{journey_id:'third-journey',course_id:'course',page_id:'3.2',status:thirdLessonStatus,unlock_offset_days:15},{journey_id:'third-journey',course_id:'course',page_id:'3.3',status:lesson33Status,unlock_offset_days:16},{journey_id:'third-journey',course_id:'course',page_id:'3.4',status:lesson34Status,unlock_offset_days:17},{journey_id:'third-journey',course_id:'course',page_id:'3.5',status:lesson35Status,unlock_offset_days:18},{journey_id:'third-journey',course_id:'course',page_id:'3.6',status:lesson36Status,unlock_offset_days:19},{journey_id:'fourth-journey',course_id:'course',page_id:'4.1',status:lesson41Status,unlock_offset_days:21},{journey_id:'fourth-journey',course_id:'course',page_id:'4.2',status:lesson42Status,unlock_offset_days:22},{journey_id:'fifth-journey',course_id:'course',page_id:'5.1',status:lesson51Status,unlock_offset_days:28},{journey_id:'fifth-journey',course_id:'course',page_id:'5.2',status:lesson52Status,unlock_offset_days:29},{journey_id:'fifth-journey',course_id:'course',page_id:'5.3',status:lesson53Status,unlock_offset_days:30},{journey_id:'fifth-journey',course_id:'course',page_id:'5.4',status:lesson54Status,unlock_offset_days:31},{journey_id:'fifth-journey',course_id:'course',page_id:'5.5',status:lesson55Status,unlock_offset_days:32},{journey_id:'fifth-journey',course_id:'course',page_id:'5.6',status:lesson56Status,unlock_offset_days:33}])
+        else if(table==='lessons')rows=lessonRows
         else if(table==='aca_workbook_definitions')rows=[{course_id:'course',workbook_key:'journey-one',content:workbook},{course_id:'course',workbook_key:'journey-two',content:secondWorkbook},{course_id:'course',workbook_key:'journey-three',content:thirdWorkbook},{course_id:'course',workbook_key:'journey-four',content:fourthWorkbook},{course_id:'course',workbook_key:'journey-five',content:fifthWorkbook}]
         else if(table==='aca_workbook_responses')rows=records
         else throw Error(`Unexpected access: ${table}`)
@@ -348,12 +352,13 @@ test('Lesson 5.6 opens only its four workbook pages and preserves earlier Journe
 
 test('Journey Six opens only the four Lesson 6.1 workbook pages',async()=>{
   const data={
-    enrollments:{status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}},
+    enrollments:{id:'enrollment-a',status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}},
     course_journeys:{id:'sixth-journey',status:'published'},
-    lessons:[{page_id:'6.1',status:'published',unlock_offset_days:0}],
+    lessons:[{id:'lesson-6-1',page_id:'6.1',status:'published',unlock_offset_days:0}],
   }
   const db={
     auth:{async getUser(){return {data:{user:{id:'learner-a',is_anonymous:false}}}}},
+    async rpc(){return {data:[{released_lesson_ids:['lesson-6-1']}],error:null}},
     from(table){
       const query={
         select(){return query},eq(){return query},in(){return query},

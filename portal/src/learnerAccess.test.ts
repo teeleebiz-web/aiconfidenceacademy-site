@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { learnerAccessView } from './learnerAccess'
-import type { Journey, JourneyIntroduction, Lesson, LessonProgress } from './types'
+import type { Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from './types'
 
 const journeys = [1, 2, 3].map((number) => ({
   id: `journey-${number}`,
@@ -54,28 +54,58 @@ const completed = (lessonIds: string[]) => lessonIds.map((lessonId, index) => ({
   artifact_saved: true,
 })) satisfies LessonProgress[]
 
+const access = (lesson: Lesson, status: LearnerLessonAccess['access_status'] = 'available'): LearnerLessonAccess => ({
+  current_lesson_id: lesson.id,
+  current_journey_id: lesson.journey_id,
+  access_status: status,
+  available_at: '2026-09-19T09:00:00.000Z',
+  active_seconds: 0,
+  remaining_seconds: 7200,
+  completed_lessons: lesson.course_position - 1,
+  total_lessons: lessons.length,
+  released_lesson_ids: lessons.slice(0, lesson.course_position).map(item => item.id),
+})
+
 describe('learnerAccessView', () => {
-  it('shows only the first incomplete journey and its six lessons', () => {
+  it('shows only the one current lesson and its journey introduction', () => {
     const progress = completed(lessons.slice(0, 6).map((lesson) => lesson.id))
-    const view = learnerAccessView({ journeys, lessons, progress, introductions })
+    const view = learnerAccessView({
+      journeys,
+      lessons,
+      progress,
+      introductions,
+      accessState: access(lessons[6]),
+    })
 
     expect(view.journeys.map((journey) => journey.journey_number)).toEqual([2])
-    expect(view.lessons.map((lesson) => lesson.page_id)).toEqual(['2.1', '2.2', '2.3', '2.4', '2.5', '2.6'])
+    expect(view.lessons.map((lesson) => lesson.page_id)).toEqual(['2.1'])
     expect(view.introductions.map((item) => item.journey_id)).toEqual(['journey-2'])
   })
 
-  it('keeps a new learner inside Journey 1', () => {
-    const view = learnerAccessView({ journeys, lessons, progress: [], introductions })
+  it('gives a new learner only Lesson 1.1', () => {
+    const view = learnerAccessView({
+      journeys,
+      lessons,
+      progress: [],
+      introductions,
+      accessState: access(lessons[0]),
+    })
 
     expect(view.journeys.map((journey) => journey.journey_number)).toEqual([1])
-    expect(view.lessons).toHaveLength(6)
+    expect(view.lessons.map((lesson) => lesson.page_id)).toEqual(['1.1'])
   })
 
-  it('keeps a completed learner on the final journey instead of reopening earlier work', () => {
-    const progress = completed(lessons.map((lesson) => lesson.id))
-    const view = learnerAccessView({ journeys, lessons, progress, introductions })
+  it('does not expose a scheduled lesson before its release time', () => {
+    const view = learnerAccessView({
+      journeys,
+      lessons,
+      progress: completed([lessons[0].id]),
+      introductions,
+      accessState: access(lessons[1], 'scheduled'),
+    })
 
-    expect(view.journeys.map((journey) => journey.journey_number)).toEqual([3])
-    expect(view.lessons.every((lesson) => lesson.journey_id === 'journey-3')).toBe(true)
+    expect(view.journeys).toEqual([])
+    expect(view.lessons).toEqual([])
+    expect(view.introductions).toEqual([])
   })
 })

@@ -44,6 +44,18 @@ export type Enrollment = {
   course: Course
 }
 
+export type LearnerLessonAccess = {
+  current_lesson_id: string | null
+  current_journey_id: string | null
+  access_status: 'available' | 'active' | 'scheduled' | 'course_completed' | 'access_ended'
+  available_at: string | null
+  active_seconds: number
+  remaining_seconds: number
+  completed_lessons: number
+  total_lessons: number
+  released_lesson_ids: string[]
+}
+
 export type Journey = {
   id: string
   course_id: string

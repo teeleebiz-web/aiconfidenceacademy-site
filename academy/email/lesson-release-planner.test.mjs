@@ -11,19 +11,38 @@ const lessons = [
   { id: 'lesson-2', course_id: 'course-1', page_id: '1.2', title: 'Second lesson', unlock_offset_days: 1, status: 'published' },
   { id: 'draft', course_id: 'course-1', page_id: '1.3', title: 'Draft lesson', unlock_offset_days: 1, status: 'draft' },
 ]
+const accessState = (enrollmentId, lessonId, availableAt, accessStatus = 'available') => ({
+  enrollment_id: enrollmentId,
+  current_lesson_id: lessonId,
+  access_status: accessStatus,
+  available_at: availableAt,
+})
 
-test('plans only published lessons released inside the requested window', () => {
+test('plans only the one current lesson released inside the requested window', () => {
   const result = planLessonReleaseNotifications({
-    enrollments: [enrollment], lessons, existingEventKeys: [],
+    enrollments: [enrollment], lessons,
+    accessStates: [accessState('enrollment-1', 'lesson-2', '2026-09-02T09:00:00.000Z')],
+    existingEventKeys: [],
     windowStart: '2026-09-01T09:00:00.000Z', now: '2026-09-02T09:00:01.000Z',
   })
-  assert.deepEqual(result.map(item => item.lessonId), ['lesson-1', 'lesson-2'])
-  assert.equal(result[1].releaseAt, '2026-09-02T09:00:00.000Z')
+  assert.deepEqual(result.map(item => item.lessonId), ['lesson-2'])
+  assert.equal(result[0].releaseAt, '2026-09-02T09:00:00.000Z')
+})
+
+test('does not accumulate future lesson notices while the current lesson remains open', () => {
+  const result = planLessonReleaseNotifications({
+    enrollments: [enrollment], lessons,
+    accessStates: [accessState('enrollment-1', 'lesson-1', '2026-09-01T09:00:00.000Z', 'active')],
+    existingEventKeys: [lessonReleaseEventKey('enrollment-1', 'lesson-1')],
+    windowStart: '2026-09-02T08:00:00.000Z', now: '2026-09-02T10:00:00.000Z',
+  })
+  assert.deepEqual(result, [])
 })
 
 test('does not plan an event that already exists in the operational ledger', () => {
   const result = planLessonReleaseNotifications({
     enrollments: [enrollment], lessons,
+    accessStates: [accessState('enrollment-1', 'lesson-2', '2026-09-02T09:00:00.000Z')],
     existingEventKeys: [lessonReleaseEventKey('enrollment-1', 'lesson-2')],
     windowStart: '2026-09-02T08:00:00.000Z', now: '2026-09-02T10:00:00.000Z',
   })
@@ -38,6 +57,7 @@ test('excludes paused, future, and expired enrollments', () => {
   ]
   const result = planLessonReleaseNotifications({
     enrollments: variants, lessons, existingEventKeys: [],
+    accessStates: variants.map(item => accessState(item.id, 'lesson-2', '2026-09-02T09:00:00.000Z')),
     windowStart: '2026-09-02T08:00:00.000Z', now: '2026-09-02T10:00:00.000Z',
   })
   assert.deepEqual(result, [])
@@ -57,6 +77,14 @@ test('loads active enrollments, published lessons, and recorded events from the 
     aca_email_events: [{ event_key: lessonReleaseEventKey('enrollment-1', 'lesson-1') }],
   }
   const db = {
+    async rpc(name, args) {
+      calls.push(['rpc', name, args])
+      return { data: [{
+        current_lesson_id: 'lesson-2',
+        access_status: 'available',
+        available_at: '2026-09-02T09:00:00.000Z',
+      }], error: null }
+    },
     from(table) {
       const query = {
         select(columns) { calls.push([table, 'select', columns]); return this },
@@ -76,4 +104,5 @@ test('loads active enrollments, published lessons, and recorded events from the 
   assert.ok(calls.some(call => call[0] === 'enrollments' && call[1] === 'eq' && call[2] === 'status'))
   assert.ok(calls.some(call => call[0] === 'lessons' && call[1] === 'in' && call[2] === 'course_id'))
   assert.ok(calls.some(call => call[0] === 'aca_email_events' && call[1] === 'eq' && call[2] === 'template_key'))
+  assert.ok(calls.some(call => call[0] === 'rpc' && call[1] === 'get_enrollment_lesson_access'))
 })

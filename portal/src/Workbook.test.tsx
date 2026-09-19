@@ -23,8 +23,11 @@ it('opens the approved pages, saves typed answers and restores the page after re
     return {ok:true,json:async()=>structuredClone(record)} as Response
   })
   vi.spyOn(window,'scrollTo').mockImplementation(()=>{})
+  const print=vi.spyOn(window,'print').mockImplementation(()=>{})
   const first=render(<StrictMode><Workbook /></StrictMode>)
   await screen.findByRole('heading',{level:1,name:'Practice page 5'})
+  fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}))
+  expect(print).toHaveBeenCalledOnce()
   const input=screen.getByRole('textbox',{name:'My answer'}) as HTMLTextAreaElement
   fireEvent.change(input,{target:{value:'I want to use AI with confidence.'}})
   fireEvent.click(screen.getByRole('button',{name:'Save'}))
