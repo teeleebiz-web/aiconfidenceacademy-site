@@ -4,6 +4,7 @@ import Stripe from 'stripe'
 import { Resend } from 'resend'
 import { createAcademyServer } from '../academy/server.mjs'
 import { lessonReleaseMessage } from '../academy/email/lesson-release-message.mjs'
+import { formatAcademyEmailFrom } from '../academy/email/sender.mjs'
 
 let server
 export default function handler(request, response) {
@@ -23,7 +24,7 @@ export default function handler(request, response) {
           installment49PriceId: process.env.ACA_INSTALLMENT_49_PRICE_ID,
           resend: process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null,
           resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET,
-          emailFrom: process.env.ACA_EMAIL_FROM,
+          emailFrom: formatAcademyEmailFrom(process.env.ACA_EMAIL_FROM),
           appUrl: process.env.ACA_APP_URL,
           cronSecret: process.env.CRON_SECRET,
           db,
