@@ -33,7 +33,7 @@
           <ul>
             <li>Six guided journeys and 36 lessons</li>
             <li>Video, audio, and clear written guidance</li>
-            <li>Hands-on practice and a personal workbook</li>
+            <li>Hands-on practice and a personal digital workbook</li>
             <li>Your own learner account and progress tracking</li>
           </ul>
         </div>
@@ -73,6 +73,9 @@
       section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
     }
     enrollmentPage.before(section);
+    if (window.location.hash === '#interest-list') {
+      window.requestAnimationFrame(() => document.getElementById('interest-list')?.scrollIntoView());
+    }
   }
 
   const form = document.querySelector('form[name="aca-interest-list"]');
