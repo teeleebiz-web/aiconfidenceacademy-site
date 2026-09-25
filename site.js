@@ -16,29 +16,56 @@
   if (enrollmentPage) {
     const paymentStatus = new URLSearchParams(window.location.search).get('payment');
     const section = document.createElement('section');
-    section.className = 'enrollment-layout section-pad';
+    section.className = 'enrollment-offer section-pad';
     section.setAttribute('aria-labelledby', 'phase-one-enrollment-title');
     section.innerHTML = `
-      <div>
-        <p class="section-kicker">Phase One enrollment</p>
-        <h2 id="phase-one-enrollment-title">Choose the payment option that works for you.</h2>
-        <p><strong>Pay in full: $129</strong></p>
-        <p>One secure payment provides Phase One access.</p>
-        <form method="post" action="/api/enrollment/phase-one/paid-in-full">
-          <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank">Terms of Service</a>, <a href="/privacy" target="_blank">Privacy Policy</a>, and <a href="/refund-policy" target="_blank">Refund Policy</a>.</span></label>
-          <button class="button button-gold" type="submit">Pay $129 in full</button>
-        </form>
-      </div>
-      <div class="interest-form">
-        <p class="section-kicker">Three installments · $149 total</p>
-        <h2>$50 today, $50 in 7 days, then $49 in 14 days.</h2>
-        <p>Your payment method is securely handled by Stripe and authorized only for this schedule. ACA does not store your full card number.</p>
-        <p>We send a reminder two days before payments two and three. If a scheduled payment fails, you receive a 48-hour correction period. Access pauses after that period if the payment remains unpaid and resumes when the account is brought current. Correcting a payment does not move the remaining scheduled date.</p>
-        <p>The recurring authorization ends automatically after the third successful payment.</p>
-        <form method="post" action="/api/enrollment/phase-one/installments">
-          <label class="consent"><input type="checkbox" required><span>I authorize the three-payment schedule above and agree to the <a href="/terms" target="_blank">Terms of Service</a>, <a href="/privacy" target="_blank">Privacy Policy</a>, and <a href="/refund-policy" target="_blank">Refund Policy</a>.</span></label>
-          <button class="button button-gold" type="submit">Start with $50 today</button>
-        </form>
+      <div class="offer-inner">
+        <div class="offer-intro">
+          <div>
+            <p class="section-kicker">Phase One enrollment</p>
+            <h2 id="phase-one-enrollment-title">A clear path from first steps to real practice.</h2>
+            <p>Enroll as an ACA learner and move through a guided course built for everyday life.</p>
+          </div>
+          <div class="offer-course-price"><span>Phase One course price</span><strong>$149</strong></div>
+        </div>
+        <div class="offer-includes">
+          <h3>What your enrollment includes</h3>
+          <ul>
+            <li>Six guided journeys and 36 lessons</li>
+            <li>Video, audio, and clear written guidance</li>
+            <li>Hands-on practice and a personal workbook</li>
+            <li>Your own learner account and progress tracking</li>
+          </ul>
+        </div>
+        <div class="payment-options" aria-label="Phase One payment options">
+          <article class="payment-card payment-card-featured">
+            <p class="payment-label">One payment</p>
+            <h3>Pay in full</h3>
+            <p class="payment-amount">$129</p>
+            <p class="payment-saving">Save $20 on the $149 course price.</p>
+            <p class="payment-note">One payment covers your Phase One enrollment.</p>
+            <form method="post" action="/api/enrollment/phase-one/paid-in-full">
+              <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
+              <button class="button button-gold" type="submit">Pay $129 in full</button>
+            </form>
+          </article>
+          <article class="payment-card payment-card-installments">
+            <p class="payment-label">Three weekly payments</p>
+            <h3>Pay in installments</h3>
+            <p class="payment-amount">$50 <span>today</span></p>
+            <ol class="payment-schedule" aria-label="Installment schedule">
+              <li><span>Today</span><strong>$50</strong></li>
+              <li><span>In 7 days</span><strong>$50</strong></li>
+              <li><span>In 14 days</span><strong>$49</strong></li>
+            </ol>
+            <p class="payment-total">$149 total</p>
+            <details class="payment-terms"><summary>How the installments work</summary><p>Stripe handles your payment method; ACA does not store your full card number. We email a reminder two days before the later payments. If a payment fails, you have 48 hours to correct it before access pauses. Access resumes when the account is brought current; correcting a payment does not move the remaining scheduled date. Automatic payments end after the third successful payment.</p></details>
+            <form method="post" action="/api/enrollment/phase-one/installments">
+              <label class="consent"><input type="checkbox" required><span>I authorize the three-payment schedule above and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
+              <button class="button button-gold" type="submit">Start with $50 today</button>
+            </form>
+          </article>
+        </div>
       </div>`;
     if (paymentStatus === 'success') {
       section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Payment received.</span><p>Check your email for your secure Academy access.</p></div>');

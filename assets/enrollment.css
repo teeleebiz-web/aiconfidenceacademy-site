@@ -1,0 +1,305 @@
+.enrollment-offer {
+  position: relative;
+  overflow: hidden;
+  background: #f8f3e9;
+}
+
+.enrollment-offer::before {
+  position: absolute;
+  top: -230px;
+  right: -150px;
+  width: 680px;
+  height: 680px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #d4b36b22, transparent 68%);
+  content: "";
+  pointer-events: none;
+}
+
+.offer-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.offer-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  align-items: end;
+  gap: 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid #102d4f28;
+}
+
+.offer-intro h2 {
+  max-width: 740px;
+  color: #102d4f;
+  font: 400 clamp(36px, 4.2vw, 58px)/1.12 Georgia, serif;
+  letter-spacing: -.025em;
+}
+
+.offer-intro p:not(.section-kicker) {
+  max-width: 650px;
+  margin-top: 20px;
+  color: #4e6272;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.offer-course-price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 0 9px 25px;
+  border-left: 3px solid #b48632;
+  color: #102d4f;
+}
+
+.offer-course-price span,
+.payment-label {
+  color: #846121;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.offer-course-price strong {
+  font: 400 54px/1 Georgia, serif;
+  letter-spacing: -.035em;
+}
+
+.offer-includes {
+  display: grid;
+  grid-template-columns: 255px minmax(0, 1fr);
+  gap: 50px;
+  align-items: start;
+  padding: 37px 0 43px;
+}
+
+.offer-includes h3 {
+  max-width: 240px;
+  color: #102d4f;
+  font: 400 27px/1.2 Georgia, serif;
+}
+
+.offer-includes ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.offer-includes li {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  color: #18324a;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.offer-includes li::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b48632;
+  content: "";
+}
+
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.payment-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 34px 37px 36px;
+  border: 1px solid #102d4f24;
+  border-top: 4px solid #476c8d;
+  background: #fffdfa;
+  box-shadow: 0 16px 42px #19344a0e;
+}
+
+.payment-card-featured {
+  border-top-color: #b48632;
+}
+
+.payment-card h3 {
+  margin-top: 12px;
+  color: #102d4f;
+  font: 400 clamp(27px, 2.5vw, 34px)/1.2 Georgia, serif;
+}
+
+.payment-amount {
+  margin-top: 22px;
+  color: #102d4f;
+  font: 400 58px/1 Georgia, serif;
+  letter-spacing: -.04em;
+}
+
+.payment-amount span {
+  color: #506678;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.payment-saving {
+  width: fit-content;
+  margin-top: 18px;
+  padding: 8px 12px;
+  background: #b486321c;
+  color: #795718;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.payment-note {
+  max-width: 320px;
+  margin-top: 23px;
+  color: #536879;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.payment-schedule {
+  display: grid;
+  gap: 0;
+  max-width: 350px;
+  margin: 19px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payment-schedule li {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 9px 0;
+  border-bottom: 1px solid #102d4f1f;
+  color: #536879;
+  font-size: 14px;
+}
+
+.payment-schedule strong,
+.payment-total {
+  color: #102d4f;
+  font-weight: 700;
+}
+
+.payment-total {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.payment-terms {
+  margin-top: 15px;
+  color: #536879;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.payment-terms summary {
+  width: fit-content;
+  color: #1c4267;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: #b48632;
+  text-underline-offset: 4px;
+}
+
+.payment-terms p {
+  margin-top: 12px;
+}
+
+.payment-card form {
+  display: grid;
+  gap: 18px;
+  margin-top: auto;
+  padding-top: 28px;
+}
+
+.payment-card .consent {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  color: #536879;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.payment-card .consent input {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: #102d4f;
+}
+
+.payment-card .consent a {
+  color: #1c4267;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.payment-card .button {
+  width: 100%;
+  min-height: 52px;
+}
+
+.payment-card :focus-visible,
+.payment-terms summary:focus-visible {
+  outline: 3px solid #b48632;
+  outline-offset: 3px;
+}
+
+.enrollment-offer > .form-confirmation,
+.enrollment-offer > .form-error {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto 24px;
+}
+
+@media (max-width: 800px) {
+  .offer-intro,
+  .offer-includes {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .offer-course-price {
+    width: fit-content;
+  }
+
+  .offer-includes ul,
+  .payment-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .offer-intro h2 {
+    font-size: 37px;
+  }
+
+  .offer-includes {
+    padding: 29px 0 34px;
+  }
+
+  .payment-card {
+    padding: 28px 24px 30px;
+  }
+
+  .payment-amount {
+    font-size: 52px;
+  }
+}
