@@ -10,6 +10,8 @@ test('public enrollment forms submit to the separate backend and retain consent'
     runScripts: 'outside-only',
   })
   dom.window.eval(script)
+  assert.match(dom.window.document.querySelector('.payment-card-featured')?.textContent ?? '', /\$149/)
+  assert.doesNotMatch(dom.window.document.querySelector('.payment-card-featured')?.textContent ?? '', /\$129/)
   const forms = [...dom.window.document.querySelectorAll('.payment-options form')]
   assert.deepEqual(forms.map(form => form.action), [
     'https://checkout.aiconfidenceacademy.org/api/enrollment/phase-one/paid-in-full',
