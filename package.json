@@ -7,7 +7,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "build:academy": "vite build --config academy/vite.config.ts && node academy/prepare-site.mjs",
+    "build:academy": "vite build --config academy/vite.config.ts && node content/build-public-hub.mjs && node academy/prepare-site.mjs",
     "build:site": "npm run build && npm run build:academy",
     "start:academy": "node academy/server.mjs",
     "test:academy": "node --test academy/server.test.mjs academy/enrollment/*.test.mjs academy/email/*.test.mjs",
