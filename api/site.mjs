@@ -5,9 +5,15 @@ import { Resend } from 'resend'
 import { createAcademyServer } from '../academy/server.mjs'
 import { lessonReleaseMessage } from '../academy/email/lesson-release-message.mjs'
 import { formatAcademyEmailFrom } from '../academy/email/sender.mjs'
+import { servePublicPreview } from '../academy/public-preview.mjs'
 
 let server
 export default function handler(request, response) {
+  const path = request.query?.__aca_path
+    ?? new URL(request.url, 'http://localhost').searchParams.get('__aca_path')
+  if (process.env.VERCEL_ENV === 'preview' && (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY)) {
+    return servePublicPreview(request, response, path)
+  }
   if (!server) {
     if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       response.writeHead(503, { 'Cache-Control': 'no-store' })
@@ -34,8 +40,6 @@ export default function handler(request, response) {
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
       root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation })
   }
-  const path = request.query?.__aca_path
-    ?? new URL(request.url, 'http://localhost').searchParams.get('__aca_path')
   if (typeof path === 'string') request.url = '/' + path.replace(/^\/+/, '')
   return new Promise(resolve => {
     response.once('finish', resolve)
