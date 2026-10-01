@@ -29,17 +29,37 @@ test('rejects an installment checkout from another origin', async () => {
   assert.equal(res.status, 403)
 })
 
-test('opens the approved $129 pay-in-full checkout separately', async () => {
+test('accepts a public-site form sent to a separate checkout host and returns to the public site', async () => {
+  let payload
+  const req = Object.assign(new EventEmitter(), {
+    method: 'POST',
+    headers: { origin: 'https://aiconfidenceacademy.org', host: 'checkout.aiconfidenceacademy.org' },
+  })
+  const res = response()
+  await handlePaidInFullCheckout(req, res, {
+    stripe: { checkout: { sessions: { create: async value => {
+      payload = value
+      return { url: 'https://checkout.stripe.test/full' }
+    } } } },
+    phaseOnePriceId: 'price_live', courseId: 'course', appUrl: 'https://aiconfidenceacademy.org',
+  })
+  assert.equal(res.status, 303)
+  assert.equal(res.headers.Location, 'https://checkout.stripe.test/full')
+  assert.equal(payload.success_url, 'https://aiconfidenceacademy.org/enroll/?payment=success')
+  assert.equal(payload.cancel_url, 'https://aiconfidenceacademy.org/enroll/?payment=canceled')
+})
+
+test('opens the approved one-time checkout separately', async () => {
   let payload
   const req = Object.assign(new EventEmitter(), { method: 'POST', headers: { origin: 'https://aca.example' } })
   const res = response()
   await handlePaidInFullCheckout(req, res, {
     stripe: { checkout: { sessions: { create: async value => { payload = value; return { url: 'https://checkout.stripe.test/full' } } } } },
-    phaseOnePriceId: 'price_129', courseId: 'course', appUrl: 'https://aca.example',
+    phaseOnePriceId: 'price_149', courseId: 'course', appUrl: 'https://aca.example',
   })
   assert.equal(res.status, 303)
   assert.equal(payload.mode, 'payment')
-  assert.deepEqual(payload.line_items, [{ price: 'price_129', quantity: 1 }])
+  assert.deepEqual(payload.line_items, [{ price: 'price_149', quantity: 1 }])
 })
 
 test('sets exactly three weekly phases and cancels after $50, $50, $49', async () => {

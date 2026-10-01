@@ -14,6 +14,7 @@
 
   const enrollmentPage = document.querySelector('form[name="aca-interest-list"]')?.closest('.enrollment-layout');
   if (enrollmentPage) {
+    const checkoutOrigin = 'https://checkout.aiconfidenceacademy.org';
     const paymentStatus = new URLSearchParams(window.location.search).get('payment');
     const section = document.createElement('section');
     section.className = 'enrollment-offer section-pad';
@@ -41,12 +42,11 @@
           <article class="payment-card payment-card-featured">
             <p class="payment-label">One payment</p>
             <h3>Pay in full</h3>
-            <p class="payment-amount">$129</p>
-            <p class="payment-saving">Save $20 on the $149 course price.</p>
+            <p class="payment-amount">$149</p>
             <p class="payment-note">One payment covers your Phase One enrollment.</p>
-            <form method="post" action="/api/enrollment/phase-one/paid-in-full">
+            <form method="post" action="${checkoutOrigin}/api/enrollment/phase-one/paid-in-full">
               <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
-              <button class="button button-gold" type="submit">Pay $129 in full</button>
+              <button class="button button-gold" type="submit">Pay $149 once</button>
             </form>
           </article>
           <article class="payment-card payment-card-installments">
@@ -60,7 +60,7 @@
             </ol>
             <p class="payment-total">$149 total</p>
             <details class="payment-terms"><summary>How the installments work</summary><p>Stripe handles your payment method; ACA does not store your full card number. We email a reminder two days before the later payments. If a payment fails, you have 48 hours to correct it before access pauses. Access resumes when the account is brought current; correcting a payment does not move the remaining scheduled date. Automatic payments end after the third successful payment.</p></details>
-            <form method="post" action="/api/enrollment/phase-one/installments">
+            <form method="post" action="${checkoutOrigin}/api/enrollment/phase-one/installments">
               <label class="consent"><input type="checkbox" required><span>I authorize the three-payment schedule above and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
               <button class="button button-gold" type="submit">Start with $50 today</button>
             </form>
