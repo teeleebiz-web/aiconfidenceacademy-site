@@ -1,5 +1,5 @@
 import { cp, mkdir, readFile, writeFile, readdir } from 'node:fs/promises'
-const pages = ['', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'faq', 'library', 'privacy', 'programs', 'reflections', 'refund-policy', 'terms', 'videos']
+const pages = ['', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'explore', 'faq', 'library', 'privacy', 'programs', 'reflections', 'refund-policy', 'terms', 'videos']
 // Only crawler instructions are public; website files stay behind the password gate.
 await mkdir('vercel-public', { recursive: true })
 await writeFile('vercel-public/robots.txt', 'User-agent: *\nDisallow: /\n')
@@ -9,6 +9,19 @@ for (const page of pages) {
   await mkdir(target, { recursive: true })
   const html = (await readFile(source, 'utf8')).replace('<a href="/learn/">Learner sign in</a>', '<a href="/academy/phase-one/">Phase One</a>')
   await writeFile(`${target}/index.html`, html)
+}
+const hub = JSON.parse(await readFile('content/public-hub.json', 'utf8'))
+for (const [section, entries] of [['explore', hub.articles], ['library', hub.books]]) {
+  for (const { slug } of entries) {
+    const html = await readFile(`${section}/${slug}/index.html`, 'utf8')
+    await mkdir(`private-dist/${section}/${slug}`, { recursive: true })
+    await writeFile(`private-dist/${section}/${slug}/index.html`, html.replace('<a href="/learn/">Learner sign in</a>', '<a href="/academy/phase-one/">Phase One</a>'))
+  }
+}
+for (const { slug } of hub.updates) {
+  const html = await readFile(`explore/updates/${slug}/index.html`, 'utf8')
+  await mkdir(`private-dist/explore/updates/${slug}`, { recursive: true })
+  await writeFile(`private-dist/explore/updates/${slug}/index.html`, html.replace('<a href="/learn/">Learner sign in</a>', '<a href="/academy/phase-one/">Phase One</a>'))
 }
 await cp('assets', 'private-dist/assets', { recursive: true })
 await cp('learn', 'private-dist/learn', { recursive: true })

@@ -81,6 +81,10 @@
   const form = document.querySelector('form[name="aca-interest-list"]');
   if (!form) return;
 
+  const interest = new URLSearchParams(window.location.search).get('interest');
+  const selectedInterest = { books: 'Books & Resources', updates: 'ACA updates' }[interest];
+  if (selectedInterest) form.elements.interest.value = selectedInterest;
+
   const endpoint = 'https://ymmkodlifpxutynpjnxm.supabase.co/functions/v1/aca-interest-list';
   const submitButton = form.querySelector('button[type="submit"]');
 
