@@ -42,12 +42,11 @@
           <article class="payment-card payment-card-featured">
             <p class="payment-label">One payment</p>
             <h3>Pay in full</h3>
-            <p class="payment-amount">$129</p>
-            <p class="payment-saving">Save $20 on the $149 course price.</p>
+            <p class="payment-amount">$149</p>
             <p class="payment-note">One payment covers your Phase One enrollment.</p>
             <form method="post" action="${checkoutOrigin}/api/enrollment/phase-one/paid-in-full">
               <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
-              <button class="button button-gold" type="submit">Pay $129 in full</button>
+              <button class="button button-gold" type="submit">Pay $149 once</button>
             </form>
           </article>
           <article class="payment-card payment-card-installments">
