@@ -16,6 +16,11 @@ if (env.VERCEL_ENV !== 'production' || !checkoutProject) {
     const stripe = new Stripe(env.STRIPE_SECRET_KEY)
     const price = await stripe.prices.retrieve(env.ACA_PHASE_ONE_PRICE_ID, { expand: ['product'] })
     console.log('[ACA checkout diagnostic] product', { amount: price.unit_amount, currency: price.currency, productName: price.product.name, productDescription: price.product.description, taxCode: price.product.tax_code, priceActive: price.active })
+    if (price.unit_amount !== 14900 || price.currency !== 'usd' || price.product.name !== 'AI Confidence Academy — Phase One') throw new Error('Unexpected Phase One product; refusing tax-code update')
+    if (!price.product.tax_code) {
+      const updated = await stripe.products.update(price.product.id, { tax_code: 'txcd_20060158' })
+      console.log('[ACA checkout diagnostic] updated course tax code', { taxCode: updated.tax_code, productName: updated.name })
+    }
     const appUrl = env.ACA_APP_URL.endsWith('/') ? env.ACA_APP_URL.slice(0, -1) : env.ACA_APP_URL
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
