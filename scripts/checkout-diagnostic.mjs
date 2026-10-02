@@ -39,8 +39,8 @@ if (env.VERCEL_ENV !== 'production' || !checkoutProject) {
     const available = await stripe.prices.list({ active: true, limit: 100, expand: ['data.product'] })
     console.log('[ACA checkout diagnostic] available course prices', available.data.filter(p => p.product?.name?.includes('Phase One')).map(p => ({ id: p.id, amount: p.unit_amount, currency: p.currency, interval: p.recurring?.interval, productName: p.product.name, taxCode: p.product.tax_code })))
     for (const [label, priceId, expectedAmount] of [
-      ['first and second installment', env.ACA_INSTALLMENT_50_PRICE_ID, 5000],
-      ['third installment', env.ACA_INSTALLMENT_49_PRICE_ID, 4900],
+      ['first and second installment', 'price_1UJRwlRIU2OBMsQAmE98YtET', 5000],
+      ['third installment', 'price_1UJRykRIU2OBMsQAHSM3Uohq', 4900],
     ]) {
       if (!priceId) throw new Error('Missing installment price ID: ' + label)
       const installmentPrice = await stripe.prices.retrieve(priceId, { expand: ['product'] })
@@ -53,7 +53,7 @@ if (env.VERCEL_ENV !== 'production' || !checkoutProject) {
     }
     const installmentSession = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      line_items: [{ price: env.ACA_INSTALLMENT_50_PRICE_ID, quantity: 1 }],
+      line_items: [{ price: 'price_1UJRwlRIU2OBMsQAmE98YtET', quantity: 1 }],
       success_url: `${appUrl}/enroll/?payment=success`,
       cancel_url: `${appUrl}/enroll/?payment=canceled`,
       billing_address_collection: 'auto',
