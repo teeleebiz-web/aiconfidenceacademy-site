@@ -7,6 +7,21 @@ const appOrigin = value => {
   try { return new URL(value).origin } catch { return null }
 }
 
+const logCheckoutFailure = (mode, error) => {
+  const details = error && typeof error === 'object' ? error : {}
+  console.error('[ACA checkout] Stripe session creation failed', {
+    mode,
+    type: details.type || details.name,
+    code: details.code,
+    param: details.param,
+    statusCode: details.statusCode,
+    requestId: details.requestId,
+    message: typeof details.message === 'string'
+      ? details.message.replace(/\b(?:sk|rk)_(?:live|test)_[A-Za-z0-9]+\b|\bwhsec_[A-Za-z0-9]+\b/g, '[redacted]').slice(0, 500)
+      : undefined,
+  })
+}
+
 export async function handleInstallmentCheckout(req, res, config) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' })
   if (!config?.stripe || !config?.installment50PriceId || !config?.installment49PriceId || !config?.appUrl) {
@@ -40,7 +55,8 @@ export async function handleInstallmentCheckout(req, res, config) {
     })
     res.writeHead(303, { Location: session.url, 'Cache-Control': 'no-store' })
     res.end()
-  } catch {
+  } catch (error) {
+    logCheckoutFailure('installment', error)
     return json(res, 502, { error: 'The secure installment checkout could not be opened' })
   }
 }
@@ -64,7 +80,8 @@ export async function handlePaidInFullCheckout(req, res, config) {
     })
     res.writeHead(303, { Location: session.url, 'Cache-Control': 'no-store' })
     res.end()
-  } catch {
+  } catch (error) {
+    logCheckoutFailure('one-time', error)
     return json(res, 502, { error: 'The secure pay-in-full checkout could not be opened' })
   }
 }
