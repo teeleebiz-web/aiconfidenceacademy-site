@@ -36,6 +36,8 @@ if (env.VERCEL_ENV !== 'production' || !checkoutProject) {
       currency: session.currency, checkoutHost: new URL(session.url).host,
     })
 
+    const available = await stripe.prices.list({ active: true, limit: 100, expand: ['data.product'] })
+    console.log('[ACA checkout diagnostic] available course prices', available.data.filter(p => p.product?.name?.includes('Phase One')).map(p => ({ id: p.id, amount: p.unit_amount, currency: p.currency, interval: p.recurring?.interval, productName: p.product.name, taxCode: p.product.tax_code })))
     for (const [label, priceId, expectedAmount] of [
       ['first and second installment', env.ACA_INSTALLMENT_50_PRICE_ID, 5000],
       ['third installment', env.ACA_INSTALLMENT_49_PRICE_ID, 4900],
