@@ -14,7 +14,7 @@ if (env.VERCEL_ENV !== 'production' || !checkoutProject) {
 } else {
   try {
     const stripe = new Stripe(env.STRIPE_SECRET_KEY)
-    const appUrl = env.ACA_APP_URL.replace(/\\/$/, '')
+    const appUrl = env.ACA_APP_URL.endsWith('/') ? env.ACA_APP_URL.slice(0, -1) : env.ACA_APP_URL
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: env.ACA_PHASE_ONE_PRICE_ID, quantity: 1 }],
@@ -33,7 +33,7 @@ if (env.VERCEL_ENV !== 'production' || !checkoutProject) {
       type: error.type || error.name, code: error.code, param: error.param,
       statusCode: error.statusCode, requestId: error.requestId,
       message: typeof error.message === 'string'
-        ? error.message.replace(/\\b(?:sk|rk)_(?:live|test)_[A-Za-z0-9]+\\b|\\bwhsec_[A-Za-z0-9]+\\b/g, '[redacted]').slice(0, 500)
+        ? error.message.replaceAll(env.STRIPE_SECRET_KEY, '[redacted]').slice(0, 500)
         : undefined,
     })
     process.exitCode = 1
