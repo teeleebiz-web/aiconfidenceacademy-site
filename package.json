@@ -8,9 +8,9 @@
   },
   "scripts": {
     "build:academy": "vite build --config academy/vite.config.ts && node content/build-public-hub.mjs && node academy/prepare-site.mjs",
-    "build:site": "npm run build && npm run build:academy",
+    "build:site": "npm run build && npm run build:academy && node academy/enrollment/verify-sandbox-checkout.mjs",
     "start:academy": "node academy/server.mjs",
-    "test:academy": "node --test academy/server.test.mjs academy/public-preview.test.mjs academy/enrollment/*.test.mjs academy/email/*.test.mjs",
+    "test:academy": "node --test academy/server.test.mjs academy/checkout-origin.test.mjs academy/public-preview.test.mjs academy/enrollment/*.test.mjs academy/email/*.test.mjs",
     "dev": "vite --config portal/vite.config.ts",
     "build": "vite build --config portal/vite.config.ts",
     "typecheck": "tsc --project portal/tsconfig.json --noEmit",

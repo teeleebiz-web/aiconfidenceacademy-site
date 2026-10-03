@@ -45,6 +45,10 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
+    // Preview checkout forms need a real Origin; no-referrer makes form POST origins null.
+    if (enrollmentAutomation?.preview && ['/enroll', '/enroll/', '/enroll/index.html'].includes(requestPath)) {
+      res.setHeader('Referrer-Policy', 'same-origin')
+    }
     if (requestPath === '/api/webhooks/stripe') {
       await handleStripeEnrollment(req, res, enrollmentAutomation); return
     }
