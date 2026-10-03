@@ -48,6 +48,10 @@ vi.mock('./components/LessonView', () => ({
   LessonView: ({ lesson }: { lesson: { page_id: string } }) => <h1>Lesson {lesson.page_id}</h1>,
 }))
 
+vi.mock('../../academy/workbook/Workbook', () => ({
+  Workbook: ({ workbookKey }: { workbookKey: string }) => <h1>Workbook {workbookKey}</h1>,
+}))
+
 beforeEach(() => {
   localStorage.clear()
   api.owner = false; api.enrollment = true; api.progress = []; api.mediaError = null
@@ -125,11 +129,28 @@ it('does not treat unfinished lesson progress as completing the introduction', a
   expect(screen.queryByRole('button', { name: /open lesson/i })).toBeNull()
 })
 
-it('preserves the returning owner review dashboard after the opening sequence', async () => {
+it('starts a returning owner at the welcome and continues without changing the saved introduction', async () => {
   api.owner = true
   api.completedAt = '2026-10-03T16:00:00Z'
+  const { unmount } = render(<App />)
+  expect(await screen.findByRole('heading', { name: 'Welcome to the Academy' })).toBeTruthy()
+  await userEvent.click(screen.getByRole('button', { name: 'Continue to ChatGPT' }))
+  expect(screen.getByRole('heading', { name: 'Getting Started with ChatGPT' })).toBeTruthy()
+  await userEvent.click(screen.getByRole('button', { name: 'Continue to Lesson 1.1' }))
+  expect(await screen.findByRole('heading', { name: 'Lesson 1.1' })).toBeTruthy()
+  expect(api.rpc.mock.calls.some(([name]) => name === 'complete_aca_onboarding')).toBe(false)
+  expect(api.rpc.mock.calls.some(([name]) => name === 'touch_lesson_access')).toBe(false)
+  unmount()
   render(<App />)
-  expect(await screen.findByRole('heading', { name: 'Phase One working build' })).toBeTruthy()
+  expect(await screen.findByRole('heading', { name: 'Welcome to the Academy' })).toBeTruthy()
+})
+
+it('opens an owner workbook directly without restarting the welcome', async () => {
+  api.owner = true
+  api.completedAt = '2026-10-03T16:00:00Z'
+  window.history.replaceState(null, '', '/learn/?workbook=journey-one&lesson=1.1')
+  render(<App />)
+  expect(await screen.findByRole('heading', { name: 'Workbook journey-one' })).toBeTruthy()
   expect(api.signMedia).not.toHaveBeenCalled()
 })
 
