@@ -25,35 +25,38 @@
 .single-video-introduction details summary:focus-visible { outline: 3px solid #d4b36b; outline-offset: 3px; }
 
 .academy-welcome-main {
-  min-height: calc(100vh - 74px);
-  padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 4vw, 3rem);
+  min-height: calc(100svh - 80px);
+  padding: clamp(.75rem, 2vh, 1.25rem) clamp(1rem, 3vw, 2rem);
   background: radial-gradient(circle at top, #1b3152 0, #0a1730 58%, #071126 100%);
 }
 
 .academy-welcome-panel {
-  width: min(1120px, 100%);
+  width: min(760px, 100%);
   margin: 0 auto;
   text-align: center;
 }
 
 .academy-welcome-panel h1 {
-  margin: .35rem 0 .75rem;
+  margin: .2rem 0 .5rem;
   color: #fff;
-  font-size: clamp(2.1rem, 5vw, 4.25rem);
-  line-height: 1.05;
+  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+  line-height: 1.08;
 }
 
+.academy-welcome-panel .eyebrow { margin: 0 0 .35rem; }
+
 .academy-welcome-introduction {
-  max-width: 760px;
-  margin: 0 auto 1.6rem;
+  max-width: 600px;
+  margin: 0 auto .8rem;
   color: #e9edf5;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  line-height: 1.7;
+  font-size: clamp(.9rem, 1.5vw, 1.05rem);
+  line-height: 1.45;
 }
 
 .academy-welcome-player {
   overflow: hidden;
-  width: 100%;
+  width: min(680px, 100%, max(160px, calc((100svh - 300px) * 16 / 9)));
+  margin: 0 auto;
   aspect-ratio: 16 / 9;
   background: #000;
   border: 1px solid rgba(212, 179, 107, .65);
@@ -69,9 +72,9 @@
 }
 
 .academy-welcome-continue {
-  margin-top: 1.75rem;
+  margin-top: 1rem;
   min-width: min(100%, 260px);
-  padding: .95rem 1.5rem;
+  padding: .75rem 1.5rem;
   border: 1px solid #e8d19d;
   border-radius: 999px;
   background: #d4b36b;
@@ -83,3 +86,19 @@
 
 .academy-welcome-continue:hover { background: #e8d19d; }
 .academy-welcome-continue:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+
+@media (max-height: 700px) {
+  .academy-welcome-main { padding-top: .65rem; padding-bottom: .65rem; }
+  .academy-welcome-panel h1 { font-size: clamp(1.55rem, 3vw, 2.2rem); }
+  .academy-welcome-introduction { margin-bottom: .6rem; }
+  .academy-welcome-continue { margin-top: .75rem; padding-top: .65rem; padding-bottom: .65rem; }
+}
+
+@media (max-height: 520px) {
+  .academy-welcome-main { padding-top: .4rem; padding-bottom: .4rem; }
+  .academy-welcome-panel .eyebrow { margin-bottom: .2rem; font-size: .68rem; }
+  .academy-welcome-panel h1 { font-size: 1.4rem; line-height: 1.05; }
+  .academy-welcome-introduction { margin-bottom: .5rem; font-size: .85rem; line-height: 1.35; }
+  .academy-welcome-player { width: min(680px, 100%, max(160px, calc((100svh - 280px) * 16 / 9))); }
+  .academy-welcome-continue { margin-top: .5rem; padding-top: .55rem; padding-bottom: .55rem; font-size: .9rem; }
+}
