@@ -2,6 +2,7 @@ import assert, { AssertionError } from 'node:assert/strict'
 import { Writable } from 'node:stream'
 import Stripe from 'stripe'
 import handler from '../../api/site.mjs'
+import { verifySandboxEnrollment } from './verify-sandbox-enrollment.mjs'
 
 {
   const key = process.env.STRIPE_SECRET_KEY || ''
@@ -68,6 +69,8 @@ import handler from '../../api/site.mjs'
     assert.equal(payment.amount, 14900, 'The PaymentIntent amount must be $149')
     assert.equal(payment.amount_received, 14900, 'Stripe must record the full $149 test payment')
     console.log('[ACA sandbox payment verification] Passed: user Checkout complete, paid, approved $149 test price, PaymentIntent succeeded, and correct Preview return URL')
+
+    await verifySandboxEnrollment(stripe, paidSession)
 
     class CaptureResponse extends Writable {
       headers = new Map()
