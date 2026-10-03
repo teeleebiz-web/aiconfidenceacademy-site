@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "npm ci",
-  "buildCommand": "npm run build:site",
+  "buildCommand": "npm run build:site && node academy/enrollment/verify-welcome-candidate.mjs",
   "outputDirectory": "vercel-public",
   "functions": {
     "api/site.mjs": {
@@ -21,7 +21,14 @@
     }
   ],
   "routes": [
-    { "src": "^/$", "dest": "/api/site.mjs?__aca_path=index.html" },
-    { "src": "^/(.*)$", "dest": "/api/site.mjs?__aca_path=$1" }
+    {
+      "src": "^/$",
+      "dest": "/api/site.mjs?__aca_path=index.html"
+    },
+    {
+      "src": "^/(.*)$",
+      "dest": "/api/site.mjs?__aca_path=$1"
+    }
   ]
 }
+

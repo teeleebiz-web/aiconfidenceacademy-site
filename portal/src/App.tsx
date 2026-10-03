@@ -5,6 +5,7 @@ import { Dashboard } from './components/Dashboard'
 import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
+import { LearnerOnboarding, hasCompletedOnboarding, rememberCompletedOnboarding } from './components/LearnerOnboarding'
 import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
@@ -54,6 +55,7 @@ export function App() {
   const [error, setError] = useState('')
   const [reviewMode, setReviewMode] = useState(false)
   const [lessonAccess, setLessonAccess] = useState<LessonAccess | null>(null)
+  const [completedOnboardingId, setCompletedOnboardingId] = useState('')
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -388,11 +390,25 @@ export function App() {
     await supabase.auth.signOut()
     setSelectedLesson(null)
     setSelectedIntroduction(null)
+    setCompletedOnboardingId('')
   }
 
   const visiblePortalData = reviewMode
     ? portalData
     : { ...portalData, ...learnerAccessView(portalData) }
+
+  const onboardingEnrollment = portalData.enrollment
+  const needsOnboarding = !reviewMode && onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
+    && portalData.progress.length === 0 && completedOnboardingId !== onboardingEnrollment.id
+    && !hasCompletedOnboarding(onboardingEnrollment.id)
+  const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
+
+  function finishOnboarding() {
+    if (!onboardingEnrollment || !firstLesson) return
+    rememberCompletedOnboarding(onboardingEnrollment.id)
+    setCompletedOnboardingId(onboardingEnrollment.id)
+    void openLesson(firstLesson)
+  }
 
   if (loading) {
     return <div className="loading-screen">Preparing your ACA learning space…</div>
@@ -424,7 +440,9 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {selectedIntroduction ? (
+      {needsOnboarding ? (
+        <LearnerOnboarding key={onboardingEnrollment?.id} onContinue={firstLesson ? finishOnboarding : undefined} />
+      ) : selectedIntroduction ? (
         <JourneyIntroductionView
           introduction={selectedIntroduction}
           mediaUrl={introductionMediaUrl}
