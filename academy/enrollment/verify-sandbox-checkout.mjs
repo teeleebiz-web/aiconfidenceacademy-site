@@ -21,6 +21,54 @@ import handler from '../../api/site.mjs'
     assert.equal(price.unit_amount, 14900, 'The sandbox price must be $149')
     assert.equal(price.type, 'one_time', 'This check is for the one-time $149 checkout')
 
+    // Confirm the user-submitted checkout from this test window without logging customer data.
+    const completed = await stripe.checkout.sessions.list({
+      status: 'complete',
+      created: {
+        gte: Math.floor(Date.parse('2026-10-03T03:00:00Z') / 1000),
+        lte: Math.floor(Date.parse('2026-10-03T03:13:20Z') / 1000),
+      },
+      limit: 100,
+    })
+    assert.equal(completed.has_more, false, 'The completed test checkout search must not be truncated')
+    const testedHosts = new Set([
+      'aiconfidenceacademy-site-mk-git-c2bdae-teeleebiz-7751s-projects.vercel.app',
+      'aiconfidenceacademy-site-mkvf-7zmtngbpr.vercel.app',
+    ])
+    const matches = completed.data.filter(candidate => {
+      let returned
+      try { returned = new URL(candidate.success_url) } catch { return false }
+      return candidate.metadata?.aca_plan === 'phase_one_paid_in_full'
+        && returned.protocol === 'https:'
+        && testedHosts.has(returned.hostname)
+        && returned.pathname === '/enroll/'
+        && returned.search === '?payment=success'
+    })
+    assert.equal(matches.length, 1, 'Exactly one completed ACA checkout must match the user test window and Preview')
+    const paidSession = matches[0]
+    assert.match(paidSession.id, /^cs_test_/, 'The completed Checkout Session must be a test session')
+    assert.equal(paidSession.livemode, false, 'The completed payment must be in test mode')
+    assert.equal(paidSession.mode, 'payment', 'The completed checkout must be a one-time payment')
+    assert.equal(paidSession.status, 'complete', 'The user Checkout Session must be complete')
+    assert.equal(paidSession.payment_status, 'paid', 'Stripe must confirm that the user test payment is paid')
+    assert.equal(paidSession.currency, 'usd', 'The completed test payment must be in USD')
+    assert.equal(paidSession.amount_total, 14900, 'The completed test payment must total $149')
+    assert.equal(typeof paidSession.payment_intent, 'string', 'The completed test must have a PaymentIntent')
+    const [items, payment] = await Promise.all([
+      stripe.checkout.sessions.listLineItems(paidSession.id, { limit: 100 }),
+      stripe.paymentIntents.retrieve(paidSession.payment_intent),
+    ])
+    assert.equal(items.has_more, false, 'The test line items must not be truncated')
+    assert.equal(items.data.length, 1, 'The completed test checkout must contain one course')
+    assert.equal(items.data[0].price?.id, process.env.ACA_PHASE_ONE_PRICE_ID, 'The completed test must use the approved sandbox price')
+    assert.equal(items.data[0].quantity, 1, 'The completed test must charge for one course')
+    assert.equal(payment.livemode, false, 'The PaymentIntent must be in test mode')
+    assert.equal(payment.status, 'succeeded', 'The PaymentIntent must have succeeded')
+    assert.equal(payment.currency, 'usd', 'The PaymentIntent currency must be USD')
+    assert.equal(payment.amount, 14900, 'The PaymentIntent amount must be $149')
+    assert.equal(payment.amount_received, 14900, 'Stripe must record the full $149 test payment')
+    console.log('[ACA sandbox payment verification] Passed: user Checkout complete, paid, approved $149 test price, PaymentIntent succeeded, and correct Preview return URL')
+
     class CaptureResponse extends Writable {
       headers = new Map()
       statusCode = 200
