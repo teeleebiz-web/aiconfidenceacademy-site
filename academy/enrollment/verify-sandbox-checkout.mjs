@@ -3,12 +3,13 @@ import { Writable } from 'node:stream'
 import Stripe from 'stripe'
 import handler from '../../api/site.mjs'
 
-if (process.env.VERCEL_ENV === 'preview') {
+{
   const key = process.env.STRIPE_SECRET_KEY || ''
   const host = process.env.VERCEL_URL || ''
   let stripe
   let sessionId
   try {
+    assert.equal(process.env.VERCEL_ENV, 'preview', 'Sandbox verification must run in a Preview build')
     assert.match(key, /^(?:sk|rk)_test_/, 'Preview checkout must use a Stripe test key')
     assert.match(host, /^[a-z0-9-]+\.vercel\.app$/, 'Preview deployment hostname must be configured')
     assert.equal(process.env.ACA_PHASE_ONE_PRICE_ID, 'price_1UJPLZISbjgQbMXEczom8HVV', 'Preview must use the approved sandbox price')
