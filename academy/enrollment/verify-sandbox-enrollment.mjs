@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js'
 import { handleStripeEnrollment } from './stripe-webhook.mjs'
 import { formatAcademyEmailFrom } from '../email/sender.mjs'
 
-const previewOrigin = 'https://aiconfidenceacademy-site-mk-git-c2bdae-teeleebiz-7751s-projects.vercel.app'
+const portalOrigin = 'https://aiconfidenceacademy.org'
 const projectUrl = 'https://ymmkodlifpxutynpjnxm.supabase.co'
 const publicKey = 'sb_publishable_YK7q6HJhUO1z18lwAVbi9w_tOBG2pee'
 const checked = (result, label) => {
@@ -56,7 +56,7 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
       webhookSecret: secret,
       phaseOnePriceId: process.env.ACA_PHASE_ONE_PRICE_ID,
       courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
-      appUrl: previewOrigin,
+      appUrl: portalOrigin,
       preview: true,
       emailFrom: formatAcademyEmailFrom(process.env.ACA_EMAIL_FROM),
       resend: { emails: { send: async (message, options) => {
@@ -126,7 +126,7 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
     const authResponse = await fetch(link, { redirect: 'manual', signal: AbortSignal.timeout(15000) })
     assert.ok([302, 303].includes(authResponse.status), 'The secure invitation must redirect successfully')
     const destination = new URL(authResponse.headers.get('location'))
-    assert.equal(destination.origin, previewOrigin, 'The invitation must return to the exact Academy Preview')
+    assert.equal(destination.origin, portalOrigin, 'The invitation must return to the official Academy')
     assert.equal(destination.pathname, '/learn/', 'The invitation must open the learner portal')
     const tokens = new URLSearchParams(destination.hash.slice(1))
     assert.ok(tokens.get('access_token') && tokens.get('refresh_token'), 'The entrance link must establish a learner session')
