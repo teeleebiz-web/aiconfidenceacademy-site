@@ -3,24 +3,11 @@ import { AcademyWelcome, academyWelcomeVideoPath } from '../../../academy/Academ
 import { GettingStarted } from '../../../academy/GettingStarted'
 import { supabase } from '../lib/supabase'
 
-export function onboardingStorageKey(enrollmentId: string) {
-  return `aca-onboarding:v1:${enrollmentId}`
-}
-
-export function hasCompletedOnboarding(enrollmentId: string) {
-  try { return localStorage.getItem(onboardingStorageKey(enrollmentId)) === 'complete' }
-  catch { return false }
-}
-
-export function rememberCompletedOnboarding(enrollmentId: string) {
-  try { localStorage.setItem(onboardingStorageKey(enrollmentId), 'complete') }
-  catch { /* The current session can continue when device storage is unavailable. */ }
-}
-
-export function LearnerOnboarding({ onContinue }: { onContinue?: () => void }) {
+export function LearnerOnboarding({ onContinue }: { onContinue?: () => Promise<void> }) {
   const [step, setStep] = useState<'welcome' | 'getting-started'>('welcome')
   const [mediaUrl, setMediaUrl] = useState<string | null>(null)
   const [error, setError] = useState('')
+  const [continuing, setContinuing] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -36,7 +23,13 @@ export function LearnerOnboarding({ onContinue }: { onContinue?: () => void }) {
 
   if (step === 'getting-started') return <GettingStarted
     onBack={() => { setStep('welcome'); window.scrollTo(0, 0) }}
-    onContinue={onContinue}
+    continuing={continuing}
+    onContinue={onContinue ? async () => {
+      if (continuing) return
+      setContinuing(true)
+      try { await onContinue() }
+      finally { setContinuing(false) }
+    } : undefined}
   />
   if (error) return <p className="global-error" role="alert">{error}</p>
   if (!mediaUrl) return <p className="loading-screen">Loading Phase One…</p>

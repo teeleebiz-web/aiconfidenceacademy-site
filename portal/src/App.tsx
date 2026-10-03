@@ -5,7 +5,7 @@ import { Dashboard } from './components/Dashboard'
 import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
-import { LearnerOnboarding, hasCompletedOnboarding, rememberCompletedOnboarding } from './components/LearnerOnboarding'
+import { LearnerOnboarding } from './components/LearnerOnboarding'
 import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
@@ -97,7 +97,7 @@ export function App() {
       supabase.from('profiles').select('first_name, display_name').eq('id', userId).maybeSingle(),
       supabase
         .from('enrollments')
-        .select('id, learner_id, course_id, status, starts_at, access_expires_at, course:courses(id, code, title, summary)')
+        .select('id, learner_id, course_id, status, starts_at, access_expires_at, onboarding_completed_at, course:courses(id, code, title, summary)')
         .eq('learner_id', userId)
         .in('status', ['active', 'completed'])
         .maybeSingle(),
@@ -199,7 +199,7 @@ export function App() {
     if (signInError) throw signInError
   }
 
-  async function openLesson(lesson: Lesson) {
+  async function openLesson(lesson: Lesson, completingOnboarding = false) {
     const request = ++mediaRequest.current
     setError('')
     if (portalData.enrollment && !reviewMode) {
@@ -223,6 +223,17 @@ export function App() {
         sign(lesson.content.video_path), sign(lesson.content.audio_path),
       ])
       if (request !== mediaRequest.current) return
+      if (completingOnboarding && portalData.enrollment) {
+        const { data: completedAt, error: completionError } = await supabase.rpc('complete_aca_onboarding', {
+          p_enrollment_id: portalData.enrollment.id,
+        })
+        if (request !== mediaRequest.current) return
+        if (completionError || !completedAt) {
+          setError('Your introduction could not be saved. Please try again.')
+          return
+        }
+        setCompletedOnboardingId(portalData.enrollment.id)
+      }
       setLessonVideoUrl(video)
       setLessonAudioUrl(audio)
     } catch {
@@ -429,16 +440,13 @@ export function App() {
     : { ...portalData, ...learnerAccessView(portalData) }
 
   const onboardingEnrollment = portalData.enrollment
-  const needsOnboarding = !workbookKey && !reviewMode && onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
-    && portalData.progress.length === 0 && completedOnboardingId !== onboardingEnrollment.id
-    && !hasCompletedOnboarding(onboardingEnrollment.id)
+  const needsOnboarding = !reviewMode && onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
+    && !onboardingEnrollment.onboarding_completed_at && completedOnboardingId !== onboardingEnrollment.id
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
 
-  function finishOnboarding() {
+  async function finishOnboarding() {
     if (!onboardingEnrollment || !firstLesson) return
-    rememberCompletedOnboarding(onboardingEnrollment.id)
-    setCompletedOnboardingId(onboardingEnrollment.id)
-    void openLesson(firstLesson)
+    await openLesson(firstLesson, true)
   }
 
   if (loading) {
@@ -471,7 +479,7 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {workbookKey && portalData.enrollment ? (
+      {workbookKey && portalData.enrollment && !needsOnboarding ? (
         <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
           apiBase={workbookApiBase} backHref="/learn/" />
       ) : needsOnboarding ? (
