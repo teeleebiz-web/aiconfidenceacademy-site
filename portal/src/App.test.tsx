@@ -28,7 +28,8 @@ vi.mock('./lib/supabase', () => ({
           ? { first_name: 'Test' }
           : { id: 'test-enrollment', course_id: 'test-course',
               onboarding_completed_at: '2026-10-03T16:00:00Z',
-              course: { id: 'test-course', code: 'phase-one-chatgpt-foundations', title: 'Synthetic course', summary: '' },
+              // These tests isolate introduction revision loading from Phase One entry.
+              course: { id: 'test-course', code: 'synthetic-review-course', title: 'Synthetic course', summary: '' },
             }, error: null }),
         single: api.latest,
         then: result.then.bind(result),

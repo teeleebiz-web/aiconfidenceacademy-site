@@ -224,13 +224,15 @@ export function App() {
       ])
       if (request !== mediaRequest.current) return
       if (completingOnboarding && portalData.enrollment) {
-        const { data: completedAt, error: completionError } = await supabase.rpc('complete_aca_onboarding', {
-          p_enrollment_id: portalData.enrollment.id,
-        })
-        if (request !== mediaRequest.current) return
-        if (completionError || !completedAt) {
-          setError('Your introduction could not be saved. Please try again.')
-          return
+        if (!reviewMode || !portalData.enrollment.onboarding_completed_at) {
+          const { data: completedAt, error: completionError } = await supabase.rpc('complete_aca_onboarding', {
+            p_enrollment_id: portalData.enrollment.id,
+          })
+          if (request !== mediaRequest.current) return
+          if (completionError || !completedAt) {
+            setError('Your introduction could not be saved. Please try again.')
+            return
+          }
         }
         setCompletedOnboardingId(portalData.enrollment.id)
       }
@@ -441,7 +443,8 @@ export function App() {
 
   const onboardingEnrollment = portalData.enrollment
   const needsOnboarding = onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
-    && !onboardingEnrollment.onboarding_completed_at && completedOnboardingId !== onboardingEnrollment.id
+    && completedOnboardingId !== onboardingEnrollment.id
+    && (reviewMode ? !workbookKey : !onboardingEnrollment.onboarding_completed_at)
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
 
   async function finishOnboarding() {
