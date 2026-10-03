@@ -38,6 +38,8 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
   let testUserId
   let invitation
   let generatedLinks = 0
+  let stage = 'read_test_price'
+  let invitationError
 
   try {
     const actualItems = await stripe.checkout.sessions.listLineItems(paidSession.id, { limit: 100 })
@@ -66,7 +68,9 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
         from: (...args) => db.from(...args),
         auth: { admin: { generateLink: async args => {
           assert.equal(args.email, email, 'Invitation generation must be restricted to the fixture')
+          stage = 'generate_invitation'
           const result = await db.auth.admin.generateLink(args)
+          if (result.error) invitationError = result.error.code || result.error.name || 'invitation_error'
           if (!result.error && result.data?.user?.id) {
             testUserId = result.data.user.id
             invitation = result.data.properties?.action_link
@@ -99,6 +103,7 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
       assert.equal(res.statusCode, 200, 'The signed enrollment fixture must process successfully')
       return res.result()
     }
+    stage = 'process_signed_webhook'
     const result = await invoke()
     assert.equal(result.enrolled, true, 'The fixture learner must be enrolled')
     assert.equal(generatedLinks, 1, 'One secure invitation must be created')
@@ -115,6 +120,7 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
     assert.equal(generatedLinks, 1, 'A repeated event must not generate another invitation')
     assert.equal(messages.length, 1, 'A repeated event must not resend access email')
 
+    stage = 'verify_invitation_redirect'
     const link = new URL(invitation)
     assert.equal(link.origin, projectUrl, 'The entrance link must use the known Supabase Auth service')
     const authResponse = await fetch(link, { redirect: 'manual', signal: AbortSignal.timeout(15000) })
@@ -124,6 +130,7 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
     assert.equal(destination.pathname, '/learn/', 'The invitation must open the learner portal')
     const tokens = new URLSearchParams(destination.hash.slice(1))
     assert.ok(tokens.get('access_token') && tokens.get('refresh_token'), 'The entrance link must establish a learner session')
+    stage = 'sign_in_temporary_learner'
     checked(await learner.auth.setSession({
       access_token: tokens.get('access_token'),
       refresh_token: tokens.get('refresh_token'),
@@ -131,19 +138,30 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
     const identity = checked(await learner.auth.getUser(), 'Verify fixture identity')
     assert.equal(identity.user.id, testUserId, 'The secure link must sign in the fixture learner')
 
+    stage = 'read_learner_enrollment'
     const owned = checked(await learner.from('enrollments').select('id,status')
       .eq('learner_id', testUserId).single(), 'Read enrollment through learner access rules')
     assert.equal(owned.id, enrolled.id, 'The learner must see its own enrollment')
     assert.equal(owned.status, 'active', 'Learner access must be active')
     const owner = checked(await learner.rpc('is_aca_curriculum_owner'), 'Verify learner role')
     assert.equal(owner, false, 'The fixture must have ordinary learner access')
+    stage = 'read_first_lesson_access'
     const access = checked(await learner.rpc('get_learner_lesson_access', { p_enrollment_id: enrolled.id }), 'Read initial lesson access')
     assert.equal(access[0]?.access_status, 'available', 'The first lesson must be available to the new learner')
+    stage = 'read_lesson_1_1'
     const lesson = checked(await learner.from('lessons').select('id,page_id,status')
       .eq('id', access[0].current_lesson_id).single(), 'Read the first available lesson')
     assert.equal(lesson.page_id, '1.1', 'A new learner must begin at Lesson 1.1')
     assert.equal(lesson.status, 'published', 'The first lesson must be published')
     console.log('[ACA sandbox enrollment rehearsal] Passed: signed enrollment processing, email entrance link, duplicate event, Supabase sign-in, learner access rules, and Lesson 1.1')
+  } catch (error) {
+    const message = String(error.message || error.name || 'verification_failed').replace(/(?:sk|rk)_(?:test|live)_[A-Za-z0-9_]+|whsec_[A-Za-z0-9_-]+|re_[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_.-]+/g, '[redacted]').slice(0, 1200)
+    await db.from('aca_payment_events').upsert({
+      stripe_event_id: 'aca_sandbox_rehearsal_20261003', stripe_session_id: 'aca_sandbox_rehearsal_20261003',
+      customer_email: 'aca-test-diagnostic@example.com', amount_total: 0, currency: 'usd',
+      status: 'failed', error_message: JSON.stringify({ stage, invitationError, message }),
+    }, { onConflict: 'stripe_event_id' })
+    throw error
   } finally {
     await learner.auth.signOut({ scope: 'global' })
     if (testUserId) {
