@@ -13,6 +13,31 @@ const ids=[]
 function collect(block,page) { if(block.type==='field')ids.push({id:block.id,page}); for(const item of block.items??[])collect(item,page);for(const row of block.rows??[])for(const field of row.fields)collect(field,page) }
 for(const p of workbook.pages)for(const b of p.blocks)collect(b,p.number)
 const field=ids.find(f=>f.page===5).id
+
+test('paid workbook route uses verified learner access and preserves private owner answers', () => fixture(async ({ url, headers, db, request }) => {
+  await request('PATCH', { baseRevision: 0, page: 5, answers: { [field]: 'Owner answer stays private' } })
+  const learnerUrl = url.replace('/api/academy/workbooks/', '/api/learner/workbooks/')
+  const learnerHeaders = { 'X-ACA-Workbook': '1', 'Content-Type': 'application/json', Origin: 'https://aiconfidenceacademy.org', 'Sec-Fetch-Site': 'same-site' }
+  const call = (method = 'GET', body, extra = {}) => fetch(learnerUrl, { method, headers: { ...learnerHeaders, ...extra }, body: body ? JSON.stringify(body) : undefined })
+  const preflight = await call('OPTIONS')
+  assert.equal(preflight.status, 204)
+  assert.equal(preflight.headers.get('access-control-allow-origin'), learnerHeaders.Origin)
+  assert.match(preflight.headers.get('access-control-allow-headers'), /X-ACA-Access-Token/)
+  assert.equal((await call()).status, 401)
+  assert.equal((await call('GET', null, { Authorization: headers.Authorization })).status, 401)
+  assert.equal((await call('GET', null, { 'X-ACA-Access-Token': 'bad' })).status, 401)
+  assert.equal((await call('GET', null, { Origin: 'https://other.example', 'X-ACA-Access-Token': 'learner-a' })).status, 403)
+  const token = { 'X-ACA-Access-Token': 'learner-a' }
+  const first = await call('GET', null, token)
+  assert.equal(first.status, 200)
+  const initial = await first.json()
+  assert.equal(initial.scope, 'learner-a')
+  assert.deepEqual(initial.answers, {})
+  assert.equal((await call('PATCH', { baseRevision: 0, page: 5, answers: { [field]: 'Learner answer' } }, token)).status, 200)
+  assert.equal((await (await call('GET', null, token)).json()).answers[field], 'Learner answer')
+  assert.equal((await (await request()).json()).answers[field], 'Owner answer stays private')
+  assert.deepEqual(db.writes, ['aca_workbook_responses', 'aca_workbook_responses'])
+}))
 function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson34Status = 'draft', lesson35Status = 'draft', lesson36Status = 'draft', lesson41Status = 'draft', lesson42Status = 'draft', lesson51Status = 'draft', lesson52Status = 'draft', lesson53Status = 'draft', lesson54Status = 'draft', lesson55Status = 'draft', lesson56Status = 'draft') {
   const records=[],writes=[]
   const lessonRows=Array.from({length:6},(_,i)=>({id:`lesson-1-${i+1}`,journey_id:'journey',course_id:'course',page_id:`1.${i+1}`,status:'published',unlock_offset_days:i})).concat([{id:'lesson-3-1',journey_id:'third-journey',course_id:'course',page_id:'3.1',status:'published',unlock_offset_days:14},{id:'lesson-3-2',journey_id:'third-journey',course_id:'course',page_id:'3.2',status:thirdLessonStatus,unlock_offset_days:15},{id:'lesson-3-3',journey_id:'third-journey',course_id:'course',page_id:'3.3',status:lesson33Status,unlock_offset_days:16},{id:'lesson-3-4',journey_id:'third-journey',course_id:'course',page_id:'3.4',status:lesson34Status,unlock_offset_days:17},{id:'lesson-3-5',journey_id:'third-journey',course_id:'course',page_id:'3.5',status:lesson35Status,unlock_offset_days:18},{id:'lesson-3-6',journey_id:'third-journey',course_id:'course',page_id:'3.6',status:lesson36Status,unlock_offset_days:19},{id:'lesson-4-1',journey_id:'fourth-journey',course_id:'course',page_id:'4.1',status:lesson41Status,unlock_offset_days:21},{id:'lesson-4-2',journey_id:'fourth-journey',course_id:'course',page_id:'4.2',status:lesson42Status,unlock_offset_days:22},{id:'lesson-5-1',journey_id:'fifth-journey',course_id:'course',page_id:'5.1',status:lesson51Status,unlock_offset_days:28},{id:'lesson-5-2',journey_id:'fifth-journey',course_id:'course',page_id:'5.2',status:lesson52Status,unlock_offset_days:29},{id:'lesson-5-3',journey_id:'fifth-journey',course_id:'course',page_id:'5.3',status:lesson53Status,unlock_offset_days:30},{id:'lesson-5-4',journey_id:'fifth-journey',course_id:'course',page_id:'5.4',status:lesson54Status,unlock_offset_days:31},{id:'lesson-5-5',journey_id:'fifth-journey',course_id:'course',page_id:'5.5',status:lesson55Status,unlock_offset_days:32},{id:'lesson-5-6',journey_id:'fifth-journey',course_id:'course',page_id:'5.6',status:lesson56Status,unlock_offset_days:33}])
