@@ -31,6 +31,7 @@ export default function handler(request, response) {
           resend: process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null,
           resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET,
           emailFrom: formatAcademyEmailFrom(process.env.ACA_EMAIL_FROM),
+          preview: process.env.VERCEL_ENV === 'preview',
           appUrl: process.env.VERCEL_ENV === 'preview' && process.env.VERCEL_URL
             ? `https://${process.env.VERCEL_URL}`
             : process.env.ACA_APP_URL,
