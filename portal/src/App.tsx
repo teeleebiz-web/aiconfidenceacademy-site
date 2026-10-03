@@ -90,21 +90,22 @@ export function App() {
         .eq('learner_id', userId)
         .in('status', ['active', 'completed'])
         .maybeSingle(),
-      supabase.rpc('is_aca_curriculum_owner'),
+      supabase.rpc('is_aca_curriculum_owner', undefined, { get: true }),
     ])
 
-    if (profileResult.error || enrollmentResult.error || ownerResult.error) {
+    if (profileResult.error || enrollmentResult.error) {
       setError(
         profileResult.error?.message ??
           enrollmentResult.error?.message ??
-          ownerResult.error?.message ??
           'Unable to load ACA access.',
       )
       setLoading(false)
       return
     }
 
-    const isOwner = ownerResult.data === true
+    // Enrollment access must not depend on a reviewer-only status request.
+    // A failed reviewer check stays in learner mode; database RLS still controls access.
+    const isOwner = !ownerResult.error && ownerResult.data === true
     setReviewMode(isOwner)
 
     const enrollment = enrollmentResult.data as unknown as Enrollment | null
