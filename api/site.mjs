@@ -26,12 +26,14 @@ export default function handler(request, response) {
           stripe: process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null,
           webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
           phaseOnePriceId: process.env.ACA_PHASE_ONE_PRICE_ID,
-          installment50PriceId: 'price_1UJRwlRIU2OBMsQAmE98YtET',
-          installment49PriceId: 'price_1UJRykRIU2OBMsQAHSM3Uohq',
+          installment50PriceId: process.env.ACA_INSTALLMENT_50_PRICE_ID,
+          installment49PriceId: process.env.ACA_INSTALLMENT_49_PRICE_ID,
           resend: process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null,
           resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET,
           emailFrom: formatAcademyEmailFrom(process.env.ACA_EMAIL_FROM),
-          appUrl: process.env.ACA_APP_URL,
+          appUrl: process.env.VERCEL_ENV === 'preview' && process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : process.env.ACA_APP_URL,
           cronSecret: process.env.CRON_SECRET,
           db,
           courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
