@@ -59,18 +59,19 @@ export async function verifySandboxEnrollment(stripe, paidSession, { deliver = f
     }, { onConflict: 'stripe_event_id' }), 'Record private delivery configuration')
     assert.ok(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient), 'The completed Checkout must contain a valid recipient')
     assert.ok(!/@(?:example\.(?:com|net|org)|resend\.dev)$/.test(recipient), 'The delivery test requires the real Checkout email address')
-    assert.ok(process.env.RESEND_API_KEY, 'The Academy email connection must be configured')
-    resend = new Resend(process.env.RESEND_API_KEY)
+    if (process.env.RESEND_API_KEY) resend = new Resend(process.env.RESEND_API_KEY)
     const previous = checked(await db.from('aca_email_events')
       .select('learner_id,enrollment_id,provider_message_id,status,metadata')
       .eq('event_key', deliveryKey).maybeSingle(), 'Read prior access test')
     if (previous) {
-      assert.ok(['sent', 'delivered'].includes(previous.status), 'An unfinished access test must be reviewed before retrying')
+      assert.ok(['queued', 'sent', 'delivered'].includes(previous.status), 'An unfinished access test must be reviewed before retrying')
       assert.equal(previous.metadata?.source_session, paidSession.id, 'The prior access test must match the verified Checkout')
       assert.equal(previous.metadata?.sign_in_verified, true, 'The previous test must have verified learner sign-in')
       const account = checked(await db.auth.admin.getUserById(previous.learner_id), 'Read prior test learner')
       assert.equal(account.user.app_metadata?.aca_test_fixture, previous.metadata?.fixture, 'The saved access test must use its marked temporary account')
-      const status = await readDelivery(previous.provider_message_id)
+      const status = previous.status === 'queued'
+        ? 'prepared_awaiting_email_connection'
+        : resend ? await readDelivery(previous.provider_message_id) : previous.metadata?.provider_status || previous.status
       console.log('[ACA sandbox access email] Existing test email status:', status)
       return
     }
@@ -217,6 +218,20 @@ export async function verifySandboxEnrollment(stripe, paidSession, { deliver = f
       const metadata = {
         fixture, source_session: paidSession.id, sign_in_verified: true,
         first_lesson_verified: '1.1', test_only: true,
+      }
+      if (!resend) {
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString()
+        checked(await db.from('enrollments').update({ access_expires_at: expiresAt })
+          .eq('id', enrolled.id).eq('learner_id', testUserId), 'Limit temporary learner access')
+        checked(await db.from('aca_email_events').upsert({
+          event_key: deliveryKey, template_key: 'aca_sandbox_enrollment_access_test',
+          recipient, subject: '[TEST] ' + messages[0].message.subject, status: 'queued',
+          enrollment_id: enrolled.id, learner_id: testUserId,
+          metadata: { ...metadata, html, prepared_at: new Date().toISOString(), test_access_expires_at: expiresAt },
+        }, { onConflict: 'event_key' }), 'Prepare the private access test for the email connector')
+        keepTestLearner = true
+        console.log('[ACA sandbox access email] Prepared; awaiting the existing Resend account connection')
+        return
       }
       const sent = await sendOperationalEmail({
         db,
