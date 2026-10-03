@@ -7,6 +7,12 @@ const appOrigin = value => {
   try { return new URL(value).origin } catch { return null }
 }
 
+const checkoutAppUrl = (req, config) => {
+  if (!config.preview) return config.appUrl
+  const host = String(req.headers.host || '').toLowerCase()
+  return /^[a-z0-9-]+\.vercel\.app$/.test(host) ? `https://${host}` : config.appUrl
+}
+
 const logCheckoutFailure = (mode, error) => {
   const details = error && typeof error === 'object' ? error : {}
   console.error('[ACA checkout] Stripe session creation failed', {
@@ -28,7 +34,8 @@ export async function handleInstallmentCheckout(req, res, config) {
     return json(res, 503, { error: 'Installment enrollment is not configured' })
   }
 
-  const expectedOrigin = appOrigin(config.appUrl)
+  const checkoutUrl = checkoutAppUrl(req, config)
+  const expectedOrigin = appOrigin(checkoutUrl)
   const suppliedOrigin = appOrigin(req.headers.origin || req.headers.referer)
   if (!expectedOrigin || suppliedOrigin !== expectedOrigin) {
     return json(res, 403, { error: 'Request origin was not accepted' })
@@ -38,8 +45,8 @@ export async function handleInstallmentCheckout(req, res, config) {
     const session = await config.stripe.checkout.sessions.create({
       mode: 'subscription',
       line_items: [{ price: config.installment50PriceId, quantity: 1 }],
-      success_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=success`,
-      cancel_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=canceled`,
+      success_url: `${checkoutUrl.replace(/\/$/, '')}/enroll/?payment=success`,
+      cancel_url: `${checkoutUrl.replace(/\/$/, '')}/enroll/?payment=canceled`,
       billing_address_collection: 'auto',
       subscription_data: {
         metadata: {
@@ -66,15 +73,16 @@ export async function handlePaidInFullCheckout(req, res, config) {
   if (!config?.stripe || !config?.phaseOnePriceId || !config?.appUrl) {
     return json(res, 503, { error: 'Pay-in-full enrollment is not configured' })
   }
-  const expectedOrigin = appOrigin(config.appUrl)
+  const checkoutUrl = checkoutAppUrl(req, config)
+  const expectedOrigin = appOrigin(checkoutUrl)
   const suppliedOrigin = appOrigin(req.headers.origin || req.headers.referer)
   if (!expectedOrigin || suppliedOrigin !== expectedOrigin) return json(res, 403, { error: 'Request origin was not accepted' })
   try {
     const session = await config.stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: config.phaseOnePriceId, quantity: 1 }],
-      success_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=success`,
-      cancel_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=canceled`,
+      success_url: `${checkoutUrl.replace(/\/$/, '')}/enroll/?payment=success`,
+      cancel_url: `${checkoutUrl.replace(/\/$/, '')}/enroll/?payment=canceled`,
       billing_address_collection: 'auto',
       metadata: { aca_plan: 'phase_one_paid_in_full', aca_course_id: config.courseId },
     })
