@@ -47,6 +47,16 @@ export async function verifySandboxEnrollment(stripe, paidSession, { deliver = f
     return lastEvent
   }
   if (deliver) {
+    checked(await db.from('aca_payment_events').upsert({
+      stripe_event_id: 'aca_sandbox_delivery_20261003', stripe_session_id: 'aca_sandbox_delivery_20261003',
+      customer_email: recipient || 'missing@example.com', amount_total: 0, currency: 'usd', status: 'processing',
+      error_message: JSON.stringify({
+        stage: 'delivery_configuration',
+        recipientValid: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient),
+        reservedRecipient: /@(?:example\.(?:com|net|org)|resend\.dev)$/.test(recipient),
+        emailCredentialConfigured: Boolean(process.env.RESEND_API_KEY),
+      }),
+    }, { onConflict: 'stripe_event_id' }), 'Record private delivery configuration')
     assert.ok(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient), 'The completed Checkout must contain a valid recipient')
     assert.ok(!/@(?:example\.(?:com|net|org)|resend\.dev)$/.test(recipient), 'The delivery test requires the real Checkout email address')
     assert.ok(process.env.RESEND_API_KEY, 'The Academy email connection must be configured')
