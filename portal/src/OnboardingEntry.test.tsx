@@ -65,6 +65,8 @@ beforeEach(() => {
   })
 })
 
+afterEach(() => { vi.restoreAllMocks() })
+
 it('opens the exact founder film, then the existing ChatGPT guide, then Lesson 1.1', async () => {
   const user = userEvent.setup()
   const { container } = render(<App />)
@@ -97,6 +99,15 @@ it('keeps a returning learner on the learning dashboard after the introduction',
   render(<App />)
   expect(await screen.findByRole('button', { name: /open lesson/i })).toBeTruthy()
   expect(api.signMedia).not.toHaveBeenCalled()
+})
+
+it('lets the learner continue when device storage is unavailable', async () => {
+  vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('Storage disabled') })
+  vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('Storage disabled') })
+  render(<App />)
+  await userEvent.click(await screen.findByRole('button', { name: 'Continue to ChatGPT' }))
+  await userEvent.click(screen.getByRole('button', { name: 'Continue to Lesson 1.1' }))
+  expect(await screen.findByRole('heading', { name: 'Lesson 1.1' })).toBeTruthy()
 })
 
 it('does not repeat the introduction for a learner with saved lesson progress', async () => {
