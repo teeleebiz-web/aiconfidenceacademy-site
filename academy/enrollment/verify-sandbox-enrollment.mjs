@@ -4,6 +4,8 @@ import { Readable, Writable } from 'node:stream'
 import { createClient } from '@supabase/supabase-js'
 import { handleStripeEnrollment } from './stripe-webhook.mjs'
 import { formatAcademyEmailFrom } from '../email/sender.mjs'
+import { sendOperationalEmail } from '../email/operational-email.mjs'
+import { Resend } from 'resend'
 
 const portalOrigin = 'https://aiconfidenceacademy.org'
 const projectUrl = 'https://ymmkodlifpxutynpjnxm.supabase.co'
@@ -20,7 +22,7 @@ class CaptureResponse extends Writable {
   result() { return JSON.parse(Buffer.concat(this.chunks).toString() || '{}') }
 }
 
-export async function verifySandboxEnrollment(stripe, paidSession) {
+export async function verifySandboxEnrollment(stripe, paidSession, { deliver = false } = {}) {
   assert.equal(process.env.VERCEL_ENV, 'preview', 'Enrollment verification requires Preview')
   assert.equal(process.env.SUPABASE_URL, projectUrl, 'The test must use the known Academy database')
   assert.equal(process.env.VITE_SUPABASE_URL || projectUrl, projectUrl, 'The portal and server must use the same database')
@@ -28,6 +30,41 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
   assert.equal(process.env.ACA_PHASE_ONE_COURSE_ID, 'e4c32a76-a59c-42cf-b473-1fe860c37784', 'The test must use the existing Phase One course')
   const db = createClient(projectUrl, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false, autoRefreshToken: false } })
   const learner = createClient(projectUrl, process.env.VITE_SUPABASE_PUBLISHABLE_KEY || publicKey, { auth: { persistSession: false, autoRefreshToken: false } })
+  const deliveryKey = 'aca-sandbox-access-test:' + paidSession.id
+  const recipient = String(paidSession.customer_details?.email || paidSession.customer_email || '').trim().toLowerCase()
+  let resend
+  const readDelivery = async providerId => {
+    let lastEvent = 'sent'
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const delivery = await resend.emails.get(providerId)
+      if (delivery.error) return 'accepted_status_unavailable'
+      assert.ok(delivery.data?.to?.includes(recipient), 'The email provider must confirm the Checkout recipient')
+      lastEvent = delivery.data.last_event || 'sent'
+      if (['delivered', 'opened', 'clicked'].includes(lastEvent)) return lastEvent
+      assert.ok(!['bounced', 'failed', 'complained', 'suppressed'].includes(lastEvent), 'The test email must not fail delivery')
+      await new Promise(resolve => setTimeout(resolve, 1500))
+    }
+    return lastEvent
+  }
+  if (deliver) {
+    assert.ok(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient), 'The completed Checkout must contain a valid recipient')
+    assert.ok(!/@(?:example\.(?:com|net|org)|resend\.dev)$/.test(recipient), 'The delivery test requires the real Checkout email address')
+    assert.ok(process.env.RESEND_API_KEY, 'The Academy email connection must be configured')
+    resend = new Resend(process.env.RESEND_API_KEY)
+    const previous = checked(await db.from('aca_email_events')
+      .select('learner_id,enrollment_id,provider_message_id,status,metadata')
+      .eq('event_key', deliveryKey).maybeSingle(), 'Read prior access test')
+    if (previous) {
+      assert.ok(['sent', 'delivered'].includes(previous.status), 'An unfinished access test must be reviewed before retrying')
+      assert.equal(previous.metadata?.source_session, paidSession.id, 'The prior access test must match the verified Checkout')
+      assert.equal(previous.metadata?.sign_in_verified, true, 'The previous test must have verified learner sign-in')
+      const account = checked(await db.auth.admin.getUserById(previous.learner_id), 'Read prior test learner')
+      assert.equal(account.user.app_metadata?.aca_test_fixture, previous.metadata?.fixture, 'The saved access test must use its marked temporary account')
+      const status = await readDelivery(previous.provider_message_id)
+      console.log('[ACA sandbox access email] Existing test email status:', status)
+      return
+    }
+  }
   const fixture = randomUUID()
   const email = 'aca-enrollment-test-' + fixture + '@example.com'
   const eventId = 'evt_aca_fixture_' + fixture
@@ -40,6 +77,7 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
   let generatedLinks = 0
   let stage = 'read_test_price'
   let invitationError
+  let keepTestLearner = false
 
   try {
     const actualItems = await stripe.checkout.sessions.listLineItems(paidSession.id, { limit: 100 })
@@ -154,6 +192,46 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
     assert.equal(lesson.page_id, '1.1', 'A new learner must begin at Lesson 1.1')
     assert.equal(lesson.status, 'published', 'The first lesson must be published')
     console.log('[ACA sandbox enrollment rehearsal] Passed: signed enrollment processing, email entrance link, duplicate event, Supabase sign-in, learner access rules, and Lesson 1.1')
+    if (deliver) {
+      stage = 'prepare_fresh_access_link'
+      checked(await learner.auth.signOut({ scope: 'global' }), 'Sign out the rehearsal session')
+      const fresh = checked(await db.auth.admin.generateLink({
+        type: 'magiclink', email, options: { redirectTo: portalOrigin + '/learn/' },
+      }), 'Create the unconsumed test entrance')
+      const freshLink = new URL(fresh.properties.action_link)
+      assert.equal(freshLink.origin, projectUrl, 'The email entrance must use the verified Auth service')
+      assert.equal(freshLink.searchParams.get('redirect_to'), portalOrigin + '/learn/', 'The email entrance must open the official learner portal')
+      const banner = '<div style="font-family:Arial,sans-serif;background:#fff7dd;border:2px solid #d7aa35;color:#173d62;margin-bottom:20px;padding:12px 16px"><strong>ACA ENROLLMENT ACCESS TEST</strong><br>This link opens a temporary test learner account to verify the Academy email and Lesson 1.1.</div>'
+      const html = banner + messages[0].message.html.replaceAll(invitation, fresh.properties.action_link)
+      stage = 'send_test_access_email'
+      const metadata = {
+        fixture, source_session: paidSession.id, sign_in_verified: true,
+        first_lesson_verified: '1.1', test_only: true,
+      }
+      const sent = await sendOperationalEmail({
+        db,
+        emailFrom: formatAcademyEmailFrom(process.env.ACA_EMAIL_FROM),
+        resend: { emails: { send: async (...args) => {
+          const result = await resend.emails.send(...args)
+          if (!result.error && result.data?.id) keepTestLearner = true
+          return result
+        } } },
+      }, {
+        eventKey: deliveryKey, templateKey: 'aca_sandbox_enrollment_access_test',
+        enrollmentId: enrolled.id, learnerId: testUserId,
+        to: recipient, subject: '[TEST] ' + messages[0].message.subject, html, metadata,
+      })
+      assert.ok(sent.providerMessageId, 'The email provider must accept the test access email')
+      stage = 'verify_test_email_delivery'
+      const delivery = await readDelivery(sent.providerMessageId)
+      checked(await db.from('aca_email_events').update({
+        ...(['delivered', 'opened', 'clicked'].includes(delivery)
+          ? { status: 'delivered', delivered_at: new Date().toISOString() } : {}),
+        metadata: { ...metadata, provider_status: delivery },
+      }).eq('event_key', deliveryKey), 'Record the test delivery result')
+      console.log('[ACA sandbox access email] New test email status:', delivery)
+    }
+
   } catch (error) {
     const message = String(error.message || error.name || 'verification_failed').replace(/(?:sk|rk)_(?:test|live)_[A-Za-z0-9_]+|whsec_[A-Za-z0-9_-]+|re_[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_.-]+/g, '[redacted]').slice(0, 1200)
     await db.from('aca_payment_events').upsert({
@@ -170,9 +248,11 @@ export async function verifySandboxEnrollment(stripe, paidSession) {
       assert.equal(identity.user.app_metadata?.aca_test_fixture, fixture, 'Cleanup requires the server-created fixture marker')
       checked(await db.from('aca_email_events').delete().eq('event_key', emailEventKey), 'Remove fixture email ledger')
       checked(await db.from('aca_payment_events').delete().eq('stripe_event_id', eventId), 'Remove fixture payment ledger')
-      checked(await db.auth.admin.deleteUser(testUserId), 'Remove temporary fixture learner')
-      const remaining = checked(await db.from('enrollments').select('id').eq('learner_id', testUserId), 'Verify fixture enrollment cleanup')
-      assert.equal(remaining.length, 0, 'Temporary enrollment cleanup must finish')
+      if (!keepTestLearner) {
+        checked(await db.auth.admin.deleteUser(testUserId), 'Remove temporary fixture learner')
+        const remaining = checked(await db.from('enrollments').select('id').eq('learner_id', testUserId), 'Verify fixture enrollment cleanup')
+        assert.equal(remaining.length, 0, 'Temporary enrollment cleanup must finish')
+      }
     }
   }
 }

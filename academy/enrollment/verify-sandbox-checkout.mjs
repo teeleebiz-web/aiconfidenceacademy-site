@@ -70,7 +70,7 @@ import { verifySandboxEnrollment } from './verify-sandbox-enrollment.mjs'
     assert.equal(payment.amount_received, 14900, 'Stripe must record the full $149 test payment')
     console.log('[ACA sandbox payment verification] Passed: user Checkout complete, paid, approved $149 test price, PaymentIntent succeeded, and correct Preview return URL')
 
-    await verifySandboxEnrollment(stripe, paidSession)
+    await verifySandboxEnrollment(stripe, paidSession, { deliver: true })
 
     class CaptureResponse extends Writable {
       headers = new Map()
