@@ -125,11 +125,26 @@ it('does not treat unfinished lesson progress as completing the introduction', a
   expect(screen.queryByRole('button', { name: /open lesson/i })).toBeNull()
 })
 
-it('preserves the owner review dashboard', async () => {
+it('preserves the returning owner review dashboard after the opening sequence', async () => {
   api.owner = true
+  api.completedAt = '2026-10-03T16:00:00Z'
   render(<App />)
   expect(await screen.findByRole('heading', { name: 'Phase One working build' })).toBeTruthy()
   expect(api.signMedia).not.toHaveBeenCalled()
+})
+
+it('opens the same welcome and ChatGPT guide for the owner without starting a learner clock', async () => {
+  api.owner = true
+  api.progress = [{ lesson_id: 'onboarding-lesson', status: 'in_progress' }]
+  render(<App />)
+  expect(await screen.findByRole('heading', { name: 'Welcome to the Academy' })).toBeTruthy()
+  await userEvent.click(screen.getByRole('button', { name: 'Continue to ChatGPT' }))
+  expect(screen.getByRole('heading', { name: 'Getting Started with ChatGPT' })).toBeTruthy()
+  await userEvent.click(screen.getByRole('button', { name: 'Continue to Lesson 1.1' }))
+  expect(await screen.findByRole('heading', { name: 'Lesson 1.1' })).toBeTruthy()
+  expect(api.rpc).toHaveBeenCalledWith('complete_aca_onboarding', { p_enrollment_id: 'onboarding-enrollment' })
+  expect(api.rpc.mock.calls.some(([name]) => name === 'touch_lesson_access')).toBe(false)
+  expect(api.rpc.mock.calls.some(([name]) => name === 'get_learner_lesson_access')).toBe(false)
 })
 
 it('does not request protected founder media without an enrollment', async () => {
