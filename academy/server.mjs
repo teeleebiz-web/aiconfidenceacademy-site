@@ -20,7 +20,7 @@ const exploreVideos = new Map([
   ['03', 'explore-chatgpt/ACA-Explore-ChatGPT-03.mp4'],
 ])
 const academyWelcomeVideo = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
-export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null }) {
+export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null, learnerOrigins = ['https://aiconfidenceacademy.org'] }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
@@ -45,9 +45,21 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
-    // Preview checkout forms need a real Origin; no-referrer makes form POST origins null.
-    if (enrollmentAutomation?.preview && ['/enroll', '/enroll/', '/enroll/index.html'].includes(requestPath)) {
-      res.setHeader('Referrer-Policy', 'same-origin')
+    if (requestPath.startsWith('/api/learner/workbooks/')) {
+      const origin = req.headers.origin
+      if (origin && !learnerOrigins.includes(origin)) {
+        res.writeHead(403, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ error: 'Request origin was not accepted' })); return
+      }
+      if (origin) {
+        res.setHeader('Access-Control-Allow-Origin', origin)
+        res.setHeader('Vary', 'Origin')
+        res.setHeader('Access-Control-Allow-Methods', 'GET, PATCH, OPTIONS')
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token')
+      }
+      if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
+      const workbookKey = requestPath.slice('/api/learner/workbooks/'.length)
+      await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: false, workbookKey }); return
     }
     if (requestPath === '/api/webhooks/stripe') {
       await handleStripeEnrollment(req, res, enrollmentAutomation); return

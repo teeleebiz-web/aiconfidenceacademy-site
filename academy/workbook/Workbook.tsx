@@ -7,11 +7,11 @@ import './workbook.css'
 type Block = { type: string; compact?: boolean; id?: string; label?: string; hint?: string; lines?: number; text?: string; title?: string; intro?: string; theme?: string; page?: number; items?: Block[]; headers?: string[]; rows?: { label: string; fields: Block[] }[] }
 const dateFields = new Set(['p02-f002', 'p05-f003', 'p09-f016', 'p13-f035', 'p17-f047', 'p21-f059', 'p25-f075', 'p31-f089', 'p32-f094', 'j3-date'])
 const shortAnswerFields = new Set([...dateFields, 'p02-f001', 'p05-f004', 'p09-f017', 'p31-f090', 'p32-f095'])
-const makeTransport = (workbookKey: string): Transport => async (method, patch): Promise<RecordState> => {
+const makeTransport = (workbookKey: string, apiBase: string): Transport => async (method, patch): Promise<RecordState> => {
   const { data: { session } } = await supabase.auth.getSession()
   if (patch && patch.scope !== (session?.user.id ?? 'owner-review')) throw new Error('Your Academy account changed. Reopen your workbook before continuing.')
   const body = patch ? JSON.stringify({ answers: patch.answers, page: patch.page, baseRevision: patch.baseRevision }) : undefined
-  const response = await fetch('/api/academy/workbooks/' + workbookKey, {
+  const response = await fetch(apiBase + workbookKey, {
     method, cache: 'no-store', credentials: 'same-origin',
     headers: { 'Content-Type': 'application/json', 'X-ACA-Workbook': '1', ...(session ? { 'X-ACA-Access-Token': session.access_token } : {}) },
     body, keepalive: !!body && new TextEncoder().encode(body).length < 60000,
@@ -21,7 +21,7 @@ const makeTransport = (workbookKey: string): Transport => async (method, patch):
   return result
 }
 
-type WorkbookKey = 'journey-one' | 'journey-two' | 'journey-three' | 'journey-four' | 'journey-five' | 'journey-six'
+export type WorkbookKey = 'journey-one' | 'journey-two' | 'journey-three' | 'journey-four' | 'journey-five' | 'journey-six'
 const lessonStartPages: Record<WorkbookKey, number[]> = {
   'journey-one': [5, 9, 13, 17, 21, 25],
   'journey-two': [1, 5, 9, 13, 17, 21],
@@ -38,8 +38,8 @@ export const workbookOpeningPage = (workbookKey: WorkbookKey, lessonId?: string 
   return lessonStartPages[workbookKey][Number(match[2]) - 1]
 }
 
-export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?: string | null; workbookKey?: WorkbookKey }) {
-  const transport = useMemo(() => makeTransport(workbookKey), [workbookKey])
+export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/api/academy/workbooks/', backHref = '/academy/phase-one/' }: { lessonId?: string | null; workbookKey?: WorkbookKey; apiBase?: string; backHref?: string }) {
+  const transport = useMemo(() => makeTransport(workbookKey, apiBase), [workbookKey, apiBase])
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -98,7 +98,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one' }: { lessonId?:
   if (!data || !page) return <main className="wb-shell"><p role="alert">Your workbook could not be opened. Please reload this page.</p></main>
   return <main className="wb-shell">
     <div className="wb-toolbar">
-      <a className="wb-back" href="/academy/phase-one/" onClick={async event => { event.preventDefault(); await store.save(); if (!store.pending) window.location.assign('/academy/phase-one/') }}>← Back to Phase One</a>
+      <a className="wb-back" href={backHref} onClick={async event => { event.preventDefault(); await store.save(); if (!store.pending) window.location.assign(backHref) }}>← Back to Phase One</a>
       <div className="wb-save"><span role="status" aria-live="polite">{state.status === 'saved' ? (state.updated_at ? 'Saved' : 'Ready for your answers') : state.status === 'saving' ? 'Saving…' : state.status === 'error' || state.status === 'conflict' ? 'Not saved yet' : 'Changes to save'}</span><button className="wb-print" type="button" onClick={() => window.print()}>Print / Save PDF</button><button disabled={state.status === 'saving'} onClick={() => void store.save()}>Save</button></div>
     </div>
     {state.message && <p className="wb-error" role="alert">{state.message}</p>}

@@ -26,7 +26,11 @@ vi.mock('./lib/supabase', () => ({
         order: () => result,
         maybeSingle: async () => ({ data: table === 'profiles'
           ? { first_name: 'Test' }
-          : { id: 'test-enrollment', course_id: 'test-course' }, error: null }),
+          : { id: 'test-enrollment', course_id: 'test-course',
+              onboarding_completed_at: '2026-10-03T16:00:00Z',
+              // These tests isolate introduction revision loading from Phase One entry.
+              course: { id: 'test-course', code: 'synthetic-review-course', title: 'Synthetic course', summary: '' },
+            }, error: null }),
         single: api.latest,
         then: result.then.bind(result),
       }

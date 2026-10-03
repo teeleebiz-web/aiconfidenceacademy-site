@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import sealUrl from '../../aca-official-seal.png'
 import { Dashboard } from './components/Dashboard'
 import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
+import { LearnerOnboarding } from './components/LearnerOnboarding'
 import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
+import { Workbook, type WorkbookKey } from '../../academy/workbook/Workbook'
 import type { Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from './types'
 
 type PortalData = {
@@ -36,7 +38,7 @@ function workbookHrefForLesson(pageId: string) {
   const journeyNumber = Number(pageId.split('.')[0])
   const journeyWord = journeyWords[journeyNumber - 1]
   return journeyWord
-    ? `/academy/phase-one/?workbook=journey-${journeyWord}&lesson=${encodeURIComponent(pageId)}`
+    ? `/learn/?workbook=journey-${journeyWord}&lesson=${encodeURIComponent(pageId)}`
     : undefined
 }
 
@@ -54,6 +56,15 @@ export function App() {
   const [error, setError] = useState('')
   const [reviewMode, setReviewMode] = useState(false)
   const [lessonAccess, setLessonAccess] = useState<LessonAccess | null>(null)
+  const [completedOnboardingId, setCompletedOnboardingId] = useState('')
+  const [lessonVideoUrl, setLessonVideoUrl] = useState<string | undefined>()
+  const [lessonAudioUrl, setLessonAudioUrl] = useState<string | undefined>()
+  const mediaRequest = useRef(0)
+  const params = new URLSearchParams(window.location.search)
+  const workbookParam = params.get('workbook')
+  const workbookKey = journeyWords.some((word) => workbookParam === `journey-${word}`)
+    ? workbookParam as WorkbookKey : null
+  const workbookApiBase = `${import.meta.env.VITE_ACA_BACKEND_ORIGIN ?? 'https://checkout.aiconfidenceacademy.org'}/api/learner/workbooks/`
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -86,25 +97,26 @@ export function App() {
       supabase.from('profiles').select('first_name, display_name').eq('id', userId).maybeSingle(),
       supabase
         .from('enrollments')
-        .select('id, learner_id, course_id, status, starts_at, access_expires_at, course:courses(id, code, title, summary)')
+        .select('id, learner_id, course_id, status, starts_at, access_expires_at, onboarding_completed_at, course:courses(id, code, title, summary)')
         .eq('learner_id', userId)
         .in('status', ['active', 'completed'])
         .maybeSingle(),
-      supabase.rpc('is_aca_curriculum_owner'),
+      supabase.rpc('is_aca_curriculum_owner', undefined, { get: true }),
     ])
 
-    if (profileResult.error || enrollmentResult.error || ownerResult.error) {
+    if (profileResult.error || enrollmentResult.error) {
       setError(
         profileResult.error?.message ??
           enrollmentResult.error?.message ??
-          ownerResult.error?.message ??
           'Unable to load ACA access.',
       )
       setLoading(false)
       return
     }
 
-    const isOwner = ownerResult.data === true
+    // Enrollment access must not depend on a reviewer-only status request.
+    // A failed reviewer check stays in learner mode; database RLS still controls access.
+    const isOwner = !ownerResult.error && ownerResult.data === true
     setReviewMode(isOwner)
 
     const enrollment = enrollmentResult.data as unknown as Enrollment | null
@@ -187,7 +199,8 @@ export function App() {
     if (signInError) throw signInError
   }
 
-  async function openLesson(lesson: Lesson) {
+  async function openLesson(lesson: Lesson, completingOnboarding = false) {
+    const request = ++mediaRequest.current
     setError('')
     if (portalData.enrollment && !reviewMode) {
       const access = await startOrResumeLessonAccess(lesson)
@@ -197,6 +210,37 @@ export function App() {
       }
     } else {
       setLessonAccess(null)
+    }
+    const sign = async (path?: string | null) => {
+      if (!path) return undefined
+      const { data, error: mediaError } = await supabase.storage.from('aca-learning-media')
+        .createSignedUrl(path, 7200)
+      if (mediaError || !data?.signedUrl) throw new Error('The academy could not load this material. Please try again.')
+      return data.signedUrl
+    }
+    try {
+      const [video, audio] = await Promise.all([
+        sign(lesson.content.video_path), sign(lesson.content.audio_path),
+      ])
+      if (request !== mediaRequest.current) return
+      if (completingOnboarding && portalData.enrollment) {
+        if (!reviewMode || !portalData.enrollment.onboarding_completed_at) {
+          const { data: completedAt, error: completionError } = await supabase.rpc('complete_aca_onboarding', {
+            p_enrollment_id: portalData.enrollment.id,
+          })
+          if (request !== mediaRequest.current) return
+          if (completionError || !completedAt) {
+            setError('Your introduction could not be saved. Please try again.')
+            return
+          }
+        }
+        setCompletedOnboardingId(portalData.enrollment.id)
+      }
+      setLessonVideoUrl(video)
+      setLessonAudioUrl(audio)
+    } catch {
+      if (request === mediaRequest.current) setError('The academy could not load this material. Please try again.')
+      return
     }
     setSelectedIntroduction(null)
     setSelectedLesson(lesson)
@@ -384,14 +428,29 @@ export function App() {
   }
 
   async function signOut() {
+    mediaRequest.current++
     await supabase.auth.signOut()
     setSelectedLesson(null)
     setSelectedIntroduction(null)
+    setCompletedOnboardingId('')
+    setLessonVideoUrl(undefined)
+    setLessonAudioUrl(undefined)
   }
 
   const visiblePortalData = reviewMode
     ? portalData
     : { ...portalData, ...learnerAccessView(portalData) }
+
+  const onboardingEnrollment = portalData.enrollment
+  const needsOnboarding = onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
+    && completedOnboardingId !== onboardingEnrollment.id
+    && (reviewMode ? !workbookKey : !onboardingEnrollment.onboarding_completed_at)
+  const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
+
+  async function finishOnboarding() {
+    if (!onboardingEnrollment || !firstLesson) return
+    await openLesson(firstLesson, true)
+  }
 
   if (loading) {
     return <div className="loading-screen">Preparing your ACA learning space…</div>
@@ -423,7 +482,12 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {selectedIntroduction ? (
+      {workbookKey && portalData.enrollment && !needsOnboarding ? (
+        <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
+          apiBase={workbookApiBase} backHref="/learn/" />
+      ) : needsOnboarding ? (
+        <LearnerOnboarding key={onboardingEnrollment?.id} onContinue={firstLesson ? finishOnboarding : undefined} />
+      ) : selectedIntroduction ? (
         <JourneyIntroductionView
           introduction={selectedIntroduction}
           mediaUrl={introductionMediaUrl}
@@ -437,6 +501,9 @@ export function App() {
         <LessonView
           key={selectedLesson.id}
           lesson={selectedLesson}
+          videoSrc={lessonVideoUrl}
+          audioSrc={lessonAudioUrl}
+          audioPreload={selectedLesson.page_id.startsWith('2.') ? 'metadata' : 'none'}
           workbookHref={workbookHrefForLesson(selectedLesson.page_id)}
           progress={visiblePortalData.progress.find((item) => item.lesson_id === selectedLesson.id)}
           initialArtifact={artifact}

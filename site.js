@@ -12,9 +12,6 @@
     }));
   }
 
-  const checkoutOrigin = window.location.hostname.endsWith('.vercel.app')
-    ? window.location.origin
-    : 'https://checkout.aiconfidenceacademy.org';
   const enrollmentPage = document.querySelector('form[name="aca-interest-list"]')?.closest('.enrollment-layout');
   if (enrollmentPage) {
     const paymentStatus = new URLSearchParams(window.location.search).get('payment');
@@ -46,7 +43,7 @@
             <h3>Pay once</h3>
             <p class="payment-amount">$149</p>
             <p class="payment-note">One payment covers your Phase One enrollment.</p>
-            <form method="post" action="${checkoutOrigin}/api/enrollment/phase-one/paid-in-full">
+            <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-one/paid-in-full">
               <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
               <button class="button button-gold" type="submit">Pay $149</button>
             </form>
@@ -62,7 +59,7 @@
             </ol>
             <p class="payment-total">$149 total</p>
             <details class="payment-terms"><summary>How the installments work</summary><p>Stripe handles your payment method; ACA does not store your full card number. We email a reminder two days before the later payments. If a payment fails, you have 48 hours to correct it before access pauses. Access resumes when the account is brought current; correcting a payment does not move the remaining scheduled date. Automatic payments end after the third successful payment.</p></details>
-            <form method="post" action="${checkoutOrigin}/api/enrollment/phase-one/installments">
+            <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-one/installments">
               <label class="consent"><input type="checkbox" required><span>I authorize the three-payment schedule above and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
               <button class="button button-gold" type="submit">Start with $50 today</button>
             </form>
@@ -70,9 +67,7 @@
         </div>
       </div>`;
     if (paymentStatus === 'success') {
-      section.insertAdjacentHTML('afterbegin', window.location.hostname.endsWith('.vercel.app')
-        ? '<div class="form-confirmation" role="status"><span>Sandbox payment completed.</span><p>Learner access is not activated by this checkout test.</p></div>'
-        : '<div class="form-confirmation" role="status"><span>Payment received.</span><p>Check your email for your secure Academy access.</p></div>');
+      section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Payment received.</span><p>Check your email for your secure Academy access.</p></div>');
     } else if (paymentStatus === 'canceled') {
       section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
     }
