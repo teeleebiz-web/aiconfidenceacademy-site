@@ -440,7 +440,7 @@ export function App() {
     : { ...portalData, ...learnerAccessView(portalData) }
 
   const onboardingEnrollment = portalData.enrollment
-  const needsOnboarding = !reviewMode && onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
+  const needsOnboarding = onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
     && !onboardingEnrollment.onboarding_completed_at && completedOnboardingId !== onboardingEnrollment.id
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
 
