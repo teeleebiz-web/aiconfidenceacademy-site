@@ -44,8 +44,8 @@ test('opens the approved $129 pay-in-full checkout separately', async () => {
 
 test('sets exactly three weekly phases and cancels after $50, $50, $49', async () => {
   let update
-  const stripe = { subscriptionSchedules: {
-    create: async () => ({ id: 'schedule', current_phase: { start: 1000, end: 605800 } }),
+  const stripe = { subscriptions: { retrieve: async () => ({ schedule: null }) }, subscriptionSchedules: {
+    create: async () => ({ id: 'schedule', current_phase: { start_date: 1000, end_date: 605800 } }),
     update: async (id, value) => { update = value; return { id } },
   } }
   const result = await attachApprovedInstallmentSchedule(stripe, 'subscription', { installment50PriceId: 'price_50', installment49PriceId: 'price_49' })
@@ -58,4 +58,20 @@ test('sets exactly three weekly phases and cancels after $50, $50, $49', async (
     { interval: 'week', interval_count: 1 }, { interval: 'week', interval_count: 1 },
   ])
   assert.equal(result.thirdDueAt.getTime() - result.secondDueAt.getTime(), 7 * 86400000)
+})
+
+test('retries a partially attached schedule without migrating the subscription again', async () => {
+  let updates = 0
+  const stripe = {
+    subscriptions: { retrieve: async () => ({ schedule: 'existing_schedule' }) },
+    subscriptionSchedules: {
+      create: async () => { throw new Error('must not migrate twice') },
+      retrieve: async id => ({ id, current_phase: { start_date: 1000, end_date: 605800 } }),
+      update: async (id, value) => { updates++; assert.equal(value.end_behavior, 'cancel'); return { id } },
+    },
+  }
+  const result = await attachApprovedInstallmentSchedule(stripe, 'subscription', { installment50PriceId: 'price_50', installment49PriceId: 'price_49' })
+  assert.equal(result.scheduleId, 'existing_schedule')
+  assert.equal(result.secondDueAt.getTime(), 605800000)
+  assert.equal(updates, 1)
 })
