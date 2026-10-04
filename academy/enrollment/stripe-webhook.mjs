@@ -1,4 +1,4 @@
-import { attachApprovedInstallmentSchedule, failedInstallmentHtml, installmentConfirmationHtml } from './installment-plan.mjs'
+import { attachApprovedInstallmentSchedule, failedInstallmentHtml, installmentConfirmationHtml, recoveredInstallmentHtml } from './installment-plan.mjs'
 import { sendOperationalEmail } from '../email/operational-email.mjs'
 
 const json = (res, status, payload) => {
@@ -114,9 +114,18 @@ async function invoiceSucceeded(event, config) {
   const values = completed >= 3
     ? { status: 'completed', payments_completed: 3, paid_amount: paidAmount, next_due_at: null, next_amount: null, grace_until: null }
     : { status: 'active', payments_completed: completed, paid_amount: paidAmount, next_due_at: plan.third_due_at, next_amount: 4900, grace_until: null, reminder_sent_for_due_at: null }
+  if (plan.status === 'grace' || plan.status === 'paused') {
+    await sendOperationalEmail(config, {
+      eventKey: `installment-recovered:${invoice.id}`, templateKey: 'installment_recovered',
+      enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
+      to: plan.customer_email, subject: 'Your ACA payment was received — access is active',
+      html: recoveredInstallmentHtml({ nextAmount: values.next_amount, nextDueAt: values.next_due_at, appUrl: config.appUrl }),
+    })
+  }
   const { error } = await config.db.from('aca_installment_plans').update(values).eq('id', plan.id)
   if (error) throw error
-  await config.db.from('enrollments').update({ status: 'active' }).eq('id', plan.enrollment_id)
+  const { error: accessError } = await config.db.from('enrollments').update({ status: 'active' }).eq('id', plan.enrollment_id)
+  if (accessError) throw accessError
   await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
   return { received: true, installmentRecorded: completed }
 }
@@ -127,16 +136,27 @@ async function invoiceFailed(event, config) {
   if (!subscriptionId) return { received: true, ignored: true }
   const { data: plan } = await config.db.from('aca_installment_plans').select('*').eq('stripe_subscription_id', subscriptionId).maybeSingle()
   if (!plan) return { received: true, ignored: true }
-  const graceUntil = new Date(Date.now() + 48 * 60 * 60 * 1000)
+  if (plan.status === 'completed') return { received: true, ignored: true }
+  const { data: prior } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
+  if (prior?.status === 'completed') return { received: true, duplicate: true }
+  const currentInvoice = await config.stripe.invoices.retrieve(invoice.id)
+  if (currentInvoice.status === 'paid') return { received: true, ignored: true }
+  const paymentUrl = currentInvoice.hosted_invoice_url
+  if (!paymentUrl || new URL(paymentUrl).protocol !== 'https:' || new URL(paymentUrl).hostname !== 'invoice.stripe.com') {
+    throw new Error('Stripe payment-correction link is unavailable')
+  }
+  const graceUntil = plan.grace_until && ['grace', 'paused'].includes(plan.status)
+    ? new Date(plan.grace_until) : new Date(Date.now() + 48 * 60 * 60 * 1000)
   const amount = Number(invoice.amount_due || plan.next_amount || 0)
-  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency, status: 'completed' })
-  const { error } = await config.db.from('aca_installment_plans').update({ status: 'grace', grace_until: graceUntil.toISOString() }).eq('id', plan.id)
+  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency })
+  const { error } = await config.db.from('aca_installment_plans').update({ status: plan.status === 'paused' ? 'paused' : 'grace', grace_until: graceUntil.toISOString() }).eq('id', plan.id)
   if (error) throw error
   await sendOperationalEmail(config, {
     eventKey: `installment-failed:${invoice.id}`, templateKey: 'installment_failed',
     enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
-    to: plan.customer_email, subject: 'Action needed for your ACA installment', html: failedInstallmentHtml({ amount, graceUntil }),
+    to: plan.customer_email, subject: 'Action needed for your ACA installment', html: failedInstallmentHtml({ amount, graceUntil, paymentUrl }),
   })
+  await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
   return { received: true, graceUntil: graceUntil.toISOString() }
 }
 
