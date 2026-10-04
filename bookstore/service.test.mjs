@@ -100,3 +100,18 @@ test('HTTP denies invalid signatures and keeps internal errors private',async()=
   await handleBookstore(req,res,{db:dbFake(),webhookSecret:'configured',stripe:{webhooks:{constructEvent(){throw Error('secret')}}}},'webhook')
   assert.equal(status,400);assert.equal(body.error,'Invalid payment event.')
 })
+test('only the ACA website can make browser requests to the backend',async()=>{
+  let status;const headers={};const res={setHeader(k,v){headers[k]=v},writeHead(s){status=s},end(){}}
+  await handleBookstore({method:'OPTIONS',headers:{origin:'https://aiconfidenceacademy.org'}},res,{},'download')
+  assert.equal(status,204);assert.equal(headers['Access-Control-Allow-Origin'],'https://aiconfidenceacademy.org')
+  await handleBookstore({method:'OPTIONS',headers:{origin:'https://another.example'}},res,{},'download')
+  assert.equal(status,403)
+})
+test('status verifies database access and keeps purchases closed',async()=>{
+  let status,body;const res={writeHead(s){status=s},end(b){body=JSON.parse(b)}}
+  await handleBookstore({method:'GET',headers:{}},res,{db:dbFake()},'status')
+  assert.equal(status,200);assert.equal(body.salesEnabled,false)
+  const db={from(){return {select(){return this},limit:async()=>({error:new Error('private detail')})}}}
+  await handleBookstore({method:'GET',headers:{}},res,{db},'status')
+  assert.equal(status,503);assert.equal(body.error,'Bookstore database is temporarily unavailable.')
+})

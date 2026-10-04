@@ -15,8 +15,21 @@ const json = (res, status, data) => {
 }
 export async function handleBookstore(req, res, config, route) {
   try {
+    const origin=req.headers.origin
+    if (origin && !['https://aiconfidenceacademy.org','https://www.aiconfidenceacademy.org','https://checkout.aiconfidenceacademy.org'].includes(origin)) {
+      throw new BookstoreError(403, 'This website cannot access the bookstore.')
+    }
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin',origin)
+      res.setHeader('Vary','Origin')
+      res.setHeader('Access-Control-Allow-Headers','Authorization, Content-Type')
+      res.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS')
+    }
+    if (req.method==='OPTIONS') { res.writeHead(204);res.end();return }
     if (!config.db) throw new BookstoreError(503, 'Bookstore configuration is incomplete.')
     if (route === 'status' && req.method === 'GET') {
+      const probe=await config.db.from('aca_book_editions').select('id').limit(1)
+      if (probe.error) throw new BookstoreError(503, 'Bookstore database is temporarily unavailable.')
       json(res, 200, { store: 'ACA Bookstore', salesEnabled: Boolean(config.salesEnabled && config.stripe && config.webhookSecret), status: 'preparing_editions' }); return
     }
     if (route === 'webhook' && req.method === 'POST') {
