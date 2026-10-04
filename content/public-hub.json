@@ -2,61 +2,330 @@
   "edition": "1",
   "reviewed": "2026-09-30",
   "topics": [
-    { "slug": "begin", "name": "Begin with AI", "description": "A clear entry for people who want to understand what an assistant can do and how to begin.", "articles": ["what-an-ai-assistant-does", "confidence-is-a-practice"], "book": "ai-confidence-academy" },
-    { "slug": "everyday", "name": "Everyday use", "description": "Small, useful ways to bring your own purpose to AI without giving up your judgment.", "articles": ["ai-for-everyday-tasks", "confidence-is-a-practice"], "book": "ai-works-for-you" },
-    { "slug": "verify", "name": "Think and verify", "description": "Questions to ask before trusting, sharing, or acting on an AI response.", "articles": ["ai-assists-humans-verify", "the-answer-needs-context"], "book": "the-ai-reality-check" }
+    {
+      "slug": "begin",
+      "name": "Begin with AI",
+      "description": "A clear entry for people who want to understand what an assistant can do and how to begin.",
+      "articles": [
+        "what-an-ai-assistant-does",
+        "confidence-is-a-practice"
+      ],
+      "book": "ai-confidence-academy"
+    },
+    {
+      "slug": "everyday",
+      "name": "Everyday use",
+      "description": "Small, useful ways to bring your own purpose to AI without giving up your judgment.",
+      "articles": [
+        "ai-for-everyday-tasks",
+        "confidence-is-a-practice"
+      ],
+      "book": "ai-works-for-you"
+    },
+    {
+      "slug": "verify",
+      "name": "Think and verify",
+      "description": "Questions to ask before trusting, sharing, or acting on an AI response.",
+      "articles": [
+        "ai-assists-humans-verify",
+        "the-answer-needs-context"
+      ],
+      "book": "the-ai-reality-check"
+    }
   ],
   "articles": [
     {
-      "slug": "what-an-ai-assistant-does", "kind": "Quick answer", "title": "What does an AI assistant actually do?", "summary": "It responds to your instructions and helps you explore, draft, organize, or explain. You remain responsible for what you use.", "minutes": 3, "topic": "begin", "book": "ai-confidence-academy", "reviewed": "2026-09-30",
+      "slug": "what-an-ai-assistant-does",
+      "kind": "Quick answer",
+      "title": "What does an AI assistant actually do?",
+      "summary": "It responds to your instructions and helps you explore, draft, organize, or explain. You remain responsible for what you use.",
+      "minutes": 3,
+      "topic": "begin",
+      "book": "ai-confidence-academy",
+      "reviewed": "2026-09-30",
       "sections": [
-        { "heading": "Start with a useful picture", "paragraphs": ["An AI assistant works with the information and instructions you give it to produce a response. You might ask it to explain an unfamiliar term, suggest an outline, compare approaches, or help you rewrite a message. The response can give you a starting point, but it does not know your full situation simply because it sounds fluent.", "Try a modest task first. Ask for three ways to explain an idea to a friend. Read the options. Keep what fits, change what does not, and check any factual claim before repeating it."] },
-        { "heading": "Your part of the work", "paragraphs": ["Tell the assistant what you are trying to do and who the answer is for. Leave out private information you do not have permission to share. If an answer matters to health, money, safety, legal rights, or another consequential choice, use an appropriate qualified source or person before acting.", "A good first question is not a test of whether you can write a perfect prompt. It is the beginning of a conversation in which you can ask, inspect, correct, and decide."] }
-      ], "next": "ai-for-everyday-tasks"
+        {
+          "heading": "Start with a useful picture",
+          "paragraphs": [
+            "An AI assistant works with the information and instructions you give it to produce a response. You might ask it to explain an unfamiliar term, suggest an outline, compare approaches, or help you rewrite a message. The response can give you a starting point, but it does not know your full situation simply because it sounds fluent.",
+            "Try a modest task first. Ask for three ways to explain an idea to a friend. Read the options. Keep what fits, change what does not, and check any factual claim before repeating it."
+          ]
+        },
+        {
+          "heading": "Your part of the work",
+          "paragraphs": [
+            "Tell the assistant what you are trying to do and who the answer is for. Leave out private information you do not have permission to share. If an answer matters to health, money, safety, legal rights, or another consequential choice, use an appropriate qualified source or person before acting.",
+            "A good first question is not a test of whether you can write a perfect prompt. It is the beginning of a conversation in which you can ask, inspect, correct, and decide."
+          ]
+        }
+      ],
+      "next": "ai-for-everyday-tasks"
     },
     {
-      "slug": "ai-for-everyday-tasks", "kind": "Quick answer", "title": "Where could AI help in an ordinary day?", "summary": "Use it for a small part of a real task, such as planning, explaining, or finding clearer words.", "minutes": 3, "topic": "everyday", "book": "ai-works-for-you", "reviewed": "2026-09-30",
+      "slug": "ai-for-everyday-tasks",
+      "kind": "Quick answer",
+      "title": "Where could AI help in an ordinary day?",
+      "summary": "Use it for a small part of a real task, such as planning, explaining, or finding clearer words.",
+      "minutes": 3,
+      "topic": "everyday",
+      "book": "ai-works-for-you",
+      "reviewed": "2026-09-30",
       "sections": [
-        { "heading": "Choose a task you already own", "paragraphs": ["You could ask for a simple checklist before an appointment, an outline for a community meeting, or a clearer version of an email you have drafted. Give enough context for the task while keeping names, account details, and private records out of the conversation unless the tool and your permissions support their use.", "Suppose you need to prepare questions for a home repair estimate. Ask for categories of questions to consider. Then keep the questions that fit your home, budget, and situation. Confirm technical or safety advice with the appropriate professional."] },
-        { "heading": "Make the result yours", "paragraphs": ["AI can offer options; you choose. Look for invented details and promises you cannot make. Adjust the tone for the person who will receive the work. The value is in having a practical starting point and a chance to think more clearly, not in pressing a button and accepting everything it says."] }
-      ], "next": "ai-assists-humans-verify"
+        {
+          "heading": "Choose a task you already own",
+          "paragraphs": [
+            "You could ask for a simple checklist before an appointment, an outline for a community meeting, or a clearer version of an email you have drafted. Give enough context for the task while keeping names, account details, and private records out of the conversation unless the tool and your permissions support their use.",
+            "Suppose you need to prepare questions for a home repair estimate. Ask for categories of questions to consider. Then keep the questions that fit your home, budget, and situation. Confirm technical or safety advice with the appropriate professional."
+          ]
+        },
+        {
+          "heading": "Make the result yours",
+          "paragraphs": [
+            "AI can offer options; you choose. Look for invented details and promises you cannot make. Adjust the tone for the person who will receive the work. The value is in having a practical starting point and a chance to think more clearly, not in pressing a button and accepting everything it says."
+          ]
+        }
+      ],
+      "next": "ai-assists-humans-verify"
     },
     {
-      "slug": "ai-assists-humans-verify", "kind": "Quick answer", "title": "What does AI assists, humans verify mean?", "summary": "Treat an AI response as help to examine, not proof that a statement is correct.", "minutes": 4, "topic": "verify", "book": "the-ai-reality-check", "reviewed": "2026-09-30",
+      "slug": "ai-assists-humans-verify",
+      "kind": "Quick answer",
+      "title": "What does AI assists, humans verify mean?",
+      "summary": "Treat an AI response as help to examine, not proof that a statement is correct.",
+      "minutes": 4,
+      "topic": "verify",
+      "book": "the-ai-reality-check",
+      "reviewed": "2026-09-30",
       "sections": [
-        { "heading": "The sentence has two jobs", "paragraphs": ["AI assists by offering a draft, explanation, comparison, or possible next step. Humans verify by checking claims against dependable information, looking for missing context, and deciding whether the result is suitable for the people affected.", "If a draft event notice says parking is free, ask where that detail came from. If you have no confirmed source, remove it until the organizer can verify it. A second confident answer from the same tool is not independent confirmation."] },
-        { "heading": "A review you can remember", "paragraphs": ["Ask: What do I know? What does the answer claim? What could be missing? Who might be affected? What needs a source or another person's expertise? If the stakes are high, slow down and seek the right human review.", "Verification does not mean distrusting every useful idea. It means keeping responsibility with the person who can check, choose, and answer for the result."] }
-      ], "next": "the-answer-needs-context"
+        {
+          "heading": "The sentence has two jobs",
+          "paragraphs": [
+            "AI assists by offering a draft, explanation, comparison, or possible next step. Humans verify by checking claims against dependable information, looking for missing context, and deciding whether the result is suitable for the people affected.",
+            "If a draft event notice says parking is free, ask where that detail came from. If you have no confirmed source, remove it until the organizer can verify it. A second confident answer from the same tool is not independent confirmation."
+          ]
+        },
+        {
+          "heading": "A review you can remember",
+          "paragraphs": [
+            "Ask: What do I know? What does the answer claim? What could be missing? Who might be affected? What needs a source or another person's expertise? If the stakes are high, slow down and seek the right human review.",
+            "Verification does not mean distrusting every useful idea. It means keeping responsibility with the person who can check, choose, and answer for the result."
+          ]
+        }
+      ],
+      "next": "the-answer-needs-context"
     },
     {
-      "slug": "confidence-is-a-practice", "kind": "Deeper thought", "title": "Confidence is a practice, not a performance", "summary": "The point of learning AI is to strengthen what people can understand and do, one considered action at a time.", "minutes": 6, "topic": "begin", "book": "ai-confidence-academy", "reviewed": "2026-09-30",
+      "slug": "confidence-is-a-practice",
+      "kind": "Deeper thought",
+      "title": "Confidence is a practice, not a performance",
+      "summary": "The point of learning AI is to strengthen what people can understand and do, one considered action at a time.",
+      "minutes": 6,
+      "topic": "begin",
+      "book": "ai-confidence-academy",
+      "reviewed": "2026-09-30",
       "sections": [
-        { "heading": "Begin before you feel fluent", "paragraphs": ["A person may hesitate to use AI because the language around it sounds technical. Another person may feel confident because a tool produces polished answers in seconds. Neither feeling tells the whole story. What matters is whether we can bring a real question, understand the response well enough to examine it, and act with care.", "This is why ACA begins with participation. You can ask a basic question, notice what is useful, ask again when something is unclear, and keep your own experience in the room. Small acts of review make the next encounter less mysterious."] },
-        { "heading": "Keep the human purpose visible", "paragraphs": ["A tool can suggest words for a difficult email. It cannot know every history between the people involved. It can help outline a plan. It does not bear the consequences of a promise made in your name. We earn confidence by setting a purpose, listening to the people affected, and deciding which suggestions deserve to leave the screen.", "Sometimes the right outcome is a revised draft. Sometimes it is a better question. Sometimes it is putting the tool aside and speaking to a person. These choices are part of capable AI use, not evidence that we have fallen behind."] },
-        { "heading": "A useful next step", "paragraphs": ["Choose one low-risk task this week. Let AI help with one limited part. Write down what you accepted, what you changed, and what you checked elsewhere. That short record is a more honest measure of growing confidence than the speed of the first answer."] }
-      ], "next": "ai-assists-humans-verify"
+        {
+          "heading": "Begin before you feel fluent",
+          "paragraphs": [
+            "A person may hesitate to use AI because the language around it sounds technical. Another person may feel confident because a tool produces polished answers in seconds. Neither feeling tells the whole story. What matters is whether we can bring a real question, understand the response well enough to examine it, and act with care.",
+            "This is why ACA begins with participation. You can ask a basic question, notice what is useful, ask again when something is unclear, and keep your own experience in the room. Small acts of review make the next encounter less mysterious."
+          ]
+        },
+        {
+          "heading": "Keep the human purpose visible",
+          "paragraphs": [
+            "A tool can suggest words for a difficult email. It cannot know every history between the people involved. It can help outline a plan. It does not bear the consequences of a promise made in your name. We earn confidence by setting a purpose, listening to the people affected, and deciding which suggestions deserve to leave the screen.",
+            "Sometimes the right outcome is a revised draft. Sometimes it is a better question. Sometimes it is putting the tool aside and speaking to a person. These choices are part of capable AI use, not evidence that we have fallen behind."
+          ]
+        },
+        {
+          "heading": "A useful next step",
+          "paragraphs": [
+            "Choose one low-risk task this week. Let AI help with one limited part. Write down what you accepted, what you changed, and what you checked elsewhere. That short record is a more honest measure of growing confidence than the speed of the first answer."
+          ]
+        }
+      ],
+      "next": "ai-assists-humans-verify"
     },
     {
-      "slug": "the-answer-needs-context", "kind": "Deeper thought", "title": "A useful answer still needs human context", "summary": "An answer can be clear on the screen and still miss the people, relationships, and conditions around a decision.", "minutes": 6, "topic": "verify", "book": "the-ai-reality-check", "reviewed": "2026-09-30",
+      "slug": "the-answer-needs-context",
+      "kind": "Deeper thought",
+      "title": "A useful answer still needs human context",
+      "summary": "An answer can be clear on the screen and still miss the people, relationships, and conditions around a decision.",
+      "minutes": 6,
+      "topic": "verify",
+      "book": "the-ai-reality-check",
+      "reviewed": "2026-09-30",
       "sections": [
-        { "heading": "The missing part may be outside the prompt", "paragraphs": ["Suppose AI helps someone write a note about a change at work. The draft is polite and easy to read. It may still miss the reason colleagues are worried, a promise a manager made earlier, or a way the change affects a person with limited access to a device. A fluent answer cannot automatically carry relationships and history it was never given.", "The response is useful as material to consider. The human task is to ask what experience is missing and who should be heard before the note goes out. That question can improve the work even when every sentence in the draft is grammatically sound."] },
-        { "heading": "A check is more than a fact search", "paragraphs": ["We should verify dates, names, figures, and quotations against dependable sources. We should also examine whether the answer fits the situation. Who is the intended reader? What are they being asked to do? Could a sentence sound dismissive even when the facts are correct? What would the affected people say is absent?", "These are not reasons to give up on the tool. They are reasons to keep people in the process. An AI system can help reorganize a message after you identify a problem, but it cannot authorize a promise, grant consent, or take responsibility for the result."] },
-        { "heading": "Carry the decision back into the world", "paragraphs": ["Before using a response, write down one claim to confirm and one human question to ask. If you cannot answer either, hold the draft. The goal is not to make every task slow. The goal is to make the important steps visible when they matter."] }
-      ], "next": "confidence-is-a-practice"
+        {
+          "heading": "The missing part may be outside the prompt",
+          "paragraphs": [
+            "Suppose AI helps someone write a note about a change at work. The draft is polite and easy to read. It may still miss the reason colleagues are worried, a promise a manager made earlier, or a way the change affects a person with limited access to a device. A fluent answer cannot automatically carry relationships and history it was never given.",
+            "The response is useful as material to consider. The human task is to ask what experience is missing and who should be heard before the note goes out. That question can improve the work even when every sentence in the draft is grammatically sound."
+          ]
+        },
+        {
+          "heading": "A check is more than a fact search",
+          "paragraphs": [
+            "We should verify dates, names, figures, and quotations against dependable sources. We should also examine whether the answer fits the situation. Who is the intended reader? What are they being asked to do? Could a sentence sound dismissive even when the facts are correct? What would the affected people say is absent?",
+            "These are not reasons to give up on the tool. They are reasons to keep people in the process. An AI system can help reorganize a message after you identify a problem, but it cannot authorize a promise, grant consent, or take responsibility for the result."
+          ]
+        },
+        {
+          "heading": "Carry the decision back into the world",
+          "paragraphs": [
+            "Before using a response, write down one claim to confirm and one human question to ask. If you cannot answer either, hold the draft. The goal is not to make every task slow. The goal is to make the important steps visible when they matter."
+          ]
+        }
+      ],
+      "next": "confidence-is-a-practice"
     }
   ],
   "updates": [
     {
-      "slug": "why-important-answers-need-checking", "number": 1, "title": "Why an important AI answer needs a second look", "summary": "A clear answer can still contain a wrong claim. Here is one practical check to use before you pass it on.", "published": "2026-09-30", "reviewed": "2026-09-30", "topic": "verify", "book": "the-ai-reality-check",
+      "slug": "why-important-answers-need-checking",
+      "number": 1,
+      "title": "Why an important AI answer needs a second look",
+      "summary": "A clear answer can still contain a wrong claim. Here is one practical check to use before you pass it on.",
+      "published": "2026-09-30",
+      "reviewed": "2026-09-30",
+      "topic": "verify",
+      "book": "the-ai-reality-check",
       "finding": "OpenAI's help guidance says ChatGPT can produce incorrect or misleading outputs and recommends checking important information with reliable sources.",
       "practice": "Mark the claim you would act on. Check it against an appropriate source outside the AI answer. If you cannot confirm it, hold the decision or remove the claim.",
       "watch": "AI tools and their source features change. This note will be reviewed when the cited guidance changes; it is a practice reminder rather than a report that every AI tool behaves identically.",
-      "sources": [{ "label": "OpenAI Help Center — Does ChatGPT tell the truth?", "url": "https://help.openai.com/en/articles/8313428-does-chatgpt-tell-the-truth" }]
+      "sources": [
+        {
+          "label": "OpenAI Help Center — Does ChatGPT tell the truth?",
+          "url": "https://help.openai.com/en/articles/8313428-does-chatgpt-tell-the-truth"
+        }
+      ]
     }
   ],
   "books": [
-    { "slug": "ai-confidence-academy", "title": "AI Confidence Academy", "type": "Flagship digital book", "cover": "navy", "description": "A human-first introduction to understanding AI and participating with confidence in an AI-powered world.", "topics": ["begin", "verify"], "digital": "Catalog preview", "audio": "Audiobook planned" },
-    { "slug": "ai-works-for-you", "title": "AI Works for You", "type": "Digital guide", "cover": "gold", "description": "A practical doorway into seeing where AI can support daily life while human judgment remains in charge.", "topics": ["everyday"], "digital": "Catalog preview", "audio": "Audiobook planned" },
-    { "slug": "the-ai-reality-check", "title": "The AI Reality Check", "type": "Digital guide", "cover": "blue", "description": "A grounded resource for understanding what AI can do, what it cannot do, and why verification matters.", "topics": ["verify"], "digital": "Catalog preview", "audio": "Audiobook planned" }
+    {
+      "slug": "who-is-in-control",
+      "title": "Who Is in Control?",
+      "subtitle": "Understanding AI Power, Risk, and Human Responsibility",
+      "description": "A clear examination of AI power, oversight, and the responsibility people retain when systems act on their behalf.",
+      "type": "AI power and responsibility",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/who-is-in-control.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "choosing-your-ai-partner",
+      "title": "Choosing Your AI Partner",
+      "subtitle": "Understanding ChatGPT, Claude, and Gemini Through Everyday Decisions",
+      "description": "Compare AI assistants through the work you actually need to do, the resources they can use, and the judgment you bring to their answers.",
+      "type": "Choosing an assistant",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/choosing-your-ai-partner.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "before-you-trust-the-answer",
+      "title": "Before You Trust the Answer",
+      "subtitle": "A Human-First Guide to Checking What AI Tells You",
+      "description": "Practical habits for checking claims, following sources, examining numbers, and deciding when an AI answer is ready to use.",
+      "type": "Human judgment and verification",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/before-you-trust-the-answer.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "where-value-moves-next",
+      "title": "Where Value Moves Next",
+      "subtitle": "AI, Compute, Labor, Defensibility, and the New Economics of Opportunity",
+      "description": "Follow the connections between AI infrastructure, money, work, ownership, and opportunity—and examine what those changes may mean for people and businesses.",
+      "type": "The AI economy",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/where-value-moves-next.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "understanding-chatgpt",
+      "title": "Understanding ChatGPT",
+      "subtitle": "A Human-Centered Guide to What’s Possible",
+      "description": "An approachable introduction to ChatGPT and the wider AI-powered world, grounded in human purpose, responsible use, and the confidence to stay involved.",
+      "type": "The ChatGPT Library",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/understanding-chatgpt.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "understanding-claude",
+      "title": "Understanding Claude",
+      "subtitle": "A Human-Centered Guide to Your AI Partner",
+      "description": "A welcoming guide to understanding Claude, beginning a useful conversation, and keeping your own judgment at the center of your work with AI.",
+      "type": "The Claude Library",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/understanding-claude.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "ai-confidence-academy",
+      "title": "AI Confidence Academy",
+      "subtitle": "A Human-First Guide to Understanding and Using AI",
+      "description": "A personal, human-first introduction to understanding AI, starting small, and building confidence through participation and practice.",
+      "type": "Flagship book",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/ai-confidence-academy.webp",
+      "author": "Terrence Lee",
+      "topics": [
+        "begin",
+        "verify"
+      ],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "ai-works-for-you",
+      "title": "AI Works for You",
+      "subtitle": "AI Made Practical",
+      "description": "An everyday starting point with simple conversations, useful tasks, prompting basics, privacy reminders, and a seven-day plan for getting comfortable with AI.",
+      "type": "Companion Library",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/ai-works-for-you.webp",
+      "author": "Terrence Lee",
+      "topics": [
+        "everyday"
+      ],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "the-ai-reality-check",
+      "title": "The AI Reality Check",
+      "subtitle": "Understanding What’s Changing",
+      "description": "A grounded guide to changes in work, the difference between automation and replacement, and a practical roadmap for preparing with clarity.",
+      "type": "Companion Library",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/the-ai-reality-check.webp",
+      "author": "Terrence Lee",
+      "topics": [
+        "verify"
+      ],
+      "digital": "Digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    }
   ]
 }
