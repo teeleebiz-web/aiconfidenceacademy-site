@@ -1,0 +1,23 @@
+name: ACA bookstore checks
+on:
+  pull_request:
+    paths: ['bookstore/**', 'api/bookstore.mjs', '.github/workflows/bookstore-ci.yml']
+  push:
+    branches: [main]
+    paths: ['bookstore/**', 'api/bookstore.mjs', '.github/workflows/bookstore-ci.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Check bookstore code and payment access rules
+        run: |
+          node --check api/bookstore.mjs
+          node --check bookstore/service.mjs
+          node --check bookstore/http.mjs
+          node --test bookstore/service.test.mjs

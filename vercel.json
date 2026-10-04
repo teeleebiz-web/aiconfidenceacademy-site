@@ -21,7 +21,17 @@
     }
   ],
   "routes": [
-    { "src": "^/$", "dest": "/api/site.mjs?__aca_path=index.html" },
-    { "src": "^/(.*)$", "dest": "/api/site.mjs?__aca_path=$1" }
+    {
+      "src": "^/api/bookstore/([^/]+)/?$",
+      "dest": "/api/bookstore.mjs?route=$1"
+    },
+    {
+      "src": "^/$",
+      "dest": "/api/site.mjs?__aca_path=index.html"
+    },
+    {
+      "src": "^/(.*)$",
+      "dest": "/api/site.mjs?__aca_path=$1"
+    }
   ]
 }
