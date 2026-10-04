@@ -87,8 +87,12 @@ export async function handlePaidInFullCheckout(req, res, config) {
 }
 
 export async function attachApprovedInstallmentSchedule(stripe, subscriptionId, prices) {
-  const schedule = await stripe.subscriptionSchedules.create({ from_subscription: subscriptionId })
-  if (!schedule.current_phase?.start || !schedule.current_phase?.end) {
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+  const existingId = typeof subscription.schedule === 'string' ? subscription.schedule : subscription.schedule?.id
+  const schedule = existingId
+    ? await stripe.subscriptionSchedules.retrieve(existingId)
+    : await stripe.subscriptionSchedules.create({ from_subscription: subscriptionId })
+  if (!schedule.current_phase?.start_date || !schedule.current_phase?.end_date) {
     throw new Error('Stripe did not return the active installment phase')
   }
 
@@ -98,8 +102,8 @@ export async function attachApprovedInstallmentSchedule(stripe, subscriptionId, 
     phases: [
       {
         items: [{ price: prices.installment50PriceId, quantity: 1 }],
-        start_date: schedule.current_phase.start,
-        end_date: schedule.current_phase.end,
+        start_date: schedule.current_phase.start_date,
+        end_date: schedule.current_phase.end_date,
         proration_behavior: 'none',
         metadata: { aca_installment_number: '1' },
       },
@@ -120,8 +124,8 @@ export async function attachApprovedInstallmentSchedule(stripe, subscriptionId, 
 
   return {
     scheduleId: updated.id,
-    secondDueAt: new Date(schedule.current_phase.end * 1000),
-    thirdDueAt: new Date((schedule.current_phase.end + 7 * 86400) * 1000),
+    secondDueAt: new Date(schedule.current_phase.end_date * 1000),
+    thirdDueAt: new Date((schedule.current_phase.end_date + 7 * 86400) * 1000),
   }
 }
 
