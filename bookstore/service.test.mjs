@@ -36,6 +36,27 @@ test('closed sales never call Stripe',async()=>{
 test('draft or unpriced editions cannot open checkout',async()=>{
   const db=dbFake();await assert.rejects(createBookCheckout({db,salesEnabled:true,stripe:{},webhookSecret:'configured',livemode:false},user,editionId),{status:409})
 })
+test('an edition with no delivery file cannot open checkout',async()=>{
+  const db=dbFake({aca_book_editions:{id:editionId,stripe_test_price_id:'price',amount:900}})
+  await assert.rejects(createBookCheckout({db,salesEnabled:true,stripe:{},webhookSecret:'configured',livemode:false},user,editionId),{status:409})
+})
+test('a Stripe price mismatch cannot charge the buyer',async()=>{
+  const db=dbFake({aca_book_editions:{id:editionId,stripe_test_price_id:'price',amount:900,currency:'usd'},aca_book_files:[{id:fileId}]})
+  const stripe={prices:{retrieve:async()=>({active:true,type:'one_time',unit_amount:1000,currency:'usd',livemode:false})}}
+  await assert.rejects(createBookCheckout({db,stripe,salesEnabled:true,webhookSecret:'configured',livemode:false},user,editionId),{status:409})
+  assert.equal(db.calls.some(c=>c.table==='aca_book_orders'),false)
+})
+test('approved checkout uses only the server price and binds the verified buyer',async()=>{
+  const db=dbFake({aca_book_editions:{id:editionId,stripe_test_price_id:'price',amount:900,currency:'usd'},aca_book_files:[{id:fileId}]})
+  let parameters
+  const stripe={prices:{retrieve:async()=>({active:true,type:'one_time',unit_amount:900,currency:'usd',livemode:false})},checkout:{sessions:{create:async p=>{parameters=p;return {id:'session',url:'https://checkout.stripe.com/test'}}}}}
+  await createBookCheckout({db,stripe,salesEnabled:true,webhookSecret:'configured',livemode:false,websiteUrl:'https://aiconfidenceacademy.org'},user,editionId)
+  const order=db.calls.find(c=>c.table==='aca_book_orders' && c.write?.buyer_email).write
+  assert.equal(order.user_id,user.id);assert.equal(order.amount,900)
+  assert.deepEqual(parameters.line_items,[{price:'price',quantity:1}]);assert.equal(parameters.client_reference_id,order.id)
+  assert.equal(parameters.customer_email,user.email);assert.equal(parameters.mode,'payment')
+  assert.equal('payment_method_types' in parameters,false)
+})
 test('downloads enforce buyer ownership and live versus sandbox access',async()=>{
   const db=dbFake({aca_book_files:{id:fileId,edition_id:editionId,object_path:'book/chapter.mp3'}})
   await assert.rejects(bookDownload({db,livemode:true},{...user,id:'buyer-b'},fileId),{status:403})
