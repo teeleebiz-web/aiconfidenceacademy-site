@@ -16,3 +16,11 @@
 @media (max-width: 600px) {
   .home-introduction { width: calc(100% - 32px); padding-top: 16px; scroll-margin-top: 88px; }
 }
+
+.home-introduction-caption {
+  margin: 0 0 16px;
+  color: #927238;
+  font-size: 17px;
+  line-height: 1.6;
+  text-align: center;
+}
