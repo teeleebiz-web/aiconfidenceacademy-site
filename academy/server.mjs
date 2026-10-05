@@ -13,7 +13,7 @@ import { handleLessonReleaseMaintenance } from './email/lesson-release-maintenan
 import { handleLessonReleaseTest } from './email/lesson-release-test.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.m4s': 'video/iso.segment', '.m3u8': 'application/vnd.apple.mpegurl', '.vtt': 'text/vtt; charset=utf-8' }
 const exploreVideos = new Map([
   ['01', 'explore-chatgpt/ACA-Explore-ChatGPT-01.mp4'],
   ['02', 'explore-chatgpt/ACA-Explore-ChatGPT-02.mp4'],

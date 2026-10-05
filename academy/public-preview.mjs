@@ -12,7 +12,7 @@ const mime = {
   '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png',
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp',
   '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf',
-  '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8',
+  '.mp4': 'video/mp4', '.m4s': 'video/iso.segment', '.m3u8': 'application/vnd.apple.mpegurl', '.vtt': 'text/vtt; charset=utf-8',
 }
 
 // The review deployment has no course database credentials. Serve only the
