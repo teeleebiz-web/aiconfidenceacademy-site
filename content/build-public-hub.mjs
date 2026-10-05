@@ -43,7 +43,7 @@ async function page(file, title, description, body) {
   let html = shell[1] + body + shell[2]
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)} | AI Confidence Academy</title>`)
     .replace(/<meta name="description" content="[^"]*"\/>/, `<meta name="description" content="${esc(description)}"/>`)
-    .replace('</head>', '<link rel="stylesheet" href="/assets/explore.css"/></head>')
+    .replace('</head>', '<link rel="stylesheet" href="/assets/explore.css?v=20261005-layout"/></head>')
     .replace('<a href="/library" class="active">', '<a href="/library" class="">')
     .replace('<a href="/explore" class="">', '<a href="/explore" class="active">')
   if (file.startsWith('library/')) html = html.replace('<a href="/explore" class="active">', '<a href="/explore" class="">').replace('<a href="/library" class="">', '<a href="/library" class="active">')
