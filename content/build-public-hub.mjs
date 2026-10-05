@@ -36,7 +36,7 @@ const bookCard = item => `<article class="hub-book">${bookCover(item)}<div><p cl
 // Keep the bookstore shelf and detail pages on the same editorial source.
 const shelfCard = item => `<article class="shelf-card"><a class="shelf-cover-link" href="${bookLink(item)}" aria-label="View details for ${esc(item.title)}">${bookCover(item)}</a><p class="section-kicker">${esc(item.type)}</p><h2><a href="${bookLink(item)}">${esc(item.title)}</a></h2><p class="shelf-subtitle">${esc(item.subtitle || '')}</p><p class="shelf-author">${esc(item.author)}</p><a class="shelf-details" href="${bookLink(item)}">View book details →</a></article>`
 await writeFile('library/index.html', source
-  .replace(/<span>\d+ books in the collection<\/span>/, `<span>${data.books.length} books in the collection</span>`)
+  .replace(/<span>\d+ books in the collection<\/span>/, '')
   .replace(/(<section class="book-shelf section-pad" aria-label="ACA book collection">)[\s\S]*?(<\/section>)/, `$1${data.books.map(shelfCard).join('')}$2`))
 
 async function page(file, title, description, body) {
@@ -54,7 +54,7 @@ async function page(file, title, description, body) {
 const quick = data.articles.filter(item => item.kind === 'Quick answer')
 const deep = data.articles.filter(item => item.kind === 'Deeper thought')
 await page('explore/index.html', 'Explore AI with clarity', 'Quick AI answers, deeper reflections, and related ACA books in one place.', `
-<section class="page-hero hub-hero"><div><p class="eyebrow">Explore ACA</p><h1>A place to think, learn, and keep going.</h1><p>Start with a short answer. Stay for a deeper thought. Follow the subject into a book or the guided Academy when you are ready.</p><a class="button button-gold" href="#quick-answers">Find a starting point</a></div><img src="/aca-official-seal.png" alt="AI Confidence Academy seal" width="215" height="215"/></section>
+<section class="page-hero hub-hero"><div><p class="eyebrow">Explore ACA</p><h1>A place to think, learn, and keep going.</h1><p>Start with a short answer. Stay for a deeper thought. Follow the subject into a book or the guided Academy when you are ready.</p></div><img src="/aca-official-seal.png" alt="AI Confidence Academy seal" width="215" height="215"/></section>
 <section class="hub-intro section-pad compact"><p class="section-kicker">Choose your path</p><h2>What would help you today?</h2><div class="hub-topic-grid">${data.topics.map(item => `<a class="hub-topic" href="#${esc(item.slug)}"><span>${esc(item.name)}</span><p>${esc(item.description)}</p><b>Explore this subject →</b></a>`).join('')}</div></section>
 <section class="hub-section section-pad" id="quick-answers"><p class="section-kicker">A few minutes to learn</p><h2>Quick answers about AI</h2><p class="hub-lead">Plain-language explanations you can use before you decide where to go deeper.</p><div class="hub-grid">${quick.map(articleCard).join('')}</div></section>
 <section class="hub-section hub-cream section-pad" id="deeper-thoughts"><p class="section-kicker">Take a longer look</p><h2>Deeper thoughts</h2><p class="hub-lead">Ideas about human judgment, participation, and the kind of confidence worth building.</p><div class="hub-grid">${deep.map(articleCard).join('')}</div></section>
