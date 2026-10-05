@@ -299,32 +299,58 @@
     },
     {
       "slug": "ai-works-for-you",
-      "title": "AI Works for You",
-      "subtitle": "AI Made Practical",
-      "description": "An everyday starting point with simple conversations, useful tasks, prompting basics, privacy reminders, and a seven-day plan for getting comfortable with AI.",
-      "type": "Companion Library",
+      "title": "AI Works For You",
+      "subtitle": "A Simple, Practical Guide to Using AI with Confidence in Your Everyday Life",
+      "description": "A practical introduction to everyday AI use, with clear prompts, privacy and verification habits, ten first conversations, and a seven-day confidence starter plan.",
+      "type": "AI Confidence Foundation",
       "cover": "navy",
-      "coverImage": "/assets/book-covers/ai-works-for-you.webp",
+      "coverImage": "/assets/book-covers/ai-works-for-you-revised-v1.webp",
       "author": "Terrence Lee",
       "topics": [
         "everyday"
       ],
-      "digital": "Digital edition prepared · Purchase release pending",
+      "digital": "Revised digital edition prepared · Purchase release pending",
       "audio": "Audiobook edition planned"
     },
     {
       "slug": "the-ai-reality-check",
       "title": "The AI Reality Check",
-      "subtitle": "Understanding What’s Changing",
-      "description": "A grounded guide to changes in work, the difference between automation and replacement, and a practical roadmap for preparing with clarity.",
-      "type": "Companion Library",
+      "subtitle": "What's Actually Changing and How to Prepare",
+      "description": "Understand how AI changes tasks and skill expectations, distinguish exposure from replacement, assess your readiness, and prepare with a practical 90-day action plan.",
+      "type": "Preparation Pathway",
       "cover": "navy",
-      "coverImage": "/assets/book-covers/the-ai-reality-check.webp",
+      "coverImage": "/assets/book-covers/the-ai-reality-check-revised-v1.webp",
       "author": "Terrence Lee",
       "topics": [
         "verify"
       ],
-      "digital": "Digital edition prepared · Purchase release pending",
+      "digital": "Revised digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "from-zero-to-digital-products",
+      "title": "From Zero to Digital Products",
+      "subtitle": "A Beginner’s Guide to Creating, Packaging, and Selling Digital Products",
+      "description": "Turn knowledge and experience into useful digital resources. Learn to validate an idea, create with AI support, package and price it, and follow a 14-day launch plan.",
+      "type": "Digital Product Pathway",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/from-zero-to-digital-products-revised-v1.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Revised digital edition prepared · Purchase release pending",
+      "audio": "Audiobook edition planned"
+    },
+    {
+      "slug": "youtube-with-ai",
+      "title": "YouTube With AI",
+      "subtitle": "How to Start, Grow, and Monetize a YouTube Channel Using Free AI Tools",
+      "description": "Plan and build a useful YouTube channel with AI support for ideas, scripts, thumbnails, and production—including no-camera workflows and a 90-day launch plan.",
+      "type": "Creator Pathway",
+      "cover": "navy",
+      "coverImage": "/assets/book-covers/youtube-with-ai-revised-v1.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "Revised digital edition prepared · Purchase release pending",
       "audio": "Audiobook edition planned"
     }
   ]

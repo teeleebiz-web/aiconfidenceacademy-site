@@ -33,6 +33,12 @@ const articleCard = item => `<article class="hub-card"><p class="hub-meta">${esc
 const bookCover = (item, large = false) => item.coverImage ? `<img class="book-cover-image" src="${esc(item.coverImage)}" alt="${esc(item.title)} book cover" width="320" height="480" loading="lazy"/>` : `<div class="book-cover ${large ? 'large ' : ''}${esc(item.cover)}" aria-hidden="true"><small>AI Confidence Academy</small><strong>${esc(item.title)}</strong><span>Digital Edition</span></div>`
 const bookCard = item => `<article class="hub-book">${bookCover(item)}<div><p class="hub-meta">${esc(item.type)}</p><h3><a href="${bookLink(item)}">${esc(item.title)}</a></h3><p>${esc(item.description)}</p><p class="hub-availability">${esc(item.digital)} · ${esc(item.audio)}</p><a class="hub-text-link" href="${bookLink(item)}">Explore the book →</a></div></article>`
 
+// Keep the bookstore shelf and detail pages on the same editorial source.
+const shelfCard = item => `<article class="shelf-card"><a class="shelf-cover-link" href="${bookLink(item)}" aria-label="View details for ${esc(item.title)}">${bookCover(item)}</a><p class="section-kicker">${esc(item.type)}</p><h2><a href="${bookLink(item)}">${esc(item.title)}</a></h2><p class="shelf-subtitle">${esc(item.subtitle || '')}</p><p class="shelf-author">${esc(item.author)}</p><a class="shelf-details" href="${bookLink(item)}">View book details →</a></article>`
+await writeFile('library/index.html', source
+  .replace(/<span>\d+ books in the collection<\/span>/, `<span>${data.books.length} books in the collection</span>`)
+  .replace(/(<section class="book-shelf section-pad" aria-label="ACA book collection">)[\s\S]*?(<\/section>)/, `$1${data.books.map(shelfCard).join('')}$2`))
+
 async function page(file, title, description, body) {
   let html = shell[1] + body + shell[2]
   html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)} | AI Confidence Academy</title>`)
