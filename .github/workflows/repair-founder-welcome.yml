@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   repair:
-    if: github.event.head_commit.message == 'Run founder welcome media repair v4'
+    if: github.event.head_commit.message == 'Run founder welcome media repair v5'
     runs-on: ubuntu-latest
     steps:
       - name: Check out reviewed source
@@ -23,9 +23,11 @@ jobs:
             .github/workflows/repair-founder-welcome.yml
           sparse-checkout-cone-mode: false
 
-      - name: Verify media tools
+      - name: Install and verify media tools
         run: |
           set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
           ffmpeg -version | head -1
           ffprobe -version | head -1
 
