@@ -9,13 +9,19 @@ permissions:
 
 jobs:
   repair:
-    if: github.event.head_commit.message == 'Run founder welcome media repair v3'
+    if: github.event.head_commit.message == 'Run founder welcome media repair v4'
     runs-on: ubuntu-latest
     steps:
       - name: Check out reviewed source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 1
+          sparse-checkout: |
+            assets/videos/founders-shared-welcome
+            assets/videos/website-welcome
+            assets/founders-welcome-player.js
+            .github/workflows/repair-founder-welcome.yml
+          sparse-checkout-cone-mode: false
 
       - name: Verify media tools
         run: |
