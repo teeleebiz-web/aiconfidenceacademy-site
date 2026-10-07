@@ -1,0 +1,9 @@
+.story-page .section-pad { padding-top: 64px; padding-bottom: 64px; }
+.story-page #website-welcome > video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.story-page #website-welcome { scroll-margin-top: 110px; }
+.story-summary { display: grid; grid-template-columns: .85fr 1.15fr; gap: 48px; background: #f8f4e8; }
+.story-summary h2 { margin: 0 0 16px; color: #102d4f; font: 400 clamp(35px, 4vw, 52px)/1.15 Georgia, serif; }
+.story-summary-mantra { color: #927238; font-size: 18px; }
+.story-summary blockquote { margin: 24px 0; padding-left: 20px; border-left: 3px solid #b69451; color: #102d4f; font-size: 20px; }
+.story-summary-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+@media (max-width: 800px) { .story-summary { grid-template-columns: 1fr; gap: 20px; } .story-page .section-pad { padding-top: 40px; padding-bottom: 40px; } }
