@@ -1,10 +1,21 @@
 (() => {
   document.querySelectorAll('#academy-introduction video, #website-welcome video').forEach((video) => {
     if (video.dataset.resetToOpening === 'true') {
-      const reset = () => { video.pause(); video.currentTime = 0; };
-      video.addEventListener('ended', reset);
+      let resetScheduled = false;
+      const scheduleReset = () => {
+        if (resetScheduled) return;
+        resetScheduled = true;
+        video.pause();
+        window.setTimeout(() => {
+video.currentTime = 0;
+resetScheduled = false;
+        }, 1000);
+      };
+      video.addEventListener('ended', scheduleReset);
       video.addEventListener('timeupdate', () => {
-        if (!video.paused && Number.isFinite(video.duration) && video.currentTime >= video.duration - 0.15) reset();
+        if (!video.paused && Number.isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 0.03) {
+scheduleReset();
+        }
       });
     }
     if (video.canPlayType('application/vnd.apple.mpegurl')) return;
