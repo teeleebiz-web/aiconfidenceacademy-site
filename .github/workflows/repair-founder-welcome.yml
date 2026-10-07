@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   repair:
-    if: github.event.head_commit.message == 'Run founder welcome media repair v7'
+    if: github.event.head_commit.message == 'Run founder welcome media repair v8'
     runs-on: ubuntu-latest
     steps:
       - name: Check out reviewed source
@@ -23,9 +23,15 @@ jobs:
             .github/workflows/repair-founder-welcome.yml
           sparse-checkout-cone-mode: false
 
-      - name: Verify media tools
+      - name: Install and verify media tools
         run: |
           set -euo pipefail
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get install -y ffmpeg || {
+              sudo apt-get update -qq
+              sudo apt-get install -y ffmpeg
+            }
+          fi
           command -v ffmpeg
           command -v ffprobe
           ffmpeg -version 2>&1 | sed -n '1p'
