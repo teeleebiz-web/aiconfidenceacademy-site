@@ -13,3 +13,9 @@
 .bookstore-intro .bookstore-tagline{margin:15px 0 0;color:#526879;font-size:17px;line-height:1.6}
 .bookstore-intro .bookstore-browse{max-width:360px;margin:0;color:#5b6d79;font-size:14px;line-height:1.75}
 @media(max-width:760px){.bookstore-intro{align-items:flex-start;flex-direction:column;gap:22px;padding-top:40px;padding-bottom:34px}.bookstore-intro .bookstore-browse{max-width:700px}}
+
+/* Selected ACA bookstore cover */
+.bookstore-cover{background:var(--cream);padding:30px 24px 12px}
+.bookstore-cover-image{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;width:min(1080px,100%);margin:0 auto;overflow:hidden;border:1px solid #b4863240;box-shadow:0 16px 40px #071b331a}
+.bookstore-cover-image img{display:block;width:100%;height:auto;min-width:0;margin:0;padding:0}
+@media(max-width:700px){.bookstore-cover{padding:18px 12px 8px}.bookstore-cover-image{width:100%}}
