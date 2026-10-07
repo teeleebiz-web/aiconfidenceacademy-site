@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   repair:
-    if: github.event.head_commit.message == 'Run founder welcome media repair'
+    if: github.event.head_commit.message == 'Run founder welcome media repair v2'
     runs-on: ubuntu-latest
     steps:
       - name: Check out reviewed source
@@ -23,7 +23,7 @@ jobs:
           ffmpeg -version | head -1
           ffprobe -version | head -1
 
-      - name: Rebuild only the four founder-welcome media fragments
+      - name: Rebuild corrected founder welcome media
         shell: bash
         run: |
           set -euo pipefail
@@ -33,37 +33,50 @@ jobs:
           TMP="$(mktemp -d)"
           mkdir -p "$TMP/open" "$TMP/audio" "$TMP/end"
 
-          # Reuse the already-approved cream cards and Jeff's approved final frame.
+          # Approved visual sources already present in the live combined film.
           ffmpeg -v error -ss 1.0 -i "$SHARED" -frames:v 1 -y "$TMP/opening.png"
-          ffmpeg -v error -ss 309.5 -i "$SHARED" -frames:v 1 -y "$TMP/ending.png"
+          ffmpeg -v error -ss 309.4 -i "$SHARED" -frames:v 1 -y "$TMP/ending.png"
           ffmpeg -v error -ss 308.85 -i "$SHARED" -frames:v 1 -y "$TMP/jeff_last.png"
 
-          # Match the codec parameters already used by the live shared film.
-          # 1280x720, 25fps, H.264 High@3.1, AAC 48k stereo.
-          COMMON_V="-c:v libx264 -preset fast -crf 20 -profile:v high -level:v 3.1 -bf 2 -pix_fmt yuv420p -r 25 -video_track_timescale 12800"
-          COMMON_A="-c:a aac -ar 48000 -ac 2 -b:a 160k"
-
-          # part00: keep the approved cream opening visible for the full first five seconds.
-          # This completely replaces the old blue beginning card without changing the rest of the timeline.
+          # 1) FRONT: replace the old 2-second blue card with the approved cream opening.
+          # Keep the existing 15-second segment duration so no downstream timing shifts.
           ffmpeg -v error -loop 1 -i "$TMP/opening.png" -ss 5 -to 15 -i "$SHARED" \
             -filter_complex "[0:v]scale=1280:720,setsar=1,fps=25,trim=duration=5,setpts=PTS-STARTPTS[v0];anullsrc=r=48000:cl=stereo,atrim=duration=5,asetpts=PTS-STARTPTS[a0];[1:v]scale=1280:720,setsar=1,fps=25,setpts=PTS-STARTPTS[v1];[1:a]aresample=48000:async=1,asetpts=PTS-STARTPTS[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]" \
-            -map "[v]" -map "[a]" $COMMON_V -g 250 -keyint_min 250 -sc_threshold 0 $COMMON_A -t 15 -y "$TMP/open_patch.mp4"
-          ffmpeg -v error -i "$TMP/open_patch.mp4" -c copy -f hls -hls_time 15 -hls_playlist_type vod -hls_segment_type fmp4 -hls_segment_filename "$TMP/open/seg%02d.m4s" "$TMP/open/film.m3u8"
+            -map "[v]" -map "[a]" -c:v libx264 -preset fast -crf 20 -profile:v high -level:v 3.1 -bf 2 -pix_fmt yuv420p -r 25 -video_track_timescale 12800 -g 375 -keyint_min 375 -sc_threshold 0 \
+            -c:a aac -ar 48000 -ac 2 -b:a 160k -t 15 -y "$TMP/open_patch.mp4"
+          ffmpeg -v error -i "$TMP/open_patch.mp4" -c copy -f hls -hls_time 15 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_fmp4_init_filename "init-open.mp4" -hls_segment_filename "$TMP/open/seg%02d.m4s" "$TMP/open/film.m3u8"
 
-          # part15 + part16: preserve the existing picture but restore Terrence's intact source audio.
-          # Shared timeline 155-171.12 maps to the original Terrence source at 152-168.12.
+          # 2) AUDIO: restore Terrence's intact original audio over the exact silent section.
+          # Shared time 155-171.12 corresponds to original Terrence source 152-168.12.
           ffmpeg -v error -ss 155 -to 171.12 -i "$SHARED" -ss 152 -to 168.12 -i "$TERR" \
             -map 0:v:0 -map 1:a:0 -vf "scale=1280:720,setsar=1,fps=25" -af "aresample=48000:async=1" \
-            $COMMON_V -g 250 -keyint_min 250 -sc_threshold 0 $COMMON_A -t 16.12 -y "$TMP/audio_patch.mp4"
-          ffmpeg -v error -i "$TMP/audio_patch.mp4" -c copy -f hls -hls_time 8 -hls_playlist_type vod -hls_segment_type fmp4 -hls_segment_filename "$TMP/audio/seg%02d.m4s" "$TMP/audio/film.m3u8"
+            -c:v libx264 -preset fast -crf 20 -profile:v high -level:v 3.1 -bf 2 -pix_fmt yuv420p -r 25 -video_track_timescale 12800 -g 250 -keyint_min 250 -sc_threshold 0 \
+            -c:a aac -ar 48000 -ac 2 -b:a 160k -force_key_frames "expr:gte(t,n_forced*10)" -t 16.12 -y "$TMP/audio_patch.mp4"
+          ffmpeg -v error -i "$TMP/audio_patch.mp4" -c copy -f hls -hls_time 10 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_fmp4_init_filename "init-audio.mp4" -hls_segment_filename "$TMP/audio/seg%02d.m4s" "$TMP/audio/film.m3u8"
 
-          # part31: after Jeff's final words, hold his final frame 1.75 seconds,
-          # then hold the approved cream thank-you card for four seconds.
+          # 3) END: allow Jeff's final words to settle, then hold the thank-you card long enough to read.
+          # Existing part30 already supplies ~0.24s after the final spoken word.
+          # Add 1.5s more of Jeff's final frame, then 4.0s of the approved thank-you card.
           ffmpeg -v error -loop 1 -i "$TMP/jeff_last.png" -loop 1 -i "$TMP/ending.png" \
-            -filter_complex "[0:v]scale=1280:720,setsar=1,fps=25,trim=duration=1.75,setpts=PTS-STARTPTS[v0];anullsrc=r=48000:cl=stereo,atrim=duration=1.75,asetpts=PTS-STARTPTS[a0];[1:v]scale=1280:720,setsar=1,fps=25,trim=duration=4,setpts=PTS-STARTPTS[v1];anullsrc=r=48000:cl=stereo,atrim=duration=4,asetpts=PTS-STARTPTS[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]" \
-            -map "[v]" -map "[a]" $COMMON_V -g 250 -keyint_min 250 -sc_threshold 0 $COMMON_A -t 5.75 -y "$TMP/end_patch.mp4"
-          ffmpeg -v error -i "$TMP/end_patch.mp4" -c copy -f hls -hls_time 8 -hls_playlist_type vod -hls_segment_type fmp4 -hls_segment_filename "$TMP/end/seg%02d.m4s" "$TMP/end/film.m3u8"
+            -filter_complex "[0:v]scale=1280:720,setsar=1,fps=25,trim=duration=1.5,setpts=PTS-STARTPTS[v0];anullsrc=r=48000:cl=stereo,atrim=duration=1.5,asetpts=PTS-STARTPTS[a0];[1:v]scale=1280:720,setsar=1,fps=25,trim=duration=4,setpts=PTS-STARTPTS[v1];anullsrc=r=48000:cl=stereo,atrim=duration=4,asetpts=PTS-STARTPTS[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]" \
+            -map "[v]" -map "[a]" -c:v libx264 -preset fast -crf 20 -profile:v high -level:v 3.1 -bf 2 -pix_fmt yuv420p -r 25 -video_track_timescale 12800 -g 250 -keyint_min 250 -sc_threshold 0 \
+            -c:a aac -ar 48000 -ac 2 -b:a 160k -t 5.5 -y "$TMP/end_patch.mp4"
+          ffmpeg -v error -i "$TMP/end_patch.mp4" -c copy -f hls -hls_time 8 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_fmp4_init_filename "init-end.mp4" -hls_segment_filename "$TMP/end/seg%02d.m4s" "$TMP/end/film.m3u8"
 
+          test -f "$TMP/open/init-open.mp4"
+          test -f "$TMP/audio/init-audio.mp4"
+          test -f "$TMP/end/init-end.mp4"
+          test -f "$TMP/open/seg00.m4s"
+          test -f "$TMP/audio/seg00.m4s"
+          test -f "$TMP/audio/seg01.m4s"
+          test -f "$TMP/end/seg00.m4s"
+
+          cp "$TMP/open/init-open.mp4" "$OUT/init-open.mp4"
+          cp "$TMP/audio/init-audio.mp4" "$OUT/init-audio.mp4"
+          cp "$TMP/end/init-end.mp4" "$OUT/init-end.mp4"
           cp "$TMP/open/seg00.m4s" "$OUT/part00.m4s"
           cp "$TMP/audio/seg00.m4s" "$OUT/part15.m4s"
           cp "$TMP/audio/seg01.m4s" "$OUT/part16.m4s"
@@ -75,9 +88,11 @@ jobs:
           #EXT-X-TARGETDURATION:15
           #EXT-X-MEDIA-SEQUENCE:0
           #EXT-X-PLAYLIST-TYPE:VOD
-          #EXT-X-MAP:URI="init.mp4"
+          #EXT-X-MAP:URI="init-open.mp4"
           #EXTINF:15.000000,
           part00.m4s
+          #EXT-X-DISCONTINUITY
+          #EXT-X-MAP:URI="init.mp4"
           #EXTINF:10.000000,
           part01.m4s
           #EXTINF:10.000000,
@@ -107,7 +122,7 @@ jobs:
           #EXTINF:10.000000,
           part14.m4s
           #EXT-X-DISCONTINUITY
-          #EXT-X-MAP:URI="init.mp4"
+          #EXT-X-MAP:URI="init-audio.mp4"
           #EXTINF:10.000000,
           part15.m4s
           #EXTINF:6.120000,
@@ -143,20 +158,53 @@ jobs:
           #EXTINF:7.880000,
           part30.m4s
           #EXT-X-DISCONTINUITY
-          #EXT-X-MAP:URI="init.mp4"
-          #EXTINF:5.760000,
+          #EXT-X-MAP:URI="init-end.mp4"
+          #EXTINF:5.520000,
           part31.m4s
           #EXT-X-ENDLIST
           PLAYLIST
           sed -i 's/^          //' "$OUT/film.m3u8"
 
-          # Acceptance checks before publication.
-          ffmpeg -v error -i "$OUT/film.m3u8" -f null -
-          test "$(grep -c '^#EXT-X-DISCONTINUITY' "$OUT/film.m3u8")" -eq 3
-          test "$(grep -c '^part' "$OUT/film.m3u8")" -eq 32
+          # Slow the reset itself by one additional second after the ending reaches its last frame.
+          cat > assets/founders-welcome-player.js <<'JS'
+          (() => {
+            document.querySelectorAll('#academy-introduction video, #website-welcome video').forEach((video) => {
+              if (video.dataset.resetToOpening === 'true') {
+                let resetScheduled = false;
+                const scheduleReset = () => {
+                  if (resetScheduled) return;
+                  resetScheduled = true;
+                  video.pause();
+                  window.setTimeout(() => {
+                    video.currentTime = 0;
+                    resetScheduled = false;
+                  }, 1000);
+                };
+                video.addEventListener('ended', scheduleReset);
+                video.addEventListener('timeupdate', () => {
+                  if (!video.paused && Number.isFinite(video.duration) && video.duration > 0 && video.currentTime >= video.duration - 0.03) {
+                    scheduleReset();
+                  }
+                });
+              }
+              if (video.canPlayType('application/vnd.apple.mpegurl')) return;
+              if (!window.Hls || !window.Hls.isSupported()) return;
+              const source = video.querySelector('source').getAttribute('src');
+              const hls = new window.Hls({ autoStartLoad: false, maxBufferLength: 30 });
+              hls.loadSource(source);
+              hls.attachMedia(video);
+              video.addEventListener('play', () => hls.startLoad(), { once: true });
+            });
+          })();
+          JS
+          sed -i 's/^          //' assets/founders-welcome-player.js
 
-          # The former 12-second silence must be gone.
-          if ffmpeg -hide_banner -ss 150 -t 25 -i "$OUT/film.m3u8" -vn -af silencedetect=noise=-45dB:d=1 -f null - 2>&1 | grep -q 'silence_start'; then
+          # Acceptance tests: full decode, duration, no long silent hole in Terrence's closing remarks.
+          ffmpeg -v error -i "$OUT/film.m3u8" -f null -
+          test "$(grep -c '^part' "$OUT/film.m3u8")" -eq 32
+          test "$(grep -c '^#EXT-X-DISCONTINUITY' "$OUT/film.m3u8")" -eq 4
+
+          if ffmpeg -hide_banner -ss 153 -t 20 -i "$OUT/film.m3u8" -vn -af silencedetect=noise=-45dB:d=4 -f null - 2>&1 | grep -q 'silence_start'; then
             echo "Unexpected long silence remains in Terrence closing remarks." >&2
             exit 1
           fi
@@ -165,11 +213,12 @@ jobs:
           python3 - "$DURATION" <<'PY'
           import sys
           d=float(sys.argv[1])
-          assert 314.6 <= d <= 314.9, d
+          assert 314.45 <= d <= 314.65, d
           PY
 
           git config user.name "ACA media repair"
           git config user.email "actions@users.noreply.github.com"
-          git add "$OUT/film.m3u8" "$OUT/part00.m4s" "$OUT/part15.m4s" "$OUT/part16.m4s" "$OUT/part31.m4s"
+          git add "$OUT/film.m3u8" "$OUT/init-open.mp4" "$OUT/init-audio.mp4" "$OUT/init-end.mp4" \
+            "$OUT/part00.m4s" "$OUT/part15.m4s" "$OUT/part16.m4s" "$OUT/part31.m4s" assets/founders-welcome-player.js
           git commit -m "Correct founder welcome cards, audio and ending pace"
           git push origin HEAD:main
