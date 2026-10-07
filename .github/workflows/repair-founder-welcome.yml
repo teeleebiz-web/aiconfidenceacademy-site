@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   repair:
-    if: github.event.head_commit.message == 'Run founder welcome media repair v6'
+    if: github.event.head_commit.message == 'Run founder welcome media repair v7'
     runs-on: ubuntu-latest
     steps:
       - name: Check out reviewed source
@@ -47,12 +47,12 @@ jobs:
           ffmpeg -v error -ss 308.85 -i "$SHARED" -frames:v 1 -y "$TMP/jeff_last.png"
 
           # 1) FRONT: replace the old 2-second blue card with the approved cream opening.
-          # Keep the existing 15-second segment duration so no downstream timing shifts.
+          # Keep the approved cream card at three seconds and remove the two-second blue card entirely.
           ffmpeg -v error -loop 1 -i "$TMP/opening.png" -ss 5 -to 15 -i "$SHARED" \
-            -filter_complex "[0:v]scale=1280:720,setsar=1,fps=25,trim=duration=5,setpts=PTS-STARTPTS[v0];anullsrc=r=48000:cl=stereo,atrim=duration=5,asetpts=PTS-STARTPTS[a0];[1:v]scale=1280:720,setsar=1,fps=25,setpts=PTS-STARTPTS[v1];[1:a]aresample=48000:async=1,asetpts=PTS-STARTPTS[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]" \
+            -filter_complex "[0:v]scale=1280:720,setsar=1,fps=25,trim=duration=3,setpts=PTS-STARTPTS[v0];anullsrc=r=48000:cl=stereo,atrim=duration=3,asetpts=PTS-STARTPTS[a0];[1:v]scale=1280:720,setsar=1,fps=25,setpts=PTS-STARTPTS[v1];[1:a]aresample=48000:async=1,asetpts=PTS-STARTPTS[a1];[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]" \
             -map "[v]" -map "[a]" -c:v libx264 -preset fast -crf 20 -profile:v high -level:v 3.1 -bf 2 -pix_fmt yuv420p -r 25 -video_track_timescale 12800 -g 375 -keyint_min 375 -sc_threshold 0 \
-            -c:a aac -ar 48000 -ac 2 -b:a 160k -t 15 -y "$TMP/open_patch.mp4"
-          ffmpeg -v error -i "$TMP/open_patch.mp4" -c copy -f hls -hls_time 15 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -c:a aac -ar 48000 -ac 2 -b:a 160k -t 13 -y "$TMP/open_patch.mp4"
+          ffmpeg -v error -i "$TMP/open_patch.mp4" -c copy -f hls -hls_time 13 -hls_playlist_type vod -hls_segment_type fmp4 \
             -hls_fmp4_init_filename "init-open.mp4" -hls_segment_filename "$TMP/open/seg%02d.m4s" "$TMP/open/film.m3u8"
 
           # 2) AUDIO: restore Terrence's intact original audio over the exact silent section.
@@ -97,7 +97,7 @@ jobs:
           #EXT-X-MEDIA-SEQUENCE:0
           #EXT-X-PLAYLIST-TYPE:VOD
           #EXT-X-MAP:URI="init-open.mp4"
-          #EXTINF:15.000000,
+          #EXTINF:13.000000,
           part00.m4s
           #EXT-X-DISCONTINUITY
           #EXT-X-MAP:URI="init.mp4"
@@ -221,7 +221,7 @@ jobs:
           python3 - "$DURATION" <<'PY'
           import sys
           d=float(sys.argv[1])
-          assert 314.45 <= d <= 314.65, d
+          assert 312.45 <= d <= 312.65, d
           PY
 
           git config user.name "ACA media repair"
