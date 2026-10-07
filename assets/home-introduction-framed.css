@@ -1,0 +1,51 @@
+/* Scoped framing for the home-page Academy introduction. */
+.home-introduction {
+  box-sizing: border-box;
+  width: min(1200px, calc(100% - 48px));
+  margin: 32px auto;
+  padding: clamp(24px, 3vw, 40px);
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+  align-items: center;
+  gap: clamp(24px, 3vw, 40px);
+  border: 1px solid #d7c6a1;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fbf8ef, #eee2c9);
+  box-shadow: 0 14px 36px #102d4f0d;
+  scroll-margin-top: 110px;
+}
+.home-introduction-copy { border-left: 3px solid #b69451; padding-left: 24px; }
+.home-introduction h2 {
+  margin: 0 0 20px;
+  color: #102d4f;
+  font: 700 clamp(32px, 3.7vw, 48px) / 1.12 Georgia, serif;
+  letter-spacing: -.025em;
+}
+.home-introduction-caption { margin: 0; color: #29435b; font-size: 17px; line-height: 1.65; }
+.home-introduction-frame {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #b69451;
+  border-radius: 14px;
+  background: #102d4f;
+  box-shadow: 0 12px 28px #102d4f20;
+}
+.home-introduction video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #102b45;
+}
+@media (max-width: 800px) {
+  .home-introduction { grid-template-columns: 1fr; gap: 24px; }
+  .home-introduction h2 { font-size: clamp(32px, 6vw, 44px); }
+}
+@media (max-width: 600px) {
+  .home-introduction { width: calc(100% - 32px); margin: 24px auto; padding: 20px; scroll-margin-top: 88px; }
+  .home-introduction-copy { padding-left: 16px; }
+  .home-introduction-frame { padding: 6px; }
+}
+#website-welcome > video { display: block; width: 100%; height: 100%; object-fit: contain; }
+#website-welcome { scroll-margin-top: 110px; }
