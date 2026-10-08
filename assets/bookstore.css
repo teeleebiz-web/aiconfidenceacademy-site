@@ -17,4 +17,4 @@
 /* Selected ACA bookstore cover */
 .bookstore-cover{background:var(--cream);padding:0}
 .bookstore-cover-image{display:block;width:100%;margin:0;overflow:hidden}
-.bookstore-cover-image img{display:block;width:100%;height:min(405px,56.28vw);object-fit:fill;min-width:0;margin:0;padding:0}
+.bookstore-cover-image img{display:block;width:100%;height:min(405px,33.3333vw);object-fit:cover;object-position:center;min-width:0;margin:0;padding:0}
