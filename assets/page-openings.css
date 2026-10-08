@@ -7,9 +7,20 @@ main > :is(.page-hero, .home-campus-banner, .bookstore-cover):first-child {
   min-height: calc(100svh - var(--aca-header-height));
 }
 
-/* Keep the approved banner dimensions; the remaining space is Academy cream. */
+/* Leave a cream border below each opening banner. */
 main > :is(.home-campus-banner, .bookstore-cover):first-child {
   background: var(--cream, #f8f4e8);
+}
+
+@media (min-width: 651px) {
+  .home-campus-banner img,
+  .bookstore-cover .bookstore-cover-image img {
+    /* Taller canvases preserve the full scenes, with at least 64px of
+       cream below them even on shorter laptop screens. */
+    height: min(43.6vw, calc(100svh - var(--aca-header-height) - 64px));
+    object-fit: contain;
+    object-position: center;
+  }
 }
 
 @media (max-width: 650px) {
