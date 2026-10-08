@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
+import { usePageStart } from '../../portal/src/lib/usePageStart'
 import { supabase } from '../../portal/src/lib/supabase'
 import sealUrl from '../../aca-official-seal.png'
 import { WorkbookStore, type RecordState, type Transport } from './store'
@@ -42,7 +43,6 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
   const transport = useMemo(() => makeTransport(workbookKey, apiBase), [workbookKey, apiBase])
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
-  const titleRef = useRef<HTMLHeadingElement>(null)
   const openingPage = workbookOpeningPage(workbookKey, lessonId)
   useEffect(() => {
     void store.load(openingPage)
@@ -65,6 +65,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
   }, [store])
   const data = state.workbook
   const page = data?.pages.find(p => p.number === state.last_page)
+  usePageStart(page ? `workbook:${workbookKey}:${page.number}` : null)
   const journeyNumber = journeyNumbers[workbookKey]
   const lessonStarts = lessonStartPages[workbookKey]
   const currentLessonStart = lessonStarts.find((start, index) => state.last_page >= start && state.last_page < (lessonStarts[index + 1] ?? Number.POSITIVE_INFINITY)) ?? lessonStarts[0]
@@ -75,8 +76,6 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
   }))
   const move = (number: number) => {
     store.page(number)
-    window.scrollTo({ top: 0, behavior: 'instant' })
-    requestAnimationFrame(() => titleRef.current?.focus())
   }
   const render = (block: Block, i: number): React.ReactNode => {
     if (block.type === 'field') return <div className={`wb-answer${block.compact || shortAnswerFields.has(block.id!) ? ' wb-answer-compact' : ''}${dateFields.has(block.id!) ? ' wb-answer-date' : ''}`} key={block.id}>
@@ -105,7 +104,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
     <div className="wb-layout">
       <nav className="wb-navigation" aria-label={`Journey ${journeyNumber} workbook lessons`}><p className="wb-eyebrow">{data.navigationLabel ?? 'Journey One workbook'}</p><label htmlFor="wb-page-select">Choose a lesson</label><select id="wb-page-select" value={currentLessonStart} onChange={e => move(Number(e.target.value))}>{lessonLinks.map(item => <option key={item.lesson} value={item.page} disabled={!state.allowedPages.includes(item.page)}>{item.lesson}. {item.title}</option>)}</select><p>Your answers save as you write. You can also select Save.</p><div className="wb-chapters">{lessonLinks.map(item => <button key={item.lesson} onClick={() => move(item.page)} disabled={!state.allowedPages.includes(item.page)} aria-current={currentLessonStart === item.page ? 'page' : undefined}><strong>Lesson {item.lesson}</strong><span>{item.title}</span></button>)}</div></nav>
       <article className="wb-paper" aria-label={`Workbook page ${page.number}`}>
-        <header className="wb-page-hero"><p className="wb-eyebrow">{page.kicker.replaceAll('  /  ', ' · ')}</p><h1 ref={titleRef} tabIndex={-1}>{page.title}</h1>{page.number === 1 && <><img src={sealUrl} alt="AI Confidence Academy seal" /><p>{data.subtitle ?? 'Learner Workbook and Practice Log · Lessons 1.1–1.6'}</p></>}</header>
+        <header className="wb-page-hero"><p className="wb-eyebrow">{page.kicker.replaceAll('  /  ', ' · ')}</p><h1 tabIndex={-1}>{page.title}</h1>{page.number === 1 && <><img src={sealUrl} alt="AI Confidence Academy seal" /><p>{data.subtitle ?? 'Learner Workbook and Practice Log · Lessons 1.1–1.6'}</p></>}</header>
         <div className="wb-page-body">{page.blocks.map((block, i) => render(block as Block, i))}</div>
         <footer className="wb-page-footer"><span>AI Assists. Humans Verify.</span><span>Page {page.number} of {data.pageCount ?? 32}</span></footer>
         <div className="wb-page-actions"><button className="wb-secondary" disabled={!state.allowedPages.includes(page.number-1)} onClick={() => move(page.number-1)}>Previous page</button><button disabled={!state.allowedPages.includes(page.number+1)} onClick={() => move(page.number+1)}>Next page →</button></div>

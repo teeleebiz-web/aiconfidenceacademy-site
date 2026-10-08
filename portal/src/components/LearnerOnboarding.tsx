@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import { AcademyWelcome, academyWelcomeVideoPath } from '../../../academy/AcademyWelcome'
 import { GettingStarted } from '../../../academy/GettingStarted'
 import { supabase } from '../lib/supabase'
+import { usePageStart } from '../lib/usePageStart'
 
 export function LearnerOnboarding({ onContinue }: { onContinue?: () => Promise<void> }) {
   const [step, setStep] = useState<'welcome' | 'getting-started'>('welcome')
   const [mediaUrl, setMediaUrl] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [continuing, setContinuing] = useState(false)
+  usePageStart(mediaUrl ? `onboarding:${step}` : null)
 
   useEffect(() => {
     let cancelled = false
@@ -22,7 +24,7 @@ export function LearnerOnboarding({ onContinue }: { onContinue?: () => Promise<v
   }, [])
 
   if (step === 'getting-started') return <GettingStarted
-    onBack={() => { setStep('welcome'); window.scrollTo(0, 0) }}
+    onBack={() => setStep('welcome')}
     continuing={continuing}
     onContinue={onContinue ? async () => {
       if (continuing) return
@@ -34,6 +36,6 @@ export function LearnerOnboarding({ onContinue }: { onContinue?: () => Promise<v
   if (error) return <p className="global-error" role="alert">{error}</p>
   if (!mediaUrl) return <p className="loading-screen">Loading Phase One…</p>
   return <AcademyWelcome mediaUrl={mediaUrl} onContinue={() => {
-    setStep('getting-started'); window.scrollTo(0, 0)
+    setStep('getting-started')
   }} />
 }

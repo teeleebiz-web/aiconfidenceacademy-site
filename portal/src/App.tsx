@@ -9,6 +9,7 @@ import { LearnerOnboarding } from './components/LearnerOnboarding'
 import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
+import { usePageStart } from './lib/usePageStart'
 import { Workbook, type WorkbookKey } from '../../academy/workbook/Workbook'
 import type { Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from './types'
 
@@ -446,6 +447,7 @@ export function App() {
     && completedOnboardingId !== onboardingEnrollment.id
     && (reviewMode ? !workbookKey : !onboardingEnrollment.onboarding_completed_at)
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
+  usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment ? 'curriculum' : 'access')
 
   async function finishOnboarding() {
     if (!onboardingEnrollment || !firstLesson) return

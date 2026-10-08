@@ -5,6 +5,27 @@ import { Workbook, workbookOpeningPage } from '../../academy/workbook/Workbook'
 const auth=vi.hoisted(()=>({getSession:vi.fn(async()=>({data:{session:null}})),onAuthStateChange:vi.fn(()=>({data:{subscription:{unsubscribe:vi.fn()}}}))}))
 vi.mock('./lib/supabase',()=>({supabase:{auth}}))
 afterEach(()=>vi.restoreAllMocks())
+it.each(['journey-one', 'journey-two', 'journey-three', 'journey-four', 'journey-five', 'journey-six'] as const)('starts %s pages at the top after navigation without interrupting answers', async workbookKey => {
+  const record = { answers: {}, last_page: 1, revision: 0, updated_at: null, allowedPages: Array.from({length:32},(_,i)=>i+1), scope:'owner-review', workbook:{key:workbookKey,version:1,title:'Navigation fixture',pages:Array.from({length:32},(_,i)=>({number:i+1,kicker:'Practice',title:`Page ${i+1}`,blocks:[{type:'field',id:`answer-${i+1}`,label:'Answer'}]}))} }
+  vi.spyOn(globalThis,'fetch').mockResolvedValue({ok:true,json:async()=>structuredClone(record)} as Response)
+  const scroll = vi.spyOn(window,'scrollTo').mockImplementation(()=>{})
+  const view = render(<Workbook workbookKey={workbookKey} />)
+  await screen.findByRole('heading',{level:1,name:'Page 1'})
+  expect(document.activeElement).toBe(screen.getByRole('heading',{level:1}))
+  for (let page = 2; page <= 32; page++) {
+    scroll.mockClear()
+    fireEvent.click(screen.getByRole('button',{name:'Next page →'}))
+    expect(document.activeElement).toBe(screen.getByRole('heading',{level:1,name:`Page ${page}`}))
+    expect(scroll).toHaveBeenCalledOnce()
+    expect(scroll).toHaveBeenLastCalledWith({top:0,left:0,behavior:'instant'})
+  }
+  scroll.mockClear()
+  fireEvent.change(screen.getByRole('textbox',{name:'Answer'}),{target:{value:'Keep my place'}})
+  expect(scroll).not.toHaveBeenCalled()
+  fireEvent.click(screen.getByRole('button',{name:'Previous page'}))
+  expect(document.activeElement).toBe(screen.getByRole('heading',{level:1,name:'Page 31'}))
+  view.unmount()
+})
 it('maps every journey lesson to its exact workbook section',()=>{
   const starts={
     'journey-one':[5,9,13,17,21,25],
