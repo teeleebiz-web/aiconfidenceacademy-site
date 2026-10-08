@@ -1,0 +1,27 @@
+/* Give each public landing page a complete opening below the sticky header.
+   Minimum height lets longer copy grow naturally on small screens or at zoom. */
+:root { --aca-header-height: 86px; }
+main > :is(.page-hero, .home-campus-banner, .bookstore-cover):first-child {
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--aca-header-height));
+  min-height: calc(100svh - var(--aca-header-height));
+}
+
+/* Keep the approved banner dimensions; the remaining space is Academy cream. */
+main > :is(.home-campus-banner, .bookstore-cover):first-child {
+  background: var(--cream, #f8f4e8);
+}
+
+@media (max-width: 650px) {
+  :root { --aca-header-height: 74px; }
+
+  /* On phones, the shallow panoramic banner and its introduction share the
+     opening. This avoids an empty screen beneath a small, undistorted image. */
+  main > :is(.home-campus-banner, .bookstore-cover):first-child {
+    min-height: 0;
+  }
+  main > :is(.home-campus-banner + .home-hero, .bookstore-cover + .page-hero) {
+    box-sizing: border-box;
+    min-height: calc(100svh - var(--aca-header-height) - 33.3333vw);
+  }
+}
