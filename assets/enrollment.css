@@ -303,3 +303,6 @@
     font-size: 52px;
   }
 }
+
+/* Keep the updates form clear of the sticky navigation when linked directly. */
+#updates-signup { scroll-margin-top: 110px; }

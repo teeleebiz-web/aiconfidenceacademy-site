@@ -79,7 +79,7 @@ export function AcademyShell({
           <img src={sealUrl} alt="" width="42" height="42" loading="lazy" aria-hidden="true" />
           <span>
             <strong>AI Confidence Academy</strong>
-            <small>Human-guided. AI-assisted. People-first.</small>
+            <small>People First. AI Assist. Human Guide.</small>
           </span>
         </div>
         <nav aria-label="Academy footer navigation">

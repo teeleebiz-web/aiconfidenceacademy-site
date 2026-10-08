@@ -72,8 +72,8 @@
       section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
     }
     enrollmentPage.before(section);
-    if (window.location.hash === '#interest-list') {
-      window.requestAnimationFrame(() => document.getElementById('interest-list')?.scrollIntoView());
+    if (['#interest-list', '#updates-signup'].includes(window.location.hash)) {
+      window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView());
     }
   }
 
@@ -81,7 +81,7 @@
   if (!form) return;
 
   const interest = new URLSearchParams(window.location.search).get('interest');
-  const selectedInterest = { books: 'Books & Resources', updates: 'ACA updates' }[interest];
+  const selectedInterest = { books: 'Books & Resources', videos: 'Videos', updates: 'ACA updates' }[interest];
   if (selectedInterest) form.elements.interest.value = selectedInterest;
 
   const endpoint = 'https://ymmkodlifpxutynpjnxm.supabase.co/functions/v1/aca-interest-list';
