@@ -1,6 +1,6 @@
 (() => {
   document.querySelectorAll('video.topic-video[data-hls]').forEach((video) => {
-    // The film already holds its closing card for four seconds.
+    // Each film includes its own closing-card hold.
     // Return to its opening card, paused, once that closing finishes.
     video.addEventListener('ended', () => {
       video.pause();
@@ -13,7 +13,7 @@
       message.hidden = false;
       return;
     }
-    const hls = new window.Hls({ autoStartLoad: false });
+    const hls = new window.Hls({ autoStartLoad: video.preload === 'auto' });
     hls.loadSource(source);
     hls.attachMedia(video);
     video.addEventListener('play', () => hls.startLoad(), { once: true });
