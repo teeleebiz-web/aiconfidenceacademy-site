@@ -91,7 +91,7 @@ export function PhaseTwoLessonExperience({
             <div className="p2-overview-video-symbol" aria-hidden="true">{medium === 'video' ? '▶' : '♫'}</div>
             <div>
               <p className="p2-overview-video-eyebrow">Before you begin</p>
-              <h2>{medium === 'video' ? 'Watch the lesson introduction' : 'Listen to the lesson introduction'}</h2>
+              <h2>{medium === 'video' ? 'Watch the lesson introduction' : approvedVideo ? 'Listen to guided instruction' : 'Listen to the lesson introduction'}</h2>
               {medium === 'audio' && introAudio?.url ? (
                 <>
                   <audio controls preload="metadata" src={introAudio.url} aria-label={`Lesson ${pageId} audio introduction`}>
