@@ -199,7 +199,7 @@ export function PhaseTwoExperiencePreview({
               {productionValid ? (
                 <PhaseTwoProducedLessonReview key={lesson.page_id} production={produced} />
               ) : null}
-              {source && (!productionValid || productionExists === false) ? (
+              {source && !productionValid ? (
                 <div className="p2-walkthrough-instruction">
                   {labels.map((part, index) => (
                     <section key={part.key}>
