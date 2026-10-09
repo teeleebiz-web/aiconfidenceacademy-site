@@ -127,6 +127,24 @@ describe('unpublished Phase Two founder review', () => {
     expect(screen.getByText('30 min')).toBeTruthy()
   })
 
+  it('shows the protected learner walkthrough without creating enrollment or project records', async () => {
+    const user = userEvent.setup()
+    render(<PhaseTwoReview />)
+    await screen.findByRole('heading', { name: 'AI Professional and Builder Pathway' })
+    await user.click(screen.getByRole('button', { name: 'Learner experience walkthrough' }))
+    expect(await screen.findByRole('heading', { name: 'Make your AI capability useful.' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Synthetic lesson 1.1' })).toBeTruthy()
+    expect(screen.getByText('Synthetic teaching.')).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: /Journey 3.*Synthetic Journey 3/i }))
+    expect(await screen.findByRole('heading', { name: 'Synthetic lesson 3.1' })).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: 'My Project Record' }))
+    expect(screen.getByRole('heading', { name: 'The work you build and keep' })).toBeTruthy()
+    expect(screen.getAllByRole('listitem')).toHaveLength(11)
+    expect(screen.getByText(/No project or learner record is created or saved/i)).toBeTruthy()
+    expect(api.rpc).toHaveBeenCalledWith('is_aca_curriculum_owner')
+    expect(api.rpc).toHaveBeenCalledTimes(1)
+  })
+
   it('preserves the review query parameter in owner email sign-in links', async () => {
     api.getSession.mockResolvedValue({ data: { session: null } })
     const user = userEvent.setup()
