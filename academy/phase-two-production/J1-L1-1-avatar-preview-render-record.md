@@ -41,3 +41,12 @@
 - Wrote the detailed companion spoken lesson script in `academy/phase-two-production/J1-L1-1-full-guided-audio-script.md` (approximately 1,748 words, source-aligned, with brief pauses and visual cues). No companion narration generated yet.
 - Automated tests cover an explicitly approved video, a pending/unapproved video refusing to render, the absence of a video by default, the nonduplicated audio segment, and the exact 640px/16:9 CSS constraints. No Academy-site deployment was triggered by this work.
 - Next acceptance gate is **founder viewing and listening to the finished HeyGen preview**. Rendering status was initially “processing”; HeyGen's inline player tracks completion. Do not assume completion, or attach it to a website, without an accepted render.
+
+## Verified checkpoint — October 9, 2026
+
+- Type-check, Vitest, Academy regression tests, and Vite build all passed in GitHub Actions run `38000699050` for commit `6ccc366aaaf892ee3a2c18eee4849ba9184b7bc2`; the final successful GitHub Actions run is `38000699050`.
+- **164 tests across 35 files passed**, including stage layout, learner narration separation, strict founder approval gating, absent-video fallback and direct inspection of the production stylesheet.
+- The accepted display contract remains a 640px maximum, 16:9 ratio, height auto and responsive 100% width on smaller displays.
+- The video playback slot is **staged on the review branch only** and requires a `founder_approved` flag, HTTPS video URL, and reviewed nonempty transcript to render. No URL has been connected yet.
+- Separate, full guided narration is written in `J1-L1-1-full-guided-audio-script.md`. This is intended for the same accepted instructor voice and is distinct from the short avatar introduction. Do not generate or publish it without the verified voice and founder review.
+- The HeyGen generation widget tracks the preview independently. Successful software tests do not establish that the generated avatar video has completed or passed audiovisual review.
