@@ -44,7 +44,10 @@ type ReviewLesson = {
     planned_media?: 'video' | 'audio'
     media_assignment_status?: string
     phase_two_production?: import('../phaseTwo/PhaseTwoProducedLessonReview').PhaseTwoProducedLesson
-    phase_two_media_plan?: { audio_lesson?: { generated_introduction?: { url: string; transcript: string; review_status?: string; voice_id?: string } } }
+    phase_two_media_plan?: {
+      avatar_introduction?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
+      audio_lesson?: { generated_introduction?: { url: string; transcript: string; review_status?: string; voice_id?: string } }
+    }
     video_path?: string | null
     audio_path?: string | null
   }
@@ -204,6 +207,7 @@ export function PhaseTwoReview() {
       purpose={lessonForReview.purpose}
       medium={lessonForReview.content.planned_media === 'video' ? 'video' : 'audio'}
       production={lessonForReview.content.phase_two_production}
+      introVideo={lessonForReview.content.phase_two_media_plan?.avatar_introduction}
       introAudio={lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.review_status === 'founder_approved' &&
         lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.voice_id === 'ac277b338cf64d8b9686784c43c563da'
           ? lessonForReview.content.phase_two_media_plan.audio_lesson.generated_introduction
