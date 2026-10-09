@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PhaseTwoPracticeStudio } from './PhaseTwoPracticeStudio'
 import { PhaseTwoVisualLab } from './PhaseTwoVisualLab'
 import { PhaseTwoNeedLab } from './PhaseTwoNeedLab'
 import './phaseTwoProducedLesson.css'
@@ -78,7 +79,7 @@ export function validProducedLesson(value: unknown, pageId: string): value is Ph
   return !!p.editorial_notes && isText(p.editorial_notes.status) && isText(p.editorial_notes.media)
 }
 
-export function PhaseTwoProducedLessonReview({ production, learnerMode = false }: { production: PhaseTwoProducedLesson; learnerMode?: boolean }) {
+export function PhaseTwoProducedLessonReview({ production, learnerMode = false, enrollmentId }: { production: PhaseTwoProducedLesson; learnerMode?: boolean; enrollmentId?: string }) {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'unavailable'>('idle')
   const [showEvidence, setShowEvidence] = useState(true)
   const visualWalkthrough = learnerMode && production.lesson_id === '1.1'
@@ -157,6 +158,10 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false }
             <h4 id="p2-produced-apply-title">Develop your continuing project</h4></div>
         </div>
         <p>Keep your work together in your Project Record. You will use it again in the lessons ahead.</p>
+        {learnerMode && production.lesson_id === '1.1' && (
+          <PhaseTwoPracticeStudio approvedAiRequest={production.approved_ai_request} enrollmentId={enrollmentId} />
+        )}
+        {learnerMode && production.lesson_id === '1.1' && <details className="p2-produced-optional-instructions"><summary>Read the detailed activity instructions</summary>}
         <ol className="p2-produced-tasklist">{production.application.map((task, i) => (
           <li key={i}>
             <header><h5>{task.heading}</h5><small>{task.minutes} minutes</small></header>
@@ -167,12 +172,13 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false }
           <h5>Responsibility-map reference</h5>
           <ul>{production.responsibility_map_fields.map(field => <li key={field}>{field}</li>)}</ul>
         </div>
-        <div className="p2-produced-ai-request">
+        {learnerMode && production.lesson_id === '1.1' && </details>}
+        {!(learnerMode && production.lesson_id === '1.1') && <div className="p2-produced-ai-request">
           <div><h5>Approved AI request</h5><button type="button" onClick={() => { void copyApprovedRequest() }}>
             {copyState === 'copied' ? 'Copied' : 'Copy request'}</button></div>
           <p>{production.approved_ai_request}</p>
           {copyState === 'unavailable' ? <p role="status">Copy was unavailable. Select the text above to copy it.</p> : null}
-        </div>
+        </div>}
       </section>
 
       <section className="p2-produced-check" aria-labelledby="p2-produced-check-title">
