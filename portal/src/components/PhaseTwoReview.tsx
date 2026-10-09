@@ -4,6 +4,7 @@ import sealUrl from '../../../aca-official-seal.png'
 import { supabase } from '../lib/supabase'
 import { PhaseTwoExperiencePreview } from '../phaseTwo/PhaseTwoExperiencePreview'
 import { inspectPhaseTwoDraft } from '../phaseTwo/phaseTwoDraftIntegrity'
+import { PhaseTwoLessonExperience } from '../phaseTwo/PhaseTwoLessonExperience'
 import './phase-two-review.css'
 
 type PhaseTwoSource = {
@@ -42,6 +43,7 @@ type ReviewLesson = {
     phase_two?: PhaseTwoSource
     planned_media?: 'video' | 'audio'
     media_assignment_status?: string
+    phase_two_production?: import('../phaseTwo/PhaseTwoProducedLessonReview').PhaseTwoProducedLesson
     video_path?: string | null
     audio_path?: string | null
   }
@@ -181,6 +183,20 @@ export function PhaseTwoReview() {
   const introduction = journeyLessons[0]?.content.phase_two?.journey
   const videoCount = journeyLessons.filter(item => item.content.planned_media === 'video').length
   const audioCount = journeyLessons.filter(item => item.content.planned_media === 'audio').length
+  const firstLesson = data.lessons.find(item => item.page_id === '1.1')
+
+  // The learner-facing page opens at the actual first lesson, not a production dashboard.
+  // Retain the original source-review renderer below without exposing it here.
+  if (status === 'ready' && firstLesson) {
+    return <PhaseTwoLessonExperience
+      pageId={firstLesson.page_id}
+      journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
+      lessonTitle={firstLesson.title}
+      purpose={firstLesson.purpose}
+      medium={firstLesson.content.planned_media === 'video' ? 'video' : 'audio'}
+      production={firstLesson.content.phase_two_production}
+    />
+  }
 
   return (
     <div className="phase-two-review">
@@ -188,18 +204,18 @@ export function PhaseTwoReview() {
       <header className="p2-site-header">
         <a href="/" className="p2-site-brand">
           <img src={sealUrl} alt="" width="50" height="50" />
-          <span><strong>AI Confidence Academy</strong><small>Phase Two · Founder review</small></span>
+          <span><strong>AI Confidence Academy</strong><small>Phase Two</small></span>
         </a>
-        <span className="p2-review-flag">Unpublished working build</span>
+        
       </header>
 
       <main id="p2-main" className="p2-page" tabIndex={-1}>
         {status === 'loading' && <p role="status">Checking protected curriculum access…</p>}
         {status === 'signed-out' && (
           <section className="p2-state" aria-labelledby="p2-sign-in">
-            <p className="eyebrow">Protected Academy review</p>
-            <h1 id="p2-sign-in">Founder review sign-in</h1>
-            <p>Use your existing Academy account. Access is limited to the authorized curriculum owner.</p>
+            <p className="eyebrow">AI Confidence Academy</p>
+            <h1 id="p2-sign-in">Sign in to Phase Two</h1>
+            <p>Sign in with your Academy account to continue your learning journey.</p>
             <form className="p2-sign-in-form" onSubmit={handleReviewSignIn}>
               <label htmlFor="p2-review-email">Academy email</label>
               <input id="p2-review-email" type="email" autoComplete="email" required
@@ -226,15 +242,15 @@ export function PhaseTwoReview() {
         )}
         {status === 'denied' && (
           <section className="p2-state" aria-labelledby="p2-denied">
-            <h1 id="p2-denied">Owner review access required</h1>
-            <p>This unpublished curriculum is restricted to the authorized Academy curriculum reviewer.</p>
+            <h1 id="p2-denied">Access is not available</h1>
+            <p>This learning material is not available for this account.</p>
             <a href="/learn/">Return to the Academy</a>
           </section>
         )}
         {status === 'error' && (
           <section className="p2-state" aria-labelledby="p2-error">
-            <h1 id="p2-error">The working curriculum could not be loaded</h1>
-            <p>This review is unavailable until the authorized Phase Two draft passes all required checks.</p>
+            <h1 id="p2-error">Your lesson could not load</h1>
+            <p>Please try again later. If the problem continues, contact the Academy.</p>
             {validationIssues.length > 0 && (
               <ul>{validationIssues.map(issue => <li key={issue}>{issue}</li>)}</ul>
             )}
