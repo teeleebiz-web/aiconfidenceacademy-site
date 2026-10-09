@@ -117,7 +117,7 @@ describe('unpublished Phase Two founder review', () => {
     expect(screen.getByText('18 video slots · 18 audio slots')).toBeTruthy()
     expect(screen.getByText('Synthetic teaching.')).toBeTruthy()
     expect(screen.getByText(/provisional lesson media assignment/i)).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: /Journey 6 Synthetic Journey 6/i }))
+    await user.click(screen.getByRole('button', { name: /Journey 6.*Synthetic Journey 6/i }))
     expect(await screen.findByRole('heading', { name: 'Synthetic lesson 6.1' })).toBeTruthy()
     expect(screen.getByText('Synthetic verification.')).toBeTruthy()
   })
