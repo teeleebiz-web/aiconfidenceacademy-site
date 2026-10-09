@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
+import { SignIn } from '../components/SignIn'
 import { PhaseTwoLearnerHome } from './PhaseTwoLearnerHome'
 import './phaseTwoLearnerEntry.css'
 
@@ -114,16 +115,30 @@ export function PhaseTwoLearnerEntry() {
   if (state === 'active' && enrollmentId) {
     return <PhaseTwoLearnerHome enrollmentId={enrollmentId} />
   }
+  if (state === 'sign-in') {
+    return <SignIn
+      onRequestLink={async email => {
+        const { error } = await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            shouldCreateUser: false,
+            emailRedirectTo: window.location.origin + '/learn/?course=phase-two',
+          },
+        })
+        if (error) throw error
+      }}
+      onPasswordSignIn={async (email, password) => {
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if (error) throw error
+      }}
+    />
+  }
   return (
     <main className="p2-entry-page">
       <section className="p2-entry-panel" aria-labelledby="p2-entry-title">
         <p className="eyebrow">AI Confidence Academy · Phase Two</p>
         <h1 id="p2-entry-title">AI Professional and Builder Pathway</h1>
         {state === 'loading' && <p role="status">Checking your Academy course access…</p>}
-        {state === 'sign-in' && <>
-          <p>Sign in with your existing Academy account to check your Phase Two enrollment.</p>
-          <a href="/learn/">Open Academy sign-in</a>
-        </>}
         {state === 'not-released' && <p role="status">Phase Two enrollment and learning access are not yet open.</p>}
         {state === 'not-enrolled' && <p role="status">No active Phase Two enrollment was found for this account.</p>}
         {state === 'error' && <p role="alert">Phase Two access could not be verified. Please try again later.</p>}
