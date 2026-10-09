@@ -26,14 +26,20 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install picture-generation dependency and media codecs
+      - name: Install pinned multimedia libraries and FFmpeg executable
         run: |
           set -euo pipefail
-          python -m pip install 'Pillow==11.2.1'
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg
+          python -m pip install 'Pillow==11.2.1' 'imageio-ffmpeg==0.6.0' 'av==15.1.0'
+          python - <<'PY'
+          import imageio_ffmpeg, pathlib, shutil
+          source = pathlib.Path(imageio_ffmpeg.get_ffmpeg_exe())
+          target = pathlib.Path('/tmp/aca-ffmpeg')
+          shutil.copy2(source, target)
+          target.chmod(0o755)
+          print('Verified FFmpeg executable:', target)
+          PY
+          sudo cp /tmp/aca-ffmpeg /usr/local/bin/ffmpeg
           ffmpeg -version | head -1
-          ffprobe -version | head -1
 
       - name: Build approved instructor video with embedded ACA cards
         run: |
