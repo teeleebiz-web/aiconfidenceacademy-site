@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 from urllib.request import Request, urlopen
 from PIL import Image, ImageDraw, ImageFont
+import av
 
 ROOT=Path(__file__).resolve().parents[2]
 MANIFEST=ROOT/"academy/phase-two-production/J1-L1-1-signed-source.json"
@@ -27,7 +28,17 @@ def call(args):
     subprocess.run(args,check=True)
 
 def probe(path):
-    return json.loads(subprocess.check_output(["ffprobe","-v","error","-show_format","-show_streams","-of","json",str(path)],text=True))
+    # PyAV offers real FFmpeg demuxing/metadata without a separate ffprobe binary.
+    with av.open(str(path)) as reader:
+        duration = (reader.duration or 0) / av.time_base
+        streams = []
+        for stream in reader.streams:
+            context = stream.codec_context
+            item = {"codec_type": stream.type, "codec_name": context.name}
+            if stream.type == "video":
+                item.update(width=context.width, height=context.height)
+            streams.append(item)
+    return {"format": {"duration": str(duration)}, "streams": streams}
 
 def font(sz,serif=False):
     return ImageFont.truetype(FONT_DIR+("/DejaVuSerif.ttf" if serif else "/DejaVuSans.ttf"),sz)
