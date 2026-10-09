@@ -1,6 +1,11 @@
 import { useMemo, useState } from 'react'
 import { PHASE_TWO_EVIDENCE_SECTIONS } from './phaseTwoProject'
 import { PhaseTwoOrientation } from './PhaseTwoOrientation'
+import {
+  PhaseTwoProducedLessonReview,
+  validProducedLesson,
+  type PhaseTwoProducedLesson,
+} from './PhaseTwoProducedLessonReview'
 import './phaseTwoExperiencePreview.css'
 
 export type PreviewJourney = {
@@ -19,6 +24,7 @@ export type PreviewLesson = {
   journey_position: number
   content: {
     planned_media?: 'video' | 'audio'
+    phase_two_production?: PhaseTwoProducedLesson
     phase_two?: {
       teaching: string
       worked_case: string
@@ -69,6 +75,9 @@ export function PhaseTwoExperiencePreview({
   )
   const lesson = journeyLessons.find(item => item.page_id === activeLesson) ?? journeyLessons[0]
   const source = lesson?.content.phase_two
+  const produced = lesson?.content.phase_two_production
+  const productionExists = produced !== undefined
+  const productionValid = productionExists && validProducedLesson(produced, lesson?.page_id ?? '')
   const guide = journeyLessons[0]?.content.phase_two?.journey
   const videoCount = journeyLessons.filter(item => item.content.planned_media === 'video').length
   const audioCount = journeyLessons.filter(item => item.content.planned_media === 'audio').length
@@ -184,7 +193,13 @@ export function PhaseTwoExperiencePreview({
                   : [['15 min','Learn'],['10 min','Worked example'],['25 min','Apply'],['10 min','Verify']]
                 ).map(([time,activity]) => <span key={activity}><strong>{time}</strong>{activity}</span>)}</div>
               </section>
-              {source ? (
+              {productionExists && !productionValid ? (
+                <p role="alert" className="p2-walkthrough-production-error">The instructional production draft for this lesson is incomplete. The approved source brief is preserved below for comparison.</p>
+              ) : null}
+              {productionValid ? (
+                <PhaseTwoProducedLessonReview key={lesson.page_id} production={produced} />
+              ) : null}
+              {source && (!productionValid || productionExists === false) ? (
                 <div className="p2-walkthrough-instruction">
                   {labels.map((part, index) => (
                     <section key={part.key}>
