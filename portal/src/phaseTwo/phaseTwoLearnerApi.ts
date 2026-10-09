@@ -39,6 +39,7 @@ export type PhaseTwoOpenedLesson = {
   lesson_content: {
     phase_two?: PhaseTwoTeachingBrief
     phase_two_production?: PhaseTwoProducedLesson
+    phase_two_media_plan?: { audio_lesson?: { generated_introduction?: { url: string; transcript: string } } }
     planned_media?: 'video' | 'audio'
     video_path?: string | null
     audio_path?: string | null
