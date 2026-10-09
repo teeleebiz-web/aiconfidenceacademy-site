@@ -171,4 +171,21 @@ describe('unpublished Phase Two founder review', () => {
       }),
     }))
   })
+  it('returns to Lesson 1.2 after secure email-link sign-in', async () => {
+    api.getSession.mockResolvedValue({ data: { session: null } })
+    window.history.replaceState({}, '', '/learn/?review=phase-two&lesson=1.2')
+    const user = userEvent.setup()
+    render(<PhaseTwoReview />)
+    await screen.findByRole('heading', { name: 'Sign in to Phase Two' })
+    await user.type(screen.getByLabelText('Academy email'), 'reviewer@example.org')
+    await user.click(screen.getByRole('button', { name: 'Use a one-time email link instead' }))
+    await user.click(screen.getByRole('button', { name: 'Send secure sign-in link' }))
+    expect(api.signInWithOtp).toHaveBeenCalledWith(expect.objectContaining({
+      options: expect.objectContaining({
+        shouldCreateUser: false,
+        emailRedirectTo: expect.stringContaining('/learn/?review=phase-two&lesson=1.2'),
+      }),
+    }))
+  })
+
 })
