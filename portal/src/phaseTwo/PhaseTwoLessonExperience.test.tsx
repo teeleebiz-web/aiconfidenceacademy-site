@@ -104,6 +104,32 @@ describe('Phase Two learner lesson presentation', () => {
     expect(screen.queryByLabelText('Lesson 1.1 instructor introduction video')).toBeNull()
   })
 
+  it('keeps unreviewed teaching audio out of enrolled-learner lessons', () => {
+    const pending = {
+      url: 'https://aiconfidenceacademy.org/assets/demo-guided.m4a',
+      duration_seconds: 65,
+      voice_id: 'ac277b338cf64d8b9686784c43c563da',
+      approvalStatus: 'founder_review_pending' as const,
+      chapters: [
+        { title: 'Purpose', start_seconds: 0, transcript: 'Define the purpose.' },
+        { title: 'Evidence', start_seconds: 16, transcript: 'Verify the evidence.' },
+        { title: 'Human responsibility', start_seconds: 32, transcript: 'Human approval remains.' },
+        { title: 'Correct', start_seconds: 48, transcript: 'Correct the report.' },
+      ],
+    }
+    const standard = {
+      pageId:'1.1', lessonTitle:'Professional AI judgment and direction',
+      journeyTitle:'Journey 1', purpose:'Direct a task.', medium:'audio' as const,
+      production:lessonProduction, guidedInstruction:pending,
+    }
+    const view = render(<PhaseTwoLessonExperience {...standard} />)
+    expect(screen.queryByLabelText('Lesson 1.1 guided instruction audio')).toBeNull()
+    expect(screen.getByText('Audio placeholder')).toBeTruthy()
+    view.rerender(<PhaseTwoLessonExperience {...standard} allowMediaReview />)
+    expect(screen.getByLabelText('Lesson 1.1 guided instruction audio')).toBeTruthy()
+    expect(screen.queryByText('Audio placeholder')).toBeNull()
+  })
+
   it('reuses existing lesson and project navigation for an enrolled learner', async () => {
     const user=userEvent.setup()
     const back=vi.fn(), project=vi.fn()
