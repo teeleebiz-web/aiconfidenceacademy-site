@@ -48,7 +48,7 @@ type ReviewLesson = {
     phase_two_media_plan?: {
       avatar_introduction?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
       guided_instruction?: GuidedInstructionMedia
-      demonstration_clips?: { approvalStatus: 'founder_approved'; clips: VisualDemoClip[] }
+      demonstration_clips?: { approvalStatus: 'founder_approved' | 'founder_review_pending'; clips: VisualDemoClip[] }
       audio_lesson?: { generated_introduction?: { url: string; transcript: string; review_status?: string; voice_id?: string } }
     }
     video_path?: string | null
@@ -212,7 +212,8 @@ export function PhaseTwoReview() {
       production={lessonForReview.content.phase_two_production}
       introVideo={lessonForReview.content.phase_two_media_plan?.avatar_introduction}
       guidedInstruction={lessonForReview.content.phase_two_media_plan?.guided_instruction}
-      demoClips={lessonForReview.content.phase_two_media_plan?.demonstration_clips?.approvalStatus === 'founder_approved'
+      allowMediaReview
+      demoClips={['founder_approved','founder_review_pending'].includes(lessonForReview.content.phase_two_media_plan?.demonstration_clips?.approvalStatus ?? '')
         ? lessonForReview.content.phase_two_media_plan.demonstration_clips.clips
         : undefined}
       introAudio={lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.review_status === 'founder_approved' &&
