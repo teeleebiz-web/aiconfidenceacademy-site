@@ -18,6 +18,7 @@ type PhaseTwoLessonExperienceProps = {
   introVideo?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
   guidedInstruction?: GuidedInstructionMedia
   demoClips?: VisualDemoClip[]
+  allowMediaReview?: boolean
 }
 
 /**
@@ -40,9 +41,11 @@ export function PhaseTwoLessonExperience({
   introVideo,
   guidedInstruction,
   demoClips,
+  allowMediaReview = false,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
-  const approvedGuidedAudio = guidedInstruction?.approvalStatus === 'founder_approved' &&
+  const approvedGuidedAudio = (guidedInstruction?.approvalStatus === 'founder_approved' ||
+    (allowMediaReview && guidedInstruction?.approvalStatus === 'founder_review_pending')) &&
     guidedInstruction.voice_id === 'ac277b338cf64d8b9686784c43c563da' &&
     /^https:\/\//.test(guidedInstruction.url) &&
     Array.isArray(guidedInstruction.chapters) && guidedInstruction.chapters.length === 4
