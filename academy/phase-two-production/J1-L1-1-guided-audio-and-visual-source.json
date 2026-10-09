@@ -1,0 +1,70 @@
+{
+  "curriculum": "ACA Phase Two Six-Week Master v2.0",
+  "lesson": "1.1",
+  "status": "voice-matched media generation; selected instructor approved as reference",
+  "instructor": {
+    "avatar_look_id": "eb90c2b7050142ea461979fa0215e161",
+    "voice_id": "ac277b338cf64d8b9686784c43c563da",
+    "voice_name": "Rika - IA"
+  },
+  "guided_audio": [
+    {
+      "index": 1,
+      "title": "Begin with work you can stand behind",
+      "expected_seconds": 138.55346938775511,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=68aceceb-60ca-4add-a357-bdc8857329a0.wav"
+    },
+    {
+      "index": 2,
+      "title": "Capability means evidence, not appearance",
+      "expected_seconds": 160.07836734693876,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=19b664ed-0d28-46df-94c7-25daa0d635bd.wav"
+    },
+    {
+      "index": 3,
+      "title": "Four human responsibilities",
+      "expected_seconds": 163.60489795918366,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=c66b6a73-1d62-40fc-b396-66fc78fff834.wav"
+    },
+    {
+      "index": 4,
+      "title": "Recognize over-delegation",
+      "expected_seconds": 181.49877551020407,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=60c22b7b-9e43-4e80-9a0a-c1de64abb0fe.wav"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-source",
+      "title": "Start with the source",
+      "expected_seconds": 21.78612244897959,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=54f09f5d-bf3a-4e80-bd3e-4996a431bb7f.wav",
+      "script": "This is a fictional weekly service record. Forty-two requests arrived. Thirty-six were marked resolved. Before you ask AI to draft a report, notice exactly what the record does and does not say. It gives us counts. It does not give us completion times or last week's results. Keep those gaps in view.",
+      "fictional_data": true
+    },
+    {
+      "key": "02-draft",
+      "title": "Read the AI draft",
+      "expected_seconds": 22.622040816326532,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=708ae065-1e4b-4182-b7ac-38dc32f0490f.wav",
+      "script": "Now look at the AI-assisted draft. The report sounds confident. It says ninety-five percent of requests were resolved on time, and it claims that performance improved. But those are new conclusions. They do not appear in our fictional source notes. Do not confuse a smooth explanation with a verified business fact.",
+      "fictional_data": true
+    },
+    {
+      "key": "03-review",
+      "title": "Trace and challenge",
+      "expected_seconds": 23.84979591836735,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=5d865017-6bfd-4662-9109-5416982f237c.wav",
+      "script": "Here is where human judgment changes the result. Highlight the ninety-five percent claim. Which approved timing record supports it? We have none. Now highlight the claim that performance improved. Where is the verified comparison with a previous period? That is also missing. Keep the recorded counts. Withhold the unsupported conclusions.",
+      "fictional_data": true
+    },
+    {
+      "key": "04-correct",
+      "title": "Correct and save",
+      "expected_seconds": 24.006530612244898,
+      "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=b90a8224-75ae-4b75-9ef4-85308e71d23f.wav",
+      "script": "Compare the corrected summary. It reports forty-two requests received and thirty-six marked resolved, then clearly says that on-time performance and improvement cannot be established from the available notes. This version is less dramatic and more dependable. Now choose one claim in your own project to check, correct it if necessary, and save a short decision note.",
+      "fictional_data": true
+    }
+  ]
+}
