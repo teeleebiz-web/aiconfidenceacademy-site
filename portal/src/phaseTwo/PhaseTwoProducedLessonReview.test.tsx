@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   PhaseTwoProducedLessonReview,
@@ -108,7 +108,7 @@ describe('protected Phase Two lesson production', () => {
     expect(screen.getByRole('heading', { name: 'From a confident answer to a checked answer' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Start with the approved record' })).toBeTruthy()
     expect(screen.getByLabelText('Lesson teaching and practice')).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: /Next step/i }))
+    await user.click(within(screen.getByRole('region', { name: 'From a confident answer to a checked answer' })).getByRole('button', { name: /Next step/i }))
     expect(screen.getByRole('heading', { name: 'Spot the unsupported claim' })).toBeTruthy()
     expect(screen.queryByText(/Production status:|Media status:|founder review/i)).toBeNull()
   })
