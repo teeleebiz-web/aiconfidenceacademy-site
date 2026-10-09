@@ -30,3 +30,14 @@
 5. Keep Lesson 1.1 primary instructional audio and hands-on demonstrations conceptually separate; both should match the accepted instructor voice and complement rather than repeat the avatar orientation.
 
 **No website, database, learner or enrollment changes were made by submitting this render.**
+
+## Staged integration and verification — continuation
+
+- Added an optional instructor-video slot to `PhaseTwoLessonExperience` on the review branch. It is **not connected to any returned video or remote media path yet**.
+- The slot is 16:9, 1080p compatible and has an explicit 640px maximum CSS display width, preserving the existing ACA lesson-video scale, with full width responsiveness and automatic height on mobile.
+- Video rendering requires all of: `introVideo` supplied, `approvalStatus === 'founder_approved'`, a real HTTPS media URL, and a non-empty reviewed transcript. The current generated preview does not meet the explicit approval gate.
+- The separate lesson-audio position changes its caption to “Listen to guided instruction” when an approved avatar orientation is present. Do not reuse the avatar narration as the substantive lesson audio.
+- The previously created narrator sample from an unrelated voice is rejected by the owner-review presentation unless it has the exact instructor voice ID and explicit approval status. The files have **not** been deleted.
+- Wrote the detailed companion spoken lesson script in `academy/phase-two-production/J1-L1-1-full-guided-audio-script.md` (approximately 1,748 words, source-aligned, with brief pauses and visual cues). No companion narration generated yet.
+- Automated tests cover an explicitly approved video, a pending/unapproved video refusing to render, the absence of a video by default, the nonduplicated audio segment, and the exact 640px/16:9 CSS constraints. No Academy-site deployment was triggered by this work.
+- Next acceptance gate is **founder viewing and listening to the finished HeyGen preview**. Rendering status was initially “processing”; HeyGen's inline player tracks completion. Do not assume completion, or attach it to a website, without an accepted render.
