@@ -92,7 +92,10 @@ export function PhaseTwoReview() {
           email: reviewEmail.trim(),
           options: {
             shouldCreateUser: false,
-            emailRedirectTo: window.location.origin + '/learn/?review=phase-two',
+            emailRedirectTo: window.location.origin + '/learn/?review=phase-two&lesson=' +
+              encodeURIComponent(['1.1', '1.2'].includes(new URLSearchParams(window.location.search).get('lesson') ?? '')
+                ? new URLSearchParams(window.location.search).get('lesson')!
+                : '1.1'),
           },
         })
         if (result.error) throw result.error
