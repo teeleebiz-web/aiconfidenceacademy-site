@@ -183,18 +183,23 @@ export function PhaseTwoReview() {
   const introduction = journeyLessons[0]?.content.phase_two?.journey
   const videoCount = journeyLessons.filter(item => item.content.planned_media === 'video').length
   const audioCount = journeyLessons.filter(item => item.content.planned_media === 'audio').length
-  const firstLesson = data.lessons.find(item => item.page_id === '1.1')
+  const requestedPageId = new URLSearchParams(window.location.search).get('lesson')
+  const lessonForReview = data.lessons.find(item =>
+    item.page_id === requestedPageId &&
+    item.content.phase_two_production?.approval_status === 'founder_review_not_published'
+  ) ?? data.lessons.find(item => item.page_id === '1.1')
+  const lessonJourney = data.journeys.find(item => item.id === lessonForReview?.journey_id)
 
-  // The learner-facing page opens at the actual first lesson, not a production dashboard.
-  // Retain the original source-review renderer below without exposing it here.
-  if (status === 'ready' && firstLesson) {
+  // Open one complete learner lesson per direct link, without a construction dashboard.
+  // Every source record remains access-controlled through the existing Academy login.
+  if (status === 'ready' && lessonForReview) {
     return <PhaseTwoLessonExperience
-      pageId={firstLesson.page_id}
-      journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
-      lessonTitle={firstLesson.title}
-      purpose={firstLesson.purpose}
-      medium={firstLesson.content.planned_media === 'video' ? 'video' : 'audio'}
-      production={firstLesson.content.phase_two_production}
+      pageId={lessonForReview.page_id}
+      journeyTitle={lessonJourney?.title ?? 'AI Strategy and Business Opportunity'}
+      lessonTitle={lessonForReview.title}
+      purpose={lessonForReview.purpose}
+      medium={lessonForReview.content.planned_media === 'video' ? 'video' : 'audio'}
+      production={lessonForReview.content.phase_two_production}
     />
   }
 
