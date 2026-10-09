@@ -10,6 +10,8 @@ type PhaseTwoLessonExperienceProps = {
   medium: 'video' | 'audio'
   production: PhaseTwoProducedLesson | undefined
   onOpenProject?: () => void
+  onBackToLessons?: () => void
+  remainingSeconds?: number
 }
 
 /**
@@ -25,6 +27,8 @@ export function PhaseTwoLessonExperience({
   medium,
   production,
   onOpenProject,
+  onBackToLessons,
+  remainingSeconds,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
   return (
@@ -35,10 +39,16 @@ export function PhaseTwoLessonExperience({
           <img src={sealUrl} alt="" width="48" height="48" aria-hidden="true" />
           <span><strong>AI Confidence Academy</strong><small>Phase Two</small></span>
         </a>
-        <span className="p2-learner-experience-location">Journey 1 · AI Strategy and Business Opportunity</span>
+        <span className="p2-learner-experience-location">{journeyTitle}</span>
       </header>
 
       <main id="p2-lesson-main" className="p2-learner-experience-main" tabIndex={-1}>
+        {(onBackToLessons || remainingSeconds !== undefined) && (
+          <div className="p2-learner-experience-controls">
+            {onBackToLessons && <button type="button" onClick={onBackToLessons}>Your lessons</button>}
+            {remainingSeconds !== undefined && <p role="timer" aria-live="off">Time remaining: {Math.floor(Math.max(0,remainingSeconds)/60)} min</p>}
+          </div>
+        )}
         <article className="p2-learner-experience-card">
           <header className="p2-learner-experience-hero">
             <p className="eyebrow">{journeyTitle}</p>
