@@ -214,7 +214,7 @@ export function PhaseTwoReview() {
       guidedInstruction={lessonForReview.content.phase_two_media_plan?.guided_instruction}
       allowMediaReview
       demoClips={['founder_approved','founder_review_pending'].includes(lessonForReview.content.phase_two_media_plan?.demonstration_clips?.approvalStatus ?? '')
-        ? lessonForReview.content.phase_two_media_plan.demonstration_clips.clips
+        ? lessonForReview.content.phase_two_media_plan?.demonstration_clips?.clips
         : undefined}
       introAudio={lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.review_status === 'founder_approved' &&
         lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.voice_id === 'ac277b338cf64d8b9686784c43c563da'
