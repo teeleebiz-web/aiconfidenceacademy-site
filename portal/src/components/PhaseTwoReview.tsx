@@ -3,6 +3,7 @@ import type { Session } from '@supabase/supabase-js'
 import sealUrl from '../../../aca-official-seal.png'
 import { supabase } from '../lib/supabase'
 import { PhaseTwoExperiencePreview } from '../phaseTwo/PhaseTwoExperiencePreview'
+import { inspectPhaseTwoDraft } from '../phaseTwo/phaseTwoDraftIntegrity'
 import './phase-two-review.css'
 
 type PhaseTwoSource = {
@@ -63,6 +64,7 @@ export function PhaseTwoReview() {
   const [session, setSession] = useState<Session | null>(null)
   const [authReady, setAuthReady] = useState(false)
   const [status, setStatus] = useState<ReviewStatus>('loading')
+  const [validationIssues, setValidationIssues] = useState<string[]>([])
   const [data, setData] = useState<ReviewData>({ journeys: [], lessons: [] })
   const [chosen, setChosen] = useState('1.1')
   const [reviewView, setReviewView] = useState<'source' | 'learner'>('source')
@@ -158,11 +160,14 @@ export function PhaseTwoReview() {
         journeys: (journeys.data ?? []) as ReviewJourney[],
         lessons: (lessons.data ?? []) as ReviewLesson[],
       }
-      // A partial draft must not be presented as the complete six-week course.
-      if (next.journeys.length !== 6 || next.lessons.length !== 36) {
+      // Require every source teaching section and the full media allocation.
+      const validation = inspectPhaseTwoDraft(next.journeys, next.lessons)
+      if (!validation.ready) {
+        setValidationIssues(validation.issues)
         setStatus('error')
         return
       }
+      setValidationIssues([])
       setData(next)
       setStatus('ready')
     }
@@ -229,7 +234,10 @@ export function PhaseTwoReview() {
         {status === 'error' && (
           <section className="p2-state" aria-labelledby="p2-error">
             <h1 id="p2-error">The working curriculum could not be loaded</h1>
-            <p>No live lesson has been changed. Return after the course data and owner access have been checked.</p>
+            <p>This review is unavailable until the authorized Phase Two draft passes all required checks.</p>
+            {validationIssues.length > 0 && (
+              <ul>{validationIssues.map(issue => <li key={issue}>{issue}</li>)}</ul>
+            )}
           </section>
         )}
 
