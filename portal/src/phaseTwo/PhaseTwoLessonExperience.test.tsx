@@ -70,6 +70,7 @@ describe('Phase Two learner lesson presentation', () => {
     expect(screen.getByText('Lesson teaching and practice')).toBeTruthy()
     expect(screen.getByText('Audio placeholder')).toBeTruthy()
     expect(screen.getByText('Read the lesson introduction')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Listen to guided instruction' })).toBeTruthy()
   })
 
   it('rejects a video marked as pending founder review even if its URL and transcript exist', () => {
