@@ -52,6 +52,38 @@ describe('Phase Two learner lesson presentation', () => {
     expect(screen.queryByText('Audio placeholder')).toBeNull()
   })
 
+  it('displays a supplied instructor video at the established 16:9 media position without replacing teaching', () => {
+    render(<PhaseTwoLessonExperience
+      pageId="1.1"
+      lessonTitle="Professional AI judgment and direction"
+      journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
+      purpose="Choose and verify a professional task."
+      medium="audio"
+      production={lessonProduction}
+      introVideo={{ url: '/assets/test-approved-instructor.mp4',
+        transcript: 'Welcome to the Academy.\n\nLet us begin.' }}
+    />)
+    const video = screen.getByLabelText('Lesson 1.1 instructor introduction video')
+    expect(video.tagName.toLowerCase()).toBe('video')
+    expect(video).toHaveProperty('src', 'http://localhost:3000/assets/test-approved-instructor.mp4')
+    expect(video).toHaveProperty('controls', true)
+    expect(screen.getByText('Lesson teaching and practice')).toBeTruthy()
+    expect(screen.getByText('Audio placeholder')).toBeTruthy()
+    expect(screen.getByText('Read the lesson introduction')).toBeTruthy()
+  })
+
+  it('does not attach a presenter video by default while its preview awaits acceptance', () => {
+    render(<PhaseTwoLessonExperience
+      pageId="1.1"
+      lessonTitle="Professional AI judgment and direction"
+      journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
+      purpose="Choose and verify a professional task."
+      medium="audio"
+      production={lessonProduction}
+    />)
+    expect(screen.queryByLabelText('Lesson 1.1 instructor introduction video')).toBeNull()
+  })
+
   it('reuses existing lesson and project navigation for an enrolled learner', async () => {
     const user=userEvent.setup()
     const back=vi.fn(), project=vi.fn()
