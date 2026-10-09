@@ -9,6 +9,16 @@ vi.mock('./PhaseTwoProducedLessonReview', () => ({
     <section aria-label="Expanded learner instruction">{learnerMode ? 'Lesson teaching and practice' : 'Administrative presentation'}</section>,
 }))
 
+const lessonProduction = {
+  lesson_id: '1.1',
+  pacing: [
+    { key: 'teaching', label: 'Teaching', minutes: 15 },
+    { key: 'worked_case', label: 'Worked case', minutes: 10 },
+    { key: 'application', label: 'Application', minutes: 25 },
+    { key: 'verification', label: 'Verification', minutes: 10 },
+  ],
+} as never
+
 beforeEach(() => { vi.clearAllMocks(); api.validate.mockReturnValue(true) })
 
 describe('Phase Two learner lesson presentation', () => {
@@ -19,7 +29,7 @@ describe('Phase Two learner lesson presentation', () => {
       journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
       purpose="Identify human responsibility, capability and evidence."
       medium="audio"
-      production={{ lesson_id: '1.1' } as never}
+      production={lessonProduction}
     />)
     expect(screen.getByRole('heading', { name: 'Professional AI judgment and direction' })).toBeTruthy()
     expect(screen.getByText('Audio placeholder')).toBeTruthy()
@@ -35,7 +45,7 @@ describe('Phase Two learner lesson presentation', () => {
       pageId="1.1" lessonTitle="Professional AI judgment and direction"
       journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
       purpose="Identify human responsibility." medium="audio"
-      production={{ lesson_id: '1.1' } as never}
+      production={lessonProduction}
       remainingSeconds={3410} onBackToLessons={back} onOpenProject={project}
     />)
     expect(screen.getByText('Time remaining: 56 min')).toBeTruthy()
