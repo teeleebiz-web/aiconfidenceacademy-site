@@ -35,3 +35,20 @@ The current course is the six-journey, 36-lesson AI Professional and Builder Pat
 
 ## Non-negotiable production control
 **No deletion, curriculum substitution, merge, deployment to the public course, automatic learner entitlement, enrollment activation, or credential issuance is authorized by this draft.**
+
+## Instructional production checkpoint — October 9, 2026
+
+### Journey 1 · Lesson 1.1: Professional AI judgment and direction
+**Status: expanded instructional draft, founder review pending — not published.**
+
+- Reviewed controlling lesson 1.1 brief in Curriculum Master v2.0 and its stated learning outcomes in the Coverage and Consolidation Audit, including demonstrable professional confidence, the human responsibilities of purpose/context/judgment/accountability, five capabilities and two gaps, and the required applied evidence.
+- Created an **additive** `phase_two_production` object only in the protected Lesson 1.1 draft record. The original `phase_two` teaching brief and its approved AI request remain intact.
+- The production layer supplies four expanded teaching sequences, four worked-case claim/evidence decisions using explicitly fictional report data, five timed project application steps, a six-field human/AI responsibility map, four verification activities and six applied completion criteria.
+- Scheduled lesson rhythm: 15 minutes teaching, 10 worked case, 25 application, and 10 evidence review. These are **design estimates**, not validated seat time.
+- Media is an **unrecorded provisional audio-led placeholder**. No video, voice, transcript, captions, graded completion, or enrollment activation has been represented as done.
+- The founder-only learner walkthrough can show the expanded instructional package when its required fields and status validate; a malformed package is flagged and the source brief remains available. All other lessons continue to render their source briefs until independently developed.
+- An independent rendering test covers content hierarchy, evidence table, expanding/collapsing review, absence of submission controls, and fail-closed draft validation. A separate navigation regression test confirms that the next unexpanded lesson remains unchanged.
+- **Review gate:** verify actual rendered mobile/desktop reading, learnability and timing with the founder before accepting production or recording audio.
+
+### Next production task
+Proceed through **Lesson 1.2 — Find the need and establish the evidence** using the verified October 4 master and the coverage map. Do not invent media or introduce a second project record.
