@@ -60,16 +60,33 @@ describe('Phase Two learner lesson presentation', () => {
       purpose="Choose and verify a professional task."
       medium="audio"
       production={lessonProduction}
-      introVideo={{ url: '/assets/test-approved-instructor.mp4',
-        transcript: 'Welcome to the Academy.\n\nLet us begin.' }}
+      introVideo={{ url: 'https://aiconfidenceacademy.org/assets/test-approved-instructor.mp4',
+        transcript: 'Welcome to the Academy.\n\nLet us begin.', approvalStatus: 'founder_approved' }}
     />)
     const video = screen.getByLabelText('Lesson 1.1 instructor introduction video')
     expect(video.tagName.toLowerCase()).toBe('video')
-    expect(video.getAttribute('src')).toBe('/assets/test-approved-instructor.mp4')
+    expect(video.getAttribute('src')).toBe('https://aiconfidenceacademy.org/assets/test-approved-instructor.mp4')
     expect(video).toHaveProperty('controls', true)
     expect(screen.getByText('Lesson teaching and practice')).toBeTruthy()
     expect(screen.getByText('Audio placeholder')).toBeTruthy()
     expect(screen.getByText('Read the lesson introduction')).toBeTruthy()
+  })
+
+  it('rejects a video marked as pending founder review even if its URL and transcript exist', () => {
+    render(<PhaseTwoLessonExperience
+      pageId="1.1"
+      lessonTitle="Professional AI judgment and direction"
+      journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
+      purpose="Practice sound professional judgment."
+      medium="audio"
+      production={lessonProduction}
+      introVideo={{
+        url: 'https://aiconfidenceacademy.org/assets/pending-instructor.mp4',
+        transcript: 'An unapproved recording must not appear.',
+        approvalStatus: 'pending_review' as never,
+      }}
+    />)
+    expect(screen.queryByLabelText('Lesson 1.1 instructor introduction video')).toBeNull()
   })
 
   it('does not attach a presenter video by default while its preview awaits acceptance', () => {
