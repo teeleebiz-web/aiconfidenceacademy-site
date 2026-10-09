@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase'
 import { PhaseTwoExperiencePreview } from '../phaseTwo/PhaseTwoExperiencePreview'
 import { inspectPhaseTwoDraft } from '../phaseTwo/phaseTwoDraftIntegrity'
 import { PhaseTwoLessonExperience } from '../phaseTwo/PhaseTwoLessonExperience'
+import type { GuidedInstructionMedia, VisualDemoClip } from '../phaseTwo/PhaseTwoGuidedMedia'
 import './phase-two-review.css'
 
 type PhaseTwoSource = {
@@ -46,6 +47,8 @@ type ReviewLesson = {
     phase_two_production?: import('../phaseTwo/PhaseTwoProducedLessonReview').PhaseTwoProducedLesson
     phase_two_media_plan?: {
       avatar_introduction?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
+      guided_instruction?: GuidedInstructionMedia
+      demonstration_clips?: { approvalStatus: 'founder_approved'; clips: VisualDemoClip[] }
       audio_lesson?: { generated_introduction?: { url: string; transcript: string; review_status?: string; voice_id?: string } }
     }
     video_path?: string | null
@@ -208,6 +211,10 @@ export function PhaseTwoReview() {
       medium={lessonForReview.content.planned_media === 'video' ? 'video' : 'audio'}
       production={lessonForReview.content.phase_two_production}
       introVideo={lessonForReview.content.phase_two_media_plan?.avatar_introduction}
+      guidedInstruction={lessonForReview.content.phase_two_media_plan?.guided_instruction}
+      demoClips={lessonForReview.content.phase_two_media_plan?.demonstration_clips?.approvalStatus === 'founder_approved'
+        ? lessonForReview.content.phase_two_media_plan.demonstration_clips.clips
+        : undefined}
       introAudio={lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.review_status === 'founder_approved' &&
         lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.voice_id === 'ac277b338cf64d8b9686784c43c563da'
           ? lessonForReview.content.phase_two_media_plan.audio_lesson.generated_introduction
