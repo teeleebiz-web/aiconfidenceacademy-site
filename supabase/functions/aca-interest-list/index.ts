@@ -104,12 +104,25 @@ Deno.serve(async (request: Request) => {
   }
 
   const subscriber = (await stored.json())[0];
-  const unsubscribeUrl = `https://checkout.aiconfidenceacademy.org/api/email/unsubscribe?token=${subscriber.unsubscribe_token}`;
+  // A fresh explicit form submission also records optional-update consent.
+  // Enrollment, payment data, and historical test rows are never imported here.
+  let updateSubscription: Record<string, unknown> | null = null;
+  if (subscriber.status === "active") {
+    const preferences = await fetch(`${url}/rest/v1/aca_update_subscriptions?on_conflict=email`, {
+      method: "POST",
+      headers: {"apikey": key, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates,return=representation"},
+      body: JSON.stringify({email,first_name:firstName,last_name:lastName,interest_area:interest,
+        consent_at:new Date().toISOString(),source:"aca_website_explicit_opt_in",synced_at:null}),
+    });
+    if (!preferences.ok) return respond({ok:false,message:"We saved your interest, but could not save update preferences. Please try again."},503,origin);
+    updateSubscription = (await preferences.json())[0];
+  }
+  const unsubscribeUrl = `https://checkout.aiconfidenceacademy.org/api/email/unsubscribe?token=${updateSubscription?.unsubscribe_token || subscriber.unsubscribe_token}`;
   const resendKey = Deno.env.get("RESEND_API_KEY");
   const fromEmail = Deno.env.get("ACA_FROM_EMAIL");
   let emailSent = false;
 
-  if (resendKey && fromEmail && subscriber.status === "active" && !subscriber.confirmation_sent_at && !subscriber.newsletter_excluded) {
+  if (resendKey && fromEmail && subscriber.status === "active" && updateSubscription?.status === "active" && !subscriber.confirmation_sent_at && !subscriber.newsletter_excluded) {
     const safeName = escapeHtml(firstName);
     const sent = await fetch("https://api.resend.com/emails", {
       method: "POST",

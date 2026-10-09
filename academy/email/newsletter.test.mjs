@@ -11,7 +11,7 @@ function database(initial={}) {
       try {const matches=tables[name].filter(r=>filters.every(f=>f(r)))
         if(action==='update') matches.forEach(r=>Object.assign(r,payload))
         if(action==='insert') tables[name].push(structuredClone(payload))
-        if(action==='upsert'){const key='week' in payload?'week':'id';const old=tables[name].find(r=>r[key]===payload[key]);if(old)Object.assign(old,payload);else tables[name].push(structuredClone(payload))}
+        if(action==='upsert'){const key='week' in payload?'week':('email' in payload?'email':'id');const old=tables[name].find(r=>r[key]===payload[key]);if(old)Object.assign(old,payload);else tables[name].push(structuredClone(payload))}
         return Promise.resolve({data:matches,error:null}).then(resolve,reject)
       }catch(e){return Promise.reject(e).then(resolve,reject)}
     }};return query
@@ -47,29 +47,28 @@ test('approved editions are not rewritten and new items remain pending',async()=
   assert.deepEqual(db.tables.aca_newsletter_state[0].value,['a'])
 })
 test('unsubscribed provider contact stays unsubscribed and leaves only the academy segment',async()=>{
-  const row={id:1,email:'learner@example.org',status:'active',consent:true};const db=database({aca_interest_list:[row]});let removed=0
-  const resend={contacts:{get:async()=>({data:{id:'contact',unsubscribed:true}}),segments:{remove:async()=>{removed++;return {data:{}}}},create:()=>assert.fail('must not recreate')}}
+  const row={id:1,email:'learner@example.org',status:'active',consent_at:'2026-10-01'};const db=database({aca_update_subscriptions:[row]});let removed=0
+  const resend={contacts:{get:async()=>({data:{id:'contact',unsubscribed:true}}),topics:{list:async()=>({data:{data:[]}}),update:async()=>({data:{}})},segments:{remove:async()=>{removed++;return {data:{}}}},create:()=>assert.fail('must not recreate')}}
   assert.equal(await syncSubscriber({db,resend},row,new Date().toISOString()),'unsubscribed')
-  assert.equal(removed,1);assert.equal(db.tables.aca_interest_list[0].status,'unsubscribed')
+  assert.equal(removed,1);assert.equal(db.tables.aca_update_subscriptions[0].status,'unsubscribed')
 })
-test('test entries and absent consent never touch provider',async()=>{
-  assert.equal(await syncSubscriber({}, {newsletter_excluded:true,consent:true}), 'excluded')
-  assert.equal(await syncSubscriber({}, {consent:false}), 'excluded')
+test('an address without explicit update consent never touches the provider',async()=>{
+  assert.equal(await syncSubscriber({}, {email:'payment-only@example.org'}), 'no_explicit_consent')
 })
 test('provider error does not create duplicate contact or report sync success',async()=>{
   const config={resend:{contacts:{get:async()=>({error:{statusCode:403}})}}}
-  await assert.rejects(()=>syncSubscriber(config,{consent:true,status:'active'}))
+  await assert.rejects(()=>syncSubscriber(config,{consent_at:'2026-10-01',status:'active'}))
 })
 test('maintenance cannot run without cron authorization',async()=>{
   const res=reply();await handleNewsletterMaintenance({method:'GET',headers:{}},res,{cronSecret:'secret',db:{},resend:{}},'')
   assert.equal(res.code,401)
 })
 test('unsubscribe GET is nonmutating; POST opts out without changing learning access',async()=>{
-  const token='11111111-2222-4333-8444-555555555555';const db=database({aca_interest_list:[{id:1,status:'active',unsubscribe_token:token}]})
+  const token='11111111-2222-4333-8444-555555555555';const db=database({aca_update_subscriptions:[{email:'learner@example.org',status:'active',consent_at:'2026-10-01',unsubscribe_token:token}],enrollments:[{id:1,status:'active'}],aca_installment_plans:[{id:1,status:'active'}]})
   const get=reply();await handleNewsletterUnsubscribe({method:'GET',url:'/api/email/unsubscribe',query:{token}},get,{db})
-  assert.equal(db.tables.aca_interest_list[0].status,'active');assert.match(get.body,/Unsubscribe/)
+  assert.equal(db.tables.aca_update_subscriptions[0].status,'active');assert.match(get.body,/Unsubscribe/)
   const post=reply();await handleNewsletterUnsubscribe({method:'POST',url:`/?token=${token}`},post,{db})
-  assert.equal(db.tables.aca_interest_list[0].status,'unsubscribed');assert.match(post.body,/learning access is unchanged/)
+  assert.equal(db.tables.aca_update_subscriptions[0].status,'unsubscribed');assert.match(post.body,/learning access is unchanged/);assert.equal(db.tables.enrollments[0].status,'active');assert.equal(db.tables.aca_installment_plans[0].status,'active')
 })
 test('malformed unsubscribe link rejected before accessing database',async()=>{
   const res=reply();await handleNewsletterUnsubscribe({method:'POST',url:'/?token=guess'},res,{})
