@@ -34,3 +34,16 @@
 - The GitHub branch review currently serves a protected Phase Two interface on Vercel deployments with platform SSO. To make it accessible using the proven route, it must be released through the official website's existing compiled Pages assets after founder authorization, then verified in-browser. Do not solve the problem by supplying another branch deployment host.
 
 **Founder acceptance gate:** obtain permission before publishing a protected review UI to the official Academy domain. Approval of a draft's instructional text does not equal approval to enroll learners or publish lessons.
+
+## Delivery result — October 9, 2026
+
+**Verified working link:** https://aiconfidenceacademy.org/learn/?review=phase-two
+
+- Published the compiled owner-only review route through the established root GitHub Pages site and official `CNAME` custom domain.
+- GitHub Pages deployment at official commit `a995885758b6ce865e9f11fb5940952435080f7d` succeeded.
+- A read-only live browser visit to the exact official URL showed the ACA Founder Review sign-in, Academy brand, email/password options, and normal cream/navy layout. No third-party SSO redirect appeared.
+- Independently rechecked ordinary `https://aiconfidenceacademy.org/learn/` and the founder-supplied `/enroll/?interest=updates#interest-list` link. Both still return their expected pages.
+- The official update added exactly two hashed bundle assets under `learn/assets/` and changed `learn/index.html` to select the existing learner application for ordinary visits and the protected review app only for `?review=phase-two`. Existing compiled learner bundle and stylesheet were preserved.
+- The draft course and learner enrollment states were not changed. No media, protected curriculum scripts, or answer keys were committed to public source.
+- Authenticated founder lesson visibility after personal sign-in requires the founder to sign in; no credentials were requested, used or simulated by the assistant.
+- **Do not use Vercel deployment URLs for future ACA founder review delivery.** Verify the actual official site before sending its link. Use the established login and protected owner permissions.
