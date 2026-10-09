@@ -44,6 +44,7 @@ type ReviewLesson = {
     planned_media?: 'video' | 'audio'
     media_assignment_status?: string
     phase_two_production?: import('../phaseTwo/PhaseTwoProducedLessonReview').PhaseTwoProducedLesson
+    phase_two_media_plan?: { audio_lesson?: { generated_introduction?: { url: string; transcript: string } } }
     video_path?: string | null
     audio_path?: string | null
   }
@@ -203,6 +204,7 @@ export function PhaseTwoReview() {
       purpose={lessonForReview.purpose}
       medium={lessonForReview.content.planned_media === 'video' ? 'video' : 'audio'}
       production={lessonForReview.content.phase_two_production}
+      introAudio={lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction}
     />
   }
 
