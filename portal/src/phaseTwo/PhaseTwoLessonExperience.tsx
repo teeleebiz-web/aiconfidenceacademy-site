@@ -12,6 +12,7 @@ type PhaseTwoLessonExperienceProps = {
   onOpenProject?: () => void
   onBackToLessons?: () => void
   remainingSeconds?: number
+  enrollmentId?: string
 }
 
 /**
@@ -29,6 +30,7 @@ export function PhaseTwoLessonExperience({
   onOpenProject,
   onBackToLessons,
   remainingSeconds,
+  enrollmentId,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
   return (
@@ -98,7 +100,7 @@ export function PhaseTwoLessonExperience({
                 </section>
               )}
 
-              <PhaseTwoProducedLessonReview production={production} learnerMode />
+              <PhaseTwoProducedLessonReview production={production} learnerMode enrollmentId={enrollmentId} />
 
               {onOpenProject && (
                 <section className="p2-learner-experience-project" aria-labelledby="p2-project-link-title">
