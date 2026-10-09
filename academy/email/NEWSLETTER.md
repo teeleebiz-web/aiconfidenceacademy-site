@@ -16,6 +16,8 @@ The completed delivery module processes closed weekly editions only, uses the cr
 
 ## Production state
 
+The existing `RESEND_API_KEY` is verified send-only (`restricted_api_key` on the read-only segment check). Its value and operational usage are unchanged. Newsletter management uses a separate `ACA_NEWSLETTER_RESEND_KEY`, currently unset. That credential needs Resend management access; provision it only after approval. Never broaden or replace the operational key to enable newsletters.
+
 Preparation remains active. Contact synchronization and public delivery remain OFF. Automatic approval review rejected copying a historical signup, re-enabling synchronization, and adding a read-only enrollment/payment lookup without exact approval. The safe empty-store schema was applied separately. `newsletter-routing-schema.sql` now contains only the safer, unapplied future-opt-in activation proposal. It does not copy existing records or read enrollment/payment data.
 
 The remaining activation decision is to enable optional-subscriber synchronization and weekly delivery after the mailing address is supplied. Any historical signup migration or read-only account-status lookup requires separate approval. Existing tests remain untouched.

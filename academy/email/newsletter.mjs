@@ -70,13 +70,14 @@ export async function prepareEdition(db, catalog, now = new Date()) {
 export async function runNewsletterMaintenance(config, catalog, now = new Date()) {
   const started = now.toISOString()
   const settings = checked(await config.db.from('aca_newsletter_state').select('value').eq('id','settings').maybeSingle())
-  const syncEnabled = settings?.value?.contact_sync_enabled === true
+  const syncEnabled = settings?.value?.contact_sync_enabled === true && !!config.resend
   const rows = syncEnabled ? checked(await config.db.from('aca_update_subscriptions').select('*')
     .order('synced_at',{ascending:true,nullsFirst:true}).limit(5)) : []
   const summary = {mode:settings?.value?.delivery_enabled ? 'weekly_delivery' : 'prepare_only',contact_sync_enabled:syncEnabled,checked:rows.length,synced:0,failed:0,edition:null}
   // Read-only verification of the deployed credential's marketing permissions.
   // Transactional sending keys may work for notices but not contact management.
-  if(config.resend.segments?.get) {
+  summary.provider_access=config.resend?'not_verified':'newsletter_credential_required'
+  if(config.resend?.segments?.get) {
     try { const access=await config.resend.segments.get(SEGMENT_ID); summary.provider_access=access.error?'not_verified':'verified' }
     catch { summary.provider_access='not_verified' }
     await new Promise(resolve=>setTimeout(resolve,600))
@@ -95,11 +96,11 @@ export async function runNewsletterMaintenance(config, catalog, now = new Date()
 
 export async function handleNewsletterMaintenance(req,res,config,root) {
   if(req.method !== 'GET') return json(res,405,{error:'Method not allowed'})
-  if(!config?.cronSecret || !config?.db || !config?.resend) return json(res,503,{error:'Newsletter maintenance is not configured'})
+  if(!config?.cronSecret || !config?.db) return json(res,503,{error:'Newsletter maintenance is not configured'})
   if(req.headers.authorization !== `Bearer ${config.cronSecret}`) return json(res,401,{error:'Unauthorized'})
   try {
     const catalog = JSON.parse(await readFile(`${root}/newsletter-catalog.json`,'utf8'))
-    return json(res,200,await runNewsletterMaintenance(config,catalog))
+    return json(res,200,await runNewsletterMaintenance({...config,resend:config.newsletterResend},catalog))
   } catch { return json(res,500,{error:'Newsletter preparation failed'}) }
 }
 
@@ -126,7 +127,7 @@ export async function handleNewsletterUnsubscribe(req,res,config) {
         row={...row,consent_at:consentAt}
       }
       checked(await config.db.from('aca_update_subscriptions').update({status:'unsubscribed',synced_at:null}).eq('email',row.email))
-      if(config.resend && row.consent_at) { try { await syncSubscriber(config,{...row,status:'unsubscribed'},new Date().toISOString()) } catch { /* Daily maintenance retries. */ } }
+      if(config.newsletterResend && row.consent_at) { try { await syncSubscriber({...config,resend:config.newsletterResend},{...row,status:'unsubscribed'},new Date().toISOString()) } catch { /* Daily maintenance retries. */ } }
     }
     const done=req.method==='POST' || row.status==='unsubscribed'
     res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'"})
