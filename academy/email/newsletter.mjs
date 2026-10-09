@@ -74,6 +74,13 @@ export async function runNewsletterMaintenance(config, catalog, now = new Date()
   const rows = syncEnabled ? checked(await config.db.from('aca_update_subscriptions').select('*')
     .order('synced_at',{ascending:true,nullsFirst:true}).limit(5)) : []
   const summary = {mode:settings?.value?.delivery_enabled ? 'weekly_delivery' : 'prepare_only',contact_sync_enabled:syncEnabled,checked:rows.length,synced:0,failed:0,edition:null}
+  // Read-only verification of the deployed credential's marketing permissions.
+  // Transactional sending keys may work for notices but not contact management.
+  if(config.resend.segments?.get) {
+    try { const access=await config.resend.segments.get(SEGMENT_ID); summary.provider_access=access.error?'not_verified':'verified' }
+    catch { summary.provider_access='not_verified' }
+    await new Promise(resolve=>setTimeout(resolve,600))
+  }
   for (const row of rows) {
     try { await syncSubscriber(config,row,started); summary.synced++ }
     catch { summary.failed++; checked(await config.db.from('aca_update_subscriptions').update({sync_error:'Contact synchronization failed; retry scheduled',synced_at:started}).eq('email',row.email)) }
