@@ -26,11 +26,14 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install picture-generation dependency and confirm media codecs
+      - name: Install picture-generation dependency and media codecs
         run: |
+          set -euo pipefail
           python -m pip install 'Pillow==11.2.1'
-          ffmpeg -version | head -2
-          ffprobe -version | head -2
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffmpeg -version | head -1
+          ffprobe -version | head -1
 
       - name: Build approved instructor video with embedded ACA cards
         run: |
