@@ -13,6 +13,7 @@ type PhaseTwoLessonExperienceProps = {
   onBackToLessons?: () => void
   remainingSeconds?: number
   enrollmentId?: string
+  introAudio?: { url: string; transcript: string }
 }
 
 /**
@@ -31,6 +32,7 @@ export function PhaseTwoLessonExperience({
   onBackToLessons,
   remainingSeconds,
   enrollmentId,
+  introAudio,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
   return (
@@ -64,7 +66,17 @@ export function PhaseTwoLessonExperience({
             <div>
               <p className="p2-overview-video-eyebrow">Before you begin</p>
               <h2>{medium === 'video' ? 'Watch the lesson introduction' : 'Listen to the lesson introduction'}</h2>
-              <p>{medium === 'video' ? 'Video placeholder' : 'Audio placeholder'}</p>
+              {medium === 'audio' && introAudio?.url ? (
+                <>
+                  <audio controls preload="metadata" src={introAudio.url} aria-label={`Lesson ${pageId} audio introduction`}>
+                    Your browser does not support audio playback.
+                  </audio>
+                  <details className="p2-intro-transcript">
+                    <summary>Read the audio introduction</summary>
+                    {introAudio.transcript.split('\n\n').map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                  </details>
+                </>
+              ) : <p>{medium === 'video' ? 'Video placeholder' : 'Audio placeholder'}</p>}
             </div>
           </section>
 
