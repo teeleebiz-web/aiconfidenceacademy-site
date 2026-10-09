@@ -97,6 +97,7 @@ function configureTables() {
 }
 
 beforeEach(() => {
+  window.history.replaceState({}, '', '/learn/?review=phase-two')
   vi.clearAllMocks()
   api.onAuthStateChange.mockReturnValue({ data: { subscription: { unsubscribe() {} } } })
   api.getSession.mockResolvedValue({ data: { session: { user: { id: 'authorized-reviewer' } } } })
@@ -129,6 +130,29 @@ describe('unpublished Phase Two founder review', () => {
     expect(screen.queryByText(/Founder review|Unpublished working build|36 lessons|18 video slots/i)).toBeNull()
     expect(api.rpc).toHaveBeenCalledWith('is_aca_curriculum_owner')
     expect(api.rpc).toHaveBeenCalledTimes(1)
+  })
+
+  it('opens a completed second lesson directly without unlocking other unfinished lessons', async () => {
+    const content = lessons[1].content as typeof lessons[1]['content'] & {
+      phase_two_production?: { approval_status: string }
+    }
+    content.phase_two_production = { approval_status: 'founder_review_not_published' }
+    window.history.replaceState({}, '', '/learn/?review=phase-two&lesson=1.2')
+    try {
+      render(<PhaseTwoReview />)
+      expect(await screen.findByRole('heading', { name: 'Synthetic lesson 1.2' })).toBeTruthy()
+      expect(screen.getByText('Lesson 1.2')).toBeTruthy()
+      expect(api.rpc).toHaveBeenCalledWith('is_aca_curriculum_owner')
+    } finally {
+      delete content.phase_two_production
+    }
+  })
+
+  it('keeps an unfinished lesson hidden behind the first complete learning experience', async () => {
+    window.history.replaceState({}, '', '/learn/?review=phase-two&lesson=4.6')
+    render(<PhaseTwoReview />)
+    expect(await screen.findByRole('heading', { name: 'Synthetic lesson 1.1' })).toBeTruthy()
+    expect(screen.queryByRole('heading', { name: 'Synthetic lesson 4.6' })).toBeNull()
   })
 
   it('preserves the review query parameter in owner email sign-in links', async () => {
