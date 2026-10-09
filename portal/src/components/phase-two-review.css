@@ -78,3 +78,8 @@
 .p2-lesson-rhythm li span{font-size:.84rem;color:#102d4f}
 @media(max-width:900px){.p2-lesson-rhythm ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:500px){.p2-lesson-rhythm{margin:0 1rem 1rem}.p2-lesson-rhythm ol{grid-template-columns:1fr 1fr}}
+
+.p2-review-view-toggle{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.25rem 0}
+.p2-review-view-toggle button{font:inherit;font-weight:750;color:#173d5c;background:#fff;border:1px solid #c9b58f;border-radius:9px;padding:.8rem 1.05rem}
+.p2-review-view-toggle button[aria-pressed=true]{background:#173d5c;color:#fff;border-color:#173d5c}
+.p2-review-view-toggle button:focus-visible{outline:3px solid #a9884f;outline-offset:3px}
