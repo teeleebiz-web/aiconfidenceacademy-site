@@ -1,3 +1,4 @@
+import {INTEREST_TOPICS,routeItems} from './newsletter-interests.mjs'
 import {newsletterMessage} from './newsletter-message.mjs'
 const checked = result => {if(result.error) throw result.error;return result.data}
 const pause = config => config.testMode ? Promise.resolve() : new Promise(resolve=>setTimeout(resolve,600))
@@ -10,7 +11,7 @@ export async function dispatchEdition(config, edition, settings) {
   if(!settings.topic_id || !settings.segment_id) return {held:'recipient_group_required'}
   if(!edition.items?.length) return {held:'empty_edition'}
   if(edition.dispatch_state==='needs_review') return {held:'needs_review'}
-  const table=()=>config.db.from('aca_newsletter_editions')
+  const table=()=>config.db.from(config.newsletterTable || 'aca_newsletter_editions')
   let id=edition.broadcast_id
   if(!id) {
     const claimed=checked(await table().update({dispatch_state:'creating',status:'approved',updated_at:new Date().toISOString()})
@@ -19,7 +20,7 @@ export async function dispatchEdition(config, edition, settings) {
     try {
       const message=newsletterMessage(edition.items,settings.mailing_address)
       const result=checked(await config.resend.broadcasts.create({
-        ...message,name:`ACA weekly learning ${edition.week}`,from:config.emailFrom,
+        ...message,name:`ACA weekly learning ${edition.week}`,from:settings.newsletter_from || config.emailFrom,
         segmentId:settings.segment_id,topicId:settings.topic_id,send:false,
       }))
       id=result.id
@@ -56,11 +57,28 @@ export async function dispatchReadyEditions(config,settings,currentWeek) {
   if(!settings.delivery_enabled) return {held:'delivery_not_enabled'}
   if(!settings.mailing_address?.trim()) return {held:'mailing_address_required'}
   // Any unresolved local preference change blocks dispatch until synchronization.
-  const pending=checked(await config.db.from('aca_update_subscriptions').select('email').or('synced_at.is.null,sync_error.not.is.null').limit(1))
+  const pending=checked(await config.db.from('aca_update_subscriptions').select('email').or('synced_at.is.null,sync_error.not.is.null,routing_synced.eq.false').limit(1))
   if(pending.length) return {held:'subscriber_preferences_pending'}
   const active=checked(await config.db.from('aca_update_subscriptions').select('email').eq('status','active').limit(1))
   if(!active.length) return {held:'no_opted_in_subscribers'}
-  const editions=checked(await config.db.from('aca_newsletter_editions').select('*').lt('week',currentWeek).neq('status','sent').order('week',{ascending:true}).limit(1))
+  const editions=checked(await config.db.from(config.newsletterTable || 'aca_newsletter_editions').select('*').lt('week',currentWeek).neq('status','sent').order('week',{ascending:true}).limit(1))
   if(!editions.length) return {held:'no_new_edition'}
-  return dispatchEdition(config,editions[0],settings)
+  const parent=editions[0]
+  const outcomes={}
+  for(const [category,topicId] of Object.entries(INTEREST_TOPICS)) {
+    const items=routeItems(parent.items,category)
+    if(!items.length) continue
+    const week=`${parent.week}:${category}`
+    let child=checked(await config.db.from('aca_newsletter_interest_editions').select('*').eq('week',week).maybeSingle())
+    if(!child) {
+      // Ignore a racing insert; always re-read the one durable category edition.
+      checked(await config.db.from('aca_newsletter_interest_editions').upsert({week,parent_week:parent.week,category,items},{onConflict:'week',ignoreDuplicates:true}))
+      child=checked(await config.db.from('aca_newsletter_interest_editions').select('*').eq('week',week).maybeSingle())
+    }
+    outcomes[category]=child.status==='sent'?{submitted:true}:await dispatchEdition({...config,newsletterTable:'aca_newsletter_interest_editions'},child,{...settings,topic_id:topicId})
+  }
+  if(Object.keys(outcomes).length && Object.values(outcomes).every(x=>x.submitted)) {
+    checked(await config.db.from('aca_newsletter_editions').update({status:'sent',dispatch_state:'submitted',submitted_at:new Date().toISOString()}).eq('week',parent.week))
+  }
+  return {categories:outcomes}
 }

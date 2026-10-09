@@ -61,12 +61,13 @@ Deno.serve(async (request: Request) => {
   const firstName = clean(payload.firstName, 100);
   const lastName = clean(payload.lastName, 100);
   const email = clean(payload.email, 254).toLowerCase();
-  const interest = clean(payload.interest, 120);
+  const interests = [...new Set((Array.isArray(payload.interests) ? payload.interests : [payload.interest]).map(x=>clean(x,120)))];
+  const interest = interests[0];
   const consent = payload.consent === true;
   const emailParts = email.split("@");
   const validEmail = emailParts.length === 2 && emailParts[0].length > 0 && emailParts[1].includes(".") && !email.includes(" ");
 
-  if (!firstName || !lastName || !validEmail || !INTERESTS.has(interest) || !consent) {
+  if (!firstName || !lastName || !validEmail || !interests.length || interests.length > 4 || interests.some(x=>!INTERESTS.has(x)) || !consent) {
     return respond({
       ok: false,
       message: "Please complete every required field with a valid email address.",
@@ -111,8 +112,8 @@ Deno.serve(async (request: Request) => {
     const preferences = await fetch(`${url}/rest/v1/aca_update_subscriptions?on_conflict=email`, {
       method: "POST",
       headers: {"apikey": key, "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates,return=representation"},
-      body: JSON.stringify({email,first_name:firstName,last_name:lastName,interest_area:interest,
-        consent_at:new Date().toISOString(),source:"aca_website_explicit_opt_in",synced_at:null}),
+      body: JSON.stringify({email,first_name:firstName,last_name:lastName,interest_area:interest,interests,
+        consent_at:new Date().toISOString(),source:"aca_website_explicit_opt_in",synced_at:null,routing_synced:false}),
     });
     if (!preferences.ok) return respond({ok:false,message:"We saved your interest, but could not save update preferences. Please try again."},503,origin);
     updateSubscription = (await preferences.json())[0];
@@ -135,8 +136,8 @@ Deno.serve(async (request: Request) => {
         from: fromEmail,
         to: [email],
         subject: "Welcome to the AI Confidence Academy interest list",
-        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#14213d;max-width:620px;margin:auto"><h1>Thank you, ${safeName}.</h1><p>You are now on the AI Confidence Academy interest list.</p><p>We will keep you informed as enrollment dates, learning opportunities, and Academy resources become available.</p><p><strong>People come first. AI is the tool. Confidence is the product.</strong></p><p>— AI Confidence Academy</p><p><a href="${unsubscribeUrl}">Unsubscribe from ACA updates</a></p></div>`,
-        text: `Thank you, ${firstName}. You are now on the AI Confidence Academy interest list. We will keep you informed as enrollment dates, learning opportunities, and Academy resources become available. People come first. AI is the tool. Confidence is the product. Unsubscribe: ${unsubscribeUrl}`,
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#14213d;max-width:620px;margin:auto"><h1>Thank you, ${safeName}.</h1><p>You are now on the AI Confidence Academy interest list.</p><p>You selected: ${interests.map(escapeHtml).join(", ")}. We will send updates that match these interests.</p><p><strong>People come first. AI is the tool. Confidence is the product.</strong></p><p>— AI Confidence Academy</p><p><a href="${unsubscribeUrl}">Unsubscribe from ACA updates</a></p></div>`,
+        text: `Thank you, ${firstName}. You are now on the AI Confidence Academy interest list. You selected: ${interests.map(escapeHtml).join(", ")}. We will send updates that match these interests. People come first. AI is the tool. Confidence is the product. Unsubscribe: ${unsubscribeUrl}`,
       }),
     });
     emailSent = sent.ok;

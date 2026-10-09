@@ -82,7 +82,7 @@
 
   const interest = new URLSearchParams(window.location.search).get('interest');
   const selectedInterest = { books: 'Books & Resources', videos: 'Videos', updates: 'ACA updates' }[interest];
-  if (selectedInterest) form.elements.interest.value = selectedInterest;
+  if (selectedInterest) form.querySelectorAll('input[name=interest]').forEach(input=>{input.checked=input.value===selectedInterest;});
 
   const endpoint = 'https://ymmkodlifpxutynpjnxm.supabase.co/functions/v1/aca-interest-list';
   const submitButton = form.querySelector('button[type="submit"]');
@@ -96,6 +96,13 @@
     }
 
     const data = new FormData(form);
+    if (!data.getAll('interest').length) {
+      const first=form.querySelector('input[name=interest]');
+      first.setCustomValidity('Please select at least one interest.');first.reportValidity();
+      first.onchange=()=>first.setCustomValidity('');
+      form.querySelectorAll('input[name=interest]').forEach(input=>input.addEventListener('change',()=>first.setCustomValidity(''),{once:true}));
+      return;
+    }
     const originalLabel = submitButton?.textContent || 'Join the interest list';
 
     if (submitButton) {
@@ -114,6 +121,7 @@
           lastName: data.get('lastName'),
           email: data.get('email'),
           interest: data.get('interest'),
+          interests: data.getAll('interest'),
           consent: data.get('consent') === 'yes',
           website: data.get('website'),
         }),

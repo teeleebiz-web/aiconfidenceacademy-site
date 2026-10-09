@@ -1,29 +1,23 @@
-# ACA email separation and weekly updates
+# ACA optional updates: interests and weekly delivery
 
-## Established boundaries
+The live signup offers multiple choices: Phase One (enrollment information), Videos, Books & Resources, and ACA updates (Academy news and AI notes). Existing single-interest records in `aca_update_subscriptions` retain their original interest via a read fallback. Historical `aca_interest_list` records are not imported or reclassified.
 
-Enrollment invitations, lesson notices, and installment/payment notices continue through their existing transactional sender and `aca_email_events`. That sender does not consult newsletter preferences. Its code, existing tests, and operational records are unchanged.
+## Delivery
 
-Optional updates have a dedicated `aca_update_subscriptions` table. New explicit interest-form submissions write consent here. A normalized email can be an enrolled learner, a payment-plan customer, an optional subscriber, or any combination. Enrollment and payments do not imply newsletter consent. Historical interest-list test rows are not imported, deleted, disabled, or reclassified.
+The existing daily maintenance at 18:00 UTC synchronizes optional subscribers and prepares weekly editions. Each completed week produces a separate broadcast for each category with new published material. Broadcasts require both the existing ACA Learning Updates segment and the appropriate opt-out-by-default Resend topic. A person choosing multiple categories may receive one message per selected category with new content. Empty weeks do not send.
 
-The existing Resend `ACA Learning Updates` segment is used only for optional mailings, with the `ACA Learning Updates` preference topic. Broadcasts must specify BOTH segment and topic. The topic's default is opt-in, but segment membership still requires an explicit optional subscription; creating a topic alone sends nothing. Provider-wide or topic-specific opt-outs are respected, never silently reversed. Unsubscribe changes only optional preferences and this segment/topic.
+`newsletter-interests.mjs` defines the four topics and content routing. New videos route to Videos. Newly published books and Explore resources route to Books & Resources. Published `content/public-hub.json` updates default to ACA updates. For an enrollment announcement, set `newsletter_category` to `Phase One` on its published update entry. Use the exact category names for any explicit override. Write the public announcement first; the system does not invent enrollment dates or AI news. Existing books/resources are baselined once, not announced as new.
 
-## Preparation and delivery
+Original weekly editions remain in place. `aca_newsletter_interest_editions` holds a durable broadcast record per week/category using the established dispatch state machine. A retry cannot blindly recreate an uncertain broadcast or resend a recorded submission. Native provider topic/global opt-outs are respected. Each category is enabled from explicit signup selection once; routine sync never re-enables a previously activated topic after a native opt-out. The welcome unsubscribe link stops all optional ACA updates.
 
-The daily protected maintenance route remains scheduled at 18:00 UTC. It collects published instructor/demonstration videos and Academy notes into one draft per UTC week. The existing ten videos and one note were baselined, not treated as new announcements.
+## Boundaries
 
-The completed delivery module processes closed weekly editions only, uses the cream/navy/gold email template, requires a business mailing address, requires synchronized preferences, and skips empty recipient lists and empty editions. Each edition records exactly one Resend broadcast ID. Atomic claims prevent two workers from creating or sending the same edition. Ambiguous creation is held for review; uncertain sending is reconciled against the saved broadcast, not blindly resent. Resend provides native unsubscribe, delivery statistics, and suppression handling for the broadcast.
+Payment notices, lesson releases, and enrollment invitations retain their existing sender, credentials, records, and tests. Optional preferences do not control those transactional messages. RLS protects both optional subscription and edition tables; only server credentials can access them.
 
-## Production state
+The approved separate production `ACA_NEWSLETTER_RESEND_KEY` is installed. The operational `RESEND_API_KEY` is unchanged. The approved business mailing address is stored in `aca_newsletter_state.settings`. Newsletter sending uses `newsletter_from` separately from the operational sender; this configures a sending identity, not a receiving mailbox.
 
-The existing `RESEND_API_KEY` is verified send-only (`restricted_api_key` on the read-only segment check). Its value and operational usage are unchanged. Newsletter management uses a separate `ACA_NEWSLETTER_RESEND_KEY`, currently unset. That credential needs Resend management access; provision it only after approval. Never broaden or replace the operational key to enable newsletters.
-
-Preparation remains active. Contact synchronization and public delivery remain OFF. Automatic approval review rejected copying a historical signup, re-enabling synchronization, and adding a read-only enrollment/payment lookup without exact approval. The safe empty-store schema was applied separately. `newsletter-routing-schema.sql` now contains only the safer, unapplied future-opt-in activation proposal. It does not copy existing records or read enrollment/payment data.
-
-The remaining activation decision is to enable optional-subscriber synchronization and weekly delivery after the mailing address is supplied. Any historical signup migration or read-only account-status lookup requires separate approval. Existing tests remain untouched.
+Resend's current plan permits three segments. ACA routing uses topics in its existing ACA segment, requiring no plan change. An empty ACA Video Updates segment was created during capability verification but is unused; no preexisting segment was removed.
 
 ## Verification
 
-Run `node --test academy/email/*.test.mjs academy/server.test.mjs academy/enrollment/*.test.mjs`.
-
-Inspect `aca_newsletter_state.last_run`, optional subscriber sync errors, and `aca_newsletter_editions.dispatch_state`. `needs_review`, `creating`, or `sending` records must be reconciled with Resend before retrying. Never create a replacement broadcast merely because a network response was lost.
+Run `node --test academy/email/*.test.mjs academy/server.test.mjs academy/enrollment/*.test.mjs`. Check the live signup, topic preferences, `aca_newsletter_state.last_run`, and dispatch records after deployment. Existing original test records must remain unchanged. Use new task-specific provider test addresses for live checks.

@@ -14,7 +14,9 @@ for (const page of pages) {
 const hub = JSON.parse(await readFile('content/public-hub.json', 'utf8'))
 await writeFile('private-dist/newsletter-catalog.json', JSON.stringify([
   ...videoCatalog(await readFile('videos/index.html','utf8')),
-  ...hub.updates.map(item=>({id:`note:${item.slug}`,title:item.title,url:`https://aiconfidenceacademy.org/explore/updates/${item.slug}/`,kind:'note'})),
+  ...hub.books.map(item=>({id:`book:${item.slug}`,title:item.title,url:`https://aiconfidenceacademy.org/library/${item.slug}/`,kind:'book'})),
+  ...hub.articles.map(item=>({id:`resource:${item.slug}`,title:item.title,url:`https://aiconfidenceacademy.org/explore/${item.slug}/`,kind:'resource'})),
+  ...hub.updates.map(item=>({id:`note:${item.slug}`,title:item.title,url:`https://aiconfidenceacademy.org/explore/updates/${item.slug}/`,kind:'note',category:item.newsletter_category || 'ACA updates'})),
 ]))
 for (const [section, entries] of [['explore', hub.articles], ['library', hub.books]]) {
   for (const { slug } of entries) {

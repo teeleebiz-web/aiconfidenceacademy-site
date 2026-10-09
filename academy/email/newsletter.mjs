@@ -1,3 +1,4 @@
+import {INTEREST_TOPICS,subscriberInterests} from './newsletter-interests.mjs'
 import { readFile } from 'node:fs/promises'
 import { dispatchReadyEditions } from './newsletter-delivery.mjs'
 
@@ -34,17 +35,26 @@ export async function syncSubscriber(config, row, now) {
     checked(await config.db.from('aca_update_subscriptions').update({status:'unsubscribed'}).eq('email',row.email))
     row = {...row,status:'unsubscribed'}
   }
+  const chosen=subscriberInterests(row)
+  const activated=row.activated_interests || []
   if (row.status !== 'active') {
     if (contact) {
-      checked(await call(()=>config.resend.contacts.topics.update({id:contact.id,topics:[{id:TOPIC_ID,subscription:'opt_out'}]})))
+      checked(await call(()=>config.resend.contacts.topics.update({id:contact.id,topics:[TOPIC_ID,...Object.values(INTEREST_TOPICS)].map(id=>({id,subscription:'opt_out'}))})))
       const removed=await call(()=>config.resend.contacts.segments.remove({contactId:contact.id,segmentId:SEGMENT_ID}))
       if(removed.error?.statusCode !== 404) checked(removed)
     }
   } else {
     if (!contact) contact = checked(await call(()=>config.resend.contacts.create({email:row.email,firstName:row.first_name,lastName:row.last_name})))
+    // Initialize only newly selected interests. Later native opt-outs remain authoritative.
+    const changes=Object.entries(INTEREST_TOPICS).flatMap(([interest,id])=>{
+      if(!chosen.includes(interest)) return [{id,subscription:'opt_out'}]
+      if(!activated.includes(interest)) return [{id,subscription:'opt_in'}]
+      return []
+    })
+    if(changes.length) checked(await call(()=>config.resend.contacts.topics.update({id:contact.id,topics:changes})))
     checked(await call(()=>config.resend.contacts.segments.add({contactId:contact.id,segmentId:SEGMENT_ID})))
   }
-  checked(await config.db.from('aca_update_subscriptions').update({synced_at:now,sync_error:null}).eq('email',row.email))
+  checked(await config.db.from('aca_update_subscriptions').update({synced_at:now,sync_error:null,routing_synced:true,activated_interests:[...new Set([...activated,...chosen])]}).eq('email',row.email))
   return row.status
 }
 
@@ -54,6 +64,14 @@ export async function prepareEdition(db, catalog, now = new Date()) {
   if (!previous) {
     checked(await db.from('aca_newsletter_state').insert({id:'catalog',value:catalog.map(item=>item.id)}))
     return {baseline:catalog.length,added:0}
+  }
+  // Baseline newly monitored books/resources once; do not announce the existing catalog.
+  const resources=checked(await db.from('aca_newsletter_state').select('value').eq('id','resource_baseline').maybeSingle())
+  if(!resources) {
+    const old=catalog.filter(x=>['book','resource'].includes(x.kind)).map(x=>x.id)
+    previous.value=[...new Set([...previous.value,...old])]
+    checked(await db.from('aca_newsletter_state').update({value:previous.value}).eq('id','catalog'))
+    checked(await db.from('aca_newsletter_state').insert({id:'resource_baseline',value:true}))
   }
   const fresh = catalog.filter(item => !previous.value.includes(item.id))
   if (!fresh.length) return {added:0}
@@ -112,7 +130,7 @@ export async function handleNewsletterUnsubscribe(req,res,config) {
   if(!config?.db) return json(res,503,{error:'Please try again shortly'})
   try {
     let store='aca_update_subscriptions'
-    let row = checked(await config.db.from(store).select('email,status,consent_at').eq('unsubscribe_token',token).maybeSingle())
+    let row = checked(await config.db.from(store).select('email,status,consent_at,interest_area,interests,activated_interests').eq('unsubscribe_token',token).maybeSingle())
     // Previously issued welcome links stay valid. They change only the original
     // optional-interest preference, never enrollment or payment records.
     if(!row) { store='aca_interest_list'; row=checked(await config.db.from(store).select('id,email,status,first_name,last_name,last_submitted_at').eq('unsubscribe_token',token).maybeSingle()) }
