@@ -38,9 +38,9 @@ function makeLesson(index: number): PreviewLesson {
         verify_and_save: 'Verification.',
         applied_completion_check: 'Applied evidence.',
       },
-      ...(id === '1.1'
+      ...(id === '1.1' || id === '1.2'
         ? { phase_two_production: {
-            lesson_id: '1.1',
+            lesson_id: id,
             approval_status: 'founder_review_not_published',
           } as unknown as NonNullable<PreviewLesson['content']['phase_two_production']> }
         : {}),
@@ -51,15 +51,20 @@ function makeLesson(index: number): PreviewLesson {
 const lessons = Array.from({ length: 36 }, (_, i) => makeLesson(i))
 
 describe('Phase Two protected production walkthrough', () => {
-  it('shows expanded 1.1 and preserves the original brief for the next unexpanded lesson', async () => {
+  it('shows expanded lessons and preserves the original brief for unexpanded lessons', async () => {
     const user = userEvent.setup()
     render(<PhaseTwoExperiencePreview journeys={journeys} lessons={lessons} />)
     expect(screen.getByText('Expanded production for lesson 1.1')).toBeTruthy()
     expect(screen.queryByText('Original approved brief 1.1')).toBeNull()
 
     await user.click(screen.getByRole('button', { name: /1\.2.*Synthetic lesson 1\.2/i }))
-    expect(screen.getByText('Original approved brief 1.2')).toBeTruthy()
+    expect(screen.getByText('Expanded production for lesson 1.2')).toBeTruthy()
+    expect(screen.queryByText('Original approved brief 1.2')).toBeNull()
     expect(screen.queryByText('Expanded production for lesson 1.1')).toBeNull()
+
+    await user.click(screen.getByRole('button', { name: /1\.3.*Synthetic lesson 1\.3/i }))
+    expect(screen.getByText('Original approved brief 1.3')).toBeTruthy()
+    expect(screen.queryByText('Expanded production for lesson 1.2')).toBeNull()
 
     await user.click(screen.getByRole('button', { name: /1\.1.*Synthetic lesson 1\.1/i }))
     expect(screen.getByText('Expanded production for lesson 1.1')).toBeTruthy()
