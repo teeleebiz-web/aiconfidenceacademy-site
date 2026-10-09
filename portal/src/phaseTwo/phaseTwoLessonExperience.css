@@ -52,3 +52,12 @@
 .p2-responsibility-visual>a{font-size:.86rem;font-weight:750;color:#174669;text-underline-offset:3px}
 @media(max-width:780px){.p2-responsibility-visual ol{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-responsibility-visual li{min-height:0}}
 @media(max-width:430px){.p2-responsibility-visual ol{grid-template-columns:1fr}.p2-lesson-overview-video{flex-direction:column;align-items:flex-start}}
+
+
+/* Keep instructor previews at the established ACA lesson-video display size. */
+.p2-lesson-avatar{margin:1.5rem auto 0;padding:0 clamp(1rem,3vw,2.1rem);max-width:760px}
+.p2-lesson-avatar h2{font:700 1.3rem Georgia,serif;text-align:center;color:#163c59;margin:0 0 1rem}
+.p2-lesson-avatar video{display:block;width:100%;max-width:640px;height:auto;aspect-ratio:16/9;margin:0 auto 1rem;border-radius:12px;background:#102d4f;object-fit:contain}
+.p2-lesson-avatar details{max-width:640px;margin:.7rem auto 0;background:#f7f2e8;padding:1rem;border-radius:10px;color:#36536d}
+.p2-lesson-avatar summary{cursor:pointer;color:#163c59;font-weight:750}
+.p2-lesson-avatar details p{font-size:.92rem;line-height:1.75}
