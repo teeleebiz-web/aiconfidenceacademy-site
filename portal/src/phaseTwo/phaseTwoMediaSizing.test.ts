@@ -1,3 +1,4 @@
+export {}
 const fs = await vi.importActual<{ readFileSync: (file: string, encoding: string) => string }>('node:fs')
 const nodeProcess = await vi.importActual<{ cwd: () => string }>('node:process')
 const styles = fs.readFileSync(nodeProcess.cwd() + '/portal/src/phaseTwo/phaseTwoLessonExperience.css', 'utf8')
