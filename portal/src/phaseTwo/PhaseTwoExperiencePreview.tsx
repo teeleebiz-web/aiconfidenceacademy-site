@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { PHASE_TWO_EVIDENCE_SECTIONS } from './phaseTwoProject'
+import { PhaseTwoOrientation } from './PhaseTwoOrientation'
 import './phaseTwoExperiencePreview.css'
 
 export type PreviewJourney = {
@@ -35,7 +36,7 @@ export type PreviewLesson = {
   }
 }
 
-type PreviewTab = 'lessons' | 'project'
+type PreviewTab = 'orientation' | 'lessons' | 'project'
 const labels = [
   { key: 'teaching', title: 'Understand the work' },
   { key: 'worked_case', title: 'See a worked case' },
@@ -104,11 +105,14 @@ export function PhaseTwoExperiencePreview({
         </div>
       </section>
       <div className="p2-walkthrough-tabs" role="group" aria-label="Learner preview sections">
+        <button type="button" aria-pressed={tab === 'orientation'} onClick={() => setTab('orientation')}>Orientation</button>
         <button type="button" aria-pressed={tab === 'lessons'} onClick={() => setTab('lessons')}>The lessons</button>
         <button type="button" aria-pressed={tab === 'project'} onClick={() => setTab('project')}>My Project Record</button>
       </div>
 
-      {tab === 'project' ? (
+      {tab === 'orientation' ? (
+        <PhaseTwoOrientation preview />
+      ) : tab === 'project' ? (
         <section className="p2-walkthrough-project" aria-labelledby="p2-project-preview-title">
           <p className="eyebrow">One project · Six weeks</p>
           <h3 id="p2-project-preview-title">The work you build and keep</h3>
