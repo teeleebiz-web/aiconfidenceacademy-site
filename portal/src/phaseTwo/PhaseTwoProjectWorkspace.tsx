@@ -37,6 +37,7 @@ export function PhaseTwoProjectWorkspace({ enrollmentId }: { enrollmentId: strin
   const [revisions, setRevisions] = useState<Revision[]>([])
   const [message, setMessage] = useState('')
   const editVersions = useRef<Record<string, number>>({})
+  const confirmedVersions = useRef<Record<string, number>>({})
   const saving = useRef(false)
 
   useEffect(() => {
@@ -57,6 +58,7 @@ export function PhaseTwoProjectWorkspace({ enrollmentId }: { enrollmentId: strin
       setSavedVersion(record?.version_number ?? 0)
       setRevisions(previous)
       editVersions.current = {}
+      confirmedVersions.current = {}
       setDirtyFields([])
       setStatus('ready')
     }).catch(() => {
@@ -101,8 +103,13 @@ export function PhaseTwoProjectWorkspace({ enrollmentId }: { enrollmentId: strin
         created_at: result.saved_at }, ...current])
       setDirtyFields(current => current.filter(field => (editVersions.current[field] ?? 0) !== generation[field]))
       setDecisionNote(current => current === (lastNote ?? '') ? '' : current)
-      setStatus('saved')
-      setMessage('Project draft saved securely. Your prior versions remain available for review.')
+      for (const field of changed) confirmedVersions.current[field] = generation[field]
+      const stillUnsaved = Object.entries(editVersions.current).some(([field, revision]) =>
+        revision !== (confirmedVersions.current[field] ?? 0))
+      setStatus(stillUnsaved ? 'dirty' : 'saved')
+      setMessage(stillUnsaved
+        ? 'Saved the previous edits. Newer changes are waiting to save.'
+        : 'Project draft saved securely. Your prior versions remain available for review.')
     } catch {
       setStatus('error')
       setMessage('Autosave could not complete. Your text remains here. Choose Retry save.')
