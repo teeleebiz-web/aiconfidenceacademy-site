@@ -14,6 +14,7 @@ type PhaseTwoLessonExperienceProps = {
   remainingSeconds?: number
   enrollmentId?: string
   introAudio?: { url: string; transcript: string }
+  introVideo?: { url: string; transcript: string }
 }
 
 /**
@@ -33,6 +34,7 @@ export function PhaseTwoLessonExperience({
   remainingSeconds,
   enrollmentId,
   introAudio,
+  introVideo,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
   return (
@@ -60,6 +62,27 @@ export function PhaseTwoLessonExperience({
             <h1>{lessonTitle}</h1>
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
+
+          {medium === 'audio' && introVideo?.url && (
+            <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
+              <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
+              <video
+                controls
+                playsInline
+                preload="metadata"
+                src={introVideo.url}
+                aria-label={`Lesson ${pageId} instructor introduction video`}
+              >
+                Your browser does not support video playback.
+              </video>
+              {introVideo.transcript.trim() && (
+                <details>
+                  <summary>Read the lesson introduction</summary>
+                  {introVideo.transcript.split('\n\n').map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                </details>
+              )}
+            </section>
+          )}
 
           <section className="p2-lesson-overview-video" aria-label={medium === 'video' ? 'Lesson video introduction' : 'Lesson audio introduction'}>
             <div className="p2-overview-video-symbol" aria-hidden="true">{medium === 'video' ? '▶' : '♫'}</div>
