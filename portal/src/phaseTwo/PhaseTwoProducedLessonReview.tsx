@@ -94,7 +94,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false }
   }
 
   return (
-    <div className="p2-produced" aria-label="Expanded instructional production draft">
+    <div className="p2-produced" aria-label={learnerMode ? "Lesson teaching and practice" : "Expanded instructional production draft"}>
       <section className="p2-produced-intro" aria-labelledby="p2-produced-overview-title">
         <p className="eyebrow">Lesson {production.lesson_id}</p>
         <h4 id="p2-produced-overview-title">What you will be able to demonstrate</h4>
