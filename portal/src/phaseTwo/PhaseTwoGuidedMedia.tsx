@@ -12,7 +12,7 @@ export type GuidedInstructionMedia = {
   duration_seconds: number
   chapters: GuidedAudioChapter[]
   voice_id?: string
-  approvalStatus: 'founder_approved'
+  approvalStatus: 'founder_approved' | 'founder_review_pending'
 }
 
 export type VisualDemoClip = {
