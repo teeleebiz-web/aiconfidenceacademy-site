@@ -42,3 +42,11 @@ All URLs below are stable Academy-hosted files, not temporary HeyGen signed sour
 User can open the direct signed-in Lesson 1.1 URL to inspect the entire media and project practice sequence. The next engineering task is a controlled enrolled-learner acceptance test of completed form, successful save, refresh/resume, revision preservation, denied access to other students and session timing—without activating Phase Two for the public. Do not call Lesson 1.1 production-complete until these real user flows and a visual/audio learner pilot have passed.
 
 Build source stays in protected PR #36 (`phase-two-six-journey-owner-review`). Other lessons and Phase One remain untouched.
+
+## Founder review gate — clarified before release
+
+The Japanese avatar *introduction* was explicitly viewed and accepted by the founder. The newly produced **10:46 substantive audio and four short visual demonstrations have not yet been evaluated by the founder**. Their protected lesson metadata are marked `founder_review_pending`, with explicit owner-only review rendering. General enrolled-learner components continue to withhold pending clips and audio. 168 automated tests in 36 files passed for this gating.
+
+The underlying GitHub Pages media asset URLs are technically directly accessible to anyone possessing them; the signed-in owner review page itself remains restricted. Do **not** represent these public asset URLs as private authenticated streaming or use this prototype storage arrangement to launch a paid course. The existing Supabase private media bucket/signed playback infrastructure is a future production gate for new protected course media.
+
+The user should review the complete owner-authenticated Lesson 1.1 via the direct Academy link before media approval changes or public enrollment. No course activation has been made.
