@@ -17,18 +17,24 @@ function assetFrom(html, extension) {
   if (!match) throw new Error('Cannot identify a verified '+extension+' asset in the site HTML.')
   return match[0]
 }
-const oldJs = assetFrom(currentHtml, 'js')
-const oldCss = assetFrom(currentHtml, 'css')
+// The official page may already contain a previous protected review bundle.
+ // Preserve its original learner module and stylesheet across each review update.
+const existingReview = currentHtml.includes('data-aca-phase-two-official-review-bootstrap')
+const standardScript = /<script\s+type="module"\s+crossorigin\s+src="\/learn\/assets\/[A-Za-z0-9_.-]+\.js"><\/script>/i
+const reviewScript = /<script\s+type="module"\s+crossorigin\s+data-aca-phase-two-official-review-bootstrap="true">[\s\S]*?<\/script>/i
+const originalModule = existingReview
+  ? currentHtml.match(/else\s*\{\s*await import\("(\/learn\/assets\/[A-Za-z0-9_.-]+\.js)"\);\s*\}/)?.[1]
+  : assetFrom(currentHtml, 'js')
+const originalStyles = currentHtml.match(/<link\s+rel="stylesheet"\s+crossorigin\s+href="(\/learn\/assets\/[A-Za-z0-9_.-]+\.css)">/i)?.[1]
+if (!originalModule || !originalStyles) throw new Error('The established learner assets could not be identified.')
+const oldJs = originalModule
+const oldCss = originalStyles
 const newJs = assetFrom(builtHtml, 'js')
 const newCss = assetFrom(builtHtml, 'css')
-if (oldJs === newJs) throw new Error('The founder-review bundle unexpectedly equals the official learner bundle.')
+if (oldJs === newJs) throw new Error('A new owner-review bundle was not generated.')
 if (!currentHtml.includes(oldJs) || !currentHtml.includes(oldCss)) throw new Error('Official learner HTML changed unexpectedly.')
-if (currentHtml.includes('aca-phase-two-official-review-bootstrap')) {
-  throw new Error('A review bootstrap already exists; reconcile before updating.')
-}
-
-const scriptPattern = /<script\s+type="module"\s+crossorigin\s+src="\/learn\/assets\/[A-Za-z0-9_.-]+\.js"><\/script>/i
-if (!scriptPattern.test(currentHtml)) throw new Error('Official learner script does not match the established pattern.')
+const scriptPattern = existingReview ? reviewScript : standardScript
+if (!scriptPattern.test(currentHtml)) throw new Error('Official learner entry does not match an approved prior format.')
 const officialAssets=join(officialDir,'learn','assets')
 const builtAssets=join(builtDir,'assets')
 await mkdir(officialAssets,{recursive:true})
