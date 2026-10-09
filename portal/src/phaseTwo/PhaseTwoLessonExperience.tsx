@@ -1,5 +1,6 @@
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
+import { PhaseTwoGuidedAudio, type GuidedInstructionMedia, type VisualDemoClip } from './PhaseTwoGuidedMedia'
 import './phaseTwoLessonExperience.css'
 
 type PhaseTwoLessonExperienceProps = {
@@ -15,6 +16,8 @@ type PhaseTwoLessonExperienceProps = {
   enrollmentId?: string
   introAudio?: { url: string; transcript: string }
   introVideo?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
+  guidedInstruction?: GuidedInstructionMedia
+  demoClips?: VisualDemoClip[]
 }
 
 /**
@@ -35,8 +38,15 @@ export function PhaseTwoLessonExperience({
   enrollmentId,
   introAudio,
   introVideo,
+  guidedInstruction,
+  demoClips,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
+  const approvedGuidedAudio = guidedInstruction?.approvalStatus === 'founder_approved' &&
+    guidedInstruction.voice_id === 'ac277b338cf64d8b9686784c43c563da' &&
+    /^https:\/\//.test(guidedInstruction.url) &&
+    Array.isArray(guidedInstruction.chapters) && guidedInstruction.chapters.length === 4
+      ? guidedInstruction : null
   const approvedVideo = introVideo?.approvalStatus === 'founder_approved' &&
     /^https:\/\//.test(introVideo.url) && introVideo.transcript.trim().length > 0
       ? introVideo : null
@@ -88,7 +98,9 @@ export function PhaseTwoLessonExperience({
             </section>
           )}
 
-          <section className="p2-lesson-overview-video" aria-label={medium === 'video' ? 'Lesson video introduction' : 'Lesson audio introduction'}>
+          {approvedGuidedAudio
+            ? <PhaseTwoGuidedAudio lessonId={pageId} media={approvedGuidedAudio} />
+            : <section className="p2-lesson-overview-video" aria-label={medium === 'video' ? 'Lesson video introduction' : 'Lesson audio introduction'}>
             <div className="p2-overview-video-symbol" aria-hidden="true">{medium === 'video' ? '▶' : '♫'}</div>
             <div>
               <p className="p2-overview-video-eyebrow">Before you begin</p>
@@ -105,7 +117,7 @@ export function PhaseTwoLessonExperience({
                 </>
               ) : <p>{medium === 'video' ? 'Video placeholder' : 'Audio placeholder'}</p>}
             </div>
-          </section>
+          </section>}
 
           {usable ? (
             <>
@@ -139,7 +151,7 @@ export function PhaseTwoLessonExperience({
                 </section>
               )}
 
-              <PhaseTwoProducedLessonReview production={production} learnerMode enrollmentId={enrollmentId} />
+              <PhaseTwoProducedLessonReview production={production} learnerMode enrollmentId={enrollmentId} demoClips={demoClips} />
 
               {onOpenProject && (
                 <section className="p2-learner-experience-project" aria-labelledby="p2-project-link-title">
