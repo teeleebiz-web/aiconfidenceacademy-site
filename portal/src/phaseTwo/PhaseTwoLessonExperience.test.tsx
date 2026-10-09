@@ -65,7 +65,7 @@ describe('Phase Two learner lesson presentation', () => {
     />)
     const video = screen.getByLabelText('Lesson 1.1 instructor introduction video')
     expect(video.tagName.toLowerCase()).toBe('video')
-    expect(video).toHaveProperty('src', 'http://localhost:3000/assets/test-approved-instructor.mp4')
+    expect(video.getAttribute('src')).toBe('/assets/test-approved-instructor.mp4')
     expect(video).toHaveProperty('controls', true)
     expect(screen.getByText('Lesson teaching and practice')).toBeTruthy()
     expect(screen.getByText('Audio placeholder')).toBeTruthy()
