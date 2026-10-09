@@ -1,5 +1,6 @@
-const fs = await vi.importActual<{ readFileSync: (file: URL, encoding: string) => string }>('node:fs')
-const styles = fs.readFileSync(new URL('./phaseTwoLessonExperience.css', import.meta.url), 'utf8')
+const fs = await vi.importActual<{ readFileSync: (file: string, encoding: string) => string }>('node:fs')
+const nodeProcess = await vi.importActual<{ cwd: () => string }>('node:process')
+const styles = fs.readFileSync(nodeProcess.cwd() + '/portal/src/phaseTwo/phaseTwoLessonExperience.css', 'utf8')
 
 describe('ACA instructor video presentation contract', () => {
   it('preserves the established maximum 640-pixel instructor size and widescreen ratio', () => {
