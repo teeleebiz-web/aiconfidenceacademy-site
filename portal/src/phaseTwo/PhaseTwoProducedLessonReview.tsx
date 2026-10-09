@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { PhaseTwoPracticeStudio } from './PhaseTwoPracticeStudio'
+import { PhaseTwoDemoClips, type VisualDemoClip } from './PhaseTwoGuidedMedia'
 import { PhaseTwoVisualLab } from './PhaseTwoVisualLab'
 import { PhaseTwoNeedLab } from './PhaseTwoNeedLab'
 import './phaseTwoProducedLesson.css'
@@ -79,7 +80,7 @@ export function validProducedLesson(value: unknown, pageId: string): value is Ph
   return !!p.editorial_notes && isText(p.editorial_notes.status) && isText(p.editorial_notes.media)
 }
 
-export function PhaseTwoProducedLessonReview({ production, learnerMode = false, enrollmentId }: { production: PhaseTwoProducedLesson; learnerMode?: boolean; enrollmentId?: string }) {
+export function PhaseTwoProducedLessonReview({ production, learnerMode = false, enrollmentId, demoClips }: { production: PhaseTwoProducedLesson; learnerMode?: boolean; enrollmentId?: string; demoClips?: VisualDemoClip[] }) {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'unavailable'>('idle')
   const [showEvidence, setShowEvidence] = useState(true)
   const visualWalkthrough = learnerMode && production.lesson_id === '1.1'
@@ -131,6 +132,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
             <h4 id="p2-produced-case-title">{production.worked_case.label}</h4></div>
         </div>
         <p>{production.worked_case.setup}</p>
+        {visualWalkthrough && demoClips?.length === 4 && <PhaseTwoDemoClips clips={demoClips} />}
         {visualWalkthrough ? <PhaseTwoVisualLab workedCase={production.worked_case} /> : needWalkthrough ? <PhaseTwoNeedLab workedCase={production.worked_case} /> : <>
         <button className="p2-produced-evidence-toggle" type="button"
           aria-expanded={showEvidence} onClick={() => setShowEvidence(v => !v)}>
