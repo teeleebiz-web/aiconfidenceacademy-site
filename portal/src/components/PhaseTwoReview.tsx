@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { type FormEvent, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import sealUrl from '../../../aca-official-seal.png'
 import { supabase } from '../lib/supabase'
@@ -64,6 +64,42 @@ export function PhaseTwoReview() {
   const [status, setStatus] = useState<ReviewStatus>('loading')
   const [data, setData] = useState<ReviewData>({ journeys: [], lessons: [] })
   const [chosen, setChosen] = useState('1.1')
+  const [reviewEmail, setReviewEmail] = useState('')
+  const [reviewPassword, setReviewPassword] = useState('')
+  const [signInMethod, setSignInMethod] = useState<'password' | 'link'>('password')
+  const [signInBusy, setSignInBusy] = useState(false)
+  const [signInMessage, setSignInMessage] = useState('')
+
+  async function handleReviewSignIn(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setSignInBusy(true)
+    setSignInMessage('')
+    try {
+      if (signInMethod === 'password') {
+        const result = await supabase.auth.signInWithPassword({
+          email: reviewEmail.trim(),
+          password: reviewPassword,
+        })
+        if (result.error) throw result.error
+      } else {
+        const result = await supabase.auth.signInWithOtp({
+          email: reviewEmail.trim(),
+          options: {
+            shouldCreateUser: false,
+            emailRedirectTo: window.location.origin + '/learn/?review=phase-two',
+          },
+        })
+        if (result.error) throw result.error
+        setSignInMessage('Check your email for a secure sign-in link to this review.')
+      }
+    } catch {
+      setSignInMessage(signInMethod === 'password'
+        ? 'Sign-in failed. Check your Academy email and password.'
+        : 'The secure link could not be sent. Try again or use your Academy password.')
+    } finally {
+      setSignInBusy(false)
+    }
+  }
 
   useEffect(() => {
     let active = true
@@ -154,9 +190,31 @@ export function PhaseTwoReview() {
         {status === 'loading' && <p role="status">Checking protected curriculum access…</p>}
         {status === 'signed-out' && (
           <section className="p2-state" aria-labelledby="p2-sign-in">
-            <h1 id="p2-sign-in">Founder review sign-in required</h1>
-            <p>Sign in through your existing Academy learner portal, then open this protected review link again.</p>
-            <a href="/learn/">Open Academy sign-in</a>
+            <p className="eyebrow">Protected Academy review</p>
+            <h1 id="p2-sign-in">Founder review sign-in</h1>
+            <p>Use your existing Academy account. Access is limited to the authorized curriculum owner.</p>
+            <form className="p2-sign-in-form" onSubmit={handleReviewSignIn}>
+              <label htmlFor="p2-review-email">Academy email</label>
+              <input id="p2-review-email" type="email" autoComplete="email" required
+                value={reviewEmail} onChange={event => setReviewEmail(event.target.value)} />
+              {signInMethod === 'password' && (
+                <>
+                  <label htmlFor="p2-review-password">Password</label>
+                  <input id="p2-review-password" type="password" autoComplete="current-password"
+                    required value={reviewPassword} onChange={event => setReviewPassword(event.target.value)} />
+                </>
+              )}
+              <button type="submit" disabled={signInBusy}>
+                {signInBusy ? 'Please wait…' : signInMethod === 'password' ? 'Sign in securely' : 'Send secure sign-in link'}
+              </button>
+            </form>
+            {signInMessage && <p role="status">{signInMessage}</p>}
+            <button className="p2-auth-switch" type="button" onClick={() => {
+              setSignInMethod(signInMethod === 'password' ? 'link' : 'password')
+              setSignInMessage('')
+            }}>
+              {signInMethod === 'password' ? 'Use a one-time email link instead' : 'Use my password instead'}
+            </button>
           </section>
         )}
         {status === 'denied' && (
