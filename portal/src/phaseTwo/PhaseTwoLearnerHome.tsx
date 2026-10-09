@@ -5,6 +5,8 @@ import {
 } from './phaseTwoLearnerApi'
 import { PhaseTwoProjectWorkspace } from './PhaseTwoProjectWorkspace'
 import { PhaseTwoOrientation } from './PhaseTwoOrientation'
+import { PhaseTwoLessonExperience } from './PhaseTwoLessonExperience'
+import { validProducedLesson } from './PhaseTwoProducedLessonReview'
 import './phaseTwoLearnerHome.css'
 
 type View = 'overview' | 'lesson' | 'project'
@@ -103,6 +105,25 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
   }
 
   const teaching = opened?.lesson_content.phase_two
+  const expanded = opened?.lesson_content.phase_two_production
+  // A released, authenticated lesson uses the same complete learner-facing
+  // instruction as the Academy's lesson reader, with the real project link.
+  if (status === 'ready' && view === 'lesson' && opened &&
+      validProducedLesson(expanded, opened.page_id)) {
+    const journeyNumber = Number(opened.page_id.split('.')[0])
+    const linkedJourney = journeys.find(item => item.number === journeyNumber)
+    return <PhaseTwoLessonExperience
+      pageId={opened.page_id}
+      lessonTitle={opened.lesson_title}
+      journeyTitle={linkedJourney?.title ?? 'AI Strategy and Business Opportunity'}
+      purpose={opened.lesson_purpose}
+      medium={opened.lesson_content.planned_media === 'video' ? 'video' : 'audio'}
+      production={expanded}
+      remainingSeconds={remaining}
+      onBackToLessons={() => { setOpened(null); setView('overview') }}
+      onOpenProject={() => { setOpened(null); setView('project') }}
+    />
+  }
   return (
     <main className="phase-two-learner" id="phase-two-learning-home">
       <header className="p2-learner-header">
