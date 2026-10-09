@@ -13,6 +13,18 @@
 5. **Verify and improve.** Show a faulty or uncertain outcome, ask the learner to identify the issue, show the evidence and the correction route, and retain a meaningful decision note or artifact. Engagement clicks are not completion evidence.
 6. **Carry forward one piece of work.** Explain how the completed result is used in the next approved lesson. Keep any prerequisite visible and reasonable.
 
+## Model- and platform-independent learning
+
+- Learners may use any suitable permitted generative AI model or application, including tools already used by their employer or business. **No provider is a prerequisite** for learning, project saving, or assessment.
+- Teach transferable methods: define the need, describe context and constraints, request the work, inspect evidence, test failures, revise, document human responsibility, and connect the work into approved workflows.
+- The approved AI requests in Curriculum Master v2.0 must remain unchanged unless the founder explicitly revises that source. Present them as **tool-neutral instructions**, usable wherever an assistant accepts natural-language requests.
+- When showing an actual screen, clearly distinguish **the example platform** from **the required learning outcome**. A clip may demonstrate how to do a task in one application; the guided activity must tell learners how to use an equivalent feature or method in their chosen system.
+- Model-specific capabilities, agent integrations, APIs, deployment and automation permissions vary. Never promise a feature works on every provider or allow a demonstration's interface to become an unstated assessment requirement.
+- In the continuing Project Record, the learner may identify their chosen AI tool, but this field remains optional; the assessment concerns the learner's reasoning, verified output and decision evidence.
+- Protect sensitive data and organizational permissions. Learners must remove private details or use approved enterprise environments.
+- One audio-led or video-led lesson introduction appears according to the approved allocation; do not create a duplicated talking-head video and narration for the same introduction. Screen demonstrations and visual mini-lessons remain distinct instructional assets.
+- When a platform changes, preserve the lesson's method, example, and evidence standards while updating only the affected walkthrough details.
+
 ## Media in the lesson
 
 - **Avatar overview video:** Brief, calm orientation to the lesson and its task; separate from the primary lesson instruction. The user will record or approve media later. Keep the content editable and the player position ready.
