@@ -180,7 +180,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false }
         <div className="p2-produced-criteria">
           <h5>Completion evidence to be reviewed</h5>
           <ul>{production.completion_criteria.map(item => <li key={item}>{item}</li>)}</ul>
-          <p>Use these criteria to check your work before you submit it for review.</p>
+          <p>{learnerMode ? 'Use these criteria to check your work before you submit it for review.' : 'These criteria describe evidence, not automatic completion credit. Final review remains a separate human-approved process.'}</p>
         </div>
         <div className="p2-produced-handoff">
           <strong>Carry the work forward</strong><p>{production.handoff}</p>
