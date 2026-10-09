@@ -42,3 +42,18 @@ The curriculum master requires one lesson released **Monday through Saturday** i
 - Publication needs founder acceptance of the learner experience and actual playback, coverage verification against all 175 mapped objectives, release/access tests including Saturday and catch-up, and final human credential review.
 
 **No deletion without explicit confirmation. No publication or merge without founder approval.**
+
+## Implementation record — 2026-10-08
+
+These are completed **draft infrastructure and code** milestones, not activation or publication:
+
+- Six journey/36 lesson drafts remain unpublished in the separately identified Phase Two course.
+- A pure Phase Two six-week schedule engine and automated tests cover weekday first-open two-hour windows, late starts, Monday–Saturday release, Saturday-through-Sunday access, DST transitions, and authorized extensions. No release clock or cohort timezone has been selected.
+- Supabase additive migrations created six Phase Two-only tables, guarded saving for a single continuing project, immutable saved revisions, weekday session windows, authorized extension records, and course-scoped protected lesson RPCs. These migrations ran successfully; no cohorts, memberships, sessions, extensions or project records were created.
+- A metadata-only learner outline RPC and an authenticated lesson-opening RPC are available for later integration. Protected teaching must be delivered through the opening gate, never fetched based on date alone.
+- Staged learner UI components render the six journeys, release status, opened teaching, and the continuing project editor. Autosave and version history are backed by the isolated database functions. The learner UI is **not connected to any published route or enrollment yet**.
+- The founder review uses approved source teaching briefs, not finished 60-minute recordings. It now displays the separately approved weekday and Saturday teaching rhythms. Media assignments remain provisional.
+- Require browser/device, permission, timing, RLS, media-expiry, weekend/catch-up, project-persistence, and human assessment tests before activating the learner course.
+- Outstanding explicit policy gates: cohort timezone, release clock, accommodations, extension administration, post-course access, final rubric/weights, review turnaround, and founder sign-off.
+
+Do not report deployed draft database functions or preview components as evidence that the live learner experience has been accepted.
