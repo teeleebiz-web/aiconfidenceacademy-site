@@ -33,9 +33,23 @@ describe('Phase Two learner lesson presentation', () => {
     />)
     expect(screen.getByRole('heading', { name: 'Professional AI judgment and direction' })).toBeTruthy()
     expect(screen.getByText('Audio placeholder')).toBeTruthy()
+    expect(screen.getAllByText('Audio placeholder')).toHaveLength(1)
+    expect(screen.queryByText('Video placeholder')).toBeNull()
     expect(screen.getByText('Lesson teaching and practice')).toBeTruthy()
     expect(screen.queryByText(/founder|unpublished|publishing|preview|provisional|video slots|audio slots|course inventory/i)).toBeNull()
     expect(screen.queryByRole('button', { name: /submit|award|publish/i })).toBeNull()
+  })
+
+  it('shows one video introduction but no competing audio when the lesson is video-led', () => {
+    render(<PhaseTwoLessonExperience
+      pageId="1.2" lessonTitle="Find the need and establish the evidence"
+      journeyTitle="Journey 1 · AI Strategy and Business Opportunity"
+      purpose="Find an actual problem and test assumptions."
+      medium="video" production={lessonProduction}
+    />)
+    expect(screen.getByText('Video placeholder')).toBeTruthy()
+    expect(screen.getAllByText('Video placeholder')).toHaveLength(1)
+    expect(screen.queryByText('Audio placeholder')).toBeNull()
   })
 
   it('reuses existing lesson and project navigation for an enrolled learner', async () => {
