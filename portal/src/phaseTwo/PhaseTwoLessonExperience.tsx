@@ -57,20 +57,12 @@ export function PhaseTwoLessonExperience({
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
 
-          <section className="p2-lesson-overview-video" aria-label="Lesson video overview">
-            <div className="p2-overview-video-symbol" aria-hidden="true">▶</div>
+          <section className="p2-lesson-overview-video" aria-label={medium === 'video' ? 'Lesson video introduction' : 'Lesson audio introduction'}>
+            <div className="p2-overview-video-symbol" aria-hidden="true">{medium === 'video' ? '▶' : '♫'}</div>
             <div>
               <p className="p2-overview-video-eyebrow">Before you begin</p>
-              <h2>Lesson overview</h2>
-              <p>Video overview placeholder</p>
-            </div>
-          </section>
-
-          <section className="p2-learner-experience-media" aria-label="Lesson media">
-            <span aria-hidden="true" className="p2-learner-experience-media-icon">{medium === 'audio' ? '♫' : '▶'}</span>
-            <div>
-              <h2>{medium === 'audio' ? 'Audio lesson' : 'Video lesson'}</h2>
-              <p>{medium === 'audio' ? 'Audio placeholder' : 'Video placeholder'}</p>
+              <h2>{medium === 'video' ? 'Watch the lesson introduction' : 'Listen to the lesson introduction'}</h2>
+              <p>{medium === 'video' ? 'Video placeholder' : 'Audio placeholder'}</p>
             </div>
           </section>
 
