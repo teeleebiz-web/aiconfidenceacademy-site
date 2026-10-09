@@ -9,7 +9,18 @@
       content="The secure AI Confidence Academy learner portal."
     />
     <title>ACA Learner Portal</title>
-    <script type="module" crossorigin src="/learn/assets/index-CADaM_JG.js"></script>
+    <script type="module" crossorigin data-aca-phase-two-official-review-bootstrap="true">
+const review = new URLSearchParams(window.location.search).get('review') === 'phase-two';
+if (review) {
+  const style=document.createElement("link");
+  style.rel="stylesheet";
+  style.href="/learn/assets/index-CVdA81QY.css";
+  document.head.appendChild(style);
+  await import("/learn/assets/index-B0Niwry3.js");
+} else {
+  await import("/learn/assets/index-CADaM_JG.js");
+}
+</script>
     <link rel="stylesheet" crossorigin href="/learn/assets/index-lNdtIwBQ.css">
   </head>
   <body>
