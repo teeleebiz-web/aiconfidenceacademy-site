@@ -1,4 +1,5 @@
 import { cp, mkdir, readFile, writeFile, readdir } from 'node:fs/promises'
+import { videoCatalog } from './email/newsletter.mjs'
 const pages = ['', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'explore', 'faq', 'library', 'privacy', 'programs', 'reflections', 'refund-policy', 'terms', 'videos']
 // Only crawler instructions are public; website files stay behind the password gate.
 await mkdir('vercel-public', { recursive: true })
@@ -11,6 +12,10 @@ for (const page of pages) {
   await writeFile(`${target}/index.html`, html)
 }
 const hub = JSON.parse(await readFile('content/public-hub.json', 'utf8'))
+await writeFile('private-dist/newsletter-catalog.json', JSON.stringify([
+  ...videoCatalog(await readFile('videos/index.html','utf8')),
+  ...hub.updates.map(item=>({id:`note:${item.slug}`,title:item.title,url:`https://aiconfidenceacademy.org/explore/updates/${item.slug}/`,kind:'note'})),
+]))
 for (const [section, entries] of [['explore', hub.articles], ['library', hub.books]]) {
   for (const { slug } of entries) {
     const html = await readFile(`${section}/${slug}/index.html`, 'utf8')

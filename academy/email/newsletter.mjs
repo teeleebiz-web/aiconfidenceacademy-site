@@ -1,0 +1,104 @@
+import { readFile } from 'node:fs/promises'
+
+export const SEGMENT_ID = '033a0032-dddd-41f2-823d-227123b2b3f4'
+const checked = result => { if (result.error) throw result.error; return result.data }
+const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]))
+const json = (res, code, value) => { res.writeHead(code, { 'Content-Type':'application/json', 'Cache-Control':'no-store' }); res.end(JSON.stringify(value)) }
+
+export function videoCatalog(html) {
+  return [...html.matchAll(/<h3\b[^>]*\bid="(topic-[a-z0-9-]+)"[^>]*>([^<]+)<\/h3>/g)].map(([,id,title]) => ({
+    id: `video:${id}`, title: title.replace(/&amp;/g,'&'), url: `https://aiconfidenceacademy.org/videos/#${id}`, kind:'video',
+  }))
+}
+
+export function weekKey(now = new Date()) {
+  const date = new Date(now); date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 6) % 7)
+  return date.toISOString().slice(0,10)
+}
+
+export async function syncSubscriber(config, row, now) {
+  if (row.newsletter_excluded || !row.consent) return 'excluded'
+  const call = async task => { const result=await task(); if(!config.testMode) await new Promise(resolve=>setTimeout(resolve,600)); return result }
+  const result = await call(()=>config.resend.contacts.get({ email: row.email }))
+  if (result.error && result.error.statusCode !== 404) throw result.error
+  let contact = result.data
+  // Never restore a provider unsubscribe when a form is submitted again.
+  if (contact?.unsubscribed && row.status === 'active') {
+    checked(await config.db.from('aca_interest_list').update({status:'unsubscribed'}).eq('id',row.id))
+    row = {...row,status:'unsubscribed'}
+  }
+  if (row.status !== 'active') {
+    if (contact) {
+      const removed=await call(()=>config.resend.contacts.segments.remove({contactId:contact.id,segmentId:SEGMENT_ID}))
+      if(removed.error?.statusCode !== 404) checked(removed)
+    }
+  } else {
+    if (!contact) contact = checked(await call(()=>config.resend.contacts.create({email:row.email,firstName:row.first_name,lastName:row.last_name})))
+    checked(await call(()=>config.resend.contacts.segments.add({contactId:contact.id,segmentId:SEGMENT_ID})))
+  }
+  checked(await config.db.from('aca_interest_list').update({newsletter_synced_at:now,newsletter_error:null}).eq('id',row.id))
+  return row.status
+}
+
+export async function prepareEdition(db, catalog, now = new Date()) {
+  if (!catalog.length) throw new Error('Published catalog is empty; baseline preserved')
+  const previous = checked(await db.from('aca_newsletter_state').select('value').eq('id','catalog').maybeSingle())
+  if (!previous) {
+    checked(await db.from('aca_newsletter_state').insert({id:'catalog',value:catalog.map(item=>item.id)}))
+    return {baseline:catalog.length,added:0}
+  }
+  const fresh = catalog.filter(item => !previous.value.includes(item.id))
+  if (!fresh.length) return {added:0}
+  const week = weekKey(now)
+  const existing = checked(await db.from('aca_newsletter_editions').select('items,status').eq('week',week).maybeSingle())
+  // A reviewed edition is immutable. Unseen items remain pending for the following week.
+  if (existing && existing.status !== 'draft') return {added:0,pending:fresh.length}
+  const items = [...new Map([...(existing?.items || []),...fresh].map(item=>[item.id,item])).values()]
+  checked(await db.from('aca_newsletter_editions').upsert({week,status:'draft',items,updated_at:now.toISOString()},{onConflict:'week'}))
+  checked(await db.from('aca_newsletter_state').update({value:[...new Set([...previous.value,...fresh.map(item=>item.id)])],updated_at:now.toISOString()}).eq('id','catalog'))
+  return {week,added:fresh.length}
+}
+
+export async function runNewsletterMaintenance(config, catalog, now = new Date()) {
+  const started = now.toISOString()
+  const rows = checked(await config.db.from('aca_interest_list').select('id,email,first_name,last_name,status,consent,newsletter_excluded')
+    .eq('newsletter_excluded',false).order('newsletter_synced_at',{ascending:true,nullsFirst:true}).limit(10))
+  const summary = {mode:'prepare_only',checked:rows.length,synced:0,failed:0,edition:null}
+  for (const row of rows) {
+    try { await syncSubscriber(config,row,started); summary.synced++ }
+    catch { summary.failed++; checked(await config.db.from('aca_interest_list').update({newsletter_error:'Contact synchronization failed; retry scheduled',newsletter_synced_at:started}).eq('id',row.id)) }
+    // Stay below the provider request rate without retry storms.
+    await new Promise(resolve=>setTimeout(resolve,1600))
+  }
+  summary.edition = await prepareEdition(config.db,catalog,now)
+  checked(await config.db.from('aca_newsletter_state').upsert({id:'last_run',value:{...summary,at:started},updated_at:started}))
+  return summary
+}
+
+export async function handleNewsletterMaintenance(req,res,config,root) {
+  if(req.method !== 'GET') return json(res,405,{error:'Method not allowed'})
+  if(!config?.cronSecret || !config?.db || !config?.resend) return json(res,503,{error:'Newsletter maintenance is not configured'})
+  if(req.headers.authorization !== `Bearer ${config.cronSecret}`) return json(res,401,{error:'Unauthorized'})
+  try {
+    const catalog = JSON.parse(await readFile(`${root}/newsletter-catalog.json`,'utf8'))
+    return json(res,200,await runNewsletterMaintenance(config,catalog))
+  } catch { return json(res,500,{error:'Newsletter preparation failed'}) }
+}
+
+export async function handleNewsletterUnsubscribe(req,res,config) {
+  if(!['GET','POST'].includes(req.method)) return json(res,405,{error:'Method not allowed'})
+  const token = new URL(req.url,'https://checkout.aiconfidenceacademy.org').searchParams.get('token') || ''
+  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(token)) return json(res,400,{error:'Invalid unsubscribe link'})
+  if(!config?.db) return json(res,503,{error:'Please try again shortly'})
+  try {
+    const row = checked(await config.db.from('aca_interest_list').select('id,email,status,consent').eq('unsubscribe_token',token).maybeSingle())
+    if(!row) return json(res,400,{error:'Invalid unsubscribe link'})
+    if(req.method === 'POST') {
+      checked(await config.db.from('aca_interest_list').update({status:'unsubscribed',newsletter_synced_at:null}).eq('id',row.id))
+      if(config.resend) { try { await syncSubscriber(config,{...row,status:'unsubscribed'},new Date().toISOString()) } catch { /* Daily maintenance retries. */ } }
+    }
+    const done=req.method==='POST' || row.status==='unsubscribed'
+    res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'"})
+    res.end(`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ACA email preferences</title><body style="background:#f7f2e6;color:#102d50;font-family:Arial,sans-serif;padding:40px"><main style="max-width:580px;margin:auto;background:white;border:1px solid #c6a264;padding:32px"><h1>AI Confidence Academy</h1><p>${done?'You have been unsubscribed from ACA learning updates.':'Would you like to stop receiving ACA learning updates?'}</p>${done?'<p>Your learning access is unchanged.</p>':`<form method="post" action="?token=${escape(token)}"><button style="background:#102d50;color:white;padding:12px 24px;border:0">Unsubscribe</button></form>`}<p><a href="https://aiconfidenceacademy.org/">Visit the Academy</a></p></main></body></html>`)
+  } catch { return json(res,503,{error:'Please try again shortly'}) }
+}

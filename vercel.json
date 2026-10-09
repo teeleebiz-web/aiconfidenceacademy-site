@@ -12,6 +12,10 @@
   },
   "crons": [
     {
+      "path": "/api/email/newsletter-maintenance",
+      "schedule": "0 18 * * *"
+    },
+    {
       "path": "/api/enrollment/installment-maintenance",
       "schedule": "0 9 * * *"
     },
