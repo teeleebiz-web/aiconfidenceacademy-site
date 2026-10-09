@@ -1,3 +1,5 @@
 Founder approved the Japanese instructor performance for Journey 1 Lesson 1.1. Build beginning card, last-word pause, ending card, and return to beginning card. Publish video as an additive Academy media asset only.
 
 FFmpeg installed in runner; repeat exact approved-video asset build, additive-only, with all cards.
+
+Rebuild using self-contained FFmpeg/PyAV Python wheels; keep exact approved recording and only approved Academy cards.
