@@ -20,11 +20,11 @@
 .p2-practice-capability{border:1px solid #e0d3bf;background:#fbf6ee;border-radius:12px;padding:1rem 1.2rem;display:grid;gap:.8rem}
 .p2-practice-capability>strong{color:#946f35;font-size:.84rem}
 .p2-practice-fields h4{font:700 1.2rem Georgia,serif;margin:.3rem 0;color:#193e59}
-.p2-practice-chatgpt{border:1px solid #d4c09c;border-radius:14px;padding:1.2rem;background:#f8f2e8}
-.p2-practice-chatgpt h4{margin:.1rem 0 .5rem}
-.p2-practice-chatgpt>p{color:#536e7d;font-size:.86rem;line-height:1.65}
+.p2-practice-ai{border:1px solid #d4c09c;border-radius:14px;padding:1.2rem;background:#f8f2e8}
+.p2-practice-ai h4{margin:.1rem 0 .5rem}
+.p2-practice-ai>p{color:#536e7d;font-size:.86rem;line-height:1.65}
 .p2-practice-prompt{background:#fff;border-left:4px solid #b48632;border-radius:0 8px 8px 0;padding:.7rem 1rem;color:#274964;font-size:.91rem;line-height:1.7}
-.p2-practice-chatgpt button,.p2-practice-save button{font:inherit;font-weight:750;background:#163d5e;color:#fff;border:0;border-radius:9px;padding:.8rem 1.1rem;margin-top:.8rem}
+.p2-practice-ai button,.p2-practice-save button{font:inherit;font-weight:750;background:#163d5e;color:#fff;border:0;border-radius:9px;padding:.8rem 1.1rem;margin-top:.8rem}
 .p2-practice-save button:disabled{opacity:.45;cursor:default}
 .p2-practice-summary{border:1px solid #d9e0e3;border-radius:13px;padding:1rem;background:#f7fafb}
 .p2-practice-summary pre{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;font:inherit;color:#3f5a6b;font-size:.82rem;max-height:320px;overflow:auto}
