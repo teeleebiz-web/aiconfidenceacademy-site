@@ -76,7 +76,7 @@ export function validProducedLesson(value: unknown, pageId: string): value is Ph
   return !!p.editorial_notes && isText(p.editorial_notes.status) && isText(p.editorial_notes.media)
 }
 
-export function PhaseTwoProducedLessonReview({ production }: { production: PhaseTwoProducedLesson }) {
+export function PhaseTwoProducedLessonReview({ production, learnerMode = false }: { production: PhaseTwoProducedLesson; learnerMode?: boolean }) {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'unavailable'>('idle')
   const [showEvidence, setShowEvidence] = useState(true)
 
@@ -96,11 +96,11 @@ export function PhaseTwoProducedLessonReview({ production }: { production: Phase
   return (
     <div className="p2-produced" aria-label="Expanded instructional production draft">
       <section className="p2-produced-intro" aria-labelledby="p2-produced-overview-title">
-        <p className="eyebrow">Lesson {production.lesson_id} · Instructional draft {production.production_version}</p>
+        <p className="eyebrow">Lesson {production.lesson_id}</p>
         <h4 id="p2-produced-overview-title">What you will be able to demonstrate</h4>
         <p>{production.learner_promise}</p>
         <ul>{production.outcomes.map(item => <li key={item}>{item}</li>)}</ul>
-        <p className="p2-produced-caution">Founder review. Learning and recording durations are design targets until a timed pilot verifies them.</p>
+        {!learnerMode && <p className="p2-produced-caution">Learning and recording durations are design targets until a timed pilot verifies them.</p>}
       </section>
 
       <section className="p2-produced-teaching" aria-labelledby="p2-produced-teaching-title">
@@ -150,7 +150,7 @@ export function PhaseTwoProducedLessonReview({ production }: { production: Phase
           <span>03</span><div><p className="eyebrow">Project application · 25 minutes</p>
             <h4 id="p2-produced-apply-title">Develop your continuing project</h4></div>
         </div>
-        <p>Work in the same project record throughout this course. These instructions contribute to that record; this review page does not collect or save learner data.</p>
+        <p>Keep your work together in your Project Record. You will use it again in the lessons ahead.</p>
         <ol className="p2-produced-tasklist">{production.application.map((task, i) => (
           <li key={i}>
             <header><h5>{task.heading}</h5><small>{task.minutes} minutes</small></header>
@@ -180,19 +180,19 @@ export function PhaseTwoProducedLessonReview({ production }: { production: Phase
         <div className="p2-produced-criteria">
           <h5>Completion evidence to be reviewed</h5>
           <ul>{production.completion_criteria.map(item => <li key={item}>{item}</li>)}</ul>
-          <p>These criteria describe evidence, not automatic completion credit. Final review remains a separate human-approved process.</p>
+          <p>Use these criteria to check your work before you submit it for review.</p>
         </div>
         <div className="p2-produced-handoff">
           <strong>Carry the work forward</strong><p>{production.handoff}</p>
         </div>
       </section>
 
-      <footer className="p2-produced-source">
+      {!learnerMode && <footer className="p2-produced-source">
         <p><strong>Production status:</strong> {production.editorial_notes.status}</p>
         <p><strong>Media status:</strong> {production.editorial_notes.media}</p>
         {production.editorial_notes.example_data && <p>{production.editorial_notes.example_data}</p>}
         <p>{production.editorial_notes.source}</p>
-      </footer>
+      </footer>}
     </div>
   )
 }
