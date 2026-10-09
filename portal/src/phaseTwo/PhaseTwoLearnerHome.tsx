@@ -120,6 +120,10 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       medium={opened.lesson_content.planned_media === 'video' ? 'video' : 'audio'}
       production={expanded}
       introVideo={opened.lesson_content.phase_two_media_plan?.avatar_introduction}
+      guidedInstruction={opened.lesson_content.phase_two_media_plan?.guided_instruction}
+      demoClips={opened.lesson_content.phase_two_media_plan?.demonstration_clips?.approvalStatus === 'founder_approved'
+        ? opened.lesson_content.phase_two_media_plan.demonstration_clips.clips
+        : undefined}
       enrollmentId={enrollmentId}
       remainingSeconds={remaining}
       onBackToLessons={() => { setOpened(null); setView('overview') }}
