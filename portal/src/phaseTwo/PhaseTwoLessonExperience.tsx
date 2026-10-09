@@ -72,7 +72,8 @@ export function PhaseTwoLessonExperience({
               <video
                 controls
                 playsInline
-                preload="metadata"
+                preload="auto"
+                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : undefined}
                 src={approvedVideo.url}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
