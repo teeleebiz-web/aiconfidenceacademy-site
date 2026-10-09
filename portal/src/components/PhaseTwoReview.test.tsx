@@ -24,6 +24,18 @@ vi.mock('../lib/supabase', () => ({
   },
 }))
 
+vi.mock('../phaseTwo/PhaseTwoLessonExperience', () => ({
+  PhaseTwoLessonExperience: ({ pageId, lessonTitle, medium }: {
+    pageId: string; lessonTitle: string; medium: string
+  }) => (
+    <main>
+      <h1>{lessonTitle}</h1>
+      <p>{'Lesson ' + pageId}</p>
+      <p>{medium === 'audio' ? 'Audio placeholder' : 'Video placeholder'}</p>
+    </main>
+  ),
+}))
+
 const journeys = Array.from({ length: 6 }, (_, i) => ({
   id: 'journey-' + (i + 1),
   journey_number: i + 1,
@@ -98,52 +110,23 @@ describe('unpublished Phase Two founder review', () => {
   it('requires sign-in and does not fetch protected curriculum for signed-out visitors', async () => {
     api.getSession.mockResolvedValue({ data: { session: null } })
     render(<PhaseTwoReview />)
-    expect(await screen.findByRole('heading', { name: 'Founder review sign-in' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Sign in to Phase Two' })).toBeTruthy()
     expect(api.from).not.toHaveBeenCalled()
   })
 
   it('blocks curriculum queries when the Academy owner check is denied', async () => {
     api.rpc.mockResolvedValue({ data: false, error: null })
     render(<PhaseTwoReview />)
-    expect(await screen.findByRole('heading', { name: 'Owner review access required' })).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Access is not available' })).toBeTruthy()
     expect(api.from).not.toHaveBeenCalled()
   })
 
-  it('allows the authorized reviewer to move through all six journeys without publishing', async () => {
-    const user = userEvent.setup()
+  it('opens the first learner lesson without development labels or a course inventory', async () => {
     render(<PhaseTwoReview />)
-    expect(await screen.findByRole('heading', { name: 'AI Professional and Builder Pathway' })).toBeTruthy()
-    expect(screen.getAllByRole('button', { name: /Journey \d/i }).length).toBe(6)
-    expect(screen.getByText('18 video slots · 18 audio slots')).toBeTruthy()
-    expect(screen.getByText('Synthetic teaching.')).toBeTruthy()
-    expect(screen.getByText(/provisional lesson media assignment/i)).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: /Journey 6.*Synthetic Journey 6/i }))
-    expect(await screen.findByRole('heading', { name: 'Synthetic lesson 6.1' })).toBeTruthy()
-    expect(screen.getByText('Synthetic verification.')).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Your 60-minute learning session' })).toBeTruthy()
-    expect(screen.getByText('15 min')).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: /6\.6.*Synthetic lesson 6\.6/i }))
-    expect(await screen.findByRole('heading', { name: 'Synthetic lesson 6.6' })).toBeTruthy()
-    expect(screen.getByText('30 min')).toBeTruthy()
-  })
-
-  it('shows the protected learner walkthrough without creating enrollment or project records', async () => {
-    const user = userEvent.setup()
-    render(<PhaseTwoReview />)
-    await screen.findByRole('heading', { name: 'AI Professional and Builder Pathway' })
-    await user.click(screen.getByRole('button', { name: 'Learner experience walkthrough' }))
-    expect(await screen.findByRole('heading', { name: 'Make your AI capability useful.' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Synthetic lesson 1.1' })).toBeTruthy()
-    expect(screen.getByText('Synthetic teaching.')).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: /Journey 3.*Synthetic Journey 3/i }))
-    expect(await screen.findByRole('heading', { name: 'Synthetic lesson 3.1' })).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: 'My Project Record' }))
-    expect(screen.getByRole('heading', { name: 'The work you build and keep' })).toBeTruthy()
-    expect(screen.getAllByRole('listitem')).toHaveLength(11)
-    expect(screen.getByText(/No project or learner record is created or saved/i)).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: 'Orientation' }))
-    expect(screen.getByRole('heading', { name: 'Prepare one professional project.' })).toBeTruthy()
-    expect(screen.getByText(/does not submit or approve readiness evidence/i)).toBeTruthy()
+    expect(await screen.findByRole('heading', { name: 'Synthetic lesson 1.1' })).toBeTruthy()
+    expect(screen.getByText('Lesson 1.1')).toBeTruthy()
+    expect(screen.getByText('Video placeholder')).toBeTruthy()
+    expect(screen.queryByText(/Founder review|Unpublished working build|36 lessons|18 video slots/i)).toBeNull()
     expect(api.rpc).toHaveBeenCalledWith('is_aca_curriculum_owner')
     expect(api.rpc).toHaveBeenCalledTimes(1)
   })
@@ -152,7 +135,7 @@ describe('unpublished Phase Two founder review', () => {
     api.getSession.mockResolvedValue({ data: { session: null } })
     const user = userEvent.setup()
     render(<PhaseTwoReview />)
-    await screen.findByRole('heading', { name: 'Founder review sign-in' })
+    await screen.findByRole('heading', { name: 'Sign in to Phase Two' })
     await user.type(screen.getByLabelText('Academy email'), 'reviewer@example.org')
     await user.click(screen.getByRole('button', { name: 'Use a one-time email link instead' }))
     await user.click(screen.getByRole('button', { name: 'Send secure sign-in link' }))
