@@ -14,7 +14,7 @@ type PhaseTwoLessonExperienceProps = {
   remainingSeconds?: number
   enrollmentId?: string
   introAudio?: { url: string; transcript: string }
-  introVideo?: { url: string; transcript: string }
+  introVideo?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
 }
 
 /**
@@ -37,6 +37,8 @@ export function PhaseTwoLessonExperience({
   introVideo,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
+  const approvedVideo = introVideo?.approvalStatus === 'founder_approved' &&
+    /^https:\/\//.test(introVideo.url) && introVideo.transcript.trim().length > 0
   return (
     <div className="p2-learner-experience">
       <a href="#p2-lesson-main" className="skip-link">Skip to lesson</a>
@@ -63,7 +65,7 @@ export function PhaseTwoLessonExperience({
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
 
-          {medium === 'audio' && introVideo?.url && (
+          {medium === 'audio' && approvedVideo && (
             <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
               <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
               <video
