@@ -43,7 +43,7 @@ export type PhaseTwoOpenedLesson = {
     phase_two_media_plan?: {
       avatar_introduction?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
       guided_instruction?: GuidedInstructionMedia
-      demonstration_clips?: { approvalStatus: 'founder_approved'; clips: VisualDemoClip[] }
+      demonstration_clips?: { approvalStatus: 'founder_approved' | 'founder_review_pending'; clips: VisualDemoClip[] }
       audio_lesson?: { generated_introduction?: { url: string; transcript: string } }
     }
     planned_media?: 'video' | 'audio'
