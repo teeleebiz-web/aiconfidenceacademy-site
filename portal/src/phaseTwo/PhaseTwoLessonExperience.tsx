@@ -57,6 +57,15 @@ export function PhaseTwoLessonExperience({
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
 
+          <section className="p2-lesson-overview-video" aria-label="Lesson video overview">
+            <div className="p2-overview-video-symbol" aria-hidden="true">▶</div>
+            <div>
+              <p className="p2-overview-video-eyebrow">Before you begin</p>
+              <h2>Lesson overview</h2>
+              <p>Video overview placeholder</p>
+            </div>
+          </section>
+
           <section className="p2-learner-experience-media" aria-label="Lesson media">
             <span aria-hidden="true" className="p2-learner-experience-media-icon">{medium === 'audio' ? '♫' : '▶'}</span>
             <div>
@@ -75,6 +84,27 @@ export function PhaseTwoLessonExperience({
                   ))}
                 </ol>
               </section>
+
+              {pageId === '1.1' && (
+                <section className="p2-responsibility-visual" aria-labelledby="p2-responsibility-heading">
+                  <div className="p2-responsibility-heading">
+                    <p className="eyebrow">One task. Clear responsibilities.</p>
+                    <h2 id="p2-responsibility-heading">How AI-supported work moves forward</h2>
+                    <p>AI contributes to the work, but people define its purpose, check the evidence and own the decision.</p>
+                  </div>
+                  <ol>
+                    {[
+                      ['01','Set the purpose','A person names the need, audience and result.'],
+                      ['02','Ask for support','AI organizes, compares or drafts within the task limits.'],
+                      ['03','Check the evidence','A person verifies facts, omissions, permissions and risk.'],
+                      ['04','Decide and improve','A responsible person approves, corrects or pauses the work.'],
+                    ].map(([number,title,explanation]) => (
+                      <li key={number}><strong>{number}</strong><h3>{title}</h3><p>{explanation}</p></li>
+                    ))}
+                  </ol>
+                  <a href="#p2-visual-title">See a worked example <span aria-hidden="true">↘</span></a>
+                </section>
+              )}
 
               <PhaseTwoProducedLessonReview production={production} learnerMode />
 
