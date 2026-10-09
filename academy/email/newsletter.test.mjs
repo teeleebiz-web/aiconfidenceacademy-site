@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {readFile} from 'node:fs/promises'
-import {videoCatalog,weekKey,syncSubscriber,prepareEdition,handleNewsletterMaintenance,handleNewsletterUnsubscribe} from './newsletter.mjs'
+import {videoCatalog,weekKey,syncSubscriber,prepareEdition,runNewsletterMaintenance,handleNewsletterMaintenance,handleNewsletterUnsubscribe} from './newsletter.mjs'
 
 function database(initial={}) {
   const tables=structuredClone(initial)
@@ -18,6 +18,13 @@ function database(initial={}) {
   }}
 }
 const reply=()=>({writeHead(code,headers){this.code=code;this.headers=headers},end(body){this.body=body}})
+test('disabled importing leaves every existing contact and test record untouched',async()=>{
+  const original=[{id:1,email:'integration@example.org',status:'active'}]
+  const db=database({aca_interest_list:original,aca_newsletter_state:[{id:'settings',value:{contact_sync_enabled:false}}]})
+  const result=await runNewsletterMaintenance({db,resend:{contacts:{get:()=>assert.fail('must not import')}}},[{id:'video:a'}])
+  assert.equal(result.checked,0);assert.equal(result.contact_sync_enabled,false)
+  assert.deepEqual(db.tables.aca_interest_list,original)
+})
 test('catalog reads all six published instructor videos with stable links',async()=>{
   const items=videoCatalog(await readFile(new URL('../../videos/index.html',import.meta.url),'utf8'))
   assert.equal(items.length,6);assert.ok(items.some(v=>v.id==='video:topic-what-is-ai'));assert.equal(new Set(items.map(v=>v.id)).size,6)

@@ -61,9 +61,11 @@ export async function prepareEdition(db, catalog, now = new Date()) {
 
 export async function runNewsletterMaintenance(config, catalog, now = new Date()) {
   const started = now.toISOString()
-  const rows = checked(await config.db.from('aca_interest_list').select('id,email,first_name,last_name,status,consent,newsletter_excluded')
-    .eq('newsletter_excluded',false).order('newsletter_synced_at',{ascending:true,nullsFirst:true}).limit(10))
-  const summary = {mode:'prepare_only',checked:rows.length,synced:0,failed:0,edition:null}
+  const settings = checked(await config.db.from('aca_newsletter_state').select('value').eq('id','settings').maybeSingle())
+  const syncEnabled = settings?.value?.contact_sync_enabled === true
+  const rows = syncEnabled ? checked(await config.db.from('aca_interest_list').select('id,email,first_name,last_name,status,consent,newsletter_excluded')
+    .eq('newsletter_excluded',false).order('newsletter_synced_at',{ascending:true,nullsFirst:true}).limit(10)) : []
+  const summary = {mode:'prepare_only',contact_sync_enabled:syncEnabled,checked:rows.length,synced:0,failed:0,edition:null}
   for (const row of rows) {
     try { await syncSubscriber(config,row,started); summary.synced++ }
     catch { summary.failed++; checked(await config.db.from('aca_interest_list').update({newsletter_error:'Contact synchronization failed; retry scheduled',newsletter_synced_at:started}).eq('id',row.id)) }

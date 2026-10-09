@@ -2,7 +2,7 @@
 
 ## Current operating mode
 
-Preparation only. No public campaign is sent by this job. Existing learner-release and installment emails are separate and unchanged.
+Preparation only. No public campaign is sent by this job. Existing learner-release and installment emails are separate and unchanged. Contact importing is also disabled (`settings.contact_sync_enabled=false`) pending confirmation of the existing records' purposes. Do not classify or exclude historical test records based on their names or addresses; they may support other operational testing.
 
 - Public enrollment form remains connected to `aca-interest-list` in Supabase.
 - Consented non-test subscribers synchronize to the Resend `ACA Learning Updates` segment.
