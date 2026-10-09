@@ -1,4 +1,6 @@
-import styles from './phaseTwoLessonExperience.css?raw'
+import { readFileSync } from 'node:fs'
+
+const styles = readFileSync(new URL('./phaseTwoLessonExperience.css', import.meta.url), 'utf8')
 
 describe('ACA instructor video presentation contract', () => {
   it('preserves the established maximum 640-pixel instructor size and widescreen ratio', () => {
