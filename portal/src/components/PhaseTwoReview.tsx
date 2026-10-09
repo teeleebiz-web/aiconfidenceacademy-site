@@ -306,6 +306,31 @@ export function PhaseTwoReview() {
                   </div>
                 </section>
 
+                <section className="p2-lesson-rhythm" aria-labelledby="p2-session-flow">
+                  <div>
+                    <p className="eyebrow">Approved lesson rhythm</p>
+                    <h3 id="p2-session-flow">Your 60-minute learning session</h3>
+                    <p>The durations are teaching targets, not timers or automatic completion credit.</p>
+                  </div>
+                  <ol aria-label="Lesson activity plan">
+                    {(lesson.journey_position === 6
+                      ? [
+                          ['10 min', 'Integration instruction'],
+                          ['10 min', 'Challenge case'],
+                          ['30 min', 'Project testing and revision'],
+                          ['10 min', 'Evidence review'],
+                        ]
+                      : [
+                          ['15 min', 'Teaching'],
+                          ['10 min', 'Worked demonstration'],
+                          ['25 min', 'Project application'],
+                          ['10 min', 'Verification and applied check'],
+                        ]).map(([duration, label]) => (
+                      <li key={label}><strong>{duration}</strong><span>{label}</span></li>
+                    ))}
+                  </ol>
+                </section>
+
                 {!lesson.content.phase_two ? <p role="alert">The approved Phase Two teaching brief is missing for this lesson.</p> : (
                   <div className="p2-teaching-sections">
                     {teachingSections.map(section => (
