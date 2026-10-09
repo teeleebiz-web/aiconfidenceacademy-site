@@ -6,6 +6,7 @@
  * creates a fresh weekday deadline. No course is activated by this module.
  */
 import { supabase } from '../lib/supabase'
+import type { PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
 
 export type PhaseTwoLessonOutline = {
   lesson_id: string
@@ -37,6 +38,7 @@ export type PhaseTwoOpenedLesson = {
   lesson_purpose: string
   lesson_content: {
     phase_two?: PhaseTwoTeachingBrief
+    phase_two_production?: PhaseTwoProducedLesson
     planned_media?: 'video' | 'audio'
     video_path?: string | null
     audio_path?: string | null
