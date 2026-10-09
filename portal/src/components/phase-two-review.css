@@ -58,3 +58,11 @@
 .p2-site-footer{text-align:center;color:#e6d0a8;background:#0a223b;padding:1.8rem 1rem;font-size:.85rem;margin-top:2rem}
 @media(max-width:880px){.p2-journey-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-content-layout{grid-template-columns:1fr}.p2-lesson-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-lesson-nav h2{grid-column:1/-1}.p2-journey-panel{flex-direction:column}.p2-media-count{width:100%}}
 @media(max-width:600px){.p2-review-flag{font-size:.67rem;padding:.45rem .7rem}.p2-overview{grid-template-columns:1fr}.p2-totals{text-align:left;grid-template-columns:auto 1fr;align-items:center}.p2-totals small{grid-column:1/-1}.p2-journey-nav,.p2-lesson-nav{grid-template-columns:1fr}.p2-journey-choice{min-height:unset}.p2-media-placeholder{margin:1rem;align-items:flex-start}.p2-media-icon{width:50px;height:50px}}
+
+/* Isolated review sign-in reuses the Academy's existing authentication methods. */
+.p2-sign-in-form{display:grid;gap:.65rem;max-width:480px;margin:1.4rem 0 .8rem}
+.p2-sign-in-form label{font-weight:750;color:#173b5b}
+.p2-sign-in-form input{font:inherit;padding:.85rem 1rem;border:1px solid #a5a9ac;border-radius:9px;background:white;color:#102d4f;max-width:100%}
+.p2-sign-in-form input:focus-visible,.p2-auth-switch:focus-visible{outline:3px solid #b88b3f;outline-offset:3px}
+.p2-sign-in-form button{margin-top:.4rem}
+.p2-auth-switch{background:transparent;color:#17496c;padding:.55rem 0;border:0;text-decoration:underline;text-underline-offset:3px}
