@@ -101,4 +101,15 @@ describe('protected Phase Two lesson production', () => {
     await user.click(screen.getByRole('button', { name: 'Show evidence review' }))
     expect(screen.getByText('No supporting source')).toBeTruthy()
   })
+
+  it('integrates a visual practice demonstration into the real learner-facing lesson', async () => {
+    const user = userEvent.setup()
+    render(<PhaseTwoProducedLessonReview production={draft} learnerMode />)
+    expect(screen.getByRole('heading', { name: 'From a confident answer to a checked answer' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Start with the approved record' })).toBeTruthy()
+    expect(screen.getByLabelText('Lesson teaching and practice')).toBeTruthy()
+    await user.click(screen.getByRole('button', { name: /Next step/i }))
+    expect(screen.getByRole('heading', { name: 'Spot the unsupported claim' })).toBeTruthy()
+    expect(screen.queryByText(/Production status:|Media status:|founder review/i)).toBeNull()
+  })
 })
