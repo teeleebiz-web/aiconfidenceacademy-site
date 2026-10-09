@@ -84,6 +84,8 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
   const [showEvidence, setShowEvidence] = useState(true)
   const visualWalkthrough = learnerMode && production.lesson_id === '1.1'
   const needWalkthrough = learnerMode && production.lesson_id === '1.2'
+  const useGuidedStudio = learnerMode && production.lesson_id === '1.1'
+  const PracticeInstructionsContainer = useGuidedStudio ? 'details' : 'div'
 
   async function copyApprovedRequest() {
     if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) {
@@ -161,7 +163,8 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
         {learnerMode && production.lesson_id === '1.1' && (
           <PhaseTwoPracticeStudio approvedAiRequest={production.approved_ai_request} enrollmentId={enrollmentId} />
         )}
-        {learnerMode && production.lesson_id === '1.1' && <details className="p2-produced-optional-instructions"><summary>Read the detailed activity instructions</summary>}
+        <PracticeInstructionsContainer className={useGuidedStudio ? 'p2-produced-optional-instructions' : undefined}>
+          {useGuidedStudio && <summary>Read the detailed activity instructions</summary>}
         <ol className="p2-produced-tasklist">{production.application.map((task, i) => (
           <li key={i}>
             <header><h5>{task.heading}</h5><small>{task.minutes} minutes</small></header>
@@ -172,7 +175,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
           <h5>Responsibility-map reference</h5>
           <ul>{production.responsibility_map_fields.map(field => <li key={field}>{field}</li>)}</ul>
         </div>
-        {learnerMode && production.lesson_id === '1.1' && </details>}
+        </PracticeInstructionsContainer>
         {!(learnerMode && production.lesson_id === '1.1') && <div className="p2-produced-ai-request">
           <div><h5>Approved AI request</h5><button type="button" onClick={() => { void copyApprovedRequest() }}>
             {copyState === 'copied' ? 'Copied' : 'Copy request'}</button></div>
