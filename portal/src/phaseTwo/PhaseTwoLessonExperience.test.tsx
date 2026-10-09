@@ -67,6 +67,8 @@ describe('Phase Two learner lesson presentation', () => {
     expect(video.tagName.toLowerCase()).toBe('video')
     expect(video.getAttribute('src')).toBe('https://aiconfidenceacademy.org/assets/test-approved-instructor.mp4')
     expect(video).toHaveProperty('controls', true)
+    expect(video.getAttribute('preload')).toBe('auto')
+    expect(video.getAttribute('poster')).toBe('/assets/videos/phase-two-lesson-1-1/poster.webp')
     expect(screen.getByText('Lesson teaching and practice')).toBeTruthy()
     expect(screen.getByText('Audio placeholder')).toBeTruthy()
     expect(screen.getByText('Read the lesson introduction')).toBeTruthy()
