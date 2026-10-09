@@ -39,7 +39,7 @@ export const workbookOpeningPage = (workbookKey: WorkbookKey, lessonId?: string 
   return lessonStartPages[workbookKey][Number(match[2]) - 1]
 }
 
-export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/api/academy/workbooks/', backHref = '/academy/phase-one/' }: { lessonId?: string | null; workbookKey?: WorkbookKey; apiBase?: string; backHref?: string }) {
+export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/api/academy/workbooks/', backHref = lessonId ? `/academy/phase-one/?lesson=${encodeURIComponent(lessonId)}` : '/academy/phase-one/?view=curriculum', backLabel = lessonId ? `Back to Lesson ${lessonId}` : 'My Workbooks' }: { lessonId?: string | null; workbookKey?: WorkbookKey; apiBase?: string; backHref?: string; backLabel?: string }) {
   const transport = useMemo(() => makeTransport(workbookKey, apiBase), [workbookKey, apiBase])
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
@@ -97,7 +97,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
   if (!data || !page) return <main className="wb-shell"><p role="alert">Your workbook could not be opened. Please reload this page.</p></main>
   return <main className="wb-shell">
     <div className="wb-toolbar">
-      <a className="wb-back" href={backHref} onClick={async event => { event.preventDefault(); await store.save(); if (!store.pending) window.location.assign(backHref) }}>← Back to Phase One</a>
+      <a className="wb-back" href={backHref} onClick={async event => { event.preventDefault(); await store.save(); if (!store.pending) window.location.assign(backHref) }}>← {backLabel}</a>
       <div className="wb-save"><span role="status" aria-live="polite">{state.status === 'saved' ? (state.updated_at ? 'Saved' : 'Ready for your answers') : state.status === 'saving' ? 'Saving…' : state.status === 'error' || state.status === 'conflict' ? 'Not saved yet' : 'Changes to save'}</span><button className="wb-print" type="button" onClick={() => window.print()}>Print / Save PDF</button><button disabled={state.status === 'saving'} onClick={() => void store.save()}>Save</button></div>
     </div>
     {state.message && <p className="wb-error" role="alert">{state.message}</p>}
@@ -107,7 +107,7 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
         <header className="wb-page-hero"><p className="wb-eyebrow">{page.kicker.replaceAll('  /  ', ' · ')}</p><h1 tabIndex={-1}>{page.title}</h1>{page.number === 1 && <><img src={sealUrl} alt="AI Confidence Academy seal" /><p>{data.subtitle ?? 'Learner Workbook and Practice Log · Lessons 1.1–1.6'}</p></>}</header>
         <div className="wb-page-body">{page.blocks.map((block, i) => render(block as Block, i))}</div>
         <footer className="wb-page-footer"><span>AI Assists. Humans Verify.</span><span>Page {page.number} of {data.pageCount ?? 32}</span></footer>
-        <div className="wb-page-actions"><button className="wb-secondary" disabled={!state.allowedPages.includes(page.number-1)} onClick={() => move(page.number-1)}>Previous page</button><button disabled={!state.allowedPages.includes(page.number+1)} onClick={() => move(page.number+1)}>Next page →</button></div>
+        <div className="wb-page-actions"><button className="wb-secondary" disabled={!state.allowedPages.includes(page.number-1)} onClick={() => move(page.number-1)}>Previous page</button><button disabled={!state.allowedPages.includes(page.number+1)} onClick={() => move(page.number+1)}>{state.allowedPages.includes(page.number+1) ? 'Next page →' : page.number >= (data.pageCount ?? (workbookKey === 'journey-one' ? 32 : workbookKey === 'journey-three' ? 26 : 24)) ? 'End of workbook' : 'Unavailable'}</button></div>
       </article>
     </div>
   </main>

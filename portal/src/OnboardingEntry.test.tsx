@@ -53,6 +53,7 @@ vi.mock('../../academy/workbook/Workbook', () => ({
 }))
 
 beforeEach(() => {
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async () => ({ok:!api.lessonMediaError,json:async()=>({video:'https://media.example.test/lesson.mp4'})}) as Response)
   localStorage.clear()
   api.owner = false; api.enrollment = true; api.progress = []; api.mediaError = null
   api.completedAt = null; api.completionError = false; api.accessStatus = 'active'; api.lessonMediaError = false
@@ -65,6 +66,7 @@ beforeEach(() => {
   })
   api.rpc.mockReset()
   api.rpc.mockImplementation(async (name: string) => {
+    if (name === 'get_learner_workbooks') return { data: [{page_id:'1.1',title:'Workbook'}], error:null }
     if (name === 'is_aca_curriculum_owner') return { data: api.owner, error: null }
     if (name === 'get_learner_lesson_access') return { data: [{ current_lesson_id: 'onboarding-lesson',
       current_journey_id: 'onboarding-journey', access_status: 'available', completed_lessons: 0,

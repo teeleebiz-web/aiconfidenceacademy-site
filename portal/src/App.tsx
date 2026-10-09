@@ -54,6 +54,8 @@ export function App() {
   const [companionAudioUrl, setCompanionAudioUrl] = useState<string | null>(null)
   const [companionCaptionUrl, setCompanionCaptionUrl] = useState<string | null>(null)
   const [artifact, setArtifact] = useState('')
+  const [workbooks, setWorkbooks] = useState<Array<{page_id: string; title: string}>>([])
+  const returnedLesson = useRef('')
   const [error, setError] = useState('')
   const [reviewMode, setReviewMode] = useState(false)
   const [lessonAccess, setLessonAccess] = useState<LessonAccess | null>(null)
@@ -83,15 +85,16 @@ export function App() {
   useEffect(() => {
     if (!session?.user) {
       setPortalData(emptyPortalData)
+      setWorkbooks([])
       setReviewMode(false)
       return
     }
 
-    loadPortal(session.user.id)
+    loadPortal(session.user.id, portalData.enrollment?.learner_id === session.user.id)
   }, [session])
 
-  async function loadPortal(userId: string) {
-    setLoading(true)
+  async function loadPortal(userId: string, background = false) {
+    if (!background) setLoading(true)
     setError('')
 
     const [profileResult, enrollmentResult, ownerResult] = await Promise.all([
@@ -123,6 +126,7 @@ export function App() {
     const enrollment = enrollmentResult.data as unknown as Enrollment | null
 
     if (!enrollment) {
+      setWorkbooks([])
       setPortalData({
         ...emptyPortalData,
         learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '',
@@ -165,6 +169,9 @@ export function App() {
       return
     }
 
+    const workbookResult = isOwner ? { data: [], error: null } : await supabase.rpc('get_learner_workbooks', { p_enrollment_id: enrollment.id })
+    if (workbookResult.error) setError('Your workbook list could not load. Please refresh this page.')
+    setWorkbooks(isOwner ? (lessonResult.data ?? []) : (workbookResult.data ?? []).filter((item: {page_id?: string}) => item.page_id))
     setPortalData({
       enrollment,
       journeys: (journeyResult.data ?? []) as Journey[],
@@ -203,12 +210,14 @@ export function App() {
   async function openLesson(lesson: Lesson, completingOnboarding = false) {
     const request = ++mediaRequest.current
     setError('')
+    let deadline = Infinity
     if (portalData.enrollment && !reviewMode) {
       const access = await startOrResumeLessonAccess(lesson)
       if (!access || access.access_status !== 'active') {
         setError('This lesson is not available right now. Return to your learning home for the current session.')
         return
       }
+      deadline = access.hard_expires_at ? Date.parse(access.hard_expires_at) : Date.now() + access.remaining_seconds * 1000
     } else {
       setLessonAccess(null)
     }
@@ -220,10 +229,21 @@ export function App() {
       return data.signedUrl
     }
     try {
-      const [video, audio] = await Promise.all([
-        sign(lesson.content.video_path), sign(lesson.content.audio_path),
-      ])
+      let video: string | undefined, audio: string | undefined
+      if (reviewMode) {
+        [video, audio] = await Promise.all([sign(lesson.content.video_path), sign(lesson.content.audio_path)])
+      } else if (lesson.content.video_path || lesson.content.audio_path) {
+        const response = await fetch(`${import.meta.env.VITE_ACA_BACKEND_ORIGIN ?? 'https://checkout.aiconfidenceacademy.org'}/api/learner/lesson-media/${encodeURIComponent(lesson.id)}`, { headers: { 'X-ACA-Access-Token': session!.access_token }, cache: 'no-store' })
+        if (!response.ok) throw new Error('Unavailable')
+        const media = await response.json()
+        video = media.video ?? undefined; audio = media.audio ?? undefined
+      }
       if (request !== mediaRequest.current) return
+      if (Date.now() >= deadline) {
+        setLessonAccess(null)
+        if (session?.user) await loadPortal(session.user.id)
+        return
+      }
       if (completingOnboarding && portalData.enrollment) {
         if (!reviewMode || !portalData.enrollment.onboarding_completed_at) {
           const { data: completedAt, error: completionError } = await supabase.rpc('complete_aca_onboarding', {
@@ -270,7 +290,10 @@ export function App() {
       p_lesson_id: lesson.id,
     })
     if (accessError) {
-      setError('Your lesson time could not be verified. Please try again.')
+      mediaRequest.current++
+      setSelectedLesson(null); setSelectedIntroduction(null); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
+      setError('Lesson unavailable. Your workbooks remain available.')
+      if (session?.user) await loadPortal(session.user.id)
       return null
     }
     const access = (data?.[0] ?? null) as LessonAccess | null
@@ -285,17 +308,21 @@ export function App() {
       p_lesson_id: lesson.id,
     })
     if (accessError) {
-      setError('Your lesson time could not be verified. Your session has been paused; please reopen the lesson.')
+      mediaRequest.current++
+      setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
+      setError('Lesson unavailable. Your workbooks remain available.')
       setSelectedLesson(null)
       setLessonAccess(null)
       return null
     }
     const access = (data?.[0] ?? null) as LessonAccess | null
-    setLessonAccess(access)
-    if (access?.access_status === 'expired') {
+    setLessonAccess(access ? { ...access, hard_expires_at: lessonAccess?.hard_expires_at } : null)
+    if (!access || access.access_status !== 'active') {
+      mediaRequest.current++
+      setSelectedIntroduction(null); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
       setSelectedLesson(null)
       setLessonAccess(null)
-      setError('Your two active lesson hours have been used. The lesson is now closed, and your workbook remains available.')
+      setError('Your lesson has closed. Your workbooks remain available.')
       if (session?.user) await loadPortal(session.user.id)
     }
     return access
@@ -449,6 +476,45 @@ export function App() {
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
   usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment ? 'curriculum' : 'access')
 
+  useEffect(() => {
+    if (!loading && !workbookKey && !selectedLesson && window.location.hash === '#my-workbooks') {
+      document.getElementById('my-workbooks')?.scrollIntoView({ block: 'start' })
+    }
+  }, [loading, workbookKey, selectedLesson, workbooks.length])
+
+  const requestedLesson = params.get('lesson')
+  const returnLesson = visiblePortalData.lessons.find(item => item.page_id === requestedLesson)
+  useEffect(() => {
+    if (!workbookKey && !needsOnboarding && returnLesson && returnedLesson.current !== returnLesson.id) {
+      returnedLesson.current = returnLesson.id
+      void openLesson(returnLesson)
+    }
+  }, [workbookKey, needsOnboarding, returnLesson?.id])
+
+  useEffect(() => {
+    if (reviewMode || !selectedLesson || !lessonAccess) return
+    const deadline = lessonAccess.hard_expires_at ? Date.parse(lessonAccess.hard_expires_at) : Date.now() + lessonAccess.remaining_seconds * 1000
+    const close = () => {
+      mediaRequest.current++
+      setSelectedLesson(null); setSelectedIntroduction(null); setLessonAccess(null)
+      setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
+      setError('Your lesson has closed. Your workbooks remain available.')
+      if (session?.user) void loadPortal(session.user.id)
+    }
+    const verify = () => { if (Date.now() >= deadline) close() }
+    const timer = window.setTimeout(close, Math.max(0, deadline - Date.now()))
+    window.addEventListener('focus', verify); document.addEventListener('visibilitychange', verify)
+    return () => { clearTimeout(timer); window.removeEventListener('focus', verify); document.removeEventListener('visibilitychange', verify) }
+  }, [selectedLesson?.id, lessonAccess, reviewMode])
+
+  useEffect(() => {
+    if (!workbookKey || reviewMode || !session?.user) return
+    const refresh = () => { void loadPortal(session.user.id, true) }
+    const timer = window.setInterval(refresh, 30000)
+    window.addEventListener('focus', refresh)
+    return () => { clearInterval(timer); window.removeEventListener('focus', refresh) }
+  }, [workbookKey, reviewMode, session?.user.id])
+
   async function finishOnboarding() {
     if (!onboardingEnrollment || !firstLesson) return
     await openLesson(firstLesson, true)
@@ -486,7 +552,7 @@ export function App() {
 
       {workbookKey && portalData.enrollment && !needsOnboarding ? (
         <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
-          apiBase={workbookApiBase} backHref="/learn/" />
+          apiBase={workbookApiBase} backHref={returnLesson ? `/learn/?lesson=${encodeURIComponent(returnLesson.page_id)}` : '/learn/#my-workbooks'} backLabel={returnLesson ? `Back to Lesson ${returnLesson.page_id}` : 'My Workbooks'} />
       ) : needsOnboarding ? (
         <LearnerOnboarding key={onboardingEnrollment?.id} onContinue={firstLesson ? finishOnboarding : undefined} />
       ) : selectedIntroduction ? (
@@ -532,6 +598,7 @@ export function App() {
           learnerName={portalData.learnerName}
           reviewMode={reviewMode}
           accessState={portalData.accessState}
+          workbooks={workbooks}
           onOpenLesson={openLesson}
           onOpenIntroduction={openIntroduction}
         />

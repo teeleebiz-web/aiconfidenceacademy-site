@@ -396,3 +396,18 @@ test('Journey Six opens only the four Lesson 6.1 workbook pages',async()=>{
   const req={headers:{'x-aca-access-token':'learner-a'}}
   assert.deepEqual((await workbookIdentity(req,db,'course',false,'journey-six')).allowedPages,[1,2,3,4])
 })
+
+test('expired lesson keeps released workbook answers readable and editable without unlocking the next lesson',()=>fixture(async({db,request})=>{
+ db.rpc=async()=>({data:[{access_status:'scheduled',current_lesson_id:'lesson-1-2',released_lesson_ids:['lesson-1-1']}]})
+ const token={'X-ACA-Access-Token':'learner-a'}
+ const first=await request('PATCH',{baseRevision:0,page:5,answers:{[field]:'My work after the lesson closed'}},token)
+ assert.equal(first.status,200)
+ const reopened=await (await request('GET',null,token)).json()
+ assert.equal(reopened.answers[field],'My work after the lesson closed')
+ assert.ok(reopened.allowedPages.includes(8));assert.ok(!reopened.allowedPages.includes(9))
+ assert.equal((await request('PATCH',{baseRevision:1,page:9,answers:{}},token)).status,400)
+ const update=await request('PATCH',{baseRevision:1,page:6,answers:{[field]:'Continued independently'}},token)
+ assert.equal(update.status,200)
+ assert.equal((await (await request('GET',null,token)).json()).answers[field],'Continued independently')
+ assert.ok(db.writes.every(table=>table==='aca_workbook_responses'))
+}))

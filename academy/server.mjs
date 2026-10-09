@@ -5,6 +5,7 @@ import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import { handleWorkbook } from './workbook/api.mjs'
+import { handleLearnerMedia } from './learner-media.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollment/installment-plan.mjs'
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
@@ -45,7 +46,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
-    if (requestPath.startsWith('/api/learner/workbooks/')) {
+    if (requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
         res.writeHead(403, { 'Content-Type': 'application/json' })
@@ -58,6 +59,9 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token')
       }
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
+      if (requestPath.startsWith('/api/learner/lesson-media/')) {
+        await handleLearnerMedia(req, res, { db, courseId, lessonId: requestPath.slice('/api/learner/lesson-media/'.length) }); return
+      }
       const workbookKey = requestPath.slice('/api/learner/workbooks/'.length)
       await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: false, workbookKey }); return
     }
