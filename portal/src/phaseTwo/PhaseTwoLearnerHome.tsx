@@ -119,6 +119,7 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       purpose={opened.lesson_purpose}
       medium={opened.lesson_content.planned_media === 'video' ? 'video' : 'audio'}
       production={expanded}
+      enrollmentId={enrollmentId}
       remainingSeconds={remaining}
       onBackToLessons={() => { setOpened(null); setView('overview') }}
       onOpenProject={() => { setOpened(null); setView('project') }}
