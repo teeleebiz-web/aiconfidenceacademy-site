@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { PhaseTwoVisualLab } from './PhaseTwoVisualLab'
+import { PhaseTwoNeedLab } from './PhaseTwoNeedLab'
 import './phaseTwoProducedLesson.css'
 
 export type PhaseTwoProducedLesson = {
@@ -81,6 +82,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false }
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'unavailable'>('idle')
   const [showEvidence, setShowEvidence] = useState(true)
   const visualWalkthrough = learnerMode && production.lesson_id === '1.1'
+  const needWalkthrough = learnerMode && production.lesson_id === '1.2'
 
   async function copyApprovedRequest() {
     if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) {
@@ -126,7 +128,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false }
             <h4 id="p2-produced-case-title">{production.worked_case.label}</h4></div>
         </div>
         <p>{production.worked_case.setup}</p>
-        {visualWalkthrough ? <PhaseTwoVisualLab workedCase={production.worked_case} /> : <>
+        {visualWalkthrough ? <PhaseTwoVisualLab workedCase={production.worked_case} /> : needWalkthrough ? <PhaseTwoNeedLab workedCase={production.worked_case} /> : <>
         <button className="p2-produced-evidence-toggle" type="button"
           aria-expanded={showEvidence} onClick={() => setShowEvidence(v => !v)}>
           {showEvidence ? 'Hide evidence review' : 'Show evidence review'}
