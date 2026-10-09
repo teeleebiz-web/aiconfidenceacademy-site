@@ -25,9 +25,9 @@ test('disabled importing leaves every existing contact and test record untouched
   assert.equal(result.checked,0);assert.equal(result.contact_sync_enabled,false)
   assert.deepEqual(db.tables.aca_interest_list,original)
 })
-test('catalog reads all six published instructor videos with stable links',async()=>{
+test('catalog reads all ten published instructor and demonstration videos with stable links',async()=>{
   const items=videoCatalog(await readFile(new URL('../../videos/index.html',import.meta.url),'utf8'))
-  assert.equal(items.length,6);assert.ok(items.some(v=>v.id==='video:topic-what-is-ai'));assert.equal(new Set(items.map(v=>v.id)).size,6)
+  assert.equal(items.length,10);assert.ok(items.some(v=>v.id==='video:topic-what-is-ai'));assert.ok(items.some(v=>v.id==='video:explore-video-04'));assert.equal(new Set(items.map(v=>v.id)).size,10)
 })
 test('weekly grouping uses Monday UTC including Sunday and year boundary',()=>{
   assert.equal(weekKey(new Date('2026-10-11T23:00Z')),'2026-10-05')

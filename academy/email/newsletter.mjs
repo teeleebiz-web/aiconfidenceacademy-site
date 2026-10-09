@@ -6,7 +6,7 @@ const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&':'&amp;', '
 const json = (res, code, value) => { res.writeHead(code, { 'Content-Type':'application/json', 'Cache-Control':'no-store' }); res.end(JSON.stringify(value)) }
 
 export function videoCatalog(html) {
-  return [...html.matchAll(/<h3\b[^>]*\bid="(topic-[a-z0-9-]+)"[^>]*>([^<]+)<\/h3>/g)].map(([,id,title]) => ({
+  return [...html.matchAll(/<h3\b[^>]*\bid="((?:topic-|explore-video-)[a-z0-9-]+)"[^>]*>([^<]+)<\/h3>/g)].map(([,id,title]) => ({
     id: `video:${id}`, title: title.replace(/&amp;/g,'&'), url: `https://aiconfidenceacademy.org/videos/#${id}`, kind:'video',
   }))
 }
