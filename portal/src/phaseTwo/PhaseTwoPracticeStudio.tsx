@@ -5,6 +5,7 @@ import './phaseTwoPracticeStudio.css'
 type PracticeDraft = {
   path: PhaseTwoProjectPath | ''
   title: string
+  aiTool: string
   personServed: string
   recurringTask: string
   desiredResult: string
@@ -19,7 +20,7 @@ type PracticeDraft = {
   correctedClaim: string
 }
 const blank = (): PracticeDraft => ({
-  path: '', title: '', personServed: '', recurringTask: '', desiredResult: '',
+  path: '', title: '', aiTool: '', personServed: '', recurringTask: '', desiredResult: '',
   capabilities: Array(5).fill(''), evidence: Array(5).fill(''),
   gaps: Array(2).fill(''), humanPurpose: '', aiSupport: '',
   verification: '', decisionOwner: '', stopCondition: '', correctedClaim: '',
@@ -37,6 +38,7 @@ function toProjectText(draft: PracticeDraft) {
     'PROFESSIONAL AI OPERATING MODEL — STARTING RECORD',
     'Project: ' + draft.title,
     'Path: ' + draft.path,
+    'AI tool chosen (optional): ' + (draft.aiTool.trim() || 'To be selected by the learner'),
     'Person served: ' + draft.personServed,
     'Recurring task: ' + draft.recurringTask,
     'Desired result: ' + draft.desiredResult,
@@ -87,6 +89,7 @@ export function PhaseTwoPracticeStudio({
           path: record.project_path,
           title: record.project_title,
           ...(saved && {
+            aiTool: String(saved.aiTool ?? ''),
             personServed: String(saved.personServed ?? ''),
             recurringTask: String(saved.recurringTask ?? ''),
             desiredResult: String(saved.desiredResult ?? ''),
@@ -191,6 +194,10 @@ export function PhaseTwoPracticeStudio({
             <label>Give your project a short name
               <input value={draft.title} onChange={e=>change('title',e.target.value)} placeholder="For example: clearer service updates" />
             </label>
+            <label>Which AI tool will you use? (optional)
+              <input value={draft.aiTool} onChange={e=>change('aiTool',e.target.value)} placeholder="Your chosen assistant or business AI system" />
+            </label>
+            <p>Use a tool you already know or one your organization permits. The lesson method works across platforms; features, settings and data permissions may differ.</p>
             <label>Who benefits from this work?
               <textarea rows={2} value={draft.personServed} onChange={e=>change('personServed',e.target.value)} placeholder="A person or group with a real need" />
             </label>
@@ -245,12 +252,12 @@ export function PhaseTwoPracticeStudio({
                 placeholder="Explain the claim, the evidence, and what you changed or withheld"/>
             </label>
             <div className="p2-practice-chatgpt">
-              <h4>Now practice with ChatGPT</h4>
-              <p>Review your notes. Remove personal, confidential or unauthorized details before sharing anything with an AI tool.</p>
+              <h4>Practice with your chosen AI tool</h4>
+              <p>Use an AI assistant that accepts written instructions. Remove personal, confidential or unauthorized details before sharing any notes. If your tool has different controls, follow its input method while keeping the same task, constraints and verification.</p>
               <div className="p2-practice-prompt">
                 <p>{approvedAiRequest.replace('[sanitized notes]', '[your sanitized project notes]')}</p>
               </div>
-              <button type="button" onClick={()=>{void copy(approvedAiRequest.replace('[sanitized notes]',preparedNotes),'Prompt and your notes copied. Paste into ChatGPT and inspect its answer carefully.')}}>
+              <button type="button" onClick={()=>{void copy(approvedAiRequest.replace('[sanitized notes]',preparedNotes),'Prompt and notes copied. Paste them into your chosen AI assistant, then inspect its answer carefully.')}}>
                 {copied?'Copy prompt again':'Copy prompt with my notes'}
               </button>
             </div>
