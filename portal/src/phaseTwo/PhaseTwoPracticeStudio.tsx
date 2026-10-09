@@ -251,7 +251,7 @@ export function PhaseTwoPracticeStudio({
               <textarea rows={3} value={draft.correctedClaim} onChange={e=>change('correctedClaim',e.target.value)}
                 placeholder="Explain the claim, the evidence, and what you changed or withheld"/>
             </label>
-            <div className="p2-practice-chatgpt">
+            <div className="p2-practice-ai">
               <h4>Practice with your chosen AI tool</h4>
               <p>Use an AI assistant that accepts written instructions. Remove personal, confidential or unauthorized details before sharing any notes. If your tool has different controls, follow its input method while keeping the same task, constraints and verification.</p>
               <div className="p2-practice-prompt">
