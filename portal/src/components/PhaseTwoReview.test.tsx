@@ -122,7 +122,7 @@ describe('unpublished Phase Two founder review', () => {
     expect(screen.getByText('Synthetic verification.')).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Your 60-minute learning session' })).toBeTruthy()
     expect(screen.getByText('15 min')).toBeTruthy()
-    await user.click(screen.getByRole('button', { name: /6\\.6.*Synthetic lesson 6\\.6/i }))
+    await user.click(screen.getByRole('button', { name: /6\.6.*Synthetic lesson 6\.6/i }))
     expect(await screen.findByRole('heading', { name: 'Synthetic lesson 6.6' })).toBeTruthy()
     expect(screen.getByText('30 min')).toBeTruthy()
   })
