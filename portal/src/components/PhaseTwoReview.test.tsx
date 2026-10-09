@@ -25,13 +25,15 @@ vi.mock('../lib/supabase', () => ({
 }))
 
 vi.mock('../phaseTwo/PhaseTwoLessonExperience', () => ({
-  PhaseTwoLessonExperience: ({ pageId, lessonTitle, medium }: {
+  PhaseTwoLessonExperience: ({ pageId, lessonTitle, medium, introAudio }: {
     pageId: string; lessonTitle: string; medium: string
+    introAudio?: { url: string }
   }) => (
     <main>
       <h1>{lessonTitle}</h1>
       <p>{'Lesson ' + pageId}</p>
       <p>{medium === 'audio' ? 'Audio placeholder' : 'Video placeholder'}</p>
+      {introAudio?.url && <p>Approved audio attached</p>}
     </main>
   ),
 }))
@@ -130,6 +132,28 @@ describe('unpublished Phase Two founder review', () => {
     expect(screen.queryByText(/Founder review|Unpublished working build|36 lessons|18 video slots/i)).toBeNull()
     expect(api.rpc).toHaveBeenCalledWith('is_aca_curriculum_owner')
     expect(api.rpc).toHaveBeenCalledTimes(1)
+  })
+
+  it('never plays an unapproved draft narrator recording in the protected lesson', async () => {
+    const content = lessons[0].content as typeof lessons[0]['content'] & {
+      phase_two_media_plan?: {
+        audio_lesson?: { generated_introduction?: {
+          url: string; transcript: string; review_status: string; voice_id?: string
+        } }
+      }
+    }
+    content.phase_two_media_plan = { audio_lesson: { generated_introduction: {
+      url: 'https://example.org/earlier-narration.wav',
+      transcript: 'Draft narration.',
+      review_status: 'generated_audio_for_review_not_final_voice_approved',
+    } } }
+    try {
+      render(<PhaseTwoReview />)
+      expect(await screen.findByRole('heading', { name: 'Synthetic lesson 1.1' })).toBeTruthy()
+      expect(screen.queryByText('Approved audio attached')).toBeNull()
+    } finally {
+      delete content.phase_two_media_plan
+    }
   })
 
   it('opens a completed second lesson directly without unlocking other unfinished lessons', async () => {
