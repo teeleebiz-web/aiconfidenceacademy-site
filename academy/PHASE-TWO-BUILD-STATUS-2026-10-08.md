@@ -52,3 +52,16 @@ The current course is the six-journey, 36-lesson AI Professional and Builder Pat
 
 ### Next production task
 Proceed through **Lesson 1.2 — Find the need and establish the evidence** using the verified October 4 master and the coverage map. Do not invent media or introduce a second project record.
+
+### Journey 1 · Lesson 1.2: Find the need and establish the evidence
+**Status: expanded instructional draft, founder review pending — not published.**
+
+- Verified the current Curriculum Master v2.0 teaching brief and source-to-destination objectives for need-first thinking and person-centered audience discovery.
+- Created an additive `phase_two_production` layer for only Lesson 1.2: four teaching sequences, a fictional customer-service need investigation, four evidence-versus-assumption comparisons, five timed continuing-project tasks, a six-field Audience-Need evidence reference, four verification activities, and six applied completion requirements.
+- Learner work stays in the same continuing opportunity brief: compare three candidate needs, make one provisional choice, prepare five neutral questions, and record evidence that could change the decision.
+- The exact approved master AI request is preserved; the original source brief is unchanged.
+- The provisional media slot is **video-led**, with the later visual demonstration reserved for an Audience-Need View and side-by-side problem/evidence comparison. No recording or caption asset has been produced.
+- The existing expansion renderer supports Lesson 1.2 without a new lesson template, additional workbook, new tab, or extra learning system.
+- Draft lesson completion and timing remain subject to owner review and a timed learner pilot.
+
+**Next approved lesson in sequence:** Lesson 1.3 — Select AI roles and define business value.
