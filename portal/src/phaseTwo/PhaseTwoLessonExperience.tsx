@@ -39,6 +39,7 @@ export function PhaseTwoLessonExperience({
   const usable = validProducedLesson(production, pageId)
   const approvedVideo = introVideo?.approvalStatus === 'founder_approved' &&
     /^https:\/\//.test(introVideo.url) && introVideo.transcript.trim().length > 0
+      ? introVideo : null
   return (
     <div className="p2-learner-experience">
       <a href="#p2-lesson-main" className="skip-link">Skip to lesson</a>
@@ -72,15 +73,15 @@ export function PhaseTwoLessonExperience({
                 controls
                 playsInline
                 preload="metadata"
-                src={introVideo.url}
+                src={approvedVideo.url}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
                 Your browser does not support video playback.
               </video>
-              {introVideo.transcript.trim() && (
+              {approvedVideo.transcript.trim() && (
                 <details>
                   <summary>Read the lesson introduction</summary>
-                  {introVideo.transcript.split('\n\n').map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                  {approvedVideo.transcript.split('\n\n').map((paragraph, index) => <p key={index}>{paragraph}</p>)}
                 </details>
               )}
             </section>
