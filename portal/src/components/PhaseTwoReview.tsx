@@ -2,6 +2,7 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import sealUrl from '../../../aca-official-seal.png'
 import { supabase } from '../lib/supabase'
+import { PhaseTwoExperiencePreview } from '../phaseTwo/PhaseTwoExperiencePreview'
 import './phase-two-review.css'
 
 type PhaseTwoSource = {
@@ -64,6 +65,7 @@ export function PhaseTwoReview() {
   const [status, setStatus] = useState<ReviewStatus>('loading')
   const [data, setData] = useState<ReviewData>({ journeys: [], lessons: [] })
   const [chosen, setChosen] = useState('1.1')
+  const [reviewView, setReviewView] = useState<'source' | 'learner'>('source')
   const [reviewEmail, setReviewEmail] = useState('')
   const [reviewPassword, setReviewPassword] = useState('')
   const [signInMethod, setSignInMethod] = useState<'password' | 'link'>('password')
@@ -245,6 +247,17 @@ export function PhaseTwoReview() {
               </div>
             </header>
 
+            <div className="p2-review-view-toggle" role="group" aria-label="Founder review perspectives">
+              <button type="button" aria-pressed={reviewView === 'source'}
+                onClick={() => setReviewView('source')}>Curriculum source review</button>
+              <button type="button" aria-pressed={reviewView === 'learner'}
+                onClick={() => setReviewView('learner')}>Learner experience walkthrough</button>
+            </div>
+
+            {reviewView === 'learner' ? (
+              <PhaseTwoExperiencePreview journeys={data.journeys} lessons={data.lessons} />
+            ) : (
+              <>
             <nav className="p2-journey-nav" aria-label="Phase Two journey selection">
               {data.journeys.map(item => (
                 <button
@@ -355,6 +368,8 @@ export function PhaseTwoReview() {
                 </footer>
               </article>
             </div>
+              </>
+            )}
           </>
         )}
       </main>
