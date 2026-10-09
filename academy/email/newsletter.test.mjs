@@ -66,7 +66,7 @@ test('maintenance cannot run without cron authorization',async()=>{
 })
 test('unsubscribe GET is nonmutating; POST opts out without changing learning access',async()=>{
   const token='11111111-2222-4333-8444-555555555555';const db=database({aca_interest_list:[{id:1,status:'active',unsubscribe_token:token}]})
-  const get=reply();await handleNewsletterUnsubscribe({method:'GET',url:`/?token=${token}`},get,{db})
+  const get=reply();await handleNewsletterUnsubscribe({method:'GET',url:'/api/email/unsubscribe',query:{token}},get,{db})
   assert.equal(db.tables.aca_interest_list[0].status,'active');assert.match(get.body,/Unsubscribe/)
   const post=reply();await handleNewsletterUnsubscribe({method:'POST',url:`/?token=${token}`},post,{db})
   assert.equal(db.tables.aca_interest_list[0].status,'unsubscribed');assert.match(post.body,/learning access is unchanged/)

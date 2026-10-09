@@ -89,7 +89,8 @@ export async function handleNewsletterMaintenance(req,res,config,root) {
 
 export async function handleNewsletterUnsubscribe(req,res,config) {
   if(!['GET','POST'].includes(req.method)) return json(res,405,{error:'Method not allowed'})
-  const token = new URL(req.url,'https://checkout.aiconfidenceacademy.org').searchParams.get('token') || ''
+  // The shared Vercel entry rewrites req.url to its path; query stays on req.query.
+  const token = typeof req.query?.token === 'string' ? req.query.token : new URL(req.url,'https://checkout.aiconfidenceacademy.org').searchParams.get('token') || ''
   if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(token)) return json(res,400,{error:'Invalid unsubscribe link'})
   if(!config?.db) return json(res,503,{error:'Please try again shortly'})
   try {
