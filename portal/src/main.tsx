@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import { PhaseTwoReview } from './components/PhaseTwoReview'
+import { PhaseTwoLearnerEntry } from './phaseTwo/PhaseTwoLearnerEntry'
 import './styles.css'
 
 const root = document.getElementById('root')
@@ -12,6 +13,10 @@ if (!root) {
 
 createRoot(root).render(
   <StrictMode>
-    {new URLSearchParams(window.location.search).get('review') === 'phase-two' ? <PhaseTwoReview /> : <App />}
+    {new URLSearchParams(window.location.search).get('review') === 'phase-two'
+      ? <PhaseTwoReview />
+      : new URLSearchParams(window.location.search).get('course') === 'phase-two'
+        ? <PhaseTwoLearnerEntry />
+        : <App />}
   </StrictMode>,
 )
