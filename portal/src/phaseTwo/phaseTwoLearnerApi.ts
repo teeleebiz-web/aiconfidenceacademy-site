@@ -7,6 +7,7 @@
  */
 import { supabase } from '../lib/supabase'
 import type { PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
+import type { GuidedInstructionMedia, VisualDemoClip } from './PhaseTwoGuidedMedia'
 
 export type PhaseTwoLessonOutline = {
   lesson_id: string
@@ -41,6 +42,8 @@ export type PhaseTwoOpenedLesson = {
     phase_two_production?: PhaseTwoProducedLesson
     phase_two_media_plan?: {
       avatar_introduction?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
+      guided_instruction?: GuidedInstructionMedia
+      demonstration_clips?: { approvalStatus: 'founder_approved'; clips: VisualDemoClip[] }
       audio_lesson?: { generated_introduction?: { url: string; transcript: string } }
     }
     planned_media?: 'video' | 'audio'
