@@ -4,6 +4,7 @@ import {
   type PhaseTwoLessonOutline, type PhaseTwoOpenedLesson,
 } from './phaseTwoLearnerApi'
 import { PhaseTwoProjectWorkspace } from './PhaseTwoProjectWorkspace'
+import { PhaseTwoOrientation } from './PhaseTwoOrientation'
 import './phaseTwoLearnerHome.css'
 
 type View = 'overview' | 'lesson' | 'project'
@@ -123,6 +124,11 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       {status === 'error' ? <p role="status">Learner access is not yet available.</p> : null}
 
       {status === 'ready' && view === 'overview' ? (
+        <>
+          <details className="p2-orientation-disclosure">
+            <summary>Course orientation and entry readiness</summary>
+            <PhaseTwoOrientation />
+          </details>
         <div className="p2-learner-journey-list">
           {journeys.map(journey => (
             <section key={journey.number} className="p2-learner-journey" aria-labelledby={`p2-journey-${journey.number}`}>
@@ -157,6 +163,7 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
             </section>
           ))}
         </div>
+        </>
       ) : null}
 
       {status === 'ready' && view === 'lesson' && opened ? (
