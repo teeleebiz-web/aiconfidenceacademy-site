@@ -2,3 +2,5 @@ Release scope: owner-only instructional review through the existing Academy cust
 Root learner experience is preserved as the default; course status and entitlements remain unchanged.
 This trigger authorizes ONLY learn/index.html plus additive compiled learn/assets/ files.
 No deletion and no public curriculum publication.
+
+Lesson 1.1 learner-facing layout prepared, internal metadata withheld from learner view; complete gate tests before official-domain update.
