@@ -54,8 +54,11 @@ for (const name of await readdir(builtAssets)) {
     copied.push(name)
   }
 }
-if (!copied.some(name=>newJs.endsWith(name)) || !copied.some(name=>newCss.endsWith(name))) {
-  throw new Error('New review assets were not independently materialized.')
+// A code-only lesson update may legitimately reuse byte-for-byte identical CSS.
+// Every JS review release must produce a new hashed module. Existing CSS was
+// already compared to the built copy above and is reused only when identical.
+if (!copied.some(name=>newJs.endsWith(name))) {
+  throw new Error('New review module was not independently materialized.')
 }
 for (const path of [oldJs,oldCss,newJs,newCss]) {
   await stat(join(officialDir,path.replace(/^\/+/,'')))
