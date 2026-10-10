@@ -1,0 +1,57 @@
+{
+  "lesson": "1.4",
+  "course": "ACA Phase Two Master v2.0",
+  "status": "approved_voice_synthesized_pending_media_hosting",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "voice": "Rika - IA",
+  "avatar_video_id": "e54de35c1a06d957cb862e948783a397",
+  "guided_chapters": [
+    {
+      "title": "Build a request that reflects professional work",
+      "duration_seconds": 173.29632653061225,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=49621920-90de-4e75-a0ce-52540444069e.wav"
+    },
+    {
+      "title": "Ask for clarification before a recommendation",
+      "duration_seconds": 155.2195918367347,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=962aca7f-86ab-4c39-84f6-a055e7851156.wav"
+    },
+    {
+      "title": "Use AI to compare alternatives without handing it authority",
+      "duration_seconds": 149.1069387755102,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=6accaec6-a6be-400e-a814-739a3de75bd6.wav"
+    },
+    {
+      "title": "Create a decision memo and preserve the conversation",
+      "duration_seconds": 163.34367346938777,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=ec09860c-16ed-4fc4-9e0a-840e5243eb2f.wav"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-vague",
+      "title": "Inspect the vague request",
+      "duration_seconds": 22.413061224489795,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=72c03c5c-4584-4e56-9aaa-11bcfaa7a74b.wav"
+    },
+    {
+      "key": "02-framework",
+      "title": "Add six professional request elements",
+      "duration_seconds": 23.196734693877552,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=e458f42d-1319-445f-b9ae-649c64783ce7.wav"
+    },
+    {
+      "key": "03-challenge",
+      "title": "Challenge an unsupported claim",
+      "duration_seconds": 21.968979591836735,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=081e85b7-f3ce-4509-9982-0f844fcb6b02.wav"
+    },
+    {
+      "key": "04-memo",
+      "title": "Save a decision memo",
+      "duration_seconds": 24.76408163265306,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=12826559-295f-4bd2-a882-0ede75d827ad.wav"
+    }
+  ],
+  "source_manuscript": "academy/phase-two-production/J1-L1-4-instructional-master.md"
+}
