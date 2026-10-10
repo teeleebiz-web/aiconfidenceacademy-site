@@ -1,0 +1,167 @@
+{
+  "production_version": "2.1-owner-review-2026-10-10",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "2.1",
+  "primary_media": "audio",
+  "title": "Map the work and locate friction",
+  "learner_promise": "Trace a real or clearly fictional workflow with named owners, identify three evidence-labeled friction points, and defend one improvement that addresses a cause.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Map actual people, steps and handoffs",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Illustrated three-day estimate delay",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Current-state Workflow View and evidence test",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Trace one request and defend one improvement",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Differentiate a task, process, workflow and operating system.",
+    "Map people, inputs, steps, decisions, tools, handoffs and review for the continuing Journey One capstone.",
+    "Identify three friction points and distinguish observations, reported experience, assumptions and simulations.",
+    "Show why a three-day missing-input delay will not be fixed by automating the final email.",
+    "Trace one request from entry to reviewed completion and defend an appropriately narrow improvement."
+  ],
+  "teaching": [
+    {
+      "heading": "Map the actual work before designing a preferred future",
+      "paragraphs": [
+        "A task is an action; a process organizes tasks; a workflow shows movement, decisions and handoffs; a system also has ownership, feedback and continuity. A useful Workflow View records people, inputs, steps, decisions, tools, handoffs and review.",
+        "Take the same project and FOCUS charter from Journey One. Name the entry point and reviewed completion. Do not add steps that no person or record has confirmed."
+      ],
+      "think_prompt": "Can the person doing the work recognize the steps and decision branches on your map?"
+    },
+    {
+      "heading": "Locate friction without blaming the worker",
+      "paragraphs": [
+        "Friction can mean waiting, rework, repetition, missing information and inconsistent results. A symptom such as a slow estimate can arise from an input handoff with no named owner.",
+        "In the fictional case, required specifications are missing and no one is assigned to request them; the estimate waits three days. Automating the final email leaves that cause in place."
+      ],
+      "think_prompt": "What evidence distinguishes a slow final step from an earlier missing-input delay?"
+    },
+    {
+      "heading": "Make decisions, handoffs and human approval visible",
+      "paragraphs": [
+        "Record who sends work, who receives it, which information is transferred and what happens when it is incomplete. Mark human review before outward price promises or binding commitments.",
+        "An AI tool may organize approved notes or suggest a draft clarification, but the owner of a handoff and the person authorized to approve work remain human."
+      ],
+      "think_prompt": "Where does your current workflow first lose a clear owner or an important input?"
+    },
+    {
+      "heading": "Verify before choosing an improvement",
+      "paragraphs": [
+        "Use your own chosen AI assistant only to organize verified, public, fictional or sanitized process notes. Flag possible causes and imagined steps explicitly.",
+        "Correct the proposed map against authorized observation or label the scenario fictional. Identify three friction points, choose one likely cause and explain why the improvement removes rather than moves the burden."
+      ],
+      "think_prompt": "Can you trace one request from entry to human-reviewed completion and name what evidence supports your improvement?"
+    }
+  ],
+  "worked_case": {
+    "label": "Why automating the final email will not remove a three-day estimate wait",
+    "setup": "FICTIONAL TRAINING EXAMPLE: An estimate request arrives with missing service specifications. Nobody owns clarification; it waits three days before escalation. The final email is not the bottleneck.",
+    "evidence_table": [
+      {
+        "claim": "The final email is causing the three-day delay",
+        "evidence": "The fictional case shows the request waiting before enough specifications exist.",
+        "action": "Trace input completeness and assign clarification responsibility."
+      },
+      {
+        "claim": "The estimate employee is responsible for slow work",
+        "evidence": "No individual performance evidence has been supplied.",
+        "action": "Examine the handoff and missing ownership without assigning blame."
+      },
+      {
+        "claim": "An AI email generator will fix waiting at intake",
+        "evidence": "A faster final email cannot recover time lost at the earlier handoff.",
+        "action": "Test a required-input check and named owner first."
+      },
+      {
+        "claim": "The fictional three-day delay proves real-world savings",
+        "evidence": "This is a simulated worked case, not operational data.",
+        "action": "Label it fictional and gather authorized evidence before claiming improvement."
+      }
+    ],
+    "revised_example": "When an estimate arrives with incomplete specifications, the intake reviewer identifies missing fields, a named owner requests clarification, and the request is recorded as pending. A human reviews the resulting estimate against approved details before it is sent. The impact must be measured; it is not yet a proven time saving.",
+    "demonstration_steps": [
+      "Trace one request through input, decision, handoff and human review.",
+      "Locate the three-day missing-specification wait instead of blaming the final email.",
+      "Assign a human clarification owner and narrow the proposed support role.",
+      "Verify and save the current-state map, three friction points and one likely improvement."
+    ],
+    "question": "Why does this improvement address an input-stage cause rather than moving responsibility to someone else?"
+  },
+  "application": [
+    {
+      "minutes": 9,
+      "heading": "Map your current workflow and its owners",
+      "instruction": "Resume the same FOCUS capstone from Journey One. Show people, inputs, steps, decisions, tools, handoffs and review; trace one request to completed human review.",
+      "evidence": "Current-state Workflow View, ordered steps, branches and accountable owners."
+    },
+    {
+      "minutes": 8,
+      "heading": "Examine three friction points",
+      "instruction": "For each friction point, record symptom, possible cause, evidence status, affected person and what would verify the cause. Do not blame a worker on the basis of incomplete information.",
+      "evidence": "Three evidence-labeled friction records with unresolved questions."
+    },
+    {
+      "minutes": 8,
+      "heading": "Use AI to organize, verify and choose one improvement",
+      "instruction": "Copy the approved AI request to the learner's own chosen assistant, using only authorized sanitized notes or an explicitly fictional scenario. Correct invented steps, document how the map was checked, and propose a minimal improvement addressing a cause.",
+      "evidence": "Corrected map, source check, chosen improvement, reviewer and end-to-end trace."
+    }
+  ],
+  "approved_ai_request": "Organize my verified process notes into people, inputs, steps, decisions, tools, handoffs and review. Flag missing details and possible friction without inventing steps. Notes: [sanitized process].",
+  "responsibility_map_fields": [
+    "Person and useful outcome from Journey One",
+    "Input and step owner",
+    "Decision branches and exception handling",
+    "Tool and responsible handoff",
+    "Current approved evidence and reviewer",
+    "Three friction points and selected minimal improvement"
+  ],
+  "verification": [
+    {
+      "minutes": 4,
+      "heading": "Trace one request",
+      "prompt": "Show a complete entry-to-review path, including a missing-input branch and named owner."
+    },
+    {
+      "minutes": 3,
+      "heading": "Separate evidence and assumed cause",
+      "prompt": "Explain how the three friction points were verified or labeled uncertain."
+    },
+    {
+      "minutes": 3,
+      "heading": "Defend the improvement",
+      "prompt": "Show how the selected improvement resolves a probable cause rather than transferring the wait or simply automating the last step."
+    }
+  ],
+  "completion_criteria": [
+    "A current-state map with people, inputs, steps, decisions, tools, handoffs, review and owners",
+    "Three plausible friction points with source/evidence distinctions",
+    "At least one complete request traced to reviewed completion",
+    "One feasible minimal improvement with human responsibility and evaluation measure",
+    "Same continuing Project Record and released-only Journey 2 workbook evidence preserved"
+  ],
+  "handoff": "Lesson 2.2 uses the current-state Workflow View to identify and produce communication that helps its real audience. Lesson 2.2 remains unavailable until scheduled release.",
+  "editorial_notes": {
+    "status": "Founder-review draft; does not activate or unlock Journey Two learner enrollment.",
+    "avatar": "Previously saved ACA White Woman – Elegant Home, look 8158a267e94b4df184914b70dda703b7, voice 8NNnQuXc0FKua22CvviM.",
+    "source": "ACA Phase Two Six-Week Curriculum Master v2.0, Week 2 Monday Lesson 2.1.",
+    "continuity": "Resumes existing Journey 1 Professional AI Operating Model and FOCUS charter; never starts another project.",
+    "example_data": "Three-day delay and estimate steps are fictional, no real company or savings asserted."
+  }
+}
