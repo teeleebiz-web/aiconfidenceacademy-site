@@ -1,0 +1,57 @@
+{
+  "lesson": "1.5",
+  "course": "ACA Phase Two Master v2.0",
+  "status": "approved_voice_synthesized_pending_hosting",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "voice": "Rika - IA",
+  "avatar_video_id": "9b64fa8f6ce9284834672143ae7a49f1",
+  "guided_chapters": [
+    {
+      "title": "A solution concept is not permission to deploy",
+      "duration_seconds": 150.90938775510205,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=019df7be-1188-4847-a580-e4e5b6f48740.wav"
+    },
+    {
+      "title": "Use FOCUS to define the capstone",
+      "duration_seconds": 172.32979591836735,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=382a6068-bc5e-4068-8ebd-287c6047aa77.wav"
+    },
+    {
+      "title": "Compare three artifacts and select one",
+      "duration_seconds": 175.43836734693878,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=ad42194b-8fc8-4356-a9b4-1dc2c9a31a30.wav"
+    },
+    {
+      "title": "Write the charter and prepare the first test",
+      "duration_seconds": 193.75020408163266,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=091a72f5-372f-42d9-bb54-29906c86fa94.wav"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-concept",
+      "title": "Turn an idea into a solution concept",
+      "duration_seconds": 23.562448979591835,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=7413aa38-0aff-4b53-95f4-1e4157901f83.wav"
+    },
+    {
+      "key": "02-focus",
+      "title": "Apply the FOCUS Capstone Frame",
+      "duration_seconds": 19.748571428571427,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=02fd5414-45e2-4bff-9995-9ddab2e372d6.wav"
+    },
+    {
+      "key": "03-options",
+      "title": "Compare three possible artifacts",
+      "duration_seconds": 22.88326530612245,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=f8e9f2d3-2451-4d0f-ad5d-3cd138528c68.wav"
+    },
+    {
+      "key": "04-charter",
+      "title": "Record the charter and test",
+      "duration_seconds": 22.04734693877551,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=f8d2beb5-9c9e-4a41-9dfb-433f890b09f2.wav"
+    }
+  ],
+  "source_manuscript": "academy/phase-two-production/J1-L1-5-instructional-master.md"
+}
