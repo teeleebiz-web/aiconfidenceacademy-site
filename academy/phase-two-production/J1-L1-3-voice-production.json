@@ -33,14 +33,15 @@
       "script": "People sometimes evaluate an AI-assisted approach against doing nothing. That can exaggerate the apparent benefit. The fairer question is: what is the simplest realistic alternative that could solve the problem?\n\nReturn to our fictional proposal owner. Option A uses AI to draft the proposal, then requires a person to inspect all figures, approved promises, delivery terms, and omissions. Option B uses a reviewed proposal template with clearly approved descriptions and a manual check of customer-specific details.\n\nBoth options may have value. Both require a human accountable for the final proposal. An attractive first draft does not automatically make Option A the better choice. The business should compare total time, correction frequency, risk of unsupported claims, maintenance effort, and usefulness to the recipient.\n\nIf you already have reliable records, use them carefully. If you lack them, design a small, authorized test rather than inventing results. For example, use the same fictional inputs to prepare a proposal in both ways. Track time from beginning through review, record the number of important corrections, and ask an appropriate reviewer whether the final drafts meet the stated requirements. Fictional practice results must stay labeled as fictional.\n\nYou can ask your chosen AI assistant to identify roles and compare the two methods, but give it the evidence limits first. Ask it to separate supplied facts from likely benefits and unknowns. It should include the no-AI approach without dismissing it and should not guarantee that either approach saves time.\n\nA professional experiment should be modest and useful: one task, one comparable alternative, one transparent baseline, one measure, and one person responsible for deciding whether the result is good enough.\n\nPause now. Of your five tasks, select one where you suspect AI could help and one where it should have a narrow role or no role. Write one sentence explaining the difference.",
       "segments": [
         {
-          "error": "INVALID_ARGUMENT: Error code: INVALID_ARGUMENT; Error: RuntimeException: Error calling MCP tool: [TextContent(type='text', text='{\"error\": true, \"message\": \"Request timed out after 120s\", \"retryable\":"
+          "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=377b5ac2-2536-4029-84c5-3ed19e46a27c.wav",
+          "duration": 110.7330612244898
         },
         {
           "url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=de35ce69-e3ef-4b6a-8928-db0db5718d2a.wav",
           "duration": 27.48081632653061
         }
       ],
-      "status": "blocked"
+      "status": "created_segments"
     },
     {
       "kind": "chapter",
