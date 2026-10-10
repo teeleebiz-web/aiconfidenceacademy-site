@@ -40,6 +40,17 @@ test('Lesson 1.1 demonstrates the complete fictional evidence sequence with capt
   }
 });
 
+test('Selecting a demonstration starts its video immediately without losing replay controls', () => {
+  const html = readFileSync(resolve(import.meta.dirname, '../learn/index.html'), 'utf8');
+  const entry = html.match(/if \(review\) \{[\s\S]*?index-[\w-]+\.js/)?.[0]?.match(/index-[\w-]+\.js/)?.[0];
+  assert.ok(entry);
+  const bundle = readFileSync(resolve(import.meta.dirname, '../learn/assets', entry), 'utf8');
+  assert.ok(bundle.includes('t.play().catch(()=>{})'), 'Tab selection should request playback');
+  assert.ok(bundle.includes('t.src=e[r].url'), 'Tab selection should load the chosen clip');
+  assert.ok(bundle.includes('ref:i,controls:!0'), 'Keep controls and a stable player');
+  assert.ok(bundle.includes('p2-demo-caption-strip'), 'Keep captions below the video');
+});
+
 test('Lesson 1.1 runtime bundle exposes all essential learning sections', () => {
   const html = readFileSync(resolve(import.meta.dirname, '../learn/index.html'), 'utf8');
   const entry = html.match(/if \(review\) \{[\s\S]*?index-[\w-]+\.js/)?.[0]?.match(/index-[\w-]+\.js/)?.[0];
