@@ -94,7 +94,7 @@ for idx,(m,item) in enumerate(zip(chapters,DATA["guided_chapters"])):
             part=OUT/f"chapter-{idx+1}-part{k}.wav"
             get(url,part);parts.append(part)
         listing=OUT/f"chapter-{idx+1}-parts.txt"
-        listing.write_text("".join("file '"+str(p)+"'\\n" for p in parts))
+        listing.write_text("".join("file '"+str(p)+"'\n" for p in parts))
         run("ffmpeg","-hide_banner","-loglevel","error","-y","-f","concat","-safe","0","-i",str(listing),"-c","copy",str(wav))
         duration=sec(wav)
     else:
