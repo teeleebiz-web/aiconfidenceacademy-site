@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { LESSON_12_INTRO_TRANSCRIPT } from './phaseTwoLesson12Intro'
 import { LESSON_13_INTRO_TRANSCRIPT } from './phaseTwoLesson13Intro'
+import { LESSON_14_INTRO_TRANSCRIPT } from './phaseTwoLesson14Intro'
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
 import { PhaseTwoGuidedAudio, type GuidedInstructionMedia, type VisualDemoClip } from './PhaseTwoGuidedMedia'
@@ -51,7 +52,7 @@ export function PhaseTwoLessonExperience({
   const usable = validProducedLesson(production, pageId)
   const [producedMedia, setProducedMedia] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
   useEffect(() => {
-    if (!['1.2','1.3'].includes(pageId) || !allowMediaReview || typeof fetch !== 'function') return
+    if (!['1.2','1.3','1.4'].includes(pageId) || !allowMediaReview || typeof fetch !== 'function') return
     let canceled = false
     const root = '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/'
     void Promise.all([
@@ -86,10 +87,10 @@ export function PhaseTwoLessonExperience({
   }, [pageId, allowMediaReview])
   const selectedGuidedAudio = guidedInstruction ?? producedMedia?.guided
   const selectedDemoClips = demoClips ?? producedMedia?.demos
-  const selectedVideo = introVideo ?? (['1.2','1.3'].includes(pageId) && allowMediaReview && producedMedia
+  const selectedVideo = introVideo ?? (['1.2','1.3','1.4'].includes(pageId) && allowMediaReview && producedMedia
     ? {
       url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + '-Introduction.mp4',
-      transcript: pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : LESSON_13_INTRO_TRANSCRIPT,
+      transcript: pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : pageId === '1.3' ? LESSON_13_INTRO_TRANSCRIPT : LESSON_14_INTRO_TRANSCRIPT,
       approvalStatus: 'founder_review_pending' as const,
     } : null)
   const approvedGuidedAudio = (selectedGuidedAudio?.approvalStatus === 'founder_approved' ||
@@ -128,14 +129,14 @@ export function PhaseTwoLessonExperience({
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
 
-          {(medium === 'audio' || ['1.2','1.3'].includes(pageId)) && approvedVideo && (
+          {(medium === 'audio' || ['1.2','1.3','1.4'].includes(pageId)) && approvedVideo && (
             <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
               <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
               <video
                 controls
                 playsInline
                 preload="auto"
-                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined}
+                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3','1.4'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined}
                 src={approvedVideo.url}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
