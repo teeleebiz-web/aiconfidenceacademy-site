@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { LESSON_12_INTRO_TRANSCRIPT } from './phaseTwoLesson12Intro'
+import { LESSON_13_INTRO_TRANSCRIPT } from './phaseTwoLesson13Intro'
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
 import { PhaseTwoGuidedAudio, type GuidedInstructionMedia, type VisualDemoClip } from './PhaseTwoGuidedMedia'
@@ -48,19 +49,19 @@ export function PhaseTwoLessonExperience({
   allowMediaReview = false,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
-  const [lesson12Media, setLesson12Media] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
+  const [producedMedia, setProducedMedia] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
   useEffect(() => {
-    if (pageId !== '1.2' || !allowMediaReview || typeof fetch !== 'function') return
+    if (!['1.2','1.3'].includes(pageId) || !allowMediaReview || typeof fetch !== 'function') return
     let canceled = false
-    const root = '/assets/videos/phase-two-lesson-1-2/'
+    const root = '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/'
     void Promise.all([
       fetch(root + 'guided-chapters.json').then(r => { if (!r.ok) throw new Error('Guided audio unavailable'); return r.json() }),
       fetch(root + 'production-report.json').then(r => { if (!r.ok) throw new Error('Visual case unavailable'); return r.json() }),
     ]).then(([chapters, report]) => {
-      if (canceled || report.lesson !== '1.2' || chapters.chapters?.length !== 4 ||
+      if (canceled || report.lesson !== pageId || chapters.chapters?.length !== 4 ||
           report.demonstrations?.length !== 4 ||
           report.voice_id !== 'ac277b338cf64d8b9686784c43c563da') return
-      setLesson12Media({
+      setProducedMedia({
         guided: {
           url: location.origin + root + report.guided_audio.file,
           duration_seconds: chapters.duration_seconds,
@@ -83,12 +84,12 @@ export function PhaseTwoLessonExperience({
     }).catch(() => { /* Keep normal fallback until the official media release is live. */ })
     return () => { canceled = true }
   }, [pageId, allowMediaReview])
-  const selectedGuidedAudio = guidedInstruction ?? lesson12Media?.guided
-  const selectedDemoClips = demoClips ?? lesson12Media?.demos
-  const selectedVideo = introVideo ?? (pageId === '1.2' && allowMediaReview && lesson12Media
+  const selectedGuidedAudio = guidedInstruction ?? producedMedia?.guided
+  const selectedDemoClips = demoClips ?? producedMedia?.demos
+  const selectedVideo = introVideo ?? (['1.2','1.3'].includes(pageId) && allowMediaReview && producedMedia
     ? {
-      url: location.origin + '/assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-Introduction.mp4',
-      transcript: LESSON_12_INTRO_TRANSCRIPT,
+      url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + '-Introduction.mp4',
+      transcript: pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : LESSON_13_INTRO_TRANSCRIPT,
       approvalStatus: 'founder_review_pending' as const,
     } : null)
   const approvedGuidedAudio = (selectedGuidedAudio?.approvalStatus === 'founder_approved' ||
@@ -127,14 +128,14 @@ export function PhaseTwoLessonExperience({
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
 
-          {(medium === 'audio' || pageId === '1.2') && approvedVideo && (
+          {(medium === 'audio' || ['1.2','1.3'].includes(pageId)) && approvedVideo && (
             <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
               <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
               <video
                 controls
                 playsInline
                 preload="auto"
-                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : pageId === '1.2' ? '/assets/videos/phase-two-lesson-1-2/poster.webp' : undefined}
+                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined}
                 src={approvedVideo.url}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
