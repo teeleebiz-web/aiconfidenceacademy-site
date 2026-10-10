@@ -3,6 +3,7 @@ import { PhaseTwoPracticeStudio } from './PhaseTwoPracticeStudio'
 import { PhaseTwoDemoClips, type VisualDemoClip } from './PhaseTwoGuidedMedia'
 import { PhaseTwoVisualLab } from './PhaseTwoVisualLab'
 import { PhaseTwoNeedLab } from './PhaseTwoNeedLab'
+import { PhaseTwoNeedPractice } from './PhaseTwoNeedPractice'
 import './phaseTwoProducedLesson.css'
 
 export type PhaseTwoProducedLesson = {
