@@ -1,0 +1,53 @@
+name: Correct ACA Lesson 2.1 landscape instructor placement
+on:
+  push:
+    branches: [phase-two-six-journey-owner-review]
+    paths: [.github/workflows/repair-phase-two-j21-landscape.yml]
+permissions:
+  contents: write
+jobs:
+  repair:
+    if: github.event.head_commit.message == 'Correct Lesson 2.1 landscape instructor placement'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24, cache: npm}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install locked application and media tools
+        run: |
+          npm ci
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1'
+      - name: Verify protected review and regressions
+        run: npm run check
+      - name: Encode the existing corrected landscape render
+        run: python academy/phase-two-production/build-approved-j21-landscape-video.py "$RUNNER_TEMP/intro"
+      - name: Install only corrected introduction and protected review entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach "$RUNNER_TEMP/aca-official" origin/main
+          node academy/publish-phase-two-review.mjs "$GITHUB_WORKSPACE/learn" "$RUNNER_TEMP/aca-official"
+          cd "$RUNNER_TEMP/aca-official"
+          dest="assets/videos/phase-two-lesson-2-1"
+          test -f "$dest/ACA-Phase-Two-Lesson-2-1-Guided-Instruction.m4a"
+          test ! -e "$dest/ACA-Phase-Two-Lesson-2-1-Introduction-landscape.mp4"
+          cp "$RUNNER_TEMP/intro/ACA-Phase-Two-Lesson-2-1-Introduction.mp4" "$dest/ACA-Phase-Two-Lesson-2-1-Introduction-landscape.mp4"
+          cp "$RUNNER_TEMP/intro/poster.webp" "$dest/poster-landscape.webp"
+          cp "$RUNNER_TEMP/intro/media-manifest.json" "$dest/landscape-intro-manifest.json"
+          git add learn/index.html learn/assets/ "$dest/ACA-Phase-Two-Lesson-2-1-Introduction-landscape.mp4" "$dest/poster-landscape.webp" "$dest/landscape-intro-manifest.json"
+          git diff --cached --name-status
+          if git diff --cached --name-status | grep -Ev '^(A[[:space:]]+(learn/assets/|assets/videos/phase-two-lesson-2-1/(ACA-Phase-Two-Lesson-2-1-Introduction-landscape.mp4|poster-landscape.webp|landscape-intro-manifest.json)$)|M[[:space:]]+learn/index.html$)'; then
+            echo 'Unrelated site modification blocked.' >&2
+            exit 1
+          fi
+          test "$(git diff --cached --name-only | grep -c '^assets/videos/phase-two-lesson-2-1/')" -eq 3
+          git config user.name 'ACA official review builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Correct Lesson 2.1 instructor to approved full landscape render'
+          git push origin HEAD:main

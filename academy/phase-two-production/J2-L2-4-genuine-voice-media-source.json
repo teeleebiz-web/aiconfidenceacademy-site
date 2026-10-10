@@ -1,0 +1,60 @@
+{
+  "lesson": "2.4",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_chapters": [
+    {
+      "title": "Compare four ways to support the work",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=c21b123b-b54d-4c8f-b662-b944282181e3.wav",
+      "duration_seconds": 150.17795918367347,
+      "request_id": "loheK157o781sjMLcvBw"
+    },
+    {
+      "title": "Keep the invoice exception with a person",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=d6750236-ec1d-4b81-ae5e-f7fa7e1ea9e5.wav",
+      "duration_seconds": 147.74857142857144,
+      "request_id": "heomUF6NXswRjEIw041g"
+    },
+    {
+      "title": "Define permissions, checkpoints and a stop route",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=7b57ae65-61ce-4460-8bf8-23f6c8148850.wav",
+      "duration_seconds": 162.9257142857143,
+      "request_id": "FT69xkrPVKuBLpsdnv8u"
+    },
+    {
+      "title": "Verify the feature and save a defensible choice",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=bdd645c8-f85e-4ea8-9fd2-fb8be2f30fd2.wav",
+      "duration_seconds": 155.16734693877552,
+      "request_id": "JJ2RjWRwqb0f5drExTmj"
+    }
+  ],
+  "demonstrations": [
+    {
+      "title": "Compare the same task under four patterns",
+      "key": "01-compare",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=0bfb0806-1325-4cbb-8331-b319436274f3.wav",
+      "duration_seconds": 20.610612244897958,
+      "request_id": "xuqUoRtO1otw53MpepVB"
+    },
+    {
+      "title": "Stop the reminder when the record conflicts",
+      "key": "02-exception",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=42dde68f-7529-49c3-ba66-9450c93def73.wav",
+      "duration_seconds": 18.390204081632653,
+      "request_id": "LXeNKqnvJqjcIZ3G5tnD"
+    },
+    {
+      "title": "Make permissions and fallback specific",
+      "key": "03-boundary",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=268fd558-4bad-4ff6-b4d8-bca13ccbb4d1.wav",
+      "duration_seconds": 18.886530612244897,
+      "request_id": "D7cvCT55dn2jTscRrAh8"
+    },
+    {
+      "title": "Save the comparison and updated concept",
+      "key": "04-save",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=0a68c3b3-2533-4739-963a-f3afeb884798.wav",
+      "duration_seconds": 24.241632653061224,
+      "request_id": "pIYN5vwvYoMbhL8h538z"
+    }
+  ]
+}

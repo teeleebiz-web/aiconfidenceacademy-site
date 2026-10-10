@@ -1,0 +1,62 @@
+name: Produce and publish ACA protected Lesson 2.3 review
+on:
+  push:
+    branches: [phase-two-six-journey-owner-review]
+    paths: [.github/workflows/publish-phase-two-j23-review.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: github.event.head_commit.message == 'Produce and publish protected Phase Two Lesson 2.3 review'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24, cache: npm}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install locked application and media dependencies
+        run: |
+          npm ci
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1'
+      - name: Verify protected lesson source and build
+        run: npm run check
+      - name: Produce full landscape introduction and narrated teaching
+        run: |
+          python academy/phase-two-production/build-approved-j23-video.py "$RUNNER_TEMP/intro"
+          python academy/phase-two-production/build-j23-guided-media.py "$RUNNER_TEMP/guided"
+      - name: Publish only isolated Lesson 2.3 media and protected learner entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach "$RUNNER_TEMP/aca-official" origin/main
+          node academy/publish-phase-two-review.mjs "$GITHUB_WORKSPACE/learn" "$RUNNER_TEMP/aca-official"
+          cd "$RUNNER_TEMP/aca-official"
+          dest="assets/videos/phase-two-lesson-2-3"
+          test ! -e "$dest"
+          mkdir -p "$dest"
+          cp "$RUNNER_TEMP/intro/ACA-Phase-Two-Lesson-2-3-Introduction.mp4" "$dest/"
+          cp "$RUNNER_TEMP/intro/poster.webp" "$dest/"
+          cp "$RUNNER_TEMP/intro/media-manifest.json" "$dest/"
+          cp "$RUNNER_TEMP/guided/"*.m4a "$dest/"
+          cp "$RUNNER_TEMP/guided/ACA-Phase-Two-Lesson-2-3-"*.mp4 "$dest/"
+          cp "$RUNNER_TEMP/guided/ACA-Phase-Two-Lesson-2-3-"*.vtt "$dest/"
+          cp "$RUNNER_TEMP/guided/guided-chapters.json" "$dest/"
+          cp "$RUNNER_TEMP/guided/production-report.json" "$dest/"
+          test "$(find "$dest" -maxdepth 1 -type f | wc -l)" -eq 14
+          git add learn/index.html learn/assets/ "$dest/"
+          git diff --cached --name-status
+          test "$(git diff --cached --name-only | grep -c '^learn/index.html$')" -eq 1
+          test "$(git diff --cached --name-only | grep -c '^assets/videos/phase-two-lesson-2-3/')" -eq 14
+          if git diff --cached --name-status | grep -Ev '^(A[[:space:]]+(learn/assets/|assets/videos/phase-two-lesson-2-3/)|M[[:space:]]+learn/index.html$)'; then
+            echo 'Unexpected official-site modification blocked.' >&2
+            exit 1
+          fi
+          git config user.name 'ACA official review builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Install complete protected Lesson 2.3 review and landscape instructor on official Academy domain'
+          git push origin HEAD:main

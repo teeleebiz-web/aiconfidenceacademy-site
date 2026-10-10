@@ -1,0 +1,14 @@
+.p2-workbook { max-width: 1440px; margin: auto; }
+.p2-workbook .wb-toolbar .p2-workbook-back { border: 1px solid #b48632; border-radius: 999px; color: #102d4f; background: #f8f3e9; padding: .85rem 1.15rem; font: inherit; font-weight: 700; cursor: pointer; }
+.p2-workbook .wb-save { flex-wrap: wrap; }
+.p2-wb-print-answer { display: none; }
+@media print {
+  body * { visibility: hidden !important; }
+  .p2-workbook .wb-paper, .p2-workbook .wb-paper * { visibility: visible !important; }
+  .p2-workbook .wb-paper { position: absolute; top: 0; left: 0; width: 100%; box-shadow: none; }
+  .p2-workbook textarea { display: none !important; }
+  .p2-workbook .p2-wb-print-answer { display: block; white-space: pre-wrap; overflow-wrap: anywhere; padding: .6rem 0; font: inherit; color: #102d4f; }
+  .p2-workbook .wb-page-body { display: block; }
+  .p2-workbook .wb-page-body > * { margin: 0 0 1.25rem; break-inside: avoid; }
+  .p2-workbook .wb-page-hero { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
