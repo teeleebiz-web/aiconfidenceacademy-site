@@ -90,7 +90,7 @@ export function PhaseTwoGuidedAudio({ lessonId, media }: {
 }
 
 /** Each short clip uses the same confirmed instructor voice and a clearly fictional report. */
-export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
+export function PhaseTwoDemoClips({ clips, lessonId = '1.1' }: { clips: VisualDemoClip[]; lessonId?: string }) {
   const [selected, setSelected] = useState(0)
   const current = clips[selected]
   if (!current) return null
