@@ -9,6 +9,8 @@ const approvedTitles: Record<number, string[]> = {
   1: ['Professional AI Judgment and Direction','Find the Need and Establish the Evidence',
       'Select AI Roles and Define Business Value','Direct Professional Requests and Decision Support',
       'Scope a Solution and a Project Worth Completing','Stress Test the Professional Operating Model'],
+  2: ['Map the Work and Locate Friction','Produce Communication That Serves the Audience','Verify and Revise With CLEAR','Choose Assistants, Automation and Agents','Build a Bounded Working Prototype','Test Errors and Exception Paths'],
+
 }
 
 function transportFor(enrollmentId: string | null, journey: number): Transport {
