@@ -1,0 +1,14 @@
+.p2-need-practice { max-width: 980px; margin: 1.5rem auto; padding: clamp(1.1rem,3vw,2.2rem); background: #fbf7ee; color: #173d5c; border-radius: 16px; }
+.p2-need-practice header { padding-bottom: 1rem; border-bottom: 2px solid #d6b36a; }
+.p2-need-practice h2 { color: #102d4f; }
+.p2-need-practice h3 { margin: 1.5rem 0 .7rem; color: #102d4f; }
+.p2-need-practice fieldset { border: 1px solid #d5dfe4; border-radius: 12px; margin: 1rem 0; padding: 1rem; }
+.p2-need-practice legend { font-weight: 700; color: #102d4f; }
+.p2-need-practice label { display: block; margin: .85rem 0; font-weight: 600; }
+.p2-need-practice textarea, .p2-need-practice input, .p2-need-practice select { display: block; box-sizing: border-box; width: 100%; border: 1px solid #95a9b7; border-radius: 8px; padding: .75rem; margin-top: .35rem; font: inherit; color: #102d4f; background: white; }
+.p2-need-practice textarea { min-height: 76px; resize: vertical; }
+.p2-need-practice button { border: 1px solid #102d4f; background: #102d4f; color: #fff; padding: .75rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; margin: .4rem .4rem .4rem 0; }
+.p2-need-practice button:disabled { opacity: .5; cursor: not-allowed; }
+.p2-need-practice button:focus-visible, .p2-need-practice textarea:focus-visible, .p2-need-practice input:focus-visible, .p2-need-practice select:focus-visible { outline: 3px solid #b48632; outline-offset: 2px; }
+.p2-need-practice-save { border-top: 2px solid #d6b36a; padding-top: 1rem; margin-top: 1.5rem; }
+.p2-need-practice-save [role="status"] { min-height: 1.8rem; }

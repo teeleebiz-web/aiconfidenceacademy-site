@@ -1,0 +1,58 @@
+{
+  "lesson": "1.2",
+  "course": "ACA Phase Two Master v2.0",
+  "status": "all_genuine_approved_voice_tracks_synthesized_pending_academy_hosting",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "voice": "Rika - IA",
+  "avatar_video_id": "737e86537b84c3148051eac29eb27e35",
+  "guided_chapters": [
+    {
+      "title": "Begin with a person, not a product",
+      "duration_seconds": 161.9330612244898,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=6712fb28-db02-460b-be1e-8f1d5adf53ab.wav"
+    },
+    {
+      "title": "The symptom and the possible causes",
+      "duration_seconds": 143.83020408163264,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=08c0f607-5404-4a53-a72b-2ef95e366718.wav"
+    },
+    {
+      "title": "What counts as evidence?",
+      "duration_seconds": 120.08489795918368,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=7151c327-e019-4397-a5d9-151ce4b5dfcb.wav"
+    },
+    {
+      "title": "Ask fairly, then choose provisionally",
+      "duration_seconds": 153.44326530612244,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=1186b3df-7c65-4b21-a76a-6f40177bc7c6.wav"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-symptom",
+      "title": "See the symptom",
+      "duration_seconds": 17.711020408163265,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=9b3a1dfb-60d2-49d2-9176-5dd28949954e.wav"
+    },
+    {
+      "key": "02-causes",
+      "title": "Compare three causes",
+      "duration_seconds": 24.03265306122449,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=0fadf986-f466-4bd7-bd7a-48ffa8bb5f9a.wav"
+    },
+    {
+      "key": "03-questions",
+      "title": "Improve the questions",
+      "duration_seconds": 22.961632653061226,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=f1f8a0f0-97c3-4295-a467-5a8e11ee0030.wav"
+    },
+    {
+      "key": "04-decision",
+      "title": "Save a provisional decision",
+      "duration_seconds": 22.230204081632653,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=5b201d00-d03b-4e59-a6f2-fef625de8654.wav"
+    }
+  ],
+  "source_manuscript": "academy/phase-two-production/J1-L1-2-instructional-master.md",
+  "production_note": "Source narration ready for encoding into permanent Academy-hosted media. All actual durations from HeyGen voice synthesis; not estimated."
+}
