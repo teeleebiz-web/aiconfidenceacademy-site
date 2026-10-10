@@ -83,7 +83,7 @@ def vtt(duration,text):
         end=at+(duration*w/total)
         chunks.extend([f"{stamp(at)} --> {stamp(end)}",p,""]);at=end
     return "\n".join(chunks)
-chapters=list(re.finditer(r"### Chapter (\d+) — ([^\n]+)\n([\s\S]*?)(?=\n### Chapter |\n---\n|\n## Four narrated)",TEXT))
+chapters=list(re.finditer(r"### Chapter (\d+) — ([^\n]+)\n([\s\S]*?)(?=\n### Chapter |\n---\n|\n## Four)",TEXT))
 assert len(chapters)==4
 tracks=[];cues=[];elapsed=0.
 for idx,(m,item) in enumerate(zip(chapters,DATA["guided_chapters"])):
