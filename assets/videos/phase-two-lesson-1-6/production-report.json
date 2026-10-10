@@ -1,0 +1,57 @@
+{
+  "lesson": "1.6",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-1-6-Guided-Instruction.m4a",
+    "duration_seconds": 715.999,
+    "chapters": 4,
+    "bytes": 10052855
+  },
+  "demonstrations": [
+    {
+      "key": "01-model",
+      "title": "Assemble the operating model",
+      "duration_seconds": 25.887,
+      "file": "ACA-Phase-Two-Lesson-1-6-01-model.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-6-01-model.vtt",
+      "bytes": 571860,
+      "sha256": "0067283903057634f6bb14a1a9ed628cea599a44754768d22879d79432891f0a",
+      "transcript": "A Professional AI Operating Model brings six responsibilities together: purpose, limited AI roles, human ownership, an evidence-based review process, responsible boundaries and a commitment to improve. This is not a technical architecture. It is a practical guide to who does what, how work is checked and when the next action requires a person.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-policy",
+      "title": "Catch the outdated policy",
+      "duration_seconds": 20.845,
+      "file": "ACA-Phase-Two-Lesson-1-6-02-policy.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-6-02-policy.vtt",
+      "bytes": 468916,
+      "sha256": "178612bcfc8a710d4884d18b89951e89f12f5415cfb458ffd409da13f8c146d0",
+      "transcript": "An AI draft uses an outdated policy in a customer message. The weak instruction says only \u2018check the answer.\u2019 The stronger rule names the current approved policy, the human reviewer, and the action when records conflict. Hold the message until the authorized policy owner resolves the source uncertainty.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-consequence",
+      "title": "Apply consequence-based review",
+      "duration_seconds": 23.588,
+      "file": "ACA-Phase-Two-Lesson-1-6-03-consequence.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-6-03-consequence.vtt",
+      "bytes": 530415,
+      "sha256": "f42d5e830b1be92640b2b45dadb833856b82b899c7e534ed2228ac62e84a1a97",
+      "transcript": "Review effort should rise with the consequences. Fictional practice notes may be checked directly. An inaccurate customer message needs source verification. A request involving private information or binding commitments requires permission and human authority. If those are absent, stop and escalate. A more polished answer does not remove the risk.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-handoff",
+      "title": "Save the corrected model and journey handoff",
+      "duration_seconds": 22.334,
+      "file": "ACA-Phase-Two-Lesson-1-6-04-handoff.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-6-04-handoff.vtt",
+      "bytes": 502892,
+      "sha256": "1b43b42279fbb6fbf2d04bd99d139c5f68a4cc42db0960aea3bf2df3ae01b5ad",
+      "transcript": "The journey ends with evidence that your model works under pressure. Save the original and revised rules, the three scenario results, one reason to proceed and one reason to pause. Confirm a feasible project charter. The same Professional AI Operating Model continues into Journey Two, where you will build business workflows with the human decision clearly assigned.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
