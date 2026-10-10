@@ -206,7 +206,7 @@ describe('Phase Two learner lesson presentation', () => {
     vi.unstubAllGlobals()
   })
 
-  it.each([{pageId:'2.1',voice:'8NNnQuXc0FKua22CvviM'},{pageId:'2.2',voice:'8NNnQuXc0FKua22CvviM'},{pageId:'2.3',voice:'8NNnQuXc0FKua22CvviM'},{pageId:'2.2',voice:'wrong-voice'}])('loads verified review media for $pageId with its established voice ($voice)', async ({pageId,voice}) => {
+  it.each([{pageId:'2.1',voice:'8NNnQuXc0FKua22CvviM'},{pageId:'2.2',voice:'8NNnQuXc0FKua22CvviM'},{pageId:'2.3',voice:'8NNnQuXc0FKua22CvviM'},{pageId:'2.4',voice:'8NNnQuXc0FKua22CvviM'},{pageId:'2.2',voice:'wrong-voice'}])('loads verified review media for $pageId with its established voice ($voice)', async ({pageId,voice}) => {
     vi.stubGlobal('location', {origin: 'https://aiconfidenceacademy.org'})
     vi.stubGlobal('fetch', vi.fn(async (url: string) => ({ ok: true, json: async () => url.endsWith('guided-chapters.json') ? {
       duration_seconds: 614, chapters: [1,2,3,4].map(n => ({title: `Chapter ${n}`, start_seconds: (n-1)*150, transcript: `Teaching ${n}`})),
@@ -220,7 +220,7 @@ describe('Phase Two learner lesson presentation', () => {
       if (voice === '8NNnQuXc0FKua22CvviM') {
         await waitFor(() => expect(screen.getByLabelText(`Lesson ${pageId} guided instruction audio`)).toBeTruthy())
         expect(screen.getByLabelText(`Lesson ${pageId} instructor introduction video`).getAttribute('src')).toContain(pageId==='2.1'?'Lesson-2-1-Introduction-landscape.mp4':'Lesson-'+pageId.replace('.','-')+'-Introduction.mp4')
-        expect(screen.getByText(pageId==='2.1'?/Journey Two, Lesson One: Map the Work and Locate Friction/:pageId==='2.2'?/Journey Two, Lesson Two: Produce Communication That Serves the Audience/:/Journey Two, Lesson Three: Verify and Revise with CLEAR/)).toBeTruthy()
+        expect(screen.getByText(pageId==='2.1'?/Journey Two, Lesson One: Map the Work and Locate Friction/:pageId==='2.2'?/Journey Two, Lesson Two: Produce Communication That Serves the Audience/:pageId==='2.3'?/Journey Two, Lesson Three: Verify and Revise with CLEAR/:/Journey Two, Lesson Four: Choose Assistants, Automation and Agents/)).toBeTruthy()
       } else {
         expect(screen.queryByLabelText(`Lesson ${pageId} guided instruction audio`)).toBeNull()
         expect(screen.queryByLabelText(`Lesson ${pageId} instructor introduction video`)).toBeNull()
