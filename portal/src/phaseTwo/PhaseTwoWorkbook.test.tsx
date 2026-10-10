@@ -19,6 +19,26 @@ const fixture = (pages = [1]) => ({
     })),
   },
 })
+it('opens Lesson 4.2, retains the offer answers, locks future pages, prints and returns to 4.2',async()=>{
+  const data=fixture([1,2])
+  data.workbook.key='phase-two-journey-four';data.workbook.title='Phase Two Journey 4 Workbook'
+  data.answers={'p2-j4-1-offerSentence':'Earlier bounded offer','p2-j4-2-sample':'Saved complete estimate sample'} as never
+  data.workbook.pages=[{number:1,lesson_id:'4.1',kicker:'Journey Four',title:'Define the Offer and Its Promise',blocks:[{type:'field',id:'p2-j4-1-offerSentence',label:'Saved offer',hint:'',lines:5}]},{number:2,lesson_id:'4.2',kicker:'Journey Four',title:'Design a Useful Product or Learning Experience',blocks:[{type:'field',id:'p2-j4-2-sample',label:'My complete sample',hint:'',lines:5}]}] as never
+  vi.spyOn(supabase,'rpc').mockResolvedValue({data,error:null} as never)
+  const onBack=vi.fn();const print=vi.spyOn(window,'print').mockImplementation(()=>{})
+  render(<PhaseTwoWorkbook journey={4} initialLesson={2} onBack={onBack}/>)
+  expect(await screen.findByDisplayValue('Saved complete estimate sample')).toBeTruthy()
+  const chooser=screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect(chooser.value).toBe('2');expect([...chooser.options].slice(2).every(x=>x.disabled)).toBe(true)
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}))
+  expect(await screen.findByDisplayValue('Earlier bounded offer')).toBeTruthy()
+  fireEvent.change(chooser,{target:{value:'2'}})
+  expect(await screen.findByDisplayValue('Saved complete estimate sample')).toBeTruthy()
+  fireEvent.change(screen.getByLabelText('My complete sample'),{target:{value:'Reviewed complete sample'}})
+  fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}));expect(print).toHaveBeenCalledOnce()
+  fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 4.2/}));expect(onBack).toHaveBeenCalledOnce()
+  print.mockRestore()
+})
 it('opens the Journey Four offer workbook, keeps future sections locked, prints and returns to Lesson 4.1',async()=>{
   const data=fixture()
   data.workbook.key='phase-two-journey-four';data.workbook.title='Phase Two Journey 4 Workbook'
