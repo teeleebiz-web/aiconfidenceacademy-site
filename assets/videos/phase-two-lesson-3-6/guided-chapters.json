@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "audio_url": "/assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-Guided-Instruction.m4a",
+  "duration_seconds": 676.737,
+  "chapters": [
+    {
+      "title": "1. Bring the adoption evidence together",
+      "start_seconds": 0.0,
+      "duration_seconds": 160.575
+    },
+    {
+      "title": "2. Rehearse competing needs and access",
+      "start_seconds": 161.475,
+      "duration_seconds": 162.299
+    },
+    {
+      "title": "3. Justify the decision and make a material revision",
+      "start_seconds": 324.673,
+      "duration_seconds": 173.584
+    },
+    {
+      "title": "4. Verify the final plan and carry the evidence forward",
+      "start_seconds": 499.157,
+      "duration_seconds": 177.58
+    }
+  ]
+}

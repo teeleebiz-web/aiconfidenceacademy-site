@@ -1,0 +1,53 @@
+{
+  "lesson": "3.6",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-3-6-Guided-Instruction.m4a",
+    "duration_seconds": 676.737,
+    "chapters": 4,
+    "bytes": 9536819
+  },
+  "demonstrations": [
+    {
+      "key": "integrate",
+      "title": "Check the five artifacts and their honest status",
+      "duration_seconds": 60.447,
+      "file": "ACA-Phase-Two-Lesson-3-6-integrate.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-6-integrate.vtt",
+      "bytes": 1285911,
+      "sha256": "87a8f068fa4c2c5ec1b005373b6756e7a0eac2829e0c098ae407f226d658bf31",
+      "fictional_training_example": true
+    },
+    {
+      "key": "perspectives",
+      "title": "Rehearse the perspectives before requesting revisions",
+      "duration_seconds": 58.305,
+      "file": "ACA-Phase-Two-Lesson-3-6-perspectives.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-6-perspectives.vtt",
+      "bytes": 1238035,
+      "sha256": "282c23f795acec3ee91c4cbf2f74b08dac7681e973c73488add3b9fc6e88b84b",
+      "fictional_training_example": true
+    },
+    {
+      "key": "revise",
+      "title": "Make the access decision and a material revision",
+      "duration_seconds": 58.801,
+      "file": "ACA-Phase-Two-Lesson-3-6-revise.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-6-revise.vtt",
+      "bytes": 1249353,
+      "sha256": "e4d8d8cbc5afcdc2c1e1cb5fd36c7a9fceda32654ee4e016b592a03a749f507d",
+      "fictional_training_example": true
+    },
+    {
+      "key": "retain",
+      "title": "Retain the final plan, message and training resource",
+      "duration_seconds": 62.511,
+      "file": "ACA-Phase-Two-Lesson-3-6-retain.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-6-retain.vtt",
+      "bytes": 1381072,
+      "sha256": "a6c8b7942a2e4037a7079923bf9f59228d0cd9b01069ca43ef1e4c753183b10a",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
