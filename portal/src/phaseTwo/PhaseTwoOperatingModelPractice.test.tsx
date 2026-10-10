@@ -16,7 +16,7 @@ it('concludes Journey One with six human-first fields, three stress cases, and c
   const value=screen.getByLabelText(/Purpose and outcome/)
   fireEvent.change(value,{target:{value:'Support a person with safe, dependable work'}})
   const ai=screen.getByLabelText('Operating Model AI challenge prompt') as HTMLTextAreaElement
-  expect(ai.value).toContain('Purpose and outcome: Support a person')
+  expect(ai.value).toContain('Support a person with safe, dependable work')
   expect(ai.value).toContain('Challenge this operating model')
   expect(screen.getByLabelText(/Defend one PROCEED/)).toBeTruthy()
   expect(screen.getByLabelText(/Defend one PAUSE/)).toBeTruthy()
