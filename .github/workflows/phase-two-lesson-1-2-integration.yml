@@ -1,0 +1,28 @@
+name: ACA Phase Two Lesson 1.2 protected integration
+on:
+  push:
+    branches:
+      - phase-two-lesson-1-2-owner-integration
+  pull_request:
+    paths:
+      - 'portal/src/phaseTwo/PhaseTwoNeedPractice*'
+      - 'portal/src/phaseTwo/PhaseTwoProducedLessonReview.tsx'
+      - 'portal/src/phaseTwo/PhaseTwoGuidedMedia*'
+      - 'academy/phase-two-production/J1-L1-2-*'
+      - '.github/workflows/phase-two-lesson-1-2-integration.yml'
+permissions:
+  contents: read
+jobs:
+  protected-learner-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Protect Phase One and Lesson 1.1 with all regression checks
+        run: npm run check
+      - name: Check Lesson 1.2 curriculum and safety contract
+        run: node --test academy/phase-two-lesson-1-2-content.test.mjs
