@@ -67,6 +67,7 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
   const store = useMemo(() => new WorkbookStore(transport),[transport])
   const state = useSyncExternalStore(store.subscribe,store.snapshot)
   const [notice,setNotice] = useState('')
+  const [previewAnswers,setPreviewAnswers] = useState<Record<string,string>>({})
   useEffect(() => {
     void store.load(initialLesson)
     return () => store.dispose()
@@ -84,6 +85,7 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
       window.removeEventListener('beforeunload',handleUnload)
     }
   },[store,enrollmentId])
+  const answers = enrollmentId ? state.answers : {...state.answers,...previewAnswers}
   const page=state.workbook?.pages.find(p=>p.number===state.last_page)
   const released=state.workbook?.pages ?? []
   const titles=approvedTitles[journey] ?? []
@@ -96,7 +98,7 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
   }
   const download=()=>{
     if(!state.workbook)return
-    const text=buildStudyCopy(state.workbook.title,released as Array<{number:number;title:string;blocks:Block[]}>,state.answers)
+    const text=buildStudyCopy(state.workbook.title,released as Array<{number:number;title:string;blocks:Block[]}>,answers)
     const blob=new Blob([text],{type:'text/markdown;charset=utf-8'})
     const href=URL.createObjectURL(blob)
     const a=document.createElement('a')
@@ -114,7 +116,7 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
     <div className="wb-toolbar">
       <button className="wb-back p2-workbook-back" type="button" onClick={()=>void goBack()}>← Back to {initialLesson?'Lesson '+journey+'.'+initialLesson:'My Workbooks'}</button>
       <div className="wb-save">
-        <span role="status">{enrollmentId ? state.status==='saved'?'Saved':state.status==='saving'?'Saving…':state.status==='unsaved'?'Changes to save':'Save needed' : 'Founder preview — read only'}</span>
+        <span role="status">{enrollmentId ? state.status==='saved'?'Saved':state.status==='saving'?'Saving…':state.status==='unsaved'?'Changes to save':'Save needed' : 'Founder preview — test notes are not saved'}</span>
         <button type="button" className="wb-print" onClick={()=>window.print()}>Print / Save PDF</button>
         <button type="button" onClick={download}>Download study copy</button>
         {enrollmentId && <button type="button" disabled={state.status==='saving'} onClick={()=>void store.save()}>Save</button>}
@@ -156,11 +158,10 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
               <label htmlFor={b.id}>{b.label}</label>
               {b.hint&&<p className="wb-hint">{b.hint}</p>}
               <textarea id={b.id} rows={b.lines??4} maxLength={4000}
-                readOnly={!enrollmentId}
-                value={state.answers[b.id]??''}
-                onChange={e=>store.change(b.id!,e.target.value)}
-                placeholder={enrollmentId?'Write your notes here…':'Owner preview — editable answers require learner enrollment'} />
-              <div className="p2-wb-print-answer">{state.answers[b.id]||'Notes: ___________________________________________________'}</div>
+                value={answers[b.id]??''}
+                onChange={e=>enrollmentId ? store.change(b.id!,e.target.value) : setPreviewAnswers(a=>({...a,[b.id!]:e.target.value}))}
+                placeholder={enrollmentId?'Write your notes here…':'Founder preview notes (not saved to a learner record)'} />
+              <div className="p2-wb-print-answer">{answers[b.id]||'Notes: ___________________________________________________'}</div>
             </div>:null)}
         </div>
         <footer className="wb-page-footer"><span>AI assists. Humans verify.</span><span>Lesson {journey}.{page.number} · Released material</span></footer>
