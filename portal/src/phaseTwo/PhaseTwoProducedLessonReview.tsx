@@ -86,7 +86,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
   const [showEvidence, setShowEvidence] = useState(true)
   const visualWalkthrough = learnerMode && production.lesson_id === '1.1'
   const needWalkthrough = learnerMode && production.lesson_id === '1.2'
-  const useGuidedStudio = learnerMode && production.lesson_id === '1.1'
+  const useGuidedStudio = learnerMode && ['1.1', '1.2'].includes(production.lesson_id)
   const PracticeInstructionsContainer = useGuidedStudio ? 'details' : 'div'
 
   async function copyApprovedRequest() {
