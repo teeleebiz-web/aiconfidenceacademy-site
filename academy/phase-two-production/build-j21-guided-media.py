@@ -61,7 +61,7 @@ def frame(key,idx,path):
     im=Image.new("RGB",(1280,720),"#fbf7ee");d=ImageDraw.Draw(im)
     d.rectangle((0,0,1280,85),fill="#102d4f")
     d.text((45,23),"AI Confidence Academy",font=font(31,True),fill="#ffffff")
-    d.text((914,30),"PHASE TWO  •  1.2",font=font(20,True),fill="#e1c690")
+    d.text((914,30),"PHASE TWO  •  2.1",font=font(20,True),fill="#e1c690")
     d.rectangle((0,85,1280,91),fill="#b48632")
     d.text((54,117),"FICTIONAL TRAINING EXAMPLE",font=font(20,True),fill="#906c28")
     block(d,title,54,180,size=39,maxw=1150,bold=True)
