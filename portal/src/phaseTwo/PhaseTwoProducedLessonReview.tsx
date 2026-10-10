@@ -164,8 +164,8 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
             <h4 id="p2-produced-apply-title">Develop your continuing project</h4></div>
         </div>
         <p>Keep your work together in your Project Record. You will use it again in the lessons ahead.</p>
-        {learnerMode && production.lesson_id === '1.1' && (
-          <PhaseTwoPracticeStudio approvedAiRequest={production.approved_ai_request} enrollmentId={enrollmentId} />
+        {learnerMode && useGuidedStudio && (
+          {production.lesson_id === '1.2' ? <PhaseTwoNeedPractice enrollmentId={enrollmentId} /> : <PhaseTwoPracticeStudio approvedAiRequest={production.approved_ai_request} enrollmentId={enrollmentId} />}
         )}
         <PracticeInstructionsContainer className={useGuidedStudio ? 'p2-produced-optional-instructions' : undefined}>
           {useGuidedStudio && <summary>Read the detailed activity instructions</summary>}
