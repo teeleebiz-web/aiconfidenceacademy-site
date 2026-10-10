@@ -1,0 +1,57 @@
+{
+  "lesson": "1.4",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-1-4-Guided-Instruction.m4a",
+    "duration_seconds": 643.666,
+    "chapters": 4,
+    "bytes": 9036321
+  },
+  "demonstrations": [
+    {
+      "key": "01-vague",
+      "title": "Inspect the vague request",
+      "duration_seconds": 22.413,
+      "file": "ACA-Phase-Two-Lesson-1-4-01-vague.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-4-01-vague.vtt",
+      "bytes": 497700,
+      "sha256": "81fc72caf1c5020d774be95f1aab3744a240c80f126461aef6bd8510cbf37b86",
+      "transcript": "The founder asks which service to offer. An AI model could make either option sound attractive, but the request lacks customer evidence, delivery capacity, and costs. Those are missing inputs, not facts we can invent. Before recommending a service, name the purpose, the person served, and what the decision depends on.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-framework",
+      "title": "Add six professional request elements",
+      "duration_seconds": 23.196,
+      "file": "ACA-Phase-Two-Lesson-1-4-02-framework.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-4-02-framework.vtt",
+      "bytes": 518854,
+      "sha256": "0d955dccedf5ec98cab5dda08bb02ee08203bd1a7f22b75600efa4e90f52ddaf",
+      "transcript": "A professional request supplies the purpose, audience, context, task, constraints, and quality standard. For this case, ask AI to compare a reference guide with an AI response assistant using only the approved notes. Require uncertainty labels and clarifying questions before any confident recommendation.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-challenge",
+      "title": "Challenge an unsupported claim",
+      "duration_seconds": 21.969,
+      "file": "ACA-Phase-Two-Lesson-1-4-03-challenge.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-4-03-challenge.vtt",
+      "bytes": 487471,
+      "sha256": "db520386749bcdecba068f9944895ff94b73fedec4d9e1391001c8ac99ad143e",
+      "transcript": "The generated comparison suggests customers will prefer the AI service. Our fictional notes do not support that claim. Challenge it: which observation, interview, or verified record would establish customer preference? Without that source, keep the statement labeled unknown rather than presenting it as a business fact.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-memo",
+      "title": "Save a decision memo",
+      "duration_seconds": 24.764,
+      "file": "ACA-Phase-Two-Lesson-1-4-04-memo.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-4-04-memo.vtt",
+      "bytes": 548978,
+      "sha256": "e64194b73e21b1e68ce068987a5a84903c58fd64d2207fb09f08e95e96f5dcc5",
+      "transcript": "The founder's memo keeps both choices visible. It identifies what the records support, what remains missing, and who can approve an actual test. A useful follow-up asks for the missing evidence; it does not merely produce more polished text. Save your original and improved requests, verified claim, and decision rationale in your continuing Project Record.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
