@@ -1,0 +1,166 @@
+{
+  "production_version": "1.4-owner-review-2026-10-09",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "1.4",
+  "primary_media": "audio",
+  "title": "Direct professional requests and decision support",
+  "learner_promise": "Use a six-part Professional Request Framework, challenge missing evidence, and produce a decision memo you can defend.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Direct AI with purpose and limits",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Visible case and responsible correction",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Improve the request and compare two options",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Check evidence and own the decision",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Build a professional AI request using purpose, audience, context, task, constraints and quality.",
+    "Distinguish supplied facts from assumptions and unverified AI suggestions.",
+    "Compare two alternatives without inventing demand, delivery capacity or cost.",
+    "Challenge one unsupported claim and ask a follow-up that closes a decision gap.",
+    "Save a human-authored decision memo with the accountable owner in the same continuing project."
+  ],
+  "teaching": [
+    {
+      "heading": "Turn a vague request into a professional assignment",
+      "paragraphs": [
+        "The six elements give AI a clear direction: purpose, audience, context, task, constraints and quality. Use the need and value measure established in Lessons 1.2–1.3.",
+        "A clear request should describe the useful result and its evidence rather than telling AI to select a persuasive winner."
+      ],
+      "think_prompt": "Which of the six elements was absent in your first request?"
+    },
+    {
+      "heading": "Clarification is an appropriate answer",
+      "paragraphs": [
+        "AI cannot know customer demand, delivery capacity or costs without approved inputs. Ask it to identify the missing evidence rather than invent numbers.",
+        "Clearly mark supplied facts, reasonable inferences and unverified suggestions. Authorized source checking stays human."
+      ],
+      "think_prompt": "What one missing input might reverse your preferred option?"
+    },
+    {
+      "heading": "Compare options fairly",
+      "paragraphs": [
+        "Assess alternatives, evidence, tradeoffs, unknowns and human review. Asking AI to choose a winner without evidence is not responsible decision support.",
+        "A guide or simple template may be more appropriate than automation; compare options using the same constraints and relevant quality measure."
+      ],
+      "think_prompt": "What real-world consequence makes verification important before deployment?"
+    },
+    {
+      "heading": "Record the decision, not more polished text",
+      "paragraphs": [
+        "A decision memo states the alternatives, source-backed evidence, unresolved tradeoffs, person accountable and provisional next action.",
+        "Preserve the original request, improved six-element request, one substantive follow-up and one challenged material claim so the decision can be reviewed."
+      ],
+      "think_prompt": "How can you demonstrate that the follow-up improved the decision rather than merely expanding the response?"
+    }
+  ],
+  "worked_case": {
+    "label": "A founder asks AI to choose a service before checking the evidence",
+    "setup": "Fictional founder considers an approved customer information guide (Option A) and an AI response assistant (Option B). Customer demand, delivery capacity and true costs have not been established.",
+    "evidence_table": [
+      {
+        "claim": "Customers will prefer the AI assistant",
+        "evidence": "No interviews, observations or authorized preference records were supplied.",
+        "action": "Withhold the claim and design a neutral evidence check."
+      },
+      {
+        "claim": "Option B will be more profitable",
+        "evidence": "Implementation, review, maintenance and delivery costs are unknown.",
+        "action": "Request verified cost and delivery constraints; do not forecast profitability."
+      },
+      {
+        "claim": "Option A has no value",
+        "evidence": "The available notes do not compare guide usefulness against an AI service.",
+        "action": "Compare a realistic non-AI alternative fairly."
+      },
+      {
+        "claim": "The founder can authorize deployment",
+        "evidence": "The exercise does not establish the founder's authority for any client system.",
+        "action": "Name the accountable approver before any real-world test."
+      }
+    ],
+    "revised_example": "Option A is an approved reference guide and Option B is an AI response assistant. Both remain provisional. Customer demand, delivery capacity and costs are unknown. A useful next step is to gather authorized evidence and compare review burden before selecting a pilot.",
+    "demonstration_steps": [
+      "Read the vague request and identify missing facts.",
+      "Add all six professional request elements before comparing options.",
+      "Challenge a customer-preference claim unsupported by the source.",
+      "Record alternatives, uncertainty, responsible owner and conditional next action."
+    ],
+    "question": "Which missing input would make a confident recommendation unreliable, and what clarifying question should come first?"
+  },
+  "application": [
+    {
+      "minutes": 7,
+      "heading": "Preserve and improve your original request",
+      "instruction": "Bring forward your previous audience need and AI role. Record your first request and revise it with purpose, audience, context, task, constraints and quality.",
+      "evidence": "Original and improved six-element professional AI requests."
+    },
+    {
+      "minutes": 9,
+      "heading": "Compare two approaches with your chosen AI",
+      "instruction": "Copy the approved prompt to your AI assistant on your own device using sanitized notes. Challenge an unsupported assumption and verify or mark one material claim unresolved.",
+      "evidence": "Alternatives, evidence labels and corrected material claim."
+    },
+    {
+      "minutes": 9,
+      "heading": "Ask a useful follow-up and write a decision memo",
+      "instruction": "Ask a clarifying follow-up, explain what changed, identify the accountable human owner, and save your own provisional rationale in the continuing Project Record.",
+      "evidence": "Specific follow-up and decision memo preserving earlier project evidence."
+    }
+  ],
+  "approved_ai_request": "Compare options A and B using this purpose, audience, context, constraints and quality standard. Separate supplied evidence, assumptions and unknowns. Ask necessary questions before recommending. Inputs: [sanitized brief].",
+  "responsibility_map_fields": [
+    "Purpose and audience",
+    "Relevant source evidence and assumptions",
+    "Professional task and quality standard",
+    "Constraints, privacy and authority",
+    "Options, tradeoffs and missing information",
+    "Accountable human decision owner"
+  ],
+  "verification": [
+    {
+      "minutes": 3,
+      "heading": "Find the missing input",
+      "prompt": "Name the evidence gap that would invalidate a recommendation and the authorized source that could resolve it."
+    },
+    {
+      "minutes": 3,
+      "heading": "Challenge an unsupported claim",
+      "prompt": "Demonstrate one correction or an explicit uncertainty label in the comparison."
+    },
+    {
+      "minutes": 4,
+      "heading": "Show that the follow-up changed the decision",
+      "prompt": "Preserve the original request, improved request and follow-up; explain why the final human rationale is more dependable."
+    }
+  ],
+  "completion_criteria": [
+    "All six request elements completed",
+    "Two project-relevant approaches compared fairly",
+    "One important AI assumption challenged and one material claim verified or marked unknown",
+    "Clarifying follow-up improves a concrete decision gap",
+    "Human-owned decision memo saved to same continuing Project Record"
+  ],
+  "handoff": "Use this documented professional request, evidence review and decision memo to scope a finishable artifact in Lesson 1.5, without opening the next workbook section early.",
+  "editorial_notes": {
+    "status": "Full Lesson 1.4 instructional content staged for founder review only.",
+    "media": "Approved Japanese instructor and Rika–IA narrated media undergo owner review; no automatic public course activation.",
+    "source": "ACA Phase Two Six-Week Curriculum Master v2.0, Week 1 Thursday, Lesson 1.4.",
+    "example_data": "Service guide versus AI response assistant is fictional. Demand, cost and delivery assumptions explicitly unresolved."
+  }
+}
