@@ -44,6 +44,13 @@ jobs:
           git config user.name "ACA instructional media builder"
           git config user.email "actions@users.noreply.github.com"
           git commit -m "Attach Lesson 1.2 approved-voice guided audio and narrated case media"
-          git fetch origin phase-two-lesson-1-2-instructional-production
-          git rebase origin/phase-two-lesson-1-2-instructional-production
-          git push origin HEAD:phase-two-lesson-1-2-instructional-production
+          for attempt in 1 2 3 4 5; do
+            git fetch origin phase-two-lesson-1-2-instructional-production
+            git rebase origin/phase-two-lesson-1-2-instructional-production
+            if git push origin HEAD:phase-two-lesson-1-2-instructional-production; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo 'Could not safely synchronize generated media with newer branch commits.' >&2
+          exit 1
