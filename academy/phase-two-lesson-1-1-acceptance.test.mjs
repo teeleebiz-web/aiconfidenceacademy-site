@@ -42,7 +42,7 @@ test('Lesson 1.1 demonstrates the complete fictional evidence sequence with capt
 
 test('Lesson 1.1 runtime bundle exposes all essential learning sections', () => {
   const html = readFileSync(resolve(import.meta.dirname, '../learn/index.html'), 'utf8');
-  const entry = html.match(/index-[\w-]+\.js/g)?.at(-1);
+  const entry = html.match(/if \(review\) \{[\s\S]*?index-[\w-]+\.js/)?.[0]?.match(/index-[\w-]+\.js/)?.[0];
   assert.ok(entry, 'Learner page should reference an application bundle');
   const bundle = readFileSync(resolve(import.meta.dirname, '../learn/assets', entry), 'utf8');
   for (const feature of ['p2-guided-chapters','Read the guided instruction transcript',
