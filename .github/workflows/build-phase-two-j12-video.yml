@@ -1,0 +1,40 @@
+name: Produce ACA Lesson 1.2 instructor video
+on:
+  push:
+    branches:
+      - phase-two-lesson-1-2-instructional-production
+    paths:
+      - academy/phase-two-production/J1-L1-2-VIDEO-BUILD.flag
+permissions:
+  contents: write
+jobs:
+  build-video:
+    if: github.event.head_commit.message == 'Build approved Lesson 1.2 instructor video'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install encoder and validation
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1' 'av==15.1.0'
+      - name: Assemble instructor with Academy begin/end cards
+        run: |
+          python academy/phase-two-production/build-approved-j12-video.py "$RUNNER_TEMP/j12-video"
+          test -s "$RUNNER_TEMP/j12-video/media-manifest.json"
+      - name: Preserve video and poster on production branch
+        run: |
+          set -euo pipefail
+          dest="assets/videos/phase-two-lesson-1-2"
+          mkdir -p "$dest"
+          cp "$RUNNER_TEMP/j12-video/ACA-Phase-Two-Lesson-1-2-Introduction.mp4" "$dest/"
+          cp "$RUNNER_TEMP/j12-video/poster.webp" "$dest/"
+          cp "$RUNNER_TEMP/j12-video/media-manifest.json" "$dest/"
+          git add "$dest/"
+          git config user.name "ACA instructional media builder"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Attach Lesson 1.2 approved instructor video and ACA cards"
+          git push origin HEAD:phase-two-lesson-1-2-instructional-production
