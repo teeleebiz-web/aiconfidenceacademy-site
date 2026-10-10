@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PhaseTwoPracticeStudio } from './PhaseTwoPracticeStudio'
 import { PhaseTwoNeedPractice } from './PhaseTwoNeedPractice'
+import { PhaseTwoValuePractice } from './PhaseTwoValuePractice'
 import { PhaseTwoDemoClips, type VisualDemoClip } from './PhaseTwoGuidedMedia'
 import { PhaseTwoVisualLab } from './PhaseTwoVisualLab'
 import { PhaseTwoNeedLab } from './PhaseTwoNeedLab'
@@ -86,7 +87,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
   const [showEvidence, setShowEvidence] = useState(true)
   const visualWalkthrough = learnerMode && production.lesson_id === '1.1'
   const needWalkthrough = learnerMode && production.lesson_id === '1.2'
-  const useGuidedStudio = learnerMode && (production.lesson_id === '1.1' || production.lesson_id === '1.2')
+  const useGuidedStudio = learnerMode && ['1.1','1.2','1.3'].includes(production.lesson_id)
   const PracticeInstructionsContainer = useGuidedStudio ? 'details' : 'div'
 
   async function copyApprovedRequest() {
@@ -133,7 +134,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
             <h4 id="p2-produced-case-title">{production.worked_case.label}</h4></div>
         </div>
         <p>{production.worked_case.setup}</p>
-        {(visualWalkthrough || needWalkthrough) && demoClips?.length === 4 && <PhaseTwoDemoClips clips={demoClips} />}
+        {(visualWalkthrough || needWalkthrough || (learnerMode && production.lesson_id === '1.3')) && demoClips?.length === 4 && <PhaseTwoDemoClips clips={demoClips} />}
         {visualWalkthrough ? <PhaseTwoVisualLab workedCase={production.worked_case} /> : needWalkthrough ? <PhaseTwoNeedLab workedCase={production.worked_case} /> : <>
         <button className="p2-produced-evidence-toggle" type="button"
           aria-expanded={showEvidence} onClick={() => setShowEvidence(v => !v)}>
@@ -167,6 +168,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
           <PhaseTwoPracticeStudio approvedAiRequest={production.approved_ai_request} enrollmentId={enrollmentId} />
         )}
         {learnerMode && production.lesson_id === '1.2' && <PhaseTwoNeedPractice enrollmentId={enrollmentId} />}
+        {learnerMode && production.lesson_id === '1.3' && <PhaseTwoValuePractice enrollmentId={enrollmentId} />}
         <PracticeInstructionsContainer className={useGuidedStudio ? 'p2-produced-optional-instructions' : undefined}>
           {useGuidedStudio && <summary>Read the detailed activity instructions</summary>}
         <ol className="p2-produced-tasklist">{production.application.map((task, i) => (
