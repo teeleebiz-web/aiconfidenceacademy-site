@@ -133,7 +133,8 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
             <h4 id="p2-produced-case-title">{production.worked_case.label}</h4></div>
         </div>
         <p>{production.worked_case.setup}</p>
-        {visualWalkthrough && demoClips?.length === 4 && <PhaseTwoDemoClips clips={demoClips} />}
+        {(visualWalkthrough || needWalkthrough) && demoClips?.length === 4 &&
+          <PhaseTwoDemoClips clips={demoClips} lessonId={production.lesson_id} />}
         {visualWalkthrough ? <PhaseTwoVisualLab workedCase={production.worked_case} /> : needWalkthrough ? <PhaseTwoNeedLab workedCase={production.worked_case} /> : <>
         <button className="p2-produced-evidence-toggle" type="button"
           aria-expanded={showEvidence} onClick={() => setShowEvidence(v => !v)}>
