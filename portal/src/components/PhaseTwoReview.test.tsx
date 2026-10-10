@@ -25,18 +25,21 @@ vi.mock('../lib/supabase', () => ({
 }))
 
 vi.mock('../phaseTwo/PhaseTwoLessonExperience', () => ({
-  PhaseTwoLessonExperience: ({ pageId, lessonTitle, medium, introAudio }: {
+  PhaseTwoLessonExperience: ({ pageId, lessonTitle, medium, introAudio, onOpenWorkbook }: {
     pageId: string; lessonTitle: string; medium: string
-    introAudio?: { url: string }
+    introAudio?: { url: string }; onOpenWorkbook?: () => void
   }) => (
     <main>
       <h1>{lessonTitle}</h1>
       <p>{'Lesson ' + pageId}</p>
       <p>{medium === 'audio' ? 'Audio placeholder' : 'Video placeholder'}</p>
       {introAudio?.url && <p>Approved audio attached</p>}
+      {onOpenWorkbook && <button onClick={onOpenWorkbook}>Open Workbook — Lesson {pageId}</button>}
     </main>
   ),
 }))
+
+vi.mock('../phaseTwo/PhaseTwoWorkbook', () => ({PhaseTwoWorkbook: ({initialLesson,journey}: {initialLesson:number;journey:number}) => <h1>Workbook {journey}.{initialLesson}</h1>}))
 
 const journeys = Array.from({ length: 6 }, (_, i) => ({
   id: 'journey-' + (i + 1),
@@ -210,6 +213,17 @@ describe('unpublished Phase Two founder review', () => {
         emailRedirectTo: expect.stringContaining('/learn/?review=phase-two&lesson=1.2'),
       }),
     }))
+  })
+
+  it('connects the released Lesson 2.2 workbook to its protected lesson', async () => {
+    const content = lessons[7].content as typeof lessons[7]['content'] & {phase_two_production?: {approval_status:string}}
+    content.phase_two_production = {approval_status:'founder_review_not_published'}
+    window.history.replaceState({}, '', '/learn/?review=phase-two&lesson=2.2')
+    try {
+      render(<PhaseTwoReview />)
+      await userEvent.setup().click(await screen.findByRole('button', {name:'Open Workbook — Lesson 2.2'}))
+      expect(await screen.findByRole('heading', {name:'Workbook 2.2'})).toBeTruthy()
+    } finally {delete content.phase_two_production}
   })
 
 })
