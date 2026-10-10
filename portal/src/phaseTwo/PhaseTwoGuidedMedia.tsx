@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './phaseTwoGuidedMedia.css'
 
 export type GuidedAudioChapter = {
@@ -92,7 +92,14 @@ export function PhaseTwoGuidedAudio({ lessonId, media }: {
 /** Each short clip uses the same confirmed instructor voice and a clearly fictional report. */
 export function PhaseTwoDemoClips({ clips, lessonId = '1.1' }: { clips: VisualDemoClip[]; lessonId?: string }) {
   const [selected, setSelected] = useState(0)
+  const [playRequest, setPlayRequest] = useState(0)
+  const [caption, setCaption] = useState('')
+  const player = useRef<HTMLVideoElement>(null)
   const current = clips[selected]
+  useEffect(() => {
+    setCaption('')
+    if (playRequest > 0) void player.current?.play().catch(() => { /* Browser may require direct play */ })
+  }, [selected, playRequest])
   if (!current) return null
   return (
     <section className="p2-demo-clips" aria-labelledby="p2-demo-clips-heading">
@@ -103,17 +110,24 @@ export function PhaseTwoDemoClips({ clips, lessonId = '1.1' }: { clips: VisualDe
       </div>
       <div className="p2-demo-clip-tabs" role="group" aria-label="Choose a screen demonstration">
         {clips.map((clip, i) => <button type="button" key={clip.key}
-          aria-pressed={selected === i} onClick={() => setSelected(i)}>
+          aria-pressed={selected === i} onClick={() => { setSelected(i); setPlayRequest(n => n + 1) }}>
           <span>{String(i + 1).padStart(2, '0')}</span><strong>{clip.title}</strong>
         </button>)}
       </div>
       <div className="p2-demo-clip-player">
         <h4>{current.title}</h4>
-        <video key={current.key} controls playsInline preload="auto"
-          src={current.url} aria-label={`${current.title} screen demonstration`}>
-          <track kind="captions" src={current.captions_url} srcLang="en" label="English" default />
+        <video key={current.key} ref={player} controls playsInline preload="auto"
+          src={current.url} aria-label={`${current.title} screen demonstration`}
+          onLoadedMetadata={event => { if (lessonId === '1.2' && event.currentTarget.textTracks[0]) event.currentTarget.textTracks[0].mode = 'hidden' }}
+          onTimeUpdate={event => {
+            if (lessonId !== '1.2') return
+            const cue = event.currentTarget.textTracks[0]?.activeCues?.[0]
+            setCaption(cue && 'text' in cue ? String(cue.text) : '')
+          }}>
+          <track kind="captions" src={current.captions_url} srcLang="en" label="English" default={lessonId !== '1.2'} />
           Your browser does not support video playback.
         </video>
+        {lessonId === '1.2' && <div className="p2-video-caption-strip" aria-label="Narration captions">{caption || current.transcript}</div>}
         <details>
           <summary>Read this demonstration</summary>
           <p>{current.transcript}</p>
