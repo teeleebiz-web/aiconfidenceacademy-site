@@ -1,0 +1,75 @@
+{
+  "lesson": "1.4",
+  "instructor": {
+    "look_id": "eb90c2b7050142ea461979fa0215e161",
+    "voice_id": "ac277b338cf64d8b9686784c43c563da",
+    "voice_name": "Rika - IA",
+    "intro_video_id": "e54de35c1a06d957cb862e948783a397"
+  },
+  "generated": [
+    {
+      "type": "chapter",
+      "index": 1,
+      "title": "Build a request that reflects professional work",
+      "script": "Consider a simple question: \"What service should I offer?\" It sounds reasonable. Yet an AI assistant cannot know which customer you intend to serve, whether you have permission to use particular information, what you can deliver, or which option has actual demand. It may respond confidently with an attractive list. That is not the same as a dependable choice.\n\nA professional request begins with purpose. Why does the work matter? It identifies an audience. Who will use or rely on the result? It includes context. What relevant evidence and constraints are already known? It states the task. What should the AI assistant actually produce? It specifies constraints, including privacy, authority, approved sources, budget or delivery limits. And it states quality: how will you judge whether the answer is accurate and useful?\n\nThese are six components of the Professional Request Framework: purpose, audience, context, task, constraints and quality. You can use them with ChatGPT or another AI assistant. They are not magic words. They are a disciplined way to make your responsibility visible.\n\nSuppose our fictional founder is considering two services for a small customer-service business. The founder has noticed recurring questions, but has not performed customer interviews or measured the time and expense of delivery. One option is preparing an approved information guide. The other is a custom AI response assistant.\n\nA vague request might say, \"Which option will make more money?\" A professional request would ask for a comparison of the two approaches, using the need statement from the founder's notes, without treating hypothetical demand as fact. It would require the assistant to identify missing customer evidence, delivery capacity and costs before giving a confident recommendation.\n\nNotice the difference. The professional request may lead to a less dramatic answer. It may say, \"These facts are not established.\" That is often more valuable than an unsupported sales forecast.\n\nReturn to your continuing project. Bring forward the person served, the need you selected, and the AI role or no-AI choice from the earlier lessons. The work does not begin again. We improve its direction.\n\nPause and identify one important context item you have not yet supplied. Is it authorization, a customer requirement, a measured baseline or a delivery limit? A good question can expose the next responsible action.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=49621920-90de-4e75-a0ce-52540444069e.wav",
+      "duration_seconds": 173.29632653061225
+    },
+    {
+      "type": "chapter",
+      "index": 2,
+      "title": "Ask for clarification before a recommendation",
+      "script": "AI is often rewarded by the appearance of answering quickly. Professional work sometimes requires a more useful first response: a clarifying question.\n\nSuppose you ask whether to offer an approved reference guide or a bespoke AI assistant. Perhaps you have a clear audience and a description of the current problem. But you do not know how many people experience it, what software the client already uses, whether their policies are current, what the client can pay, or who has authority to approve responses.\n\nAn AI assistant can help list those gaps. What it cannot do is convert them into facts by inventing plausible numbers. An estimate or hypothesis may help structure a test if it is labeled as such. It must never be presented as an actual customer interview, approved policy, confirmed cost or forecast.\n\nIn your request, tell the assistant: Separate supplied facts, inferred assumptions and unverified suggestions. Ask clarifying questions when important evidence is missing. If a conclusion depends on an unknown, describe the uncertainty and what would resolve it.\n\nLet's practice a distinction. \"Three authorized staff members reported that customers ask similar questions\" would be a reported experience, if those conversations actually occurred. \"The approved service policy was last updated on a certain date\" would require the policy record. \"Customers will choose the chatbot\" is an unsupported preference claim unless the founder has evidence. The wording of the AI response does not change the category of its source.\n\nWhen you review an AI response, locate the statements that need verification. Which come from your own notes? Which are reasonable possibilities but not yet supported? Which are outright invented? The goal is not to find fault in every sentence. The goal is to know which facts must be dependable before you act.\n\nOne useful professional follow-up is not \"Make this more persuasive.\" It is \"What important input is missing, and how could I check it without leading the person toward a particular answer?\" That question moves the investigation forward.\n\nNow return to the original request you wrote. Add one explicit instruction requiring clarification before a recommendation if a material fact is absent. Think about which missing input could reverse the decision, not merely delay the presentation.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=962aca7f-86ab-4c39-84f6-a055e7851156.wav",
+      "duration_seconds": 155.2195918367347
+    },
+    {
+      "type": "chapter",
+      "index": 3,
+      "title": "Use AI to compare alternatives without handing it authority",
+      "script": "A professional AI assistant can organize information, compare alternatives and reveal tradeoffs. But the decision still belongs to the person authorized to make it.\n\nImagine Option A: prepare and maintain a concise approved reference guide. Option B: introduce an AI-supported response assistant. We can examine their possible usefulness, required inputs, human oversight and unresolved costs. A guide might be simpler to deliver, but its effectiveness depends on accurate current instructions and whether people can find them. An AI response assistant may help organize and retrieve information, but it adds testing, governance, review and maintenance requirements.\n\nWe should not declare either the winner from a fictional example. We lack measured demand, full implementation costs, client permissions and actual results. The absence of those facts must be visible in the comparison.\n\nA good comparison separates alternatives, the evidence favoring each, material tradeoffs, unresolved assumptions, and consequences of being wrong. It also identifies the accountable decision maker. That way, AI helps clarify the choice without claiming authority to make it.\n\nConsider the difference between two follow-up requests. \"Choose the best option\" invites AI to fill gaps with an answer. \"For each option, list what we know, what we have only assumed, the required review effort, the principal risk, and the one question that would most change the choice\" produces a more usable decision aid.\n\nThe aim is not to keep prompting until you get the answer you hoped to hear. It is to improve the quality of the decision. If the assistant recommends a customer-facing AI system but your current evidence cannot establish approved source information, your responsible next move may be to validate the source first.\n\nWrite down a material claim in your comparison. Perhaps it concerns delivery time, demand, reduced corrections or savings. State the source you would use to verify it. If the source is not available, mark the claim as unverified and remove it from the final rationale.\n\nThis is how the Human First principle becomes practical. AI assists with examination, but the accountable person retains judgment.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=6accaec6-a6be-400e-a814-739a3de75bd6.wav",
+      "duration_seconds": 149.1069387755102
+    },
+    {
+      "type": "chapter",
+      "index": 4,
+      "title": "Create a decision memo and preserve the conversation",
+      "script": "A decision memo is a brief record of your reasoning, not a polished essay designed to impress.\n\nIt should name the decision in plain language. List the alternatives. Summarize the evidence actually supplied. Explain the important tradeoffs and uncertainties. State which information still needs verification. Identify the person with authority to decide and the reason for the provisional choice.\n\nIn our fictional founder example, a responsible memo might say that the approved reference guide merits a small first test because the business can evaluate it without committing to an unverified automated service. But that remains a provisional choice, not a claim that customer demand or profitability has already been established. The decision could change after a genuine review of customer needs, approved materials, delivery capacity and costs.\n\nNow you will practice this process with your own selected project. Save your original AI request, even if it was vague. Improve it using all six elements of the Professional Request Framework. Ask your chosen AI assistant to compare Option A and Option B. Review what it returned. Challenge one assumption and verify or clearly flag one material claim. Ask a follow-up that closes a concrete gap in the decision.\n\nLook carefully at the outcome. Did your follow-up provide missing evidence, request a relevant clarification, or improve the comparison? Or did it merely produce more text? A longer output is not necessarily a better decision.\n\nSave the original request, the improved request, your substantive follow-up, the corrected or unresolved claim, and a brief decision memo in the same continuing Project Record. Preserve the evidence from Lessons 1.1, 1.2 and 1.3. Your workbook is your permanent study resource, not a replacement for your project.\n\nYou may use AI to draft the memo for your own review. But you, not the model, approve the reasoning and the final action. Name any decision that requires another person's permission. Do not imply that a simulated exercise gives you authority to deploy a service.\n\nTo close, return to the six elements: purpose, audience, context, task, constraints and quality. Then ask the deeper question: does this exchange support a reliable professional judgment? That is the standard we're building, one careful decision at a time.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=ec09860c-16ed-4fc4-9e0a-840e5243eb2f.wav",
+      "duration_seconds": 163.34367346938777
+    },
+    {
+      "type": "demo",
+      "index": 1,
+      "title": "Inspect the vague request",
+      "script": "The founder asks which service to offer. An AI model could make either option sound attractive, but the request lacks customer evidence, delivery capacity, and costs. Those are missing inputs, not facts we can invent. Before recommending a service, name the purpose, the person served, and what the decision depends on.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=72c03c5c-4584-4e56-9aaa-11bcfaa7a74b.wav",
+      "duration_seconds": 22.413061224489795
+    },
+    {
+      "type": "demo",
+      "index": 2,
+      "title": "Add six professional request elements",
+      "script": "A professional request supplies the purpose, audience, context, task, constraints, and quality standard. For this case, ask AI to compare a reference guide with an AI response assistant using only the approved notes. Require uncertainty labels and clarifying questions before any confident recommendation.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=e458f42d-1319-445f-b9ae-649c64783ce7.wav",
+      "duration_seconds": 23.196734693877552
+    },
+    {
+      "type": "demo",
+      "index": 3,
+      "title": "Challenge an unsupported claim",
+      "script": "The generated comparison suggests customers will prefer the AI service. Our fictional notes do not support that claim. Challenge it: which observation, interview, or verified record would establish customer preference? Without that source, keep the statement labeled unknown rather than presenting it as a business fact.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=081e85b7-f3ce-4509-9982-0f844fcb6b02.wav",
+      "duration_seconds": 21.968979591836735
+    },
+    {
+      "type": "demo",
+      "index": 4,
+      "title": "Save a decision memo",
+      "script": "The founder's memo keeps both choices visible. It identifies what the records support, what remains missing, and who can approve an actual test. A useful follow-up asks for the missing evidence; it does not merely produce more polished text. Save your original and improved requests, verified claim, and decision rationale in your continuing Project Record.",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=12826559-295f-4bd2-a882-0ede75d827ad.wav",
+      "duration_seconds": 24.76408163265306
+    }
+  ]
+}
