@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { PhaseTwoLessonExperience } from './PhaseTwoLessonExperience'
 
@@ -157,4 +157,53 @@ describe('Phase Two learner lesson presentation', () => {
     expect(screen.getByRole('alert').textContent).toMatch(/lesson is temporarily unavailable/i)
     expect(screen.queryByText('Lesson teaching and practice')).toBeNull()
   })
+  it('substitutes only validated revised lesson introduction in protected founder review', async () => {
+    vi.stubGlobal('fetch',vi.fn().mockResolvedValue({
+      ok:true,
+      json:async()=>({
+        lesson:'1.1',intro_closing:"Let's begin.",
+        instructor_voice_id:'ac277b338cf64d8b9686784c43c563da',
+        video_file:'ACA-Phase-Two-Lesson-1-1-Introduction-v2.mp4',
+        captions_file:'ACA-Phase-Two-Lesson-1-1-Introduction-v2.vtt',
+        poster_file:'poster-v2.webp',
+      }),
+    }))
+    render(<PhaseTwoLessonExperience
+      pageId="1.1" lessonTitle="Professional AI Judgment and Direction"
+      journeyTitle="Journey 1" purpose="Review the report." medium="audio"
+      production={lessonProduction} allowMediaReview
+      introVideo={{url:'https://aiconfidenceacademy.org/old-approved.mp4',
+        transcript:'Original approved introduction.',approvalStatus:'founder_approved'}}
+    />)
+    const player=screen.getByLabelText('Lesson 1.1 instructor introduction video') as HTMLVideoElement
+    await waitFor(()=>expect(globalThis.fetch).toHaveBeenCalledWith('/assets/videos/phase-two-lesson-1-1/intro-v2-manifest.json',{cache:'no-store'}))
+    await waitFor(()=>expect(player.getAttribute('src')).toContain('Introduction-v2.mp4'),{timeout:4000})
+    expect(player.getAttribute('poster')).toContain('poster-v2.webp')
+    const track=player.querySelector('track[kind="captions"]')
+    expect(track?.getAttribute('src')).toContain('Introduction-v2.vtt')
+    expect(screen.getByText(/Phase Two, Journey One, Lesson One: Professional AI Judgment and Direction/)).toBeTruthy()
+    vi.unstubAllGlobals()
+  })
+
+  it('preserves previously approved introduction when revised media fails verification', async () => {
+    vi.stubGlobal('fetch',vi.fn().mockResolvedValue({ok:true,json:async()=>({
+      lesson:'1.1',intro_closing:'Unapproved alternate phrase',
+      instructor_voice_id:'ac277b338cf64d8b9686784c43c563da',
+      video_file:'ACA-Phase-Two-Lesson-1-1-Introduction-v2.mp4',
+      captions_file:'ACA-Phase-Two-Lesson-1-1-Introduction-v2.vtt',
+      poster_file:'poster-v2.webp',
+    })}))
+    render(<PhaseTwoLessonExperience
+      pageId="1.1" lessonTitle="Professional AI Judgment and Direction"
+      journeyTitle="Journey 1" purpose="Review the report." medium="audio"
+      production={lessonProduction} allowMediaReview
+      introVideo={{url:'https://aiconfidenceacademy.org/old-approved.mp4',
+        transcript:'Original approved introduction.',approvalStatus:'founder_approved'}}
+    />)
+    await waitFor(()=>expect(globalThis.fetch).toHaveBeenCalled())
+    expect((screen.getByLabelText('Lesson 1.1 instructor introduction video') as HTMLVideoElement).src)
+      .toContain('old-approved.mp4')
+    vi.unstubAllGlobals()
+  })
+
 })
