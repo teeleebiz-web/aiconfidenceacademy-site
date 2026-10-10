@@ -176,7 +176,8 @@ describe('Phase Two learner lesson presentation', () => {
         transcript:'Original approved introduction.',approvalStatus:'founder_approved'}}
     />)
     const player=screen.getByLabelText('Lesson 1.1 instructor introduction video') as HTMLVideoElement
-    await waitFor(()=>expect(player.getAttribute('src')).toContain('Introduction-v2.mp4'))
+    await waitFor(()=>expect(globalThis.fetch).toHaveBeenCalledWith('/assets/videos/phase-two-lesson-1-1/intro-v2-manifest.json',{cache:'no-store'}))
+    await waitFor(()=>expect(player.getAttribute('src')).toContain('Introduction-v2.mp4'),{timeout:4000})
     expect(player.getAttribute('poster')).toContain('poster-v2.webp')
     const track=player.querySelector('track[kind="captions"]')
     expect(track?.getAttribute('src')).toContain('Introduction-v2.vtt')
