@@ -1,0 +1,15 @@
+{
+  "approved_heygen_video_id": "baf67ad6583c2a099b548db0f0721236",
+  "source_duration_seconds": 72.13,
+  "completed_duration_seconds": 78.421,
+  "opening_seconds": 1.5,
+  "instructor_last_word_landing_seconds": 0.85,
+  "end_card_seconds": 1.9,
+  "returned_beginning_card_seconds": 2.0,
+  "start_frame_is_beginning_card": true,
+  "last_frame_is_beginning_card": true,
+  "format": "1920x1080 H.264 MP4 / AAC",
+  "bytes": 6644130,
+  "sha256": "bdeb8f6d39f3ec7e14af9ee3b6f33782149d526f229b86458ba89240224c21e5",
+  "max_display_width_px": 640
+}
