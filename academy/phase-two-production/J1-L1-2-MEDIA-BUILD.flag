@@ -1,3 +1,4 @@
 Start authenticated-voice Lesson 1.2 narrated media build. This command builds only branch media, not live learner deployment.
 Rebuild with branch synchronization following overlapping production commits.
 Build after successful intro-video publication to the staging branch.
+Build after adjusting combined instructor-plus-guided file inventory.
