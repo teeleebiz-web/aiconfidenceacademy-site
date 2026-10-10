@@ -115,9 +115,10 @@ export function PhaseTwoLessonExperience({
   const selectedDemoClips = demoClips ?? producedMedia?.demos
   const selectedVideo = (allowMediaReview ? revisedIntro : null) ?? introVideo ?? (['1.2','1.3','1.4','1.5','1.6','2.1','2.2'].includes(pageId) && allowMediaReview && producedMedia
     ? {
-      url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + '-Introduction.mp4',
+      url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + (pageId === '2.1' ? '-Introduction-landscape.mp4' : '-Introduction.mp4'),
       transcript: pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : pageId === '1.3' ? LESSON_13_INTRO_TRANSCRIPT : pageId === '1.4' ? LESSON_14_INTRO_TRANSCRIPT : pageId === '1.5' ? LESSON_15_INTRO_TRANSCRIPT : pageId === '1.6' ? LESSON_16_INTRO_TRANSCRIPT : pageId === '2.1' ? LESSON_21_INTRO_TRANSCRIPT : LESSON_22_INTRO_TRANSCRIPT,
       approvalStatus: 'founder_review_pending' as const,
+      ...(pageId === '2.1' ? {poster_url: location.origin + '/assets/videos/phase-two-lesson-2-1/poster-landscape.webp'} : {}),
     } : null)
   const approvedGuidedAudio = (selectedGuidedAudio?.approvalStatus === 'founder_approved' ||
     (allowMediaReview && selectedGuidedAudio?.approvalStatus === 'founder_review_pending')) &&
