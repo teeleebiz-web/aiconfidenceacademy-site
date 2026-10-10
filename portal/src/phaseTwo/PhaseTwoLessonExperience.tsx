@@ -66,8 +66,8 @@ export function PhaseTwoLessonExperience({
            m.video_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.mp4` ||
            m.captions_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.vtt` ||
            m.poster_file!=='poster-v2.webp' || !phaseTwoRevisedIntroTranscripts[pageId])return
-        setRevisedIntro({url:location.origin+root+m.video_file,captions_url:location.origin+root+m.captions_file,
-          poster_url:location.origin+root+m.poster_file,transcript:phaseTwoRevisedIntroTranscripts[pageId],
+        setRevisedIntro({url:window.location.origin+root+m.video_file,captions_url:window.location.origin+root+m.captions_file,
+          poster_url:window.location.origin+root+m.poster_file,transcript:phaseTwoRevisedIntroTranscripts[pageId],
           approvalStatus:'founder_review_pending'})
       }).catch(()=>{/* Leave the existing instructor introduction untouched until new assets are verified. */})
     return ()=>{cancelled=true}
