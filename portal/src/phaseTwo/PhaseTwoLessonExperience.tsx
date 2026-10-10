@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { LESSON_12_INTRO_TRANSCRIPT } from './phaseTwoLesson12Intro'
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
 import { PhaseTwoGuidedAudio, type GuidedInstructionMedia, type VisualDemoClip } from './PhaseTwoGuidedMedia'
@@ -85,7 +86,7 @@ export function PhaseTwoLessonExperience({
   const selectedVideo = introVideo ?? (pageId === '1.2' && allowMediaReview && lesson12Media
     ? {
       url: location.origin + '/assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-Introduction.mp4',
-      transcript: 'Welcome back to the AI Confidence Academy. Today we learn to distinguish a visible symptom from its possible cause, compare three needs, and investigate the evidence before choosing a solution.',
+      transcript: LESSON_12_INTRO_TRANSCRIPT,
       approvalStatus: 'founder_review_pending' as const,
     } : null)
   const approvedGuidedAudio = (selectedGuidedAudio?.approvalStatus === 'founder_approved' ||
