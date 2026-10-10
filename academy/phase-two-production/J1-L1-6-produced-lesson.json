@@ -1,0 +1,166 @@
+{
+  "production_version": "1.6-owner-review-2026-10-09",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "1.6",
+  "primary_media": "audio",
+  "title": "Stress test the professional operating model",
+  "learner_promise": "Demonstrate a six-part Professional AI Operating Model that works in ordinary tasks, inaccurate outputs, and high-consequence situations; complete Journey One with a feasible capstone charter.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Assemble human-first professional rules",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Outdated policy case and consequence review",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Three stress tests and a model revision",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Defend proceed and pause decisions",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Combine purpose, AI support roles, human responsibilities, review process, responsible boundaries and growth commitments.",
+    "Adjust review depth to accuracy, usefulness, suitability, privacy and consequence.",
+    "Test a routine case, an inaccurate output and a high-consequence privacy or authority request.",
+    "Revise one weak operating rule; name an actual source, reviewer and stop condition.",
+    "Defend one proceed and one pause decision; confirm a feasible capstone charter for Journey Two."
+  ],
+  "teaching": [
+    {
+      "heading": "Combine the work into one six-part Professional AI Operating Model",
+      "paragraphs": [
+        "Your earlier Journey One evidence describes the person served, selected need, permitted AI roles, measurable value, professional decision requests and FOCUS charter. Bring these into one practical guide.",
+        "The six parts are purpose and outcome; AI support role or no AI; accountable human responsibilities; documented review process; privacy/authority boundaries; and ongoing capability growth. This is a professional working model, not a technical architecture."
+      ],
+      "think_prompt": "Could another person explain your project's purpose, reviewer and exact stop condition using your six-part model?"
+    },
+    {
+      "heading": "Match review depth to potential consequence",
+      "paragraphs": [
+        "A routine fictional note organization can be checked directly. A customer policy message requires the current authorized source and a named reviewer. Private records, binding commitments or unapproved authority require a pause and an authorized decision maker.",
+        "Review for accuracy, usefulness, suitability to affected people, sensitive information and your ability to explain the result. Do not confuse a polished message with a verified one."
+      ],
+      "think_prompt": "When would an outdated source make a seemingly helpful customer draft unacceptable?"
+    },
+    {
+      "heading": "Stress test against three situations",
+      "paragraphs": [
+        "Test a routine task, an inaccurate AI output and a high-consequence scenario. For each state the safe input, consequence, source check, AI role, human owner, proceed or pause, missing rule and correction.",
+        "Do not submit real sensitive data to an AI model for the exercise. Use fictional examples and refuse any unsupported permission or approval the model invents."
+      ],
+      "think_prompt": "Which specific working rule fails when the model uses yesterday's customer policy?"
+    },
+    {
+      "heading": "Revise the model and explain two human decisions",
+      "paragraphs": [
+        "Replace weak rules such as 'check the answer' with an instruction naming the approved policy source, reviewing person and what happens during uncertainty. Keep original and revised rules together.",
+        "Defend a proceed decision on a reversible safe practice task and a pause decision where a current source or authority is missing. Confirm the same FOCUS charter remains finishable for the next journey."
+      ],
+      "think_prompt": "What must become true before your paused task can responsibly proceed?"
+    }
+  ],
+  "worked_case": {
+    "label": "An AI-drafted customer message uses an outdated policy",
+    "setup": "FICTIONAL TRAINING EXAMPLE: An assistant writes a courteous response using a previous service policy. The reply appears finished but does not establish the current approved wording.",
+    "evidence_table": [
+      {
+        "claim": "The customer message is ready because the text is clear",
+        "evidence": "Clarity does not establish which policy version governs",
+        "action": "Require review against the latest approved source."
+      },
+      {
+        "claim": "The model's citation proves the policy is current",
+        "evidence": "The cited description belongs to an older fictional policy",
+        "action": "Withhold until current policy is checked and the named reviewer approves."
+      },
+      {
+        "claim": "Any employee may authorize the outgoing statement",
+        "evidence": "The exercise does not establish service approval authority",
+        "action": "Name the responsible policy or service owner."
+      },
+      {
+        "claim": "An AI system can decide high-consequence customer outcomes from sensitive records",
+        "evidence": "No permission or binding decision authority is supplied",
+        "action": "Do not upload private information; pause and escalate."
+      }
+    ],
+    "revised_example": "Before any policy-based message is sent, compare it with the latest authorized policy. A named service reviewer confirms both source and language. If the source is uncertain or inconsistent, withhold the message and ask the policy owner to resolve it.",
+    "demonstration_steps": [
+      "Assemble the six-part operating model for the continuing project.",
+      "Find the outdated customer policy and replace a vague review rule.",
+      "Raise review depth for privacy, permission and binding decisions.",
+      "Record a justified proceed, justified pause, revised rule and feasible charter."
+    ],
+    "question": "What explicit source, reviewer and hold action does a workable review rule need?"
+  },
+  "application": [
+    {
+      "minutes": 8,
+      "heading": "Build the original six-part Professional AI Operating Model",
+      "instruction": "Use the same Path A or Path B project to write purpose, AI role, human owner, review, boundaries and growth commitments. Include your Lesson 1.5 FOCUS charter.",
+      "evidence": "Original model grounded in previously saved learner work."
+    },
+    {
+      "minutes": 9,
+      "heading": "Challenge the model through three safe scenarios",
+      "instruction": "Test routine work, an inaccurate response and a high-consequence privacy or authority request with your own AI assistant using sanitized fictional notes. Name proceed/pause decisions, evidence sources, human owners and failure conditions.",
+      "evidence": "Three scenario records with factual checks and explicit human responsibility."
+    },
+    {
+      "minutes": 8,
+      "heading": "Revise one rule and confirm project direction",
+      "instruction": "Choose one weak boundary or review rule; change it and explain why, or justify the existing rule with evidence. Defend one proceed and one pause decision; confirm your capstone is feasible and approved for only the documented fictional first test.",
+      "evidence": "Original/revised model, correction rationale, opportunity brief and confirmed charter."
+    }
+  ],
+  "approved_ai_request": "Challenge this operating model with a routine case, an inaccurate response and a high-consequence request. Identify weaknesses and missing human owners. Suggest corrections for my review. Model: [sanitized draft].",
+  "responsibility_map_fields": [
+    "Purpose and affected people",
+    "AI support role and no-AI boundary",
+    "Human owner and approval",
+    "Current evidence and review process",
+    "Privacy, authority and stop conditions",
+    "Growth commitments and model revisions"
+  ],
+  "verification": [
+    {
+      "minutes": 3,
+      "heading": "Show one justified proceed",
+      "prompt": "Explain why a limited fictional routine task may continue and name the authorized reviewer."
+    },
+    {
+      "minutes": 3,
+      "heading": "Show one justified pause",
+      "prompt": "Explain the missing policy, permission or authority, human escalation and evidence required before resuming."
+    },
+    {
+      "minutes": 4,
+      "heading": "Defend the changed rule and feasible capstone",
+      "prompt": "Show original and revised rule, what changed and why, and confirm the Journey 1 charter remains finishable."
+    }
+  ],
+  "completion_criteria": [
+    "Six-part operating model assembled with named human review and boundaries",
+    "Three scenario tests including one privacy or authority failure",
+    "A revised or evidence-justified operating rule with explanation",
+    "A defensible proceed decision and a defensible pause decision",
+    "Feasible capstone charter and continuing Journey One project evidence preserved"
+  ],
+  "handoff": "Journey One concludes with a tested Professional AI Operating Model and realistic FOCUS charter. Carry both into Journey Two: Build AI into Business Workflows, only when that journey becomes available under the approved curriculum schedule.",
+  "editorial_notes": {
+    "status": "Protected founder review draft; no automatic course, completion award, cohort or next-journey activation.",
+    "access": "Week 1 Saturday has extended weekend access per six-week master v2.0; avoid the weekday two-hour timer assumption.",
+    "media": "Approved Rika–IA instructor, established Academy cards and four fictional narrated demonstration clips.",
+    "source": "ACA Phase Two Six-Week Curriculum Master v2.0, Lesson 1.6."
+  }
+}
