@@ -1,0 +1,57 @@
+{
+  "lesson": "2.6",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-2-6-Guided-Instruction.m4a",
+    "duration_seconds": 641.577,
+    "chapters": 4,
+    "bytes": 8973582
+  },
+  "demonstrations": [
+    {
+      "key": "01-expected-tests",
+      "title": "Set expectations before the runs",
+      "duration_seconds": 17.032,
+      "file": "ACA-Phase-Two-Lesson-2-6-01-expected-tests.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-6-01-expected-tests.vtt",
+      "bytes": 407579,
+      "sha256": "73c2f460999418e5ceca6d25e69cf34b8d5f959a320b110ef6a211b3780d2b80",
+      "transcript": "Start with the saved draft-only proposal prototype. Write the expected response for each test before running it. Use normal, missing-information, conflicting-specification, and outside-scope inputs. AI suggestions can help design cases, but only actual runs supply test evidence.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-find-conflict",
+      "title": "Inspect the contradictory specifications",
+      "duration_seconds": 17.58,
+      "file": "ACA-Phase-Two-Lesson-2-6-02-find-conflict.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-6-02-find-conflict.vtt",
+      "bytes": 414090,
+      "sha256": "df95831d00ab30676d1df405f2c0668410dc17df1b93777527ff0340a0d77103",
+      "transcript": "The fictional brief contains twelve participants in one note and twenty in another. The scripted faulty output selects twenty silently. The expected response is to flag both values, ask for clarification, and keep the affected scope unconfirmed. Preserve the actual failed output from your own test.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-correct-retest",
+      "title": "Correct and retest the same failing input",
+      "duration_seconds": 18.938,
+      "file": "ACA-Phase-Two-Lesson-2-6-03-correct-retest.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-6-03-correct-retest.vtt",
+      "bytes": 443910,
+      "sha256": "5e74629b47d78135d016c00990b0abf4c0ed018c4893077214f3a24667035ce3",
+      "transcript": "Revise the reusable instructions to require a conflict check and a human clarification route. Retest the same conflicting input against the same expectation. Preserve the actual revised output, then check the normal path still works. Claim only the improvement supported by that evidence.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-integrate-evidence",
+      "title": "Demonstrate and assemble Journey Two",
+      "duration_seconds": 18.886,
+      "file": "ACA-Phase-Two-Lesson-2-6-04-integrate-evidence.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-6-04-integrate-evidence.vtt",
+      "bytes": 439560,
+      "sha256": "a3b38c1fdc4d2beaf9904ca1c0481d8228029053da28d135b1c2eb8cdc0b7abd",
+      "transcript": "Show the failed result, correction, actual retest, and retained human control point. Update the map and concept to reflect tested behavior. Save the communication evidence, maps, working artifact, and test record together. Escalate unresolved consequential defects and carry the evidence into Journey Three.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

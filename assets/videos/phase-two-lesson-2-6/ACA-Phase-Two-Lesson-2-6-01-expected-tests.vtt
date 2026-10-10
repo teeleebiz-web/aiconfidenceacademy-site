@@ -1,0 +1,15 @@
+WEBVTT
+
+NOTE Narration is displayed in the caption strip below the video by default.
+
+00:00:00.000 --> 00:00:03.222
+Start with the saved draft-only proposal prototype.
+
+00:00:03.222 --> 00:00:07.826
+Write the expected response for each test before running it.
+
+00:00:07.826 --> 00:00:11.048
+Use normal, missing-information, conflicting-specification, and outside-scope inputs.
+
+00:00:11.048 --> 00:00:17.032
+AI suggestions can help design cases, but only actual runs supply test evidence.
