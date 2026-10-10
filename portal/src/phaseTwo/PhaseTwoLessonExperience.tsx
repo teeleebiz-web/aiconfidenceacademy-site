@@ -48,7 +48,7 @@ export function PhaseTwoLessonExperience({
   const usable = validProducedLesson(production, pageId)
   const [lesson12Media, setLesson12Media] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
   useEffect(() => {
-    if (pageId !== '1.2' || !allowMediaReview) return
+    if (pageId !== '1.2' || !allowMediaReview || typeof fetch !== 'function') return
     let canceled = false
     const root = '/assets/videos/phase-two-lesson-1-2/'
     void Promise.all([
