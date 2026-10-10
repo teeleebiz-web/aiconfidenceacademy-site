@@ -1,0 +1,60 @@
+{
+  "lesson": "2.6",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_chapters": [
+    {
+      "title": "Define expected behavior before testing",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=00d3d7fa-c93e-47cb-a5f7-7fd7b9d53cfc.wav",
+      "duration_seconds": 158.4326530612245,
+      "request_id": "OI99dYFaPdNwaasZFYmd"
+    },
+    {
+      "title": "Run the normal, error and exception cases",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=b994aeba-1479-4f78-89ff-134ec14e8bfa.wav",
+      "duration_seconds": 155.14122448979592,
+      "request_id": "QBVs3iL0VNpoHUN0DrOE"
+    },
+    {
+      "title": "Correct one failure and retest the same case",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=4b57d66f-709e-4b5b-870e-6f322c0eef28.wav",
+      "duration_seconds": 156.39510204081634,
+      "request_id": "6UkWzDN30TqhpRvLOioj"
+    },
+    {
+      "title": "Integrate Journey Two evidence and demonstrate",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=6e6a8685-16e4-48c7-8597-615eb31544b5.wav",
+      "duration_seconds": 168.90775510204082,
+      "request_id": "cNwpuxxFDZJKqDxVegqe"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-expected-tests",
+      "title": "Set expectations before the runs",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=326cdbff-7d52-4a5d-b019-a8fe38fe15fd.wav",
+      "duration_seconds": 17.03183673469388,
+      "request_id": "U37kawMrxJ12ngaQSrp1"
+    },
+    {
+      "key": "02-find-conflict",
+      "title": "Inspect the contradictory specifications",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=5c960365-d78e-49ec-9d22-d8b3f83d2d7f.wav",
+      "duration_seconds": 17.580408163265307,
+      "request_id": "O6mSW534xBDlsx2AnV23"
+    },
+    {
+      "key": "03-correct-retest",
+      "title": "Correct and retest the same failing input",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=d683583b-bdec-474f-849a-0fffc872c492.wav",
+      "duration_seconds": 18.93877551020408,
+      "request_id": "5Yrmo9iMYk126HBP1RGU"
+    },
+    {
+      "key": "04-integrate-evidence",
+      "title": "Demonstrate and assemble Journey Two",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=cdb82d9a-e36c-4580-b00e-40164b5fc129.wav",
+      "duration_seconds": 18.886530612244897,
+      "request_id": "nwqqQTVdwuJV0PyncPoR"
+    }
+  ]
+}
