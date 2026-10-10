@@ -6,6 +6,7 @@ import { LESSON_15_INTRO_TRANSCRIPT } from './phaseTwoLesson15Intro'
 import { LESSON_16_INTRO_TRANSCRIPT } from './phaseTwoLesson16Intro'
 import { LESSON_21_INTRO_TRANSCRIPT } from './phaseTwoLesson21Intro'
 import { LESSON_22_INTRO_TRANSCRIPT } from './phaseTwoLesson22Intro'
+import { LESSON_23_INTRO_TRANSCRIPT } from './phaseTwoLesson23Intro'
 import { phaseTwoRevisedIntroTranscripts } from './phaseTwoRevisedIntroTranscripts'
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
@@ -55,7 +56,7 @@ export function PhaseTwoLessonExperience({
   allowMediaReview = false,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
-  const expectedGuidedVoiceId = ['2.1', '2.2'].includes(pageId) ? '8NNnQuXc0FKua22CvviM' : 'ac277b338cf64d8b9686784c43c563da'
+  const expectedGuidedVoiceId = ['2.1', '2.2', '2.3'].includes(pageId) ? '8NNnQuXc0FKua22CvviM' : 'ac277b338cf64d8b9686784c43c563da'
   const [producedMedia, setProducedMedia] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
   const [revisedIntro,setRevisedIntro] = useState<{url:string; transcript:string; approvalStatus:'founder_review_pending'; captions_url:string; poster_url:string} | null>(null)
   useEffect(() => {
@@ -78,7 +79,7 @@ export function PhaseTwoLessonExperience({
     return ()=>{cancelled=true}
   },[pageId,allowMediaReview])
   useEffect(() => {
-    if (!['1.2','1.3','1.4','1.5','1.6','2.1','2.2'].includes(pageId) || !allowMediaReview || typeof fetch !== 'function') return
+    if (!['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3'].includes(pageId) || !allowMediaReview || typeof fetch !== 'function') return
     let canceled = false
     const root = '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/'
     void Promise.all([
@@ -113,10 +114,10 @@ export function PhaseTwoLessonExperience({
   }, [pageId, allowMediaReview, expectedGuidedVoiceId])
   const selectedGuidedAudio = guidedInstruction ?? producedMedia?.guided
   const selectedDemoClips = demoClips ?? producedMedia?.demos
-  const selectedVideo = (allowMediaReview ? revisedIntro : null) ?? introVideo ?? (['1.2','1.3','1.4','1.5','1.6','2.1','2.2'].includes(pageId) && allowMediaReview && producedMedia
+  const selectedVideo = (allowMediaReview ? revisedIntro : null) ?? introVideo ?? (['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3'].includes(pageId) && allowMediaReview && producedMedia
     ? {
       url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + (pageId === '2.1' ? '-Introduction-landscape.mp4' : '-Introduction.mp4'),
-      transcript: pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : pageId === '1.3' ? LESSON_13_INTRO_TRANSCRIPT : pageId === '1.4' ? LESSON_14_INTRO_TRANSCRIPT : pageId === '1.5' ? LESSON_15_INTRO_TRANSCRIPT : pageId === '1.6' ? LESSON_16_INTRO_TRANSCRIPT : pageId === '2.1' ? LESSON_21_INTRO_TRANSCRIPT : LESSON_22_INTRO_TRANSCRIPT,
+      transcript: pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : pageId === '1.3' ? LESSON_13_INTRO_TRANSCRIPT : pageId === '1.4' ? LESSON_14_INTRO_TRANSCRIPT : pageId === '1.5' ? LESSON_15_INTRO_TRANSCRIPT : pageId === '1.6' ? LESSON_16_INTRO_TRANSCRIPT : pageId === '2.1' ? LESSON_21_INTRO_TRANSCRIPT : pageId === '2.2' ? LESSON_22_INTRO_TRANSCRIPT : LESSON_23_INTRO_TRANSCRIPT,
       approvalStatus: 'founder_review_pending' as const,
       ...(pageId === '2.1' ? {poster_url: location.origin + '/assets/videos/phase-two-lesson-2-1/poster-landscape.webp'} : {}),
     } : null)
@@ -156,14 +157,14 @@ export function PhaseTwoLessonExperience({
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
 
-          {(medium === 'audio' || ['1.2','1.3','1.4','1.5','1.6','2.1','2.2'].includes(pageId)) && approvedVideo && (
+          {(medium === 'audio' || ['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3'].includes(pageId)) && approvedVideo && (
             <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
               <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
               <video
                 controls
                 playsInline
                 preload="auto"
-                poster={approvedVideo.poster_url ?? (pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3','1.4','1.5','1.6','2.1','2.2'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined)}
+                poster={approvedVideo.poster_url ?? (pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined)}
                 src={approvedVideo.url}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
