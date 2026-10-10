@@ -47,7 +47,7 @@ test('Lesson 1.1 runtime bundle exposes all essential learning sections', () => 
   const bundle = readFileSync(resolve(import.meta.dirname, '../learn/assets', entry), 'utf8');
   for (const feature of ['p2-guided-chapters','Read the guided instruction transcript',
     'p2-demo-clip-tabs','kind:`captions`','p2-visual-lab',
-    'Your first professional AI responsibility map']) {
+    'Your first professional AI responsibility map', 'p2-demo-caption-strip', 'kind:`metadata`', 'Try the fictional report in your own AI tool', 'Copy fictional report request']) {
     assert.ok(bundle.includes(feature), `Learner application missing ${feature}`);
   }
 });
