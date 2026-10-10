@@ -1,0 +1,61 @@
+{
+  "lesson": "1.3",
+  "course": "ACA Phase Two Master v2.0",
+  "status": "approved_voice_synthesized_pending_media_hosting",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "voice": "Rika - IA",
+  "avatar_video_id": "66e2a9b15ccf7d5d1881104616674c92",
+  "guided_chapters": [
+    {
+      "title": "Choose the support role, not the most impressive tool",
+      "duration_seconds": 148.53224489795917,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=c1288ace-ece6-4154-8297-f877e74cb938.wav"
+    },
+    {
+      "title": "Distinguish activity, output, usefulness, and value",
+      "duration_seconds": 154.69714285714286,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=414ddfa9-431b-43ff-8e24-e70f5416dfc5.wav"
+    },
+    {
+      "title": "Test an AI option against a simple alternative",
+      "duration_seconds": 138.2138775510204,
+      "audio_url": null,
+      "audio_segments": [
+        "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=377b5ac2-2536-4029-84c5-3ed19e46a27c.wav",
+        "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=de35ce69-e3ef-4b6a-8928-db0db5718d2a.wav"
+      ]
+    },
+    {
+      "title": "Make the business value hypothesis accountable",
+      "duration_seconds": 173.1134693877551,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=0ed64333-b72d-487a-81a3-feba8443851c.wav"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-roles",
+      "title": "Select the right AI role",
+      "duration_seconds": 21.263673469387754,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=46f8021c-3eb3-41df-b9b0-02bc2749dae0.wav"
+    },
+    {
+      "key": "02-cost",
+      "title": "Count the whole job",
+      "duration_seconds": 24.03265306122449,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=69bb2e46-55b8-44d8-bf76-a5a81b38fb60.wav"
+    },
+    {
+      "key": "03-alternative",
+      "title": "Compare the simpler option",
+      "duration_seconds": 22.75265306122449,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=7242c60f-1daa-4fab-aa1b-85e01fbd4555.wav"
+    },
+    {
+      "key": "04-value",
+      "title": "Save the value hypothesis",
+      "duration_seconds": 23.484081632653062,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=ba4be0f7-d4e2-4366-afec-b80e420940a0.wav"
+    }
+  ],
+  "source_manuscript": "academy/phase-two-production/J1-L1-3-instructional-master.md"
+}
