@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase'
 import { PhaseTwoExperiencePreview } from '../phaseTwo/PhaseTwoExperiencePreview'
 import { inspectPhaseTwoDraft } from '../phaseTwo/phaseTwoDraftIntegrity'
 import { PhaseTwoLessonExperience } from '../phaseTwo/PhaseTwoLessonExperience'
+import { PhaseTwoWorkbook } from '../phaseTwo/PhaseTwoWorkbook'
 import type { GuidedInstructionMedia, VisualDemoClip } from '../phaseTwo/PhaseTwoGuidedMedia'
 import './phase-two-review.css'
 
@@ -77,6 +78,7 @@ export function PhaseTwoReview() {
   const [data, setData] = useState<ReviewData>({ journeys: [], lessons: [] })
   const [chosen, setChosen] = useState('1.1')
   const [reviewView, setReviewView] = useState<'source' | 'learner'>('source')
+  const [workbookPreview, setWorkbookPreview] = useState<string | null>(null)
   const [reviewEmail, setReviewEmail] = useState('')
   const [reviewPassword, setReviewPassword] = useState('')
   const [signInMethod, setSignInMethod] = useState<'password' | 'link'>('password')
@@ -202,6 +204,11 @@ export function PhaseTwoReview() {
 
   // Open one complete learner lesson per direct link, without a construction dashboard.
   // Every source record remains access-controlled through the existing Academy login.
+  if (status === 'ready' && workbookPreview) {
+    return <PhaseTwoWorkbook journey={Number(workbookPreview.split('.')[0])}
+      initialLesson={Number(workbookPreview.split('.')[1])}
+      onBack={() => setWorkbookPreview(null)} />
+  }
   if (status === 'ready' && lessonForReview) {
     return <PhaseTwoLessonExperience
       pageId={lessonForReview.page_id}
@@ -213,6 +220,8 @@ export function PhaseTwoReview() {
       introVideo={lessonForReview.content.phase_two_media_plan?.avatar_introduction}
       guidedInstruction={lessonForReview.content.phase_two_media_plan?.guided_instruction}
       allowMediaReview
+      onOpenWorkbook={['1.1','1.2'].includes(lessonForReview.page_id)
+        ? () => setWorkbookPreview(lessonForReview.page_id) : undefined}
       demoClips={['founder_approved','founder_review_pending'].includes(lessonForReview.content.phase_two_media_plan?.demonstration_clips?.approvalStatus ?? '')
         ? lessonForReview.content.phase_two_media_plan?.demonstration_clips?.clips
         : undefined}
