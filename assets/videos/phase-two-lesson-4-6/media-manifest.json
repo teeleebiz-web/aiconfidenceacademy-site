@@ -1,0 +1,29 @@
+{
+  "approved_heygen_video_id": "df81c51ebf66030817134d9e077b6312",
+  "avatar_id": "0238f7859f5845f86beaaa1559122835",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "voice_name": "Orson",
+  "speed": 0.93,
+  "locale": "en-US",
+  "source_duration_seconds": 106.56,
+  "completed_duration_seconds": 112.855,
+  "opening_seconds": 1.5,
+  "instructor_last_word_landing_seconds": 0.85,
+  "end_card_seconds": 1.9,
+  "returned_beginning_card_seconds": 2.0,
+  "start_frame_is_beginning_card": true,
+  "last_frame_is_beginning_card": true,
+  "format": "1920x1080 H.264 MP4 / AAC",
+  "bytes": 16453691,
+  "sha256": "e942b1b687ca6e2be0dd2f6779accaff7301cbd3a52435c05524f58e103c6a0f",
+  "max_display_width_px": 640,
+  "instructor": {
+    "avatar_id": "0238f7859f5845f86beaaa1559122835",
+    "image_asset_id": "94dc5708743f4a929bab21c5c6684324",
+    "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+    "voice_name": "Orson",
+    "voice_speed": 0.93,
+    "locale": "en-US",
+    "look": "Founder-approved Chinese instructor in cream jacket and fully buttoned white shirt, deep office-library setting."
+  }
+}

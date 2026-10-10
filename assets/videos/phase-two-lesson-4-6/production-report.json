@@ -1,0 +1,53 @@
+{
+  "lesson": "4.6",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-4-6-Guided-Instruction.m4a",
+    "duration_seconds": 755.81,
+    "chapters": 4,
+    "bytes": 10676366
+  },
+  "demonstrations": [
+    {
+      "key": "assemble",
+      "title": "Prepare the connected delivery test",
+      "duration_seconds": 53.655,
+      "file": "ACA-Phase-Two-Lesson-4-6-assemble.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-6-assemble.vtt",
+      "bytes": 1159937,
+      "sha256": "b088cb16f4c516207ff7cb50830f210336bb4dd3d70bda0d9c71799faea35e04",
+      "fictional_training_example": true
+    },
+    {
+      "key": "observe",
+      "title": "Correct the unclear required field",
+      "duration_seconds": 53.916,
+      "file": "ACA-Phase-Two-Lesson-4-6-observe.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-6-observe.vtt",
+      "bytes": 1156363,
+      "sha256": "d1186b0688c7450792552bb97fbdd325d46a214f728653392a9e8e90eb1455fe",
+      "fictional_training_example": true
+    },
+    {
+      "key": "retest",
+      "title": "Retest the calculation and the path",
+      "duration_seconds": 56.424,
+      "file": "ACA-Phase-Two-Lesson-4-6-retest.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-6-retest.vtt",
+      "bytes": 1210166,
+      "sha256": "71e8b9a8f947acc2517f9861cd258a555b89186a0818e1a97aab290bd7ecd123",
+      "fictional_training_example": true
+    },
+    {
+      "key": "retain",
+      "title": "Retain the complete artifact and decision",
+      "duration_seconds": 60.604,
+      "file": "ACA-Phase-Two-Lesson-4-6-retain.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-6-retain.vtt",
+      "bytes": 1286216,
+      "sha256": "166d33647288a8240fb2fde35cf242616025d4f9d7e48c31c5ea161274e33c00",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
