@@ -1,0 +1,53 @@
+{
+  "lesson": "3.4",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-3-4-Guided-Instruction.m4a",
+    "duration_seconds": 667.229,
+    "chapters": 4,
+    "bytes": 9404199
+  },
+  "demonstrations": [
+    {
+      "key": "readiness",
+      "title": "Separate skill from permission",
+      "duration_seconds": 55.693,
+      "file": "ACA-Phase-Two-Lesson-3-4-readiness.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-4-readiness.vtt",
+      "bytes": 1184118,
+      "sha256": "b76383a6adca6657fc3e2e43204f16572798fef602b66078651c310002881e6c",
+      "fictional_training_example": true
+    },
+    {
+      "key": "policy",
+      "title": "Select inputs and correct unsupported approval",
+      "duration_seconds": 51.278,
+      "file": "ACA-Phase-Two-Lesson-3-4-policy.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-4-policy.vtt",
+      "bytes": 1120462,
+      "sha256": "11a0e5545752086f8e31b5864018ed159283adff43e12319ce8a2e346205a581",
+      "fictional_training_example": true
+    },
+    {
+      "key": "learning",
+      "title": "Build participation into the Learning Path",
+      "duration_seconds": 56.137,
+      "file": "ACA-Phase-Two-Lesson-3-4-learning.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-4-learning.vtt",
+      "bytes": 1197602,
+      "sha256": "a9c1adf000ec511a7afacae9610a0ec2dc44784cb4e3d5a1f7ee2d0398c6efcd",
+      "fictional_training_example": true
+    },
+    {
+      "key": "verify",
+      "title": "Test the action and save honest evidence",
+      "duration_seconds": 58.436,
+      "file": "ACA-Phase-Two-Lesson-3-4-verify.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-4-verify.vtt",
+      "bytes": 1254571,
+      "sha256": "9d2a28035d43e9ab0db2981cfc67914402714b77cb434f453ad7b2edcad11700",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
