@@ -151,4 +151,5 @@ export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
         <p className="p2-demo-case-note">Illustrated fictional case · Apply the same verification steps with your chosen AI tool.</p>
       </div>
     </section>
-  }
+  )
+}
