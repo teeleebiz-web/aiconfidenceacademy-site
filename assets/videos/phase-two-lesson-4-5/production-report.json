@@ -1,0 +1,53 @@
+{
+  "lesson": "4.5",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-4-5-Guided-Instruction.m4a",
+    "duration_seconds": 738.021,
+    "chapters": 4,
+    "bytes": 10427308
+  },
+  "demonstrations": [
+    {
+      "key": "review",
+      "title": "Inspect the six review questions",
+      "duration_seconds": 57.051,
+      "file": "ACA-Phase-Two-Lesson-4-5-review.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-5-review.vtt",
+      "bytes": 1191232,
+      "sha256": "277be85630c5477fc460528b1862e53f109424ee47884fbe2f9510820d186ae5",
+      "fictional_training_example": true
+    },
+    {
+      "key": "test",
+      "title": "Define the prototype test",
+      "duration_seconds": 54.805,
+      "file": "ACA-Phase-Two-Lesson-4-5-test.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-5-test.vtt",
+      "bytes": 1174077,
+      "sha256": "b6f477fd0b909d623949f581bdbbce0370aa1953d89be3bdac89c6fcee968470",
+      "fictional_training_example": true
+    },
+    {
+      "key": "cost",
+      "title": "Calculate all supplied delivery effort",
+      "duration_seconds": 57.756,
+      "file": "ACA-Phase-Two-Lesson-4-5-cost.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-5-cost.vtt",
+      "bytes": 1208228,
+      "sha256": "b7a9979bcd70dd05b7bb0c1342a6b0e689211fe44d0ba12d3c7e4a93f6af884e",
+      "fictional_training_example": true
+    },
+    {
+      "key": "decision",
+      "title": "Stress the model and retain the decision",
+      "duration_seconds": 54.831,
+      "file": "ACA-Phase-Two-Lesson-4-5-decision.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-5-decision.vtt",
+      "bytes": 1161504,
+      "sha256": "78c4c5a0d46113610ae59d844b62e8a5b4f788c0b7ae944554f08a74666f1ae8",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
