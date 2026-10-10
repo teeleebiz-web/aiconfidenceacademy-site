@@ -28,7 +28,7 @@ it('allows founder review to see only released pages, print, and return in the s
   const chooser=screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
   const lesson2=[...chooser.options].find(x=>x.value==='2')
   expect(lesson2?.disabled).toBe(true)
-  expect(screen.getByText('Verified example')).toBeTruthy()
+  expect(screen.getByDisplayValue('Verified example')).toBeTruthy()
   fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}))
   expect(print).toHaveBeenCalledOnce()
   fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 1.1/}))
