@@ -98,7 +98,7 @@ export function PhaseTwoDemoClips({ clips, lessonId = '1.1' }: { clips: VisualDe
     <section className="p2-demo-clips" aria-labelledby="p2-demo-clips-heading">
       <div className="p2-demo-clips-header">
         <p className="eyebrow">Watch the decisions happen</p>
-        <h3 id="p2-demo-clips-heading">A report you can examine, step by step</h3>
+        <h3 id="p2-demo-clips-heading">{lessonId === '1.2' ? 'Investigate the need, step by step' : 'A report you can examine, step by step'}</h3>
         <p>Four narrated screen demonstrations. They use fictional training data—not a real company's records or a claim about a particular AI tool.</p>
       </div>
       <div className="p2-demo-clip-tabs" role="group" aria-label="Choose a screen demonstration">
