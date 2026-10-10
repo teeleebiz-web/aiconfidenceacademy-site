@@ -39,7 +39,6 @@ vi.mock('../phaseTwo/PhaseTwoLessonExperience', () => ({
   ),
 }))
 
-vi.mock('../phaseTwo/PhaseTwoWorkbook', () => ({PhaseTwoWorkbook: ({initialLesson,journey}: {initialLesson:number;journey:number}) => <h1>Workbook {journey}.{initialLesson}</h1>}))
 
 const journeys = Array.from({ length: 6 }, (_, i) => ({
   id: 'journey-' + (i + 1),
@@ -215,15 +214,48 @@ describe('unpublished Phase Two founder review', () => {
     }))
   })
 
-  it('connects the released Lesson 2.2 workbook to its protected lesson', async () => {
-    const content = lessons[7].content as typeof lessons[7]['content'] & {phase_two_production?: {approval_status:string}}
-    content.phase_two_production = {approval_status:'founder_review_not_published'}
-    window.history.replaceState({}, '', '/learn/?review=phase-two&lesson=2.2')
+  it.each(lessons.map(item => item.page_id))('connects each produced lesson %s to its real workbook page and back', async (pageId) => {
+    const item = lessons.find(row => row.page_id === pageId)!
+    const content = item.content as typeof item.content & { phase_two_production?: { approval_status: string } }
+    content.phase_two_production = { approval_status: 'founder_review_not_published' }
+    window.history.replaceState({}, '', '/learn/?review=phase-two&lesson=' + pageId)
+    const [journey, number] = pageId.split('.').map(Number)
+    api.rpc.mockImplementation(async (name: string) => ({
+      error: null,
+      data: name === 'is_aca_curriculum_owner' ? true : {
+        allowedPages: [number], last_page: number, revision: 0, scope: 'owner-review',
+        answers: { ['test-' + pageId]: 'Retained workbook notes' },
+        workbook: { key: 'journey-' + journey, version: 1, title: 'Journey ' + journey + ' Workbook',
+          pages: [{ number, lesson_id: pageId, title: 'Workbook ' + pageId,
+            blocks: [{ type: 'field', id: 'test-' + pageId, label: 'Workbook notes', lines: 3 }] }] },
+      },
+    }))
+    const print = vi.spyOn(window, 'print').mockImplementation(() => {})
     try {
       render(<PhaseTwoReview />)
-      await userEvent.setup().click(await screen.findByRole('button', {name:'Open Workbook — Lesson 2.2'}))
-      expect(await screen.findByRole('heading', {name:'Workbook 2.2'})).toBeTruthy()
-    } finally {delete content.phase_two_production}
+      await userEvent.setup().click(await screen.findByRole('button', { name: 'Open Workbook — Lesson ' + pageId }))
+      expect(await screen.findByRole('heading', { name: 'Workbook ' + pageId })).toBeTruthy()
+      expect(screen.getByLabelText('Workbook notes')).toHaveProperty('value', 'Retained workbook notes')
+      expect(api.rpc).toHaveBeenCalledWith('get_aca_phase_two_workbook', { p_enrollment_id: null, p_journey: journey })
+      await userEvent.setup().click(screen.getByRole('button', { name: 'Print / Save PDF' }))
+      expect(print).toHaveBeenCalledOnce()
+      await userEvent.setup().click(screen.getByRole('button', { name: new RegExp('Back to Lesson ' + pageId) }))
+      expect(await screen.findByRole('heading', { name: item.title })).toBeTruthy()
+    } finally { delete content.phase_two_production; print.mockRestore() }
+  })
+
+  it.each(['3.2', '3.3'])('keeps Lesson %s selected after email-link sign-in', async pageId => {
+    api.getSession.mockResolvedValue({ data: { session: null } })
+    window.history.replaceState({}, '', '/learn/?review=phase-two&lesson=' + pageId)
+    const user = userEvent.setup()
+    render(<PhaseTwoReview />)
+    await screen.findByRole('heading', { name: 'Sign in to Phase Two' })
+    await user.type(screen.getByLabelText('Academy email'), 'reviewer@example.org')
+    await user.click(screen.getByRole('button', { name: 'Use a one-time email link instead' }))
+    await user.click(screen.getByRole('button', { name: 'Send secure sign-in link' }))
+    expect(api.signInWithOtp).toHaveBeenCalledWith(expect.objectContaining({
+      options: expect.objectContaining({ emailRedirectTo: window.location.origin + '/learn/?review=phase-two&lesson=' + pageId }),
+    }))
   })
 
 })
