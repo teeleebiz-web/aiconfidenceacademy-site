@@ -130,6 +130,6 @@ for idx,(m,item) in enumerate(zip(demos,DATA["demonstrations"])):
     run("ffmpeg","-hide_banner","-loglevel","error","-y","-i",str(silent),"-i",str(wav),"-map","0:v:0","-map","1:a:0","-c:v","copy","-c:a","aac","-b:a","128k","-shortest","-movflags","+faststart",str(video))
     captions=OUT/f"ACA-Phase-Two-Lesson-1-3-{key}.vtt";captions.write_text(vtt(sec(video),m.group(3)))
     results.append({"key":key,"title":item["title"],"duration_seconds":round(sec(video),3),"file":video.name,"captions":captions.name,"bytes":video.stat().st_size,"sha256":hashlib.sha256(video.read_bytes()).hexdigest(),"transcript":m.group(3),"fictional_training_example":True})
-report={"lesson":"1.2","voice_id":DATA["voice_id"],"guided_audio":{"file":dest.name,"duration_seconds":round(sec(dest),3),"chapters":len(cues),"bytes":dest.stat().st_size},"demonstrations":results,"media_hosted":False}
+report={"lesson":"1.3","voice_id":DATA["voice_id"],"guided_audio":{"file":dest.name,"duration_seconds":round(sec(dest),3),"chapters":len(cues),"bytes":dest.stat().st_size},"demonstrations":results,"media_hosted":False}
 (OUT/"production-report.json").write_text(json.dumps(report,indent=2)+"\n")
-print(json.dumps({"lesson":"1.2","audio_seconds":round(sec(dest),3),"demonstrations":len(results)},indent=2))
+print(json.dumps({"lesson":"1.3","audio_seconds":round(sec(dest),3),"demonstrations":len(results)},indent=2))
