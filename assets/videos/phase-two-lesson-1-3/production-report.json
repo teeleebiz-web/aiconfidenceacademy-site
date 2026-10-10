@@ -1,0 +1,57 @@
+{
+  "lesson": "1.3",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-1-3-Guided-Instruction.m4a",
+    "duration_seconds": 617.257,
+    "chapters": 4,
+    "bytes": 8665971
+  },
+  "demonstrations": [
+    {
+      "key": "01-roles",
+      "title": "Select the right AI role",
+      "duration_seconds": 21.263,
+      "file": "ACA-Phase-Two-Lesson-1-3-01-roles.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-3-01-roles.vtt",
+      "bytes": 489639,
+      "sha256": "2c12f75532e2e36386901d333dbd3063a31383ac3c059288ca80982fe4f850d0",
+      "transcript": "Start with the job, not the tool. AI could organize approved requirements or suggest neutral questions. But verifying a price against the authorized record is a direct human check. Giving AI every step creates extra work without necessarily creating value. The right role is the one that serves the task.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-cost",
+      "title": "Count the whole job",
+      "duration_seconds": 24.032,
+      "file": "ACA-Phase-Two-Lesson-1-3-02-cost.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-3-02-cost.vtt",
+      "bytes": 534733,
+      "sha256": "bc109865b42385ae8806b77cc47d274fe52bd5fb05b057356de2cafac1f2be4b",
+      "transcript": "In this fictional example, AI reduces drafting time by twenty minutes. But invented service promises require thirty extra minutes of correction. The full process now takes ten minutes longer. Draft speed is an activity measure. The useful business question is whether the final work improves after all review and rework are counted.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-alternative",
+      "title": "Compare the simpler option",
+      "duration_seconds": 22.752,
+      "file": "ACA-Phase-Two-Lesson-1-3-03-alternative.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-3-03-alternative.vtt",
+      "bytes": 515457,
+      "sha256": "f91d79228897d5de7599fcc8b9d181029eb2d906386b4003fd54842d27b9819c",
+      "transcript": "Compare AI against a realistic non-AI method. A reviewed template might be clearer and more dependable for this proposal. An AI approach could still be worthwhile for organizing requirements. We have not measured either complete option here, so we cannot promise a winner. Name a fair test and the person who will review the result.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-value",
+      "title": "Save the value hypothesis",
+      "duration_seconds": 23.484,
+      "file": "ACA-Phase-Two-Lesson-1-3-04-value.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-3-04-value.vtt",
+      "bytes": 520157,
+      "sha256": "95f0158a8b395410faf9e60f82b348a4581cbcb231c044e45a35671a25739ba3",
+      "transcript": "A professional value hypothesis does not promise savings. It names the person served, the work, the comparison baseline, what to measure, and who checks the result. Record uncertainty and what would make you change your decision. Save the AI-role table and the value hypothesis in the same continuing project you have been building.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
