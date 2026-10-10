@@ -19,6 +19,25 @@ const fixture = (pages = [1]) => ({
     })),
   },
 })
+it('opens the Journey Four offer workbook, keeps future sections locked, prints and returns to Lesson 4.1',async()=>{
+  const data=fixture()
+  data.workbook.key='phase-two-journey-four';data.workbook.title='Phase Two Journey 4 Workbook'
+  data.answers={'p2-j4-1-offerSentence':'Retained bounded offer'} as never
+  data.workbook.pages=[{number:1,lesson_id:'4.1',kicker:'Journey Four',title:'Define the Offer and Its Promise',blocks:[{type:'field',id:'p2-j4-1-offerSentence',label:'My bounded offer',hint:'Keep promises within capacity.',lines:5}]}] as never
+  const rpc=vi.spyOn(supabase,'rpc').mockResolvedValue({data,error:null} as never)
+  const onBack=vi.fn();const print=vi.spyOn(window,'print').mockImplementation(()=>{})
+  render(<PhaseTwoWorkbook journey={4} initialLesson={1} onBack={onBack}/>)
+  expect(await screen.findByDisplayValue('Retained bounded offer')).toBeTruthy()
+  expect(rpc).toHaveBeenCalledWith('get_aca_phase_two_workbook',{p_enrollment_id:null,p_journey:4})
+  const chooser=screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect(chooser.value).toBe('1');expect(chooser.options[0].textContent).toContain('4.1 · Define the Offer and Its Promise')
+  expect([...chooser.options].slice(1).every(x=>x.disabled)).toBe(true)
+  fireEvent.change(screen.getByLabelText('My bounded offer'),{target:{value:'Reviewed offer notes'}})
+  expect(screen.getByDisplayValue('Reviewed offer notes')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}));expect(print).toHaveBeenCalledOnce()
+  fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 4.1/}));expect(onBack).toHaveBeenCalledOnce()
+  print.mockRestore()
+})
 it('allows founder review to see only released pages, print, and return in the same tab', async ()=>{
   vi.spyOn(supabase,'rpc').mockResolvedValue({data:fixture(),error:null} as never)
   const onBack=vi.fn()
