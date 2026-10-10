@@ -1,7 +1,7 @@
 name: Produce ACA Phase Two Lesson 2.1 full instructional media
 on:
   push:
-    branches: [phase-two-lesson-2-1-production]
+    branches: [phase-two-journey-2-lesson-2-1-production]
     paths:
       - academy/phase-two-production/J2-L2-1-MEDIA-BUILD.flag
 permissions:
@@ -43,9 +43,9 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git commit -m "Attach complete approved Lesson 2.1 instructor, audio, case videos and captions"
           for attempt in 1 2 3 4 5; do
-            git fetch origin phase-two-lesson-2-1-production
-            git rebase origin/phase-two-lesson-2-1-production
-            if git push origin HEAD:phase-two-lesson-2-1-production; then exit 0; fi
+            git fetch origin phase-two-journey-2-lesson-2-1-production
+            git rebase origin/phase-two-journey-2-lesson-2-1-production
+            if git push origin HEAD:phase-two-journey-2-lesson-2-1-production; then exit 0; fi
             sleep 3
           done
           exit 1
