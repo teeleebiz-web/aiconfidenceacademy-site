@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "audio_url": "/assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-Guided-Instruction.m4a",
+  "duration_seconds": 768.95,
+  "chapters": [
+    {
+      "title": "1. Connect the customer flow and participation map",
+      "start_seconds": 0.0,
+      "duration_seconds": 195.109
+    },
+    {
+      "title": "2. Make expectations, access and support clear",
+      "start_seconds": 196.009,
+      "duration_seconds": 182.648
+    },
+    {
+      "title": "3. Walk the flow as a first-time user",
+      "start_seconds": 379.557,
+      "duration_seconds": 190.537
+    },
+    {
+      "title": "4. Verify claims and retain the corrected delivery map",
+      "start_seconds": 570.994,
+      "duration_seconds": 197.956
+    }
+  ]
+}
