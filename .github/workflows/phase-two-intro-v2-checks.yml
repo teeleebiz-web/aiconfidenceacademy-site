@@ -1,0 +1,24 @@
+name: ACA Four Instructor Introduction Revision Checks
+on:
+  push:
+    branches:
+      - phase-two-instructor-opening-standard-1-1-to-1-4
+  pull_request:
+    paths:
+      - 'academy/phase-two-instructor-standard.test.mjs'
+      - 'academy/phase-two-production/J1-L1-1-to-1-4-standardized-introductions.json'
+      - 'academy/phase-two-production/build-standardized-j1-intros-v2.py'
+      - '.github/workflows/phase-two-intro-v2-checks.yml'
+jobs:
+  validate-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: node --test academy/phase-two-instructor-standard.test.mjs
+      - run: python -m py_compile academy/phase-two-production/build-standardized-j1-intros-v2.py
