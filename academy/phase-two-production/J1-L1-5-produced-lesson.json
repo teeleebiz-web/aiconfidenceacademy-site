@@ -1,0 +1,166 @@
+{
+  "production_version": "1.5-owner-review-2026-10-09",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "1.5",
+  "primary_media": "audio",
+  "title": "Scope a solution and a project worth completing",
+  "learner_promise": "Use the FOCUS Capstone Frame to select one realistic, finishable and reviewable artifact for the project already begun.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Define a narrow responsible solution",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Compare three sample artifacts",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Write the FOCUS charter and test plan",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Check boundaries, permissions and evidence",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Explain why a solution concept is not authorization to deploy.",
+    "Use FOCUS: Function, Owner, Customer, Use Case, Scope.",
+    "Compare three capstone artifacts for feasibility, value, and consequences.",
+    "Choose one finishable first artifact with clear inputs, outputs, permissions and exclusions.",
+    "Save a short project charter, solution concept and realistic first test in the continuing Project Record."
+  ],
+  "teaching": [
+    {
+      "heading": "Move from need to a modest solution concept",
+      "paragraphs": [
+        "The audience need, value hypothesis, professional requests, and decision notes from Lessons 1.1–1.4 are the source of this lesson. Start with the person and the desired improvement, not an attractive technology feature.",
+        "Describe the current task, AI role, human accountability, required approved information, expected value, limitations and one useful test. A proposal to demonstrate a draft does not authorize service deployment."
+      ],
+      "think_prompt": "What narrow sample output could demonstrate usefulness without accessing real customer information?"
+    },
+    {
+      "heading": "Define your FOCUS Capstone Frame",
+      "paragraphs": [
+        "Function states what the artifact does; Owner is accountable for review; Customer identifies the person served; Use Case specifies the concrete situation, inputs and output; Scope defines what is included, deliberately excluded and dependent on permission.",
+        "If a capstone needs several integrations, a whole business operation, payments and real customers merely to show a first result, shrink it. Complete small work is better evidence than an unfinished large plan."
+      ],
+      "think_prompt": "Can you explain each FOCUS field in one sentence and name the human owner?"
+    },
+    {
+      "heading": "Compare three possible first artifacts",
+      "paragraphs": [
+        "A fictional support business might compare an approved reference guide, a sample estimate generator with human review, and a full live service system. The guide may require less effort; the narrow generator may demonstrate useful AI support; the full system adds major unapproved dependencies.",
+        "This case establishes no customer demand, profitability or permission. Use criteria: realistic time, available tools, appropriate information, consequence of wrong answers and whether the first artifact can be verified."
+      ],
+      "think_prompt": "Which candidate is finishable and which missing permission rules out the larger option?"
+    },
+    {
+      "heading": "Write a practical charter and a single test",
+      "paragraphs": [
+        "State the person, need, artifact, result, FOCUS elements, sample inputs, output standard, required permission, limits and success measure. Specify a first test using approved fictional inputs and a human reviewer.",
+        "Use your own chosen AI tool to critique whether the charter is smaller and more complete. Reject invented approval, integrations or cost commitments. Save the charter in the same continuing Project Record."
+      ],
+      "think_prompt": "What counts as finished, what is out of scope, and who can authorize the real-world step?"
+    }
+  ],
+  "worked_case": {
+    "label": "A proposal assistant scaled down to one checkable estimate",
+    "setup": "FICTIONAL TRAINING EXAMPLE: A business owner proposes an entire AI proposal company. The responsible first artifact could be a demonstration that drafts one kind of estimate using approved sample data, followed by human review.",
+    "evidence_table": [
+      {
+        "claim": "A fictional estimate draft can be produced for review",
+        "evidence": "One approved sample request and sample service descriptions",
+        "action": "Test draft against supplied inputs; require an accountable human review."
+      },
+      {
+        "claim": "This assistant may approve quotes or binding service promises",
+        "evidence": "No client approval, current cost basis, or contract authority supplied",
+        "action": "Explicitly exclude quotes, contracts and commitments."
+      },
+      {
+        "claim": "A complete live system is feasible in the same first test",
+        "evidence": "No integration access, privacy approval, budget or delivery capacity established",
+        "action": "Keep live systems out of scope; choose one complete sample artifact."
+      },
+      {
+        "claim": "The first artifact proves market demand",
+        "evidence": "This exercise uses fictional customers and synthetic sample materials",
+        "action": "Do not claim sales, demand or customer research."
+      }
+    ],
+    "revised_example": "We will build and inspect one fictional service-estimate draft from approved example information. A person reviews every figure and promise. No real customers, contracts, payments or deployment are included. We will compare the produced draft against the example and record errors.",
+    "demonstration_steps": [
+      "Separate ambition from one safe solution concept.",
+      "Apply Function, Owner, Customer, Use Case and Scope.",
+      "Compare an approved guide, a narrow drafting tool and a full live system.",
+      "Save a short charter with exclusions, a test and named review authority."
+    ],
+    "question": "What small artifact can demonstrate the selected need without unverified permissions or excessive dependencies?"
+  },
+  "application": [
+    {
+      "minutes": 8,
+      "heading": "Compare three possible project artifacts",
+      "instruction": "Using your existing project, compare three deliverables for feasibility, value, consequences, source access, review effort and what can realistically be finished.",
+      "evidence": "Three-artifact shortlist and reason for selecting only one."
+    },
+    {
+      "minutes": 9,
+      "heading": "Apply FOCUS and draft a compact charter",
+      "instruction": "Write Function, Owner, Customer, Use Case and Scope. State required inputs, expected outputs, success criteria and intentional exclusions.",
+      "evidence": "One-paragraph charter and responsible solution concept."
+    },
+    {
+      "minutes": 8,
+      "heading": "Review with your own AI and set the first test",
+      "instruction": "Copy the approved FOCUS request to your chosen AI assistant using sanitized project notes. Reject fictional approvals or impossible dependencies. Define one realistic test, human reviewer, permissions needed and failure condition.",
+      "evidence": "AI critique, evidence correction, first-test plan and accountable owner."
+    }
+  ],
+  "approved_ai_request": "Review this project using Function, Owner, Customer, Use Case and Scope. Identify missing solution-concept fields and suggest a smaller complete artifact where needed. Do not assume approval to deploy. Draft: [sanitized charter].",
+  "responsibility_map_fields": [
+    "Function and intended result",
+    "Owner and decision authority",
+    "Customer / user served",
+    "Use Case and approved inputs",
+    "Scope, exclusions and dependencies",
+    "Human review, success measure and first test"
+  ],
+  "verification": [
+    {
+      "minutes": 3,
+      "heading": "Show the difference between idea and authorization",
+      "prompt": "Explain why a solution concept or fictional test does not permit deployment or customer commitments."
+    },
+    {
+      "minutes": 3,
+      "heading": "Define what is finishable",
+      "prompt": "Name the actual artifact, its boundaries and the evidence that will count as completed."
+    },
+    {
+      "minutes": 4,
+      "heading": "Identify the permission or missing dependency",
+      "prompt": "Name which decision requires another person's approval and how the first test can be conducted safely."
+    }
+  ],
+  "completion_criteria": [
+    "Three artifact choices compared for feasibility and consequence",
+    "FOCUS elements completed with clear human owner",
+    "One short solution charter with useful outcome and documented exclusions",
+    "One realistic test with safe inputs, checks, accountable reviewer and failure condition",
+    "Project Record saved without replacing evidence from Lessons 1.1–1.4"
+  ],
+  "handoff": "Lesson 1.6 stress-tests this same capstone choice, first test and human-review model. Future workbook sections remain locked until their scheduled release.",
+  "editorial_notes": {
+    "status": "Founder review draft. No Phase Two enrollment or lesson publication is activated.",
+    "media": "Approved Japanese instructor and Rika–IA recorded audio pending hosted media acceptance; same player and captions as prior lessons.",
+    "source": "ACA Phase Two Six-Week Curriculum Master v2.0, Lesson 1.5 (Friday, Week One).",
+    "example_data": "Fictional sample proposal; no customer, financial, implementation, authority, or demand outcome is asserted."
+  }
+}
