@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - phase-two-workbooks-restoration
+      - phase-two-six-journey-owner-review
   pull_request:
     paths:
       - 'portal/src/phaseTwo/PhaseTwoWorkbook.tsx'
