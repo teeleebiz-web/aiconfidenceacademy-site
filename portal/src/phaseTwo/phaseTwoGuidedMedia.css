@@ -36,3 +36,6 @@
 .p2-guided-audio button:focus-visible,.p2-demo-clips button:focus-visible,.p2-guided-transcript summary:focus-visible{outline:3px solid #b48632;outline-offset:3px}
 @media(max-width:780px){.p2-guided-chapters,.p2-demo-clip-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.p2-guided-media-head{flex-direction:column}.p2-guided-chapters,.p2-demo-clip-tabs{grid-template-columns:1fr}.p2-demo-clip-player{padding:.8rem}}
+
+/* Captions for Lesson 1.2 sit below the video rather than obscuring case labels. */
+.p2-demo-clip-player .p2-video-caption-strip{padding:1rem 1.2rem;margin-top:-.2rem;background:#102d4f;color:#fff;border-radius:0 0 10px 10px;line-height:1.55;min-height:3.5rem;font-weight:550;white-space:normal}
