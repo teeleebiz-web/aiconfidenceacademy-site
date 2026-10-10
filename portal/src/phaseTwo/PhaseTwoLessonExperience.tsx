@@ -13,6 +13,7 @@ type PhaseTwoLessonExperienceProps = {
   medium: 'video' | 'audio'
   production: PhaseTwoProducedLesson | undefined
   onOpenProject?: () => void
+  onOpenWorkbook?: () => void
   onBackToLessons?: () => void
   remainingSeconds?: number
   enrollmentId?: string
@@ -36,6 +37,7 @@ export function PhaseTwoLessonExperience({
   medium,
   production,
   onOpenProject,
+  onOpenWorkbook,
   onBackToLessons,
   remainingSeconds,
   enrollmentId,
@@ -167,6 +169,15 @@ export function PhaseTwoLessonExperience({
               ) : <p>{medium === 'video' ? 'Video placeholder' : 'Audio placeholder'}</p>}
             </div>
           </section>}
+
+          {onOpenWorkbook && (
+            <div className="p2-workbook-entry">
+              <button type="button" className="workbook-entry-link" onClick={onOpenWorkbook}>
+                Open Workbook — Lesson {pageId}
+              </button>
+              <p>Your released workbook study material and saved answers remain accessible after this lesson window closes.</p>
+            </div>
+          )}
 
           {usable ? (
             <>
