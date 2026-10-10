@@ -62,6 +62,9 @@ it('opens Lesson 3.2, retains Lesson 3.1 notes and returns to the correct lesson
   render(<PhaseTwoWorkbook journey={3} initialLesson={2} onBack={onBack} />)
   expect(await screen.findByDisplayValue('Simulated listening summary')).toBeTruthy()
   const chooser = screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect([...chooser.options].find(x => x.value === '2')?.textContent).toContain('Listen and Use Reflective Guidance')
+  expect(screen.getByRole('button', { name: /Lesson 3.1\s*Understand the People Affected by Change/ })).toBeTruthy()
+  expect(screen.getByRole('button', { name: /Lesson 3.2\s*Listen and Use Reflective Guidance/ })).toBeTruthy()
   expect([...chooser.options].find(x => x.value === '3')?.disabled).toBe(true)
   fireEvent.click(screen.getByRole('button', { name: /Previous lesson/ }))
   expect(await screen.findByDisplayValue('Earlier people map')).toBeTruthy()

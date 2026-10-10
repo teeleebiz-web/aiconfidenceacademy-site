@@ -90,7 +90,10 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
   const answers = enrollmentId ? state.answers : {...state.answers,...previewAnswers}
   const page=state.workbook?.pages.find(p=>p.number===state.last_page)
   const released=state.workbook?.pages ?? []
-  const titles=approvedTitles[journey] ?? []
+  const titles=approvedTitles[journey] ?? released.reduce<string[]>((items, lesson) => {
+    items[lesson.number - 1] = lesson.title
+    return items
+  }, [])
   const goBack=async()=>{
     if(enrollmentId && store.pending) {
       await store.save()
