@@ -1,0 +1,57 @@
+{
+  "lesson": "2.1",
+  "course": "ACA Phase Two Master v2.0",
+  "status": "approved_existing_aca_voice_synthesized_pending_hosting",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "voice": "ACA White Woman - Elegant Home",
+  "avatar_video_id": "baf67ad6583c2a099b548db0f0721236",
+  "guided_chapters": [
+    {
+      "title": "Describe the work as it happens now",
+      "duration_seconds": 166.21714285714285,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=d2bc7333-4a44-4d0a-8e7a-ad8a662a69ba.wav"
+    },
+    {
+      "title": "Find friction without blaming the person",
+      "duration_seconds": 159.0334693877551,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=3155fd24-063b-4671-9b40-407460707c12.wav"
+    },
+    {
+      "title": "Make decisions and handoffs visible",
+      "duration_seconds": 153.02530612244897,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=14ebd6cc-7753-43be-b44e-5963e5db5da0.wav"
+    },
+    {
+      "title": "Verify the map and save a defensible improvement",
+      "duration_seconds": 168.48979591836735,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=7101df7a-9014-4b5f-b6a0-c089c715d2c4.wav"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-trace",
+      "title": "Trace one estimate request",
+      "duration_seconds": 18.75591836734694,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=7df4d800-45af-4720-a18e-ae32ea92ca77.wav"
+    },
+    {
+      "key": "02-delay",
+      "title": "Locate the three-day wait",
+      "duration_seconds": 19.069387755102042,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=337836c2-d1c2-46d9-86cc-e671d23d8c0c.wav"
+    },
+    {
+      "key": "03-handoff",
+      "title": "Improve the handoff with human authority",
+      "duration_seconds": 18.2334693877551,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=af89d824-061a-4d16-9c2c-f193f3a4c8e8.wav"
+    },
+    {
+      "key": "04-verify",
+      "title": "Save a verified Workflow View",
+      "duration_seconds": 20.323265306122448,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=a68d0d89-6b20-4ddf-a0cb-abdff33487ce.wav"
+    }
+  ],
+  "source_manuscript": "academy/phase-two-production/J2-L2-1-instructional-master.md"
+}
