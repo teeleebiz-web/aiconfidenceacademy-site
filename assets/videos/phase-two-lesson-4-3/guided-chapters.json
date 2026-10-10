@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "audio_url": "/assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-Guided-Instruction.m4a",
+  "duration_seconds": 730.262,
+  "chapters": [
+    {
+      "title": "1. Direct and generate within the saved brief",
+      "start_seconds": 0.0,
+      "duration_seconds": 183.928
+    },
+    {
+      "title": "2. Examine, revise and independently verify claims",
+      "start_seconds": 184.828,
+      "duration_seconds": 181.708
+    },
+    {
+      "title": "3. Preserve voice, choice and the service boundary",
+      "start_seconds": 367.436,
+      "duration_seconds": 177.946
+    },
+    {
+      "title": "4. Complete the sample and make the release decision",
+      "start_seconds": 546.282,
+      "duration_seconds": 183.98
+    }
+  ]
+}
