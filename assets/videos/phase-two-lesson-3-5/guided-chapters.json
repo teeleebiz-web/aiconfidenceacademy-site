@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "audio_url": "/assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-Guided-Instruction.m4a",
+  "duration_seconds": 677.26,
+  "chapters": [
+    {
+      "title": "1. Define the pilot and its permission boundary",
+      "start_seconds": 0.0,
+      "duration_seconds": 159.948
+    },
+    {
+      "title": "2. Assemble the Leadership and Adoption Plan",
+      "start_seconds": 160.848,
+      "duration_seconds": 164.284
+    },
+    {
+      "title": "3. Use GOVERN and balanced measures",
+      "start_seconds": 326.032,
+      "duration_seconds": 174.263
+    },
+    {
+      "title": "4. Rehearse stopping, review and saving",
+      "start_seconds": 501.195,
+      "duration_seconds": 176.065
+    }
+  ]
+}
