@@ -102,7 +102,7 @@ export function PhaseTwoReview() {
           options: {
             shouldCreateUser: false,
             emailRedirectTo: window.location.origin + '/learn/?review=phase-two&lesson=' +
-              encodeURIComponent(['1.1', '1.2', '1.3'].includes(new URLSearchParams(window.location.search).get('lesson') ?? '')
+              encodeURIComponent(['1.1', '1.2', '1.3', '1.4'].includes(new URLSearchParams(window.location.search).get('lesson') ?? '')
                 ? new URLSearchParams(window.location.search).get('lesson')!
                 : '1.1'),
           },
@@ -220,7 +220,7 @@ export function PhaseTwoReview() {
       introVideo={lessonForReview.content.phase_two_media_plan?.avatar_introduction}
       guidedInstruction={lessonForReview.content.phase_two_media_plan?.guided_instruction}
       allowMediaReview
-      onOpenWorkbook={['1.1','1.2','1.3'].includes(lessonForReview.page_id)
+      onOpenWorkbook={['1.1','1.2','1.3','1.4'].includes(lessonForReview.page_id)
         ? () => setWorkbookPreview(lessonForReview.page_id) : undefined}
       demoClips={['founder_approved','founder_review_pending'].includes(lessonForReview.content.phase_two_media_plan?.demonstration_clips?.approvalStatus ?? '')
         ? lessonForReview.content.phase_two_media_plan?.demonstration_clips?.clips
