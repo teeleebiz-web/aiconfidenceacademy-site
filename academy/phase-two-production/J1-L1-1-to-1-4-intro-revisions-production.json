@@ -1,0 +1,16 @@
+{
+  "version": "v2",
+  "batch_id": "58def3b277e048edad3f8f85a561fcee",
+  "status": "heygen_submitted",
+  "intro_versioned_filename": "ACA-Phase-Two-Lesson-{lesson}-Introduction-v2.mp4",
+  "legacy_intro_remains_until_verified": true,
+  "lessons": [
+    "1.1",
+    "1.2",
+    "1.3",
+    "1.4"
+  ],
+  "review_status": "founder_review_pending",
+  "label": "Full instructor opening, lesson title, prior-lesson bridge, then Let's begin.",
+  "notes": "Do not delete earlier videos or alter guided lessons/demonstrations. Adjust learner references only after media is built, checked and hosted."
+}
