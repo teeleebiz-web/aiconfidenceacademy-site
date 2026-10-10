@@ -49,6 +49,9 @@ describe('ACA Phase Two guided instruction media', () => {
 
   it('lets learners choose each video independently with matching caption track', async () => {
     const user=userEvent.setup()
+    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
+    vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {})
+    const play=vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
     render(<PhaseTwoDemoClips clips={clips} />)
     expect(screen.getByRole('heading',{name:'A report you can examine, step by step'})).toBeTruthy()
     const first=screen.getByLabelText('Start with the source screen demonstration') as HTMLVideoElement
@@ -56,6 +59,7 @@ describe('ACA Phase Two guided instruction media', () => {
     await user.click(screen.getByRole('button',{name:/Read the AI draft/}))
     const second=screen.getByLabelText('Read the AI draft screen demonstration') as HTMLVideoElement
     expect(second.getAttribute('src')).toBe('https://aiconfidenceacademy.org/draft.mp4')
+    expect(play).toHaveBeenCalled()
     const track=second.querySelector('track')
     expect(track?.getAttribute('src')).toBe('https://aiconfidenceacademy.org/draft.vtt')
     await user.click(screen.getByText('Read this demonstration'))
