@@ -1,0 +1,51 @@
+name: Produce ACA Phase Two Lesson 1.6 full instructional media
+on:
+  push:
+    branches: [phase-two-lesson-1-6-production]
+    paths:
+      - academy/phase-two-production/J1-L1-6-MEDIA-BUILD.flag
+permissions:
+  contents: write
+jobs:
+  build:
+    if: github.event.head_commit.message == 'Produce Phase Two Lesson 1.6 approved media'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install production media dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1' 'av==15.1.0'
+      - name: Encode instructor with Academy opening and ending
+        run: python academy/phase-two-production/build-approved-j16-video.py "$RUNNER_TEMP/intro"
+      - name: Encode guided audio and four illustrated demos
+        run: python academy/phase-two-production/build-j16-guided-media.py "$RUNNER_TEMP/guided"
+      - name: Verify and commit complete isolated media
+        shell: bash
+        run: |
+          set -euo pipefail
+          dest="assets/videos/phase-two-lesson-1-6"
+          mkdir -p "$dest"
+          cp "$RUNNER_TEMP/intro/ACA-Phase-Two-Lesson-1-6-Introduction.mp4" "$dest/"
+          cp "$RUNNER_TEMP/intro/poster.webp" "$dest/"
+          cp "$RUNNER_TEMP/intro/media-manifest.json" "$dest/"
+          cp "$RUNNER_TEMP/guided/"*.m4a "$dest/"
+          cp "$RUNNER_TEMP/guided/ACA-Phase-Two-Lesson-1-6-"*.mp4 "$dest/"
+          cp "$RUNNER_TEMP/guided/ACA-Phase-Two-Lesson-1-6-"*.vtt "$dest/"
+          cp "$RUNNER_TEMP/guided/guided-chapters.json" "$dest/"
+          cp "$RUNNER_TEMP/guided/production-report.json" "$dest/"
+          test "$(find "$dest" -maxdepth 1 -type f | wc -l)" -eq 14
+          git add "$dest"
+          git config user.name "ACA instructional media builder"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Attach complete approved Lesson 1.6 instructor, audio, case videos and captions"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin phase-two-lesson-1-6-production
+            git rebase origin/phase-two-lesson-1-6-production
+            if git push origin HEAD:phase-two-lesson-1-6-production; then exit 0; fi
+            sleep 3
+          done
+          exit 1
