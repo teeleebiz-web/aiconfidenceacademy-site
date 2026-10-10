@@ -71,7 +71,7 @@ begin
     select coalesce(array_agg((page->>'number')::integer order by (page->>'number')::integer),'{}'::integer[])
       into v_allowed
     from jsonb_array_elements(v_def->'pages') page
-    join public.lessons l on l.page_id = p_journey::text || '.' || page->>'number'
+    join public.lessons l on l.page_id = p_journey::text || '.' || (page->>'number')
     join public.course_journeys j on j.id=l.journey_id and j.journey_number=p_journey and j.status='published'
     join public.aca_phase_two_memberships m on m.enrollment_id=p_enrollment_id and m.course_id=l.course_id
     join public.aca_phase_two_cohorts coh on coh.id=m.cohort_id
@@ -124,7 +124,7 @@ begin
     raise exception 'Invalid workbook revision or answer format';
   end if;
   v_read := public.get_aca_phase_two_workbook(p_enrollment_id,p_journey);
-  if not (p_page=any(select array_agg(value::integer) from jsonb_array_elements_text(v_read->'allowedPages'))) then
+  if not ((v_read->'allowedPages') @> jsonb_build_array(p_page)) then
     raise exception 'This workbook lesson has not been released';
   end if;
   select coalesce(array_agg(block->>'id'),'{}'::text[]) into v_fields
