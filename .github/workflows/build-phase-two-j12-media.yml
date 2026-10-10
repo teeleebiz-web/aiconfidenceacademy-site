@@ -1,0 +1,47 @@
+name: Produce ACA Phase Two Lesson 1.2 media
+on:
+  push:
+    branches:
+      - phase-two-lesson-1-2-instructional-production
+    paths:
+      - academy/phase-two-production/J1-L1-2-MEDIA-BUILD.flag
+permissions:
+  contents: write
+jobs:
+  build-media:
+    if: github.event.head_commit.message == 'Build approved voice Lesson 1.2 media assets'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install media dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1'
+      - name: Build Lesson 1.2 media
+        run: |
+          python academy/phase-two-production/build-j12-guided-media.py "$RUNNER_TEMP/j12-media"
+          test -s "$RUNNER_TEMP/j12-media/production-report.json"
+          test -s "$RUNNER_TEMP/j12-media/guided-chapters.json"
+      - name: Stage and validate only approved media files
+        shell: bash
+        run: |
+          set -euo pipefail
+          dest="assets/videos/phase-two-lesson-1-2"
+          mkdir -p "$dest"
+          cp "$RUNNER_TEMP/j12-media/"*.m4a "$dest/"
+          cp "$RUNNER_TEMP/j12-media/ACA-Phase-Two-Lesson-1-2-"*.mp4 "$dest/"
+          cp "$RUNNER_TEMP/j12-media/ACA-Phase-Two-Lesson-1-2-"*.vtt "$dest/"
+          cp "$RUNNER_TEMP/j12-media/guided-chapters.json" "$dest/"
+          cp "$RUNNER_TEMP/j12-media/production-report.json" "$dest/"
+          test "$(find "$dest" -maxdepth 1 -type f | wc -l)" -eq 11
+          git add "$dest"
+          git config user.name "ACA instructional media builder"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Attach Lesson 1.2 approved-voice guided audio and narrated case media"
+          git push origin HEAD:phase-two-lesson-1-2-instructional-production
