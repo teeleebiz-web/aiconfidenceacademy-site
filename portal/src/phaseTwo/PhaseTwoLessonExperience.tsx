@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
 import { PhaseTwoGuidedAudio, type GuidedInstructionMedia, type VisualDemoClip } from './PhaseTwoGuidedMedia'
@@ -15,7 +16,7 @@ type PhaseTwoLessonExperienceProps = {
   remainingSeconds?: number
   enrollmentId?: string
   introAudio?: { url: string; transcript: string }
-  introVideo?: { url: string; transcript: string; approvalStatus: 'founder_approved' }
+  introVideo?: { url: string; transcript: string; approvalStatus: 'founder_approved' | 'founder_review_pending' }
   guidedInstruction?: GuidedInstructionMedia
   demoClips?: VisualDemoClip[]
   allowMediaReview?: boolean
@@ -44,15 +45,59 @@ export function PhaseTwoLessonExperience({
   allowMediaReview = false,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
-  const approvedGuidedAudio = (guidedInstruction?.approvalStatus === 'founder_approved' ||
-    (allowMediaReview && guidedInstruction?.approvalStatus === 'founder_review_pending')) &&
-    guidedInstruction.voice_id === 'ac277b338cf64d8b9686784c43c563da' &&
-    /^https:\/\//.test(guidedInstruction.url) &&
-    Array.isArray(guidedInstruction.chapters) && guidedInstruction.chapters.length === 4
-      ? guidedInstruction : null
-  const approvedVideo = introVideo?.approvalStatus === 'founder_approved' &&
-    /^https:\/\//.test(introVideo.url) && introVideo.transcript.trim().length > 0
-      ? introVideo : null
+  const [lesson12Media, setLesson12Media] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
+  useEffect(() => {
+    if (pageId !== '1.2' || !allowMediaReview) return
+    let canceled = false
+    const root = '/assets/videos/phase-two-lesson-1-2/'
+    void Promise.all([
+      fetch(root + 'guided-chapters.json').then(r => { if (!r.ok) throw new Error('Guided audio unavailable'); return r.json() }),
+      fetch(root + 'production-report.json').then(r => { if (!r.ok) throw new Error('Visual case unavailable'); return r.json() }),
+    ]).then(([chapters, report]) => {
+      if (canceled || report.lesson !== '1.2' || chapters.chapters?.length !== 4 ||
+          report.demonstrations?.length !== 4 ||
+          report.voice_id !== 'ac277b338cf64d8b9686784c43c563da') return
+      setLesson12Media({
+        guided: {
+          url: location.origin + root + report.guided_audio.file,
+          duration_seconds: chapters.duration_seconds,
+          voice_id: report.voice_id,
+          chapters: chapters.chapters,
+          approvalStatus: 'founder_review_pending',
+        },
+        demos: report.demonstrations.map((clip: {
+          key: string; title: string; file: string; captions: string;
+          transcript: string; duration_seconds: number; fictional_training_example: true
+        }) => ({
+          key: clip.key, title: clip.title,
+          url: location.origin + root + clip.file,
+          captions_url: location.origin + root + clip.captions,
+          transcript: clip.transcript,
+          duration_seconds: clip.duration_seconds,
+          fictional_training_example: true as const,
+        })),
+      })
+    }).catch(() => { /* Keep normal fallback until the official media release is live. */ })
+    return () => { canceled = true }
+  }, [pageId, allowMediaReview])
+  const selectedGuidedAudio = guidedInstruction ?? lesson12Media?.guided
+  const selectedDemoClips = demoClips ?? lesson12Media?.demos
+  const selectedVideo = introVideo ?? (pageId === '1.2' && allowMediaReview && lesson12Media
+    ? {
+      url: location.origin + '/assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-Introduction.mp4',
+      transcript: 'Welcome back to the AI Confidence Academy. Today we learn to distinguish a visible symptom from its possible cause, compare three needs, and investigate the evidence before choosing a solution.',
+      approvalStatus: 'founder_review_pending' as const,
+    } : null)
+  const approvedGuidedAudio = (selectedGuidedAudio?.approvalStatus === 'founder_approved' ||
+    (allowMediaReview && selectedGuidedAudio?.approvalStatus === 'founder_review_pending')) &&
+    selectedGuidedAudio.voice_id === 'ac277b338cf64d8b9686784c43c563da' &&
+    /^https:\/\//.test(selectedGuidedAudio.url) &&
+    Array.isArray(selectedGuidedAudio.chapters) && selectedGuidedAudio.chapters.length === 4
+      ? selectedGuidedAudio : null
+  const approvedVideo = (selectedVideo?.approvalStatus === 'founder_approved' ||
+    (allowMediaReview && selectedVideo?.approvalStatus === 'founder_review_pending')) &&
+    /^https:\/\//.test(selectedVideo.url) && selectedVideo.transcript.trim().length > 0
+      ? selectedVideo : null
   return (
     <div className="p2-learner-experience">
       <a href="#p2-lesson-main" className="skip-link">Skip to lesson</a>
@@ -79,14 +124,14 @@ export function PhaseTwoLessonExperience({
             <p className="p2-learner-experience-purpose">{purpose}</p>
           </header>
 
-          {medium === 'audio' && approvedVideo && (
+          {(medium === 'audio' || pageId === '1.2') && approvedVideo && (
             <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
               <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
               <video
                 controls
                 playsInline
                 preload="auto"
-                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : undefined}
+                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : pageId === '1.2' ? '/assets/videos/phase-two-lesson-1-2/poster.webp' : undefined}
                 src={approvedVideo.url}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
@@ -154,7 +199,7 @@ export function PhaseTwoLessonExperience({
                 </section>
               )}
 
-              <PhaseTwoProducedLessonReview production={production} learnerMode enrollmentId={enrollmentId} demoClips={demoClips} />
+              <PhaseTwoProducedLessonReview production={production} learnerMode enrollmentId={enrollmentId} demoClips={selectedDemoClips} />
 
               {onOpenProject && (
                 <section className="p2-learner-experience-project" aria-labelledby="p2-project-link-title">
