@@ -228,7 +228,7 @@ describe('Phase Two learner lesson presentation', () => {
     } finally { vi.unstubAllGlobals() }
   })
 
-  it.each(['3.1', '3.2'].flatMap(pageId => ['50ab8f40f8a34d66aa4338729900c1b0', '8NNnQuXc0FKua22CvviM'].map(voice => [pageId, voice])))('loads Journey Three with Ashley and protected written equivalents (%s, %s)', async (pageId, voice) => {
+  it.each(['3.1', '3.2', '3.3'].flatMap(pageId => ['50ab8f40f8a34d66aa4338729900c1b0', '8NNnQuXc0FKua22CvviM'].map(voice => [pageId, voice])))('loads Journey Three with Ashley and protected written equivalents (%s, %s)', async (pageId, voice) => {
     vi.stubGlobal('location', { origin: 'https://aiconfidenceacademy.org' })
     vi.stubGlobal('fetch', vi.fn(async (url: string) => ({ ok: true, json: async () => url.endsWith('guided-chapters.json') ? {
       duration_seconds: 600, chapters: [1,2,3,4].map(n => ({ title: `Chapter ${n}`, start_seconds: (n-1)*150 })),

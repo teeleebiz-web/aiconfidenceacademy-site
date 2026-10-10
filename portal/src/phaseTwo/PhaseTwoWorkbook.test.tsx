@@ -73,3 +73,28 @@ it('opens Lesson 3.2, retains Lesson 3.1 notes and returns to the correct lesson
   fireEvent.click(screen.getByRole('button', { name: /Back to Lesson 3.2/ }))
   expect(onBack).toHaveBeenCalledOnce()
 })
+
+it('opens Lesson 3.3 and preserves earlier workbook answers while future pages remain locked', async () => {
+  const data = fixture([1, 2, 3])
+  data.workbook.key = 'phase-two-journey-three'
+  data.answers = { 'p2-j3-1-context': 'People map retained', 'p2-j3-2-context': 'Listening retained', 'p2-j3-3-context': 'Change message retained' } as never
+  data.workbook.pages = ['Understand the People Affected by Change', 'Listen and Use Reflective Guidance', 'Communicate Change with Evidence'].map((title, i) => ({
+    number: i + 1, lesson_id: '3.' + (i + 1), kicker: 'Journey Three', title,
+    blocks: [{ type: 'field', id: 'p2-j3-' + (i + 1) + '-context', label: 'Continuing context', hint: '', lines: 4 }],
+  })) as never
+  vi.spyOn(supabase, 'rpc').mockResolvedValue({ data, error: null } as never)
+  const onBack = vi.fn()
+  render(<PhaseTwoWorkbook journey={3} initialLesson={3} onBack={onBack} />)
+  expect(await screen.findByDisplayValue('Change message retained')).toBeTruthy()
+  const chooser = screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect([...chooser.options].find(x => x.value === '3')?.textContent).toContain('Communicate Change with Evidence')
+  expect([...chooser.options].find(x => x.value === '4')?.disabled).toBe(true)
+  fireEvent.click(screen.getByRole('button', { name: /Previous lesson/ }))
+  expect(await screen.findByDisplayValue('Listening retained')).toBeTruthy()
+  fireEvent.change(chooser, { target: { value: '1' } })
+  expect(await screen.findByDisplayValue('People map retained')).toBeTruthy()
+  fireEvent.change(chooser, { target: { value: '3' } })
+  expect(await screen.findByDisplayValue('Change message retained')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: /Back to Lesson 3.3/ }))
+  expect(onBack).toHaveBeenCalledOnce()
+})

@@ -113,20 +113,20 @@ describe('protected Phase Two lesson production', () => {
     expect(screen.queryByText(/Production status:|Media status:|founder review/i)).toBeNull()
   })
 
-  it('integrates Lesson 3.2 listening practice and switches all four demonstration tabs with matching transcripts and captions', async () => {
+  it.each(['3.2', '3.3'])('integrates Lesson %s practice and switches all four demonstration tabs with matching transcripts and captions', async (pageId) => {
     vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
     vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {})
     vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
     const user = userEvent.setup()
-    const production = { ...draft, lesson_id: '3.2', approved_ai_request: 'Role-play with fictional context: [brief].' }
-    expect(validProducedLesson(production, '3.2')).toBe(true)
+    const production = { ...draft, lesson_id: pageId, approved_ai_request: 'Role-play with fictional context: [brief].' }
+    expect(validProducedLesson(production, pageId)).toBe(true)
     const clips = ['LISTEN', 'Disagreement', 'Reflection', 'Support'].map((title, i) => ({
       key: 'demo-' + i, title, url: 'https://aiconfidenceacademy.org/demo-' + i + '.mp4',
       captions_url: 'https://aiconfidenceacademy.org/demo-' + i + '.vtt', transcript: 'Simulated demonstration ' + i,
       duration_seconds: 45, fictional_training_example: true as const,
     }))
     render(<PhaseTwoProducedLessonReview production={production} learnerMode demoClips={clips} />)
-    expect(screen.getByRole('heading', { name: 'Practice a listening conversation' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: pageId === '3.2' ? 'Practice a listening conversation' : 'Prepare a change message with evidence' })).toBeTruthy()
     for (const clip of clips) {
       await user.click(screen.getByRole('button', { name: new RegExp(clip.title) }))
       const player = screen.getByLabelText(clip.title + ' screen demonstration')
@@ -135,7 +135,7 @@ describe('protected Phase Two lesson production', () => {
       expect(screen.getByText(clip.transcript)).toBeTruthy()
     }
     expect(screen.getByText('Read the detailed activity instructions')).toBeTruthy()
-    expect(screen.getByRole('button', { name: 'Copy role-play request' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: pageId === '3.2' ? 'Copy role-play request' : 'Copy change-message request' })).toBeTruthy()
     expect(screen.queryByRole('button', { name: /Save listening section/ })).toBeNull()
   })
 })
