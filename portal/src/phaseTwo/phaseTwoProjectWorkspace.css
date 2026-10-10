@@ -1,0 +1,45 @@
+.p2-project-page{background:#f8f3e9;color:#102d4f;min-height:100vh;padding:clamp(1rem,3vw,3rem);max-width:1300px;margin:0 auto}
+.p2-project-intro{border-radius:20px;padding:clamp(1.5rem,3vw,2.75rem);background:linear-gradient(120deg,#102d4f,#1c4564);color:#fff}
+.p2-project-intro .eyebrow{color:#e5c68e;font-weight:750;letter-spacing:.08em;text-transform:uppercase;font-size:.72rem}
+.p2-project-intro h1{font:700 clamp(1.9rem,3.4vw,3rem) Georgia,serif;margin:.3rem 0 1rem}
+.p2-project-intro p{max-width:74ch;color:#eee9dc}
+.p2-project-intro .p2-record-guidance{color:#f1d39c;font-weight:650}
+.p2-project-charter{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin:1.4rem 0;padding:1.4rem;border:1px solid #dfd2bd;border-radius:16px;background:#fff}
+.p2-project-control{display:grid;gap:.45rem}
+.p2-project-control label,.p2-project-editor label{font-weight:750;color:#123659}
+.p2-project-control input,.p2-project-control select,.p2-project-editor textarea{font:inherit;color:#102d4f;padding:.8rem .9rem;border:1px solid #aaacb0;background:#fff;border-radius:9px;min-width:0}
+.p2-project-control input:focus-visible,.p2-project-control select:focus-visible,.p2-project-editor textarea:focus-visible,.p2-project-nav button:focus-visible{outline:3px solid #b18a4b;outline-offset:2px}
+.p2-project-control small{font-size:.76rem;color:#596978}
+.p2-project-progress{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;background:#eee6d6;border-radius:15px;padding:1rem 1.4rem;margin-bottom:1.4rem}
+.p2-project-progress div{display:grid;gap:.15rem}
+.p2-project-progress strong{font-size:1.35rem;color:#123659}
+.p2-project-progress span{font-size:.78rem;color:#496073}
+.p2-project-progress p{font-size:.82rem;max-width:55ch;color:#455c6d;margin:0}
+.p2-project-columns{display:grid;grid-template-columns:minmax(230px,310px) minmax(0,1fr);gap:1.3rem;align-items:start}
+.p2-project-nav,.p2-project-editor,.p2-revision-history{background:#fff;border:1px solid #dbd1c0;border-radius:18px;overflow:hidden}
+.p2-project-nav{display:grid;gap:.45rem;padding:1rem}
+.p2-project-nav h2{font:700 1.25rem Georgia,serif;padding:.45rem .25rem}
+.p2-project-nav button{text-align:left;border:1px solid transparent;background:#f8f4ec;color:#102d4f;border-radius:11px;padding:.8rem;display:grid;grid-template-columns:18px minmax(0,1fr);gap:.2rem .55rem}
+.p2-project-nav button[aria-current=page],.p2-project-nav button:hover{background:#e9dec8;border-color:#b08a50}
+.p2-project-nav button strong{font-size:.84rem;line-height:1.35}
+.p2-project-nav button span{color:#ad8546}
+.p2-project-nav button small{grid-column:2;font-size:.7rem;color:#667583}
+.p2-project-editor{padding:clamp(1.25rem,3vw,2.2rem);display:grid;gap:.8rem}
+.p2-project-editor-title{border-bottom:1px solid #e6ded1;margin-bottom:.7rem}
+.p2-project-editor-title .eyebrow{font-size:.74rem;color:#a17b3f;text-transform:uppercase;letter-spacing:.06em}
+.p2-project-editor-title h2{font:700 clamp(1.4rem,2.4vw,2rem) Georgia,serif;margin:.25rem 0}
+.p2-project-editor-title p:last-child{font-size:.83rem;color:#5b6c79}
+.p2-project-editor textarea{resize:vertical;line-height:1.65}
+.p2-project-save-row{display:flex;justify-content:space-between;gap:1rem;align-items:center;margin-top:.5rem;border-top:1px solid #e6ded1;padding-top:1.2rem}
+.p2-project-save-row span{font-size:.83rem;color:#31516b;max-width:50ch}
+.p2-project-save-row button{background:#123659;color:#fff;padding:.8rem 1.3rem;border:0;border-radius:9px;font:inherit;font-weight:750;white-space:nowrap}
+.p2-project-save-row button:disabled{opacity:.55}
+.p2-project-caution{font-size:.8rem;color:#52697b}
+.p2-revision-history{padding:1.5rem;margin-top:1.5rem}
+.p2-revision-history h2{font:700 1.35rem Georgia,serif}
+.p2-revision-history ol{padding:0;list-style:none}
+.p2-revision-history li{display:flex;gap:1.3rem;align-items:baseline;border-top:1px solid #e8e3d9;padding:.7rem .1rem;font-size:.82rem;flex-wrap:wrap}
+.p2-revision-history li time{color:#617483}
+.p2-revision-history li span{flex-basis:100%;color:#264863}
+@media(max-width:850px){.p2-project-columns{grid-template-columns:1fr}.p2-project-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-project-nav h2{grid-column:1/-1}}
+@media(max-width:600px){.p2-project-charter,.p2-project-nav{grid-template-columns:1fr}.p2-project-progress,.p2-project-save-row{flex-direction:column;align-items:flex-start}}
