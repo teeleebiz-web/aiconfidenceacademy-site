@@ -1,0 +1,17 @@
+{
+  "lesson": "1.1",
+  "video_id": "f16893b366fa781bdc5df989bc46b0d4",
+  "original_seconds": 162.24,
+  "duration_seconds": 168.521,
+  "video_file": "ACA-Phase-Two-Lesson-1-1-Introduction-v2.mp4",
+  "poster_file": "poster-v2.webp",
+  "captions_file": "ACA-Phase-Two-Lesson-1-1-Introduction-v2.vtt",
+  "opening_card_immediate": true,
+  "return_card": true,
+  "instructor_voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "instructor_look_id": "eb90c2b7050142ea461979fa0215e161",
+  "spoke_full_lesson_title": true,
+  "intro_closing": "Let's begin.",
+  "sha256": "eeed3397b65bda40d20275bf9962bd4c79a9c1231d6c28a64a4dd7d1f0783b19",
+  "bytes": 18275660
+}
