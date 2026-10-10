@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "status": "all_four_completed_heygen",
+  "source_note": "Signed source URLs expire; retain only production source branch. Never link users to these or merge into main.",
+  "videos": [
+    {
+      "lesson": "1.1",
+      "video_id": "f16893b366fa781bdc5df989bc46b0d4",
+      "status": "completed",
+      "video_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/f16893b366fa781bdc5df989bc46b0d4.mp4?Expires=1792209847&Signature=c11qhmc3bl3UgzEwloSNmY9-3QHCeeawqkdJAbYYF3-YipSjwRCgWm08uwNx3rD3qqFDyJUZudQ1W7B-LdVeX5PSJ6DMdkb38dxrtuyNceeCZtflMjozyFaj0xOWw1IRqDV4J1jnLHpz4AIUP43t8bK1OjWg0drScaoWM-D5gMD75KjItPkcAGStzI~5lr5NPbADr~D4~OrEMKdswttgeLm4CJQXZs-py8w7y1ykC9DIEUz6J9mycM3IGZtZB-zRWkfQJf991xGX53nebALL~aDdtjhphErVWPhgr8RnVyKhFev75SxJe3dUlHyeE8Q~QU8qw-rBOsix6o94DHyOTA__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "subtitle_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/subtitles_f16893b366fa781bdc5df989bc46b0d4.srt?Expires=1792209891&Signature=epaqjT-~~IH5pZ64AwL66pq7FzYtqtCyPe~NZ2X7ruMZmwgofhhA72lfkTdI1Tsmyh-dQeNs0hZaVc~c~jnlWPlFww32lRG8mg0U5EvXndqEXyBfj~dW3ufln~-zzDzCCGu0qFasewAL9RyE~IKNfkW~C-9pEVEbkEWhqs95KNtXlR~i1XxOGMwZEntfxYx3JqsKo2brySSUiyrZPW01VLpun5W0801rXTFiABnNLV77JUJcoNMfInRn0uZYPi4hLit8OxcPLX1kXoYPB1uS9useIljAgrKbTMCIhzNn0XvFnLVFOY96AAhvEVKVLT1N8KnocKmqAsSocXlNN1XPwQ__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "original_seconds": 162.22
+    },
+    {
+      "lesson": "1.2",
+      "video_id": "71acab132da798f08b422dd4403e6c51",
+      "status": "completed",
+      "video_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/71acab132da798f08b422dd4403e6c51.mp4?Expires=1792209496&Signature=PcZcRyBqepsHRbXggRN7kTgU52~AwcwKRIj4Dgyycnd2Kul3vI7373WncUp88W-jDVmmLHyhcsLuwD~g4lchPLZmed2Jts07LdHczATXT6Hf0BMyv0EM7Y~A-CWd0DUbdMYFX8ROvNkIYhrgi74jCP~SAQpC4hEcY2hkBhHbyLI2MxT1ibxcKE0EBzhPLRp4jCHRkozJN0tdnkj99TTUZClQyJgwjm~d9BwZravXUcp7ZyPidrdjW5QEC6G~X0-~FNs3xIeX0QxwcBfmuwyU-1OJapUr8vHH1GdGDfn8ySVjfrop2TSO9NBEI8ghjtiLL1sRlCY~xSdjVuFs5zg5pA__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "subtitle_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/subtitles_71acab132da798f08b422dd4403e6c51.srt?Expires=1792209514&Signature=KCt9jTdxP8QepAjIei1tNWOOASOPj8rSHCrw5lrDdNqOnMHkoFfaeAw7QzjRVz-5CewA-RaRfRPmJ8-8VdmPldswPelPFNiJp5e95qMXCnSs49DVmZtq6QvbufE6vswrRo3Mi7BG-oGb8jHuZgrU~Wvn3Ilxad79o1LzOWgUfhi~xhq~hghjpuw7aLC722y0cFuSp7h40Ym4yy9ZiyM2OCRTGQ3-NFh9F0kelYMzhRJRcTZJUusoRhfUiVdCbqtMqV1Tz4qOBOBFM43TJLK4VeSN0~b0TKD4niZJhfbBFSajwc18xT3sWKCiWdcEfdkHO86GWH4bpBqkSxrzirjz1g__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "original_seconds": 83.0171
+    },
+    {
+      "lesson": "1.3",
+      "video_id": "0831da904811b3cad568e161bd2442fa",
+      "status": "completed",
+      "video_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/0831da904811b3cad568e161bd2442fa.mp4?Expires=1792209475&Signature=XIDBQeU-VaZvsd2yPGQbJw3S98tg4m4~mOvcjCs1merzi3FoGC3OxTjJ91TZJ3zLasOHemnSdpaQwqyYEzzCmG-TimrERohnnG~lMHrKyHf7udgvhvbsZhUxmBoH06jqzw5g6x8M2qmH5gYRaopsC3LtpFNuXqnpY3V-AsBg6eSJCtJApSe5txQzSNpQ8V-yV7EEDu8ZkxLEbWkRlqRsNshgJvBlwYl0ebuoYZzLfbxBDYK7bosCBxNmJEqysfdJYghO0a9Lu5rcB5hBe7r-WU3K2OZGNq5u3CjtW-~~LvaUOJedpT2ulnmn7G6EBjOkr3oN8qXnvkQzbHH6jm1XWw__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "subtitle_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/subtitles_0831da904811b3cad568e161bd2442fa.srt?Expires=1792209514&Signature=NwTdj3X29j2fWaGeKzHxdRuXXbAU0A75wjF8aV4b71z8mXmlyvL7z8Xmi5v1tH1LOihy0nWOVOA1Bv62WkArUclhxq5QwZh69U2oVF35NAAQ32Vnq4ZKseyAqp-O3db~cAevwhSsn8dRkwS2cUY4s-q9Rwn1JzCxs31L1ENbP14a2fNzmR5qIRtNuxw-W-nKDhasMEDqppWoaYTyNfoOosze~xRgfjN7s8iFUTTctNvdtoL5Z3PjW5rkx0tB3cJVl2qMWDMtfA1YRJCP-TNF1zwQQL6SeGuqNQ10j8HlGbaySjrQSDnWHo98KhbpLQSyZfBJ7iRYYozPS75MVzt1kQ__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "original_seconds": 74.5796
+    },
+    {
+      "lesson": "1.4",
+      "video_id": "6bca9212ea845cd7e7eedaf89d8cd0f4",
+      "status": "completed",
+      "video_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/6bca9212ea845cd7e7eedaf89d8cd0f4.mp4?Expires=1792209480&Signature=gaOamijNQa41fAJB9hjc-rDkN~09D95YbsNsQR9oyaTvyKIENv0xvV4ZEt6CHkeJgslS4kVhtRLLfz5KV7I-lWg4lUzskqPeEHHUFkHMv-hXTl~VZGeVPZJVJJlgOtQqCLG6Rg~EwYtd11DF-VnkqeUiF97NzBli8PyboQFoljRO-ADrjRTXMpERlQAM1s~VNR4QCxgv51H5kJucKHQMliH26f5NVbxaae~mc~hzUd35-etTZqLh8QqqBK5B5heha7pRUfU43RHgB0g25oi0Hizj1o5OzXmRttL02wWKkc0mYz5CpS4x0kTZOA6SYqc98MOlfHTjr60xV-q3ZhkMPw__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "subtitle_url": "https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/subtitles_6bca9212ea845cd7e7eedaf89d8cd0f4.srt?Expires=1792209509&Signature=B42B2dak8ykcA-BZvQ78roySdUuVAVnaPty5FgT-CQcQlslTx55sfth-zRI5TMQyDJW9hNOD7rFSAfv692wylOym~SPPeibGfdf-LMVBCkXN1rmMXdQB5tcTwlvCn15CxBCkMXwdxstv3VcGTzy~x1fANIXaNhpNIUSbKiDqwZdmYnuaVX1Kla19dySDbcqZvMaIE2HVBWCgenPWOiapNhINx9S61VjhwZiQNAe7ublbod4YVWshucMMUEgXicCrXeAUvYWJVc7jnc-dv2j8YIHgZLl0bU6foTIo7rj0cLLhS4BdGgOYJws23DKmSlqhfmDH4aTXBidTIrFQ7YQEnA__&Key-Pair-Id=K38HBHX5LX3X2H",
+      "original_seconds": 78.1061
+    }
+  ]
+}
