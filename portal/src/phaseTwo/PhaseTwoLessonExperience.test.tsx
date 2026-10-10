@@ -228,25 +228,25 @@ describe('Phase Two learner lesson presentation', () => {
     } finally { vi.unstubAllGlobals() }
   })
 
-  it.each(['50ab8f40f8a34d66aa4338729900c1b0', '8NNnQuXc0FKua22CvviM'])('loads Journey Three with Ashley and protected written equivalents (%s)', async voice => {
+  it.each(['3.1', '3.2'].flatMap(pageId => ['50ab8f40f8a34d66aa4338729900c1b0', '8NNnQuXc0FKua22CvviM'].map(voice => [pageId, voice])))('loads Journey Three with Ashley and protected written equivalents (%s, %s)', async (pageId, voice) => {
     vi.stubGlobal('location', { origin: 'https://aiconfidenceacademy.org' })
     vi.stubGlobal('fetch', vi.fn(async (url: string) => ({ ok: true, json: async () => url.endsWith('guided-chapters.json') ? {
       duration_seconds: 600, chapters: [1,2,3,4].map(n => ({ title: `Chapter ${n}`, start_seconds: (n-1)*150 })),
-    } : { lesson: '3.1', voice_id: voice, guided_audio: { file: 'ACA-Phase-Two-Lesson-3-1-Guided-Instruction.m4a' },
+    } : { lesson: pageId, voice_id: voice, guided_audio: { file: 'ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + '-Guided-Instruction.m4a' },
       demonstrations: [1,2,3,4].map(n => ({ key: `demo-${n}`, title: `Demo ${n}`, file: `demo-${n}.mp4`, captions: `demo-${n}.vtt`, duration_seconds: 45, fictional_training_example: true })),
     } })))
     try {
-      render(<PhaseTwoLessonExperience pageId="3.1" lessonTitle="People review" journeyTitle="Journey 3" purpose="Consider the people affected." medium="audio"
+      render(<PhaseTwoLessonExperience pageId={pageId} lessonTitle="People review" journeyTitle="Journey 3" purpose="Consider the people affected." medium="audio"
         production={{ ...(lessonProduction as Record<string, unknown>), media_transcripts: { introduction: 'Protected instructor introduction.', chapters: [1,2,3,4].map(n => `Protected teaching ${n}`), demonstrations: [1,2,3,4].map(n => `Protected demonstration ${n}`) } } as never} allowMediaReview />)
       await waitFor(() => expect(globalThis.fetch).toHaveBeenCalledTimes(2))
       if (voice === '50ab8f40f8a34d66aa4338729900c1b0') {
-        await waitFor(() => expect(screen.getByLabelText('Lesson 3.1 guided instruction audio')).toBeTruthy())
-        expect(screen.getByLabelText('Lesson 3.1 instructor introduction video').getAttribute('src')).toContain('Lesson-3-1-Introduction.mp4')
+        await waitFor(() => expect(screen.getByLabelText(`Lesson ${pageId} guided instruction audio`)).toBeTruthy())
+        expect(screen.getByLabelText(`Lesson ${pageId} instructor introduction video`).getAttribute('src')).toContain('Lesson-' + pageId.replace('.', '-') + '-Introduction.mp4')
         expect(screen.getByText('Protected instructor introduction.')).toBeTruthy()
         expect(screen.getByText('Protected teaching 1')).toBeTruthy()
       } else {
-        expect(screen.queryByLabelText('Lesson 3.1 guided instruction audio')).toBeNull()
-        expect(screen.queryByLabelText('Lesson 3.1 instructor introduction video')).toBeNull()
+        expect(screen.queryByLabelText(`Lesson ${pageId} guided instruction audio`)).toBeNull()
+        expect(screen.queryByLabelText(`Lesson ${pageId} instructor introduction video`)).toBeNull()
       }
     } finally { vi.unstubAllGlobals() }
   })

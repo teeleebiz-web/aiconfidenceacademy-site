@@ -112,4 +112,30 @@ describe('protected Phase Two lesson production', () => {
     expect(screen.getByRole('heading', { name: 'Spot the unsupported claim' })).toBeTruthy()
     expect(screen.queryByText(/Production status:|Media status:|founder review/i)).toBeNull()
   })
+
+  it('integrates Lesson 3.2 listening practice and switches all four demonstration tabs with matching transcripts and captions', async () => {
+    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
+    vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {})
+    vi.spyOn(HTMLMediaElement.prototype, 'play').mockResolvedValue(undefined)
+    const user = userEvent.setup()
+    const production = { ...draft, lesson_id: '3.2', approved_ai_request: 'Role-play with fictional context: [brief].' }
+    expect(validProducedLesson(production, '3.2')).toBe(true)
+    const clips = ['LISTEN', 'Disagreement', 'Reflection', 'Support'].map((title, i) => ({
+      key: 'demo-' + i, title, url: 'https://aiconfidenceacademy.org/demo-' + i + '.mp4',
+      captions_url: 'https://aiconfidenceacademy.org/demo-' + i + '.vtt', transcript: 'Simulated demonstration ' + i,
+      duration_seconds: 45, fictional_training_example: true as const,
+    }))
+    render(<PhaseTwoProducedLessonReview production={production} learnerMode demoClips={clips} />)
+    expect(screen.getByRole('heading', { name: 'Practice a listening conversation' })).toBeTruthy()
+    for (const clip of clips) {
+      await user.click(screen.getByRole('button', { name: new RegExp(clip.title) }))
+      const player = screen.getByLabelText(clip.title + ' screen demonstration')
+      expect(player.getAttribute('src')).toBe(clip.url)
+      expect(player.querySelector('track[kind="captions"]')?.getAttribute('src')).toBe(clip.captions_url)
+      expect(screen.getByText(clip.transcript)).toBeTruthy()
+    }
+    expect(screen.getByText('Read the detailed activity instructions')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Copy role-play request' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Save listening section/ })).toBeNull()
+  })
 })

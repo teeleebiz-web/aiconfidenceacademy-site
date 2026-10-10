@@ -47,3 +47,26 @@ it('opens released Lesson 1.2 without exposing later lesson sections',async()=>{
   fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}))
   expect(await screen.findByRole('heading',{name:'Professional AI Judgment and Direction'})).toBeTruthy()
 })
+
+it('opens Lesson 3.2, retains Lesson 3.1 notes and returns to the correct lesson while later pages remain locked', async () => {
+  const data = fixture([1, 2])
+  data.workbook.key = 'phase-two-journey-three'
+  data.workbook.title = 'Phase Two Journey 3 Workbook'
+  data.answers = { 'p2-j3-1-map': 'Earlier people map', 'p2-j3-2-summary': 'Simulated listening summary' } as never
+  data.workbook.pages = ['Understand the People Affected by Change', 'Listen and Use Reflective Guidance'].map((title, i) => ({
+    number: i + 1, lesson_id: '3.' + (i + 1), kicker: 'Journey Three', title,
+    blocks: [{ type: 'field', id: i ? 'p2-j3-2-summary' : 'p2-j3-1-map', label: i ? 'Listening summary' : 'People map', hint: '', lines: 4 }],
+  })) as never
+  vi.spyOn(supabase, 'rpc').mockResolvedValue({ data, error: null } as never)
+  const onBack = vi.fn()
+  render(<PhaseTwoWorkbook journey={3} initialLesson={2} onBack={onBack} />)
+  expect(await screen.findByDisplayValue('Simulated listening summary')).toBeTruthy()
+  const chooser = screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect([...chooser.options].find(x => x.value === '3')?.disabled).toBe(true)
+  fireEvent.click(screen.getByRole('button', { name: /Previous lesson/ }))
+  expect(await screen.findByDisplayValue('Earlier people map')).toBeTruthy()
+  fireEvent.change(chooser, { target: { value: '2' } })
+  expect(await screen.findByDisplayValue('Simulated listening summary')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button', { name: /Back to Lesson 3.2/ }))
+  expect(onBack).toHaveBeenCalledOnce()
+})
