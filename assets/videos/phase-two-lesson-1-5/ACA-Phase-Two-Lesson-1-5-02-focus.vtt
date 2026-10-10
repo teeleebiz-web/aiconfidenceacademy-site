@@ -1,0 +1,21 @@
+WEBVTT
+
+NOTE Narration is displayed in the caption strip below the video by default.
+
+00:00:00.000 --> 00:00:04.039
+FOCUS means Function, Owner, Customer, Use Case and Scope.
+
+00:00:04.039 --> 00:00:07.630
+Here the function is a sample estimate draft.
+
+00:00:07.630 --> 00:00:09.425
+A person owns review.
+
+00:00:09.425 --> 00:00:11.220
+The customer is fictional.
+
+00:00:11.220 --> 00:00:17.055
+The use case uses approved sample details, and the scope excludes live integrations.
+
+00:00:17.055 --> 00:00:19.748
+These boundaries make the work testable.
