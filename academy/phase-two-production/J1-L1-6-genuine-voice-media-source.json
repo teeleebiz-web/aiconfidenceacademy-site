@@ -1,0 +1,57 @@
+{
+  "lesson": "1.6",
+  "course": "ACA Phase Two Six-Week Curriculum Master v2.0",
+  "status": "approved_voice_synthesized_pending_hosting",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "voice": "Rika - IA",
+  "avatar_video_id": "1911a88075a2fd8827e8cbfde4dd6418",
+  "guided_chapters": [
+    {
+      "title": "Assemble a model for how you actually work",
+      "duration_seconds": 192.75755102040816,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=b58df679-2ab4-4772-9057-72ff75d8b916.wav"
+    },
+    {
+      "title": "Match review depth to consequences",
+      "duration_seconds": 163.65714285714284,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=05b94db2-bec2-4578-be4a-64a532ca4bd0.wav"
+    },
+    {
+      "title": "Stress test with three different situations",
+      "duration_seconds": 177.92,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=ab9e08be-f357-4243-8ea4-ccfe72975dfc.wav"
+    },
+    {
+      "title": "Defend the decision and carry the model forward",
+      "duration_seconds": 178.96489795918367,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=fc2f5942-ad0f-4127-a1f8-5966cec4be3f.wav"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-model",
+      "title": "Assemble the operating model",
+      "duration_seconds": 25.88734693877551,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=ca5fbb57-6fa0-4d97-a092-df8be9fbf0bd.wav"
+    },
+    {
+      "key": "02-policy",
+      "title": "Catch the outdated policy",
+      "duration_seconds": 20.845714285714287,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=e7ce3d82-0254-44e5-86dd-7b83ad0a25a4.wav"
+    },
+    {
+      "key": "03-consequence",
+      "title": "Apply consequence-based review",
+      "duration_seconds": 23.588571428571427,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=8f5485e8-1827-44f8-a73a-f83b3fa88b47.wav"
+    },
+    {
+      "key": "04-handoff",
+      "title": "Save the corrected model and journey handoff",
+      "duration_seconds": 22.33469387755102,
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/ac277b338cf64d8b9686784c43c563da/id=60e3c548-3358-4929-af95-34c088e43039.wav"
+    }
+  ],
+  "source_manuscript": "academy/phase-two-production/J1-L1-6-instructional-master.md"
+}
