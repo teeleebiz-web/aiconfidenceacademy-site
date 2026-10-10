@@ -19,6 +19,25 @@ const fixture = (pages = [1]) => ({
     })),
   },
 })
+it('opens Lesson 4.3, retains offer and sample answers, locks future pages, prints and returns to 4.3',async()=>{
+  const data=fixture([1,2,3])
+  data.workbook.key='phase-two-journey-four';data.workbook.title='Phase Two Journey 4 Workbook'
+  data.answers={'p2-j4-1-offerSentence':'Earlier bounded offer','p2-j4-2-sample':'Earlier complete sample','p2-j4-3-revisedSample':'Saved checked content'} as never
+  data.workbook.pages=['Define the Offer and Its Promise','Design a Useful Product or Learning Experience','Create Content with Voice, Accuracy, and Agency'].map((title,i)=>({number:i+1,lesson_id:'4.'+(i+1),kicker:'Journey Four',title,blocks:[{type:'field',id:['p2-j4-1-offerSentence','p2-j4-2-sample','p2-j4-3-revisedSample'][i],label:['Saved offer','My complete sample','My revised content'][i],hint:'',lines:5}]})) as never
+  vi.spyOn(supabase,'rpc').mockResolvedValue({data,error:null} as never)
+  const onBack=vi.fn();const print=vi.spyOn(window,'print').mockImplementation(()=>{})
+  render(<PhaseTwoWorkbook journey={4} initialLesson={3} onBack={onBack}/>)
+  expect(await screen.findByDisplayValue('Saved checked content')).toBeTruthy()
+  const chooser=screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect(chooser.value).toBe('3');expect([...chooser.options].slice(3).every(x=>x.disabled)).toBe(true)
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Earlier complete sample')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Earlier bounded offer')).toBeTruthy()
+  fireEvent.change(chooser,{target:{value:'3'}});expect(await screen.findByDisplayValue('Saved checked content')).toBeTruthy()
+  fireEvent.change(screen.getByLabelText('My revised content'),{target:{value:'Reviewed revision'}})
+  fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}));expect(print).toHaveBeenCalledOnce()
+  fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 4.3/}));expect(onBack).toHaveBeenCalledOnce()
+  print.mockRestore()
+})
 it('opens Lesson 4.2, retains the offer answers, locks future pages, prints and returns to 4.2',async()=>{
   const data=fixture([1,2])
   data.workbook.key='phase-two-journey-four';data.workbook.title='Phase Two Journey 4 Workbook'
