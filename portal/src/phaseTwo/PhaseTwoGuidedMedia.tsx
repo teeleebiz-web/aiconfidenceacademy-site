@@ -120,8 +120,8 @@ export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
     <section className="p2-demo-clips" aria-labelledby="p2-demo-clips-heading">
       <div className="p2-demo-clips-header">
         <p className="eyebrow">Watch the decisions happen</p>
-        <h3 id="p2-demo-clips-heading">A case you can examine, step by step</h3>
-        <p>Four narrated demonstrations. The business example is fictional—not a recording of a live customer's experience.</p>
+        <h3 id="p2-demo-clips-heading">{clips[0].key.includes('source') ? 'A report you can examine, step by step' : 'A case you can examine, step by step'}</h3>
+        <p>Four narrated screen demonstrations. They use fictional training data—not a real company's records or a claim about a particular AI tool.</p>
       </div>
       <div className="p2-demo-clip-tabs" role="group" aria-label="Choose a screen demonstration">
         {clips.map((clip, i) => <button type="button" key={clip.key}
