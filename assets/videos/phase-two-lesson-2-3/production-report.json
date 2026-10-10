@@ -1,0 +1,57 @@
+{
+  "lesson": "2.3",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-2-3-Guided-Instruction.m4a",
+    "duration_seconds": 635.621,
+    "chapters": 4,
+    "bytes": 8890731
+  },
+  "demonstrations": [
+    {
+      "key": "01-review",
+      "title": "Apply all five CLEAR questions",
+      "duration_seconds": 21.916,
+      "file": "ACA-Phase-Two-Lesson-2-3-01-review.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-3-01-review.vtt",
+      "bytes": 493315,
+      "sha256": "1bd251bfc1eed91f76185661c03c70baf1fccaa7169d7572596ebe3047ab6214",
+      "transcript": "We review this fictional draft ourselves before asking AI. The estimate approval and five-day delivery promise lack support. The tone pressures the customer, and outstanding specifications does not name the missing details. CLEAR also asks whether the message contains private information and whether the sender has authority to make its commitments.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-critique",
+      "title": "Compare critique without treating it as proof",
+      "duration_seconds": 19.644,
+      "file": "ACA-Phase-Two-Lesson-2-3-02-critique.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-3-02-critique.vtt",
+      "bytes": 443966,
+      "sha256": "5b18ca7120613a5e95a1ef6377932eb3b456a9e8dce712068c9b12887b902931",
+      "transcript": "The assistant suggests replacing guaranteed with expected. We reject that change because the fictional record confirms no five-day capacity. We retain its useful suggestion to name the missing details. AI critique adds questions and possible revisions. It does not verify the facts or authorize the promise.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-source",
+      "title": "Check the claim against its source",
+      "duration_seconds": 19.461,
+      "file": "ACA-Phase-Two-Lesson-2-3-03-source.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-3-03-source.vtt",
+      "bytes": 440655,
+      "sha256": "1bc9a017056a1ff7f96c136a01b5628c1d7b8c1905ab68d4fbe1b024a27260c6",
+      "transcript": "We compare the exact delivery claim with the fictional approved intake record. The record confirms review within two business days after complete inputs arrive. It does not confirm estimate approval, appointment booking, or five-day delivery. We remove the unsupported commitment and record the source, the check date, and the remaining limit.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-revise",
+      "title": "Revise and preserve the approval boundary",
+      "duration_seconds": 26.801,
+      "file": "ACA-Phase-Two-Lesson-2-3-04-revise.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-3-04-revise.vtt",
+      "bytes": 593260,
+      "sha256": "77cddcb0a2c89e9b92a87c84070e6d13c668afb7e8736a469edcef3587db3eb7",
+      "transcript": "The revised fictional message asks for room dimensions and a preferred appointment date. It preserves the complete-input condition and removes invented approval and delivery promises. We identify the scheduling owner for appointment approval. The Project Record keeps the original, CLEAR findings, source check, revised draft, approval status, and remaining limits. Completing practice does not send or approve a real message.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
