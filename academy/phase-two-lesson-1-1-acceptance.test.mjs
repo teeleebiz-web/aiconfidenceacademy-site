@@ -47,6 +47,7 @@ test('Selecting a demonstration starts its video immediately without losing repl
   const bundle = readFileSync(resolve(import.meta.dirname, '../learn/assets', entry), 'utf8');
   assert.ok(bundle.includes('t.play().catch(()=>{})'), 'Tab selection should request playback');
   assert.ok(bundle.includes('t.src=e[r].url'), 'Tab selection should load the chosen clip');
+  assert.ok(bundle.includes('preload:`auto`,src:e[0].url'), 'React must not reset the imperative source during a tab state update');
   assert.ok(bundle.includes('ref:i,controls:!0'), 'Keep controls and a stable player');
   assert.ok(bundle.includes('p2-demo-caption-strip'), 'Keep captions below the video');
 });
