@@ -1,0 +1,50 @@
+{
+  "lesson": "1.2",
+  "curriculum": "Six-Week Master v2.0",
+  "status": "voice-audio-synthesized-assembly-pending",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "guided_audio": [
+    {
+      "title": "Begin with a person, not a product",
+      "audio_id": "29d4314a-640a-467a-ae15-96c6cc0b1b4b",
+      "duration_seconds": 161.933
+    },
+    {
+      "title": "The symptom and the possible causes",
+      "audio_id": "60bb6480-2c15-41c0-884e-30d1a344a995",
+      "duration_seconds": 143.83
+    },
+    {
+      "title": "What counts as evidence?",
+      "audio_id": "5dc9cebd-e4d3-44a7-9d13-e0be66dbcf14",
+      "duration_seconds": 120.085
+    },
+    {
+      "title": "Ask fairly, then choose provisionally",
+      "audio_id": "cf2e767e-fd90-438d-9caf-e9c45f43edfd",
+      "duration_seconds": 153.443
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-symptom",
+      "audio_id": "9b3a1dfb-60d2-49d2-9176-5dd28949954e",
+      "duration_seconds": 17.711
+    },
+    {
+      "key": "02-causes",
+      "audio_id": "0fadf986-f466-4bd7-bd7a-48ffa8bb5f9a",
+      "duration_seconds": 24.033
+    },
+    {
+      "key": "03-questions",
+      "audio_id": "9f2e18b5-40f2-42ed-b3fd-93446491fade",
+      "duration_seconds": 22.962
+    },
+    {
+      "key": "04-decision",
+      "audio_id": "334d035d-17e2-4639-8e58-3ec1c157fe34",
+      "duration_seconds": 22.23
+    }
+  ]
+}
