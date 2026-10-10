@@ -235,13 +235,19 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       ) : null}
 
       {status === 'ready' && view === 'project' ? <PhaseTwoProjectWorkspace enrollmentId={enrollmentId} /> : null}
-      {status === 'ready' && view === 'workbook' ?
+      {status === 'ready' && view === 'workbook' ? <>
+        <nav aria-label="Choose a released Phase Two journey workbook" className="p2-workbook-journey-switch">
+          <button type="button" aria-pressed={workbookJourney===1}
+            onClick={() => {setWorkbookJourney(1);setWorkbookSource(null);setOpened(null)}}>Journey 1 Workbook</button>
+          <button type="button" aria-pressed={workbookJourney===2}
+            onClick={() => {setWorkbookJourney(2);setWorkbookSource(null);setOpened(null)}}>Journey 2 Workbook</button>
+        </nav>
         <PhaseTwoWorkbook enrollmentId={enrollmentId} journey={workbookJourney}
           initialLesson={workbookSource ? Number(workbookSource.split('.')[1]) : undefined}
           onBack={() => {
             if (workbookSource && opened && Date.parse(opened.closes_at) > Date.now()) setView('lesson')
             else { setOpened(null); setView('overview') }
-          }} /> : null}
+          }} /> </> : null}
     </main>
   )
 }
