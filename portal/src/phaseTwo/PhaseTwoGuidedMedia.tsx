@@ -92,34 +92,63 @@ export function PhaseTwoGuidedAudio({ lessonId, media }: {
 /** Each short clip uses the same confirmed instructor voice and a clearly fictional report. */
 export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
   const [selected, setSelected] = useState(0)
+  const [caption, setCaption] = useState('')
+  const videoRef = useRef<HTMLVideoElement>(null)
   const current = clips[selected]
   if (!current) return null
+
+  function chooseClip(index: number) {
+    const player = videoRef.current
+    setSelected(index)
+    setCaption('')
+    if (!player) return
+    player.pause()
+    player.src = clips[index].url
+    player.load()
+    // A direct user click starts playback with sound. Native controls remain
+    // available for pausing and replay. If browser policy blocks audio, leave
+    // the player ready for an explicit Play gesture; never silently mute it.
+    void player.play().catch(() => {})
+  }
+
+  function updateCaption(player: HTMLVideoElement) {
+    const active = player.textTracks[0]?.activeCues
+    setCaption(active ? Array.from(active).map(cue => (cue as VTTCue).text).join(' ') : '')
+  }
+
   return (
     <section className="p2-demo-clips" aria-labelledby="p2-demo-clips-heading">
       <div className="p2-demo-clips-header">
         <p className="eyebrow">Watch the decisions happen</p>
-        <h3 id="p2-demo-clips-heading">A report you can examine, step by step</h3>
-        <p>Four narrated screen demonstrations. They use fictional training data—not a real company's records or a claim about a particular AI tool.</p>
+        <h3 id="p2-demo-clips-heading">A case you can examine, step by step</h3>
+        <p>Four narrated demonstrations. The business example is fictional—not a recording of a live customer's experience.</p>
       </div>
       <div className="p2-demo-clip-tabs" role="group" aria-label="Choose a screen demonstration">
         {clips.map((clip, i) => <button type="button" key={clip.key}
-          aria-pressed={selected === i} onClick={() => setSelected(i)}>
+          aria-pressed={selected === i} onClick={() => chooseClip(i)}>
           <span>{String(i + 1).padStart(2, '0')}</span><strong>{clip.title}</strong>
         </button>)}
       </div>
       <div className="p2-demo-clip-player">
         <h4>{current.title}</h4>
-        <video key={current.key} controls playsInline preload="auto"
-          src={current.url} aria-label={`${current.title} screen demonstration`}>
-          <track kind="captions" src={current.captions_url} srcLang="en" label="English" default />
+        <video ref={videoRef} controls playsInline preload="auto"
+          src={clips[0].url} aria-label={current.title + ' screen demonstration'}
+          onTimeUpdate={e => updateCaption(e.currentTarget)}
+          onEnded={() => setCaption('')}>
+          <track kind="metadata" src={current.captions_url} srcLang="en" label="Narration below video" default />
+          <track kind="captions" src={current.captions_url} srcLang="en" label="Optional captions inside video" />
           Your browser does not support video playback.
         </video>
+        <div className="p2-demo-caption-strip" role="status" aria-live="off"
+          style={{ background: '#102d4f', color: '#fff', padding: '0.8rem 1rem',
+            minHeight: '3.5rem', textAlign: 'center', fontSize: '1rem', lineHeight: 1.5 }}>
+          {caption || 'Narration appears here below the video while it plays.'}
+        </div>
         <details>
           <summary>Read this demonstration</summary>
           <p>{current.transcript}</p>
         </details>
-        <p className="p2-demo-case-note">Illustrated fictional case · Follow the same verification steps in the interactive example below.</p>
+        <p className="p2-demo-case-note">Illustrated fictional case · Apply the same verification steps with your chosen AI tool.</p>
       </div>
     </section>
-  )
-}
+  }
