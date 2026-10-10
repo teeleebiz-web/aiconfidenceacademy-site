@@ -13,6 +13,7 @@ import { PhaseTwoPrototypePractice } from './PhaseTwoPrototypePractice'
 import { PhaseTwoExceptionPractice } from './PhaseTwoExceptionPractice'
 import { PhaseTwoPeoplePractice } from './PhaseTwoPeoplePractice'
 import { PhaseTwoListeningPractice } from './PhaseTwoListeningPractice'
+import { PhaseTwoPilotPractice } from './PhaseTwoPilotPractice'
 import { PhaseTwoReadinessPractice } from './PhaseTwoReadinessPractice'
 import { PhaseTwoChangeMessagePractice } from './PhaseTwoChangeMessagePractice'
 import { PhaseTwoDemoClips, type VisualDemoClip } from './PhaseTwoGuidedMedia'
@@ -101,7 +102,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
   const [showEvidence, setShowEvidence] = useState(true)
   const visualWalkthrough = learnerMode && production.lesson_id === '1.1'
   const needWalkthrough = learnerMode && production.lesson_id === '1.2'
-  const useGuidedStudio = learnerMode && ['1.1','1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4'].includes(production.lesson_id)
+  const useGuidedStudio = learnerMode && ['1.1','1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4','3.5'].includes(production.lesson_id)
   const PracticeInstructionsContainer = useGuidedStudio ? 'details' : 'div'
 
   async function copyApprovedRequest() {
@@ -148,7 +149,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
             <h4 id="p2-produced-case-title">{production.worked_case.label}</h4></div>
         </div>
         <p>{production.worked_case.setup}</p>
-        {(visualWalkthrough || needWalkthrough || (learnerMode && ['1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4'].includes(production.lesson_id))) && demoClips?.length === 4 && <PhaseTwoDemoClips clips={demoClips} />}
+        {(visualWalkthrough || needWalkthrough || (learnerMode && ['1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4','3.5'].includes(production.lesson_id))) && demoClips?.length === 4 && <PhaseTwoDemoClips clips={demoClips} />}
         {visualWalkthrough ? <PhaseTwoVisualLab workedCase={production.worked_case} /> : needWalkthrough ? <PhaseTwoNeedLab workedCase={production.worked_case} /> : <>
         <button className="p2-produced-evidence-toggle" type="button"
           aria-expanded={showEvidence} onClick={() => setShowEvidence(v => !v)}>
@@ -196,6 +197,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
         {learnerMode && production.lesson_id === '3.2' && <PhaseTwoListeningPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '3.3' && <PhaseTwoChangeMessagePractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '3.4' && <PhaseTwoReadinessPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
+        {learnerMode && production.lesson_id === '3.5' && <PhaseTwoPilotPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         <PracticeInstructionsContainer className={useGuidedStudio ? 'p2-produced-optional-instructions' : undefined}>
           {useGuidedStudio && <summary>Read the detailed activity instructions</summary>}
         <ol className="p2-produced-tasklist">{production.application.map((task, i) => (
