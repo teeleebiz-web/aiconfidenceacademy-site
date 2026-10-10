@@ -180,7 +180,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
           <ul>{production.responsibility_map_fields.map(field => <li key={field}>{field}</li>)}</ul>
         </div>
         </PracticeInstructionsContainer>
-        {!(learnerMode && production.lesson_id === '1.1') && <div className="p2-produced-ai-request">
+        {!useGuidedStudio && <div className="p2-produced-ai-request">
           <div><h5>Approved AI request</h5><button type="button" onClick={() => { void copyApprovedRequest() }}>
             {copyState === 'copied' ? 'Copied' : 'Copy request'}</button></div>
           <p>{production.approved_ai_request}</p>
