@@ -65,11 +65,11 @@ export function PhaseTwoLessonExperience({
            m.instructor_voice_id!=='ac277b338cf64d8b9686784c43c563da' ||
            m.video_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.mp4` ||
            m.captions_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.vtt` ||
-           m.poster_file!=='poster-v2.webp' || !phaseTwoRevisedIntroTranscripts[pageId])return
+           m.poster_file!=='poster-v2.webp' || !phaseTwoRevisedIntroTranscripts[pageId]){ if(import.meta.env.MODE==='test') console.warn('v2 intro validation rejected',{cancelled,lesson:m.lesson,pageId,closing:m.intro_closing,voice:m.instructor_voice_id,video:m.video_file,captions:m.captions_file,poster:m.poster_file,transcriptFound:!!phaseTwoRevisedIntroTranscripts[pageId]});return;}
         setRevisedIntro({url:window.location.origin+root+m.video_file,captions_url:window.location.origin+root+m.captions_file,
           poster_url:window.location.origin+root+m.poster_file,transcript:phaseTwoRevisedIntroTranscripts[pageId],
           approvalStatus:'founder_review_pending'})
-      }).catch(()=>{/* Leave the existing instructor introduction untouched until new assets are verified. */})
+      }).catch(error=>{if(import.meta.env.MODE==='test')console.warn('v2 intro loading rejected',error);})
     return ()=>{cancelled=true}
   },[pageId,allowMediaReview])
   useEffect(() => {
