@@ -4,12 +4,13 @@ import {
   type PhaseTwoLessonOutline, type PhaseTwoOpenedLesson,
 } from './phaseTwoLearnerApi'
 import { PhaseTwoProjectWorkspace } from './PhaseTwoProjectWorkspace'
+import { PhaseTwoWorkbook } from './PhaseTwoWorkbook'
 import { PhaseTwoOrientation } from './PhaseTwoOrientation'
 import { PhaseTwoLessonExperience } from './PhaseTwoLessonExperience'
 import { validProducedLesson } from './PhaseTwoProducedLessonReview'
 import './phaseTwoLearnerHome.css'
 
-type View = 'overview' | 'lesson' | 'project'
+type View = 'overview' | 'lesson' | 'project' | 'workbook'
 const sections = [
   { key: 'teaching', heading: 'Build the idea' },
   { key: 'worked_case', heading: 'Worked case' },
@@ -37,6 +38,8 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
   const [opened, setOpened] = useState<PhaseTwoOpenedLesson | null>(null)
   const [openingId, setOpeningId] = useState<string | null>(null)
   const [remaining, setRemaining] = useState(0)
+  const [workbookJourney, setWorkbookJourney] = useState(1)
+  const [workbookSource, setWorkbookSource] = useState<string | null>(null)
 
   useEffect(() => {
     let alive = true
@@ -128,6 +131,7 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       remainingSeconds={remaining}
       onBackToLessons={() => { setOpened(null); setView('overview') }}
       onOpenProject={() => { setOpened(null); setView('project') }}
+      onOpenWorkbook={() => { setWorkbookJourney(journeyNumber); setWorkbookSource(opened.page_id); setView('workbook') }}
     />
   }
   return (
@@ -143,6 +147,8 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
             onClick={() => { setView('overview'); setOpened(null) }}>Your lessons</button>
           <button type="button" aria-pressed={view === 'project'}
             onClick={() => { setView('project'); setOpened(null) }}>My Project Record</button>
+          <button type="button" aria-pressed={view === 'workbook'}
+            onClick={() => { setWorkbookJourney(1); setWorkbookSource(null); setOpened(null); setView('workbook') }}>My Workbooks</button>
         </div>
       </header>
 
@@ -229,6 +235,13 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       ) : null}
 
       {status === 'ready' && view === 'project' ? <PhaseTwoProjectWorkspace enrollmentId={enrollmentId} /> : null}
+      {status === 'ready' && view === 'workbook' ?
+        <PhaseTwoWorkbook enrollmentId={enrollmentId} journey={workbookJourney}
+          initialLesson={workbookSource ? Number(workbookSource.split('.')[1]) : undefined}
+          onBack={() => {
+            if (workbookSource && opened && Date.parse(opened.closes_at) > Date.now()) setView('lesson')
+            else { setOpened(null); setView('overview') }
+          }} /> : null}
     </main>
   )
 }

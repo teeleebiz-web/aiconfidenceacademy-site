@@ -1,0 +1,26 @@
+name: Phase Two released workbook review
+on:
+  push:
+    branches:
+      - phase-two-workbooks-restoration
+  pull_request:
+    paths:
+      - 'portal/src/phaseTwo/PhaseTwoWorkbook.tsx'
+      - 'portal/src/phaseTwo/phaseTwoWorkbook.css'
+      - 'portal/src/phaseTwo/PhaseTwoLearnerHome.tsx'
+      - 'portal/src/phaseTwo/PhaseTwoLessonExperience.tsx'
+      - 'portal/src/components/PhaseTwoReview.tsx'
+      - 'supabase/migrations/20261010023000_phase_two_released_workbooks.sql'
+      - '.github/workflows/phase-two-workbook-ci.yml'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Run existing Academy checks
+        run: npm run check
