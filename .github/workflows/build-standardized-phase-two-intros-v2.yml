@@ -1,0 +1,68 @@
+name: Produce four ACA standardized instructor introductions v2
+on:
+  push:
+    branches:
+      - phase-two-instructor-opening-standard-1-1-to-1-4
+    paths:
+      - academy/phase-two-production/J1-L1-1-to-1-4-INTRO-RENDER.flag
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aca-phase-two-intro-revision-batch
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event.head_commit.message == 'Produce approved revised Phase Two instructor intros'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing approved media dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1' 'av==15.1.0'
+      - name: Verify founder-approved spoken introduction standard
+        run: node --test academy/phase-two-instructor-standard.test.mjs
+      - name: Encode four complete avatar videos and optional native captions
+        run: |
+          python academy/phase-two-production/build-standardized-j1-intros-v2.py "$RUNNER_TEMP/intro-revisions"
+          for lesson in 1 2 3 4; do
+            folder="$RUNNER_TEMP/intro-revisions/assets/videos/phase-two-lesson-1-$lesson"
+            test -s "$folder/ACA-Phase-Two-Lesson-1-$lesson-Introduction-v2.mp4"
+            test -s "$folder/ACA-Phase-Two-Lesson-1-$lesson-Introduction-v2.vtt"
+            test -s "$folder/poster-v2.webp"
+            test -s "$folder/intro-v2-manifest.json"
+          done
+      - name: Add only new versioned revised intros (preserve existing media)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for lesson in 1 2 3 4; do
+            folder="assets/videos/phase-two-lesson-1-$lesson"
+            test ! -e "$folder/ACA-Phase-Two-Lesson-1-$lesson-Introduction-v2.mp4"
+            test ! -e "$folder/intro-v2-manifest.json"
+            cp "$RUNNER_TEMP/intro-revisions/$folder/"* "$folder/"
+            git add "$folder/"
+          done
+          test "$(git diff --cached --name-only | wc -l)" -eq 16
+          if git diff --cached --name-status | grep -Ev '^A[[:space:]]+assets/videos/phase-two-lesson-1-[1-4]/(ACA-Phase-Two-Lesson-1-[1-4]-Introduction-v2\.(mp4|vtt)|poster-v2\.webp|intro-v2-manifest\.json)$'; then
+            echo 'Unexpected modified or unrelated file blocked' >&2
+            exit 1
+          fi
+          git config user.name "ACA instructional media builder"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Attach four checked Phase Two v2 instructor intros with ACA cards and caption tracks"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin phase-two-instructor-opening-standard-1-1-to-1-4
+            git rebase origin/phase-two-instructor-opening-standard-1-1-to-1-4
+            if git push origin HEAD:phase-two-instructor-opening-standard-1-1-to-1-4; then exit 0; fi
+            sleep 3
+          done
+          echo 'Cannot safely synchronize validated video assets' >&2
+          exit 1
