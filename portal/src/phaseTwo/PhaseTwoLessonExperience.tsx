@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { LESSON_12_INTRO_TRANSCRIPT } from './phaseTwoLesson12Intro'
 import { LESSON_13_INTRO_TRANSCRIPT } from './phaseTwoLesson13Intro'
 import { LESSON_14_INTRO_TRANSCRIPT } from './phaseTwoLesson14Intro'
+import { phaseTwoRevisedIntroTranscripts } from './phaseTwoRevisedIntroTranscripts'
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
 import { PhaseTwoGuidedAudio, type GuidedInstructionMedia, type VisualDemoClip } from './PhaseTwoGuidedMedia'
@@ -20,7 +21,7 @@ type PhaseTwoLessonExperienceProps = {
   remainingSeconds?: number
   enrollmentId?: string
   introAudio?: { url: string; transcript: string }
-  introVideo?: { url: string; transcript: string; approvalStatus: 'founder_approved' | 'founder_review_pending' }
+  introVideo?: { url: string; transcript: string; approvalStatus: 'founder_approved' | 'founder_review_pending'; captions_url?: string; poster_url?: string }
   guidedInstruction?: GuidedInstructionMedia
   demoClips?: VisualDemoClip[]
   allowMediaReview?: boolean
@@ -51,6 +52,26 @@ export function PhaseTwoLessonExperience({
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
   const [producedMedia, setProducedMedia] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
+  const [revisedIntro,setRevisedIntro] = useState<{url:string; transcript:string; approvalStatus:'founder_review_pending'; captions_url:string; poster_url:string} | null>(null)
+  useEffect(() => {
+    setRevisedIntro(null)
+    if (!allowMediaReview || !['1.1','1.2','1.3','1.4'].includes(pageId) || typeof fetch !== 'function') return
+    let cancelled=false
+    const root='/assets/videos/phase-two-lesson-'+pageId.replace('.','-')+'/'
+    void fetch(root+'intro-v2-manifest.json',{cache:'no-store'})
+      .then(r=>{if(!r.ok)throw new Error('Revised introduction not published yet');return r.json()})
+      .then((m:{lesson:string;intro_closing:string;instructor_voice_id:string;video_file:string;captions_file:string;poster_file:string})=>{
+        if(cancelled || m.lesson!==pageId || m.intro_closing!=="Let's begin." ||
+           m.instructor_voice_id!=='ac277b338cf64d8b9686784c43c563da' ||
+           m.video_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.mp4` ||
+           m.captions_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.vtt` ||
+           m.poster_file!=='poster-v2.webp' || !phaseTwoRevisedIntroTranscripts[pageId])return
+        setRevisedIntro({url:location.origin+root+m.video_file,captions_url:location.origin+root+m.captions_file,
+          poster_url:location.origin+root+m.poster_file,transcript:phaseTwoRevisedIntroTranscripts[pageId],
+          approvalStatus:'founder_review_pending'})
+      }).catch(()=>{/* Leave the existing instructor introduction untouched until new assets are verified. */})
+    return ()=>{cancelled=true}
+  },[pageId,allowMediaReview])
   useEffect(() => {
     if (!['1.2','1.3','1.4'].includes(pageId) || !allowMediaReview || typeof fetch !== 'function') return
     let canceled = false
@@ -87,7 +108,7 @@ export function PhaseTwoLessonExperience({
   }, [pageId, allowMediaReview])
   const selectedGuidedAudio = guidedInstruction ?? producedMedia?.guided
   const selectedDemoClips = demoClips ?? producedMedia?.demos
-  const selectedVideo = introVideo ?? (['1.2','1.3','1.4'].includes(pageId) && allowMediaReview && producedMedia
+  const selectedVideo = (allowMediaReview ? revisedIntro : null) ?? introVideo ?? (['1.2','1.3','1.4'].includes(pageId) && allowMediaReview && producedMedia
     ? {
       url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + '-Introduction.mp4',
       transcript: pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : pageId === '1.3' ? LESSON_13_INTRO_TRANSCRIPT : LESSON_14_INTRO_TRANSCRIPT,
@@ -136,10 +157,11 @@ export function PhaseTwoLessonExperience({
                 controls
                 playsInline
                 preload="auto"
-                poster={pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3','1.4'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined}
+                poster={approvedVideo.poster_url ?? (pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3','1.4'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined)}
                 src={approvedVideo.url}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
+                {approvedVideo.captions_url && <track kind="captions" label="Optional English captions" srcLang="en" src={approvedVideo.captions_url} />}
                 Your browser does not support video playback.
               </video>
               {approvedVideo.transcript.trim() && (
