@@ -1,0 +1,53 @@
+{
+  "lesson": "3.2",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-3-2-Guided-Instruction.m4a",
+    "duration_seconds": 609.185,
+    "chapters": 4,
+    "bytes": 8582519
+  },
+  "demonstrations": [
+    {
+      "key": "listen",
+      "title": "Use all six parts of LISTEN",
+      "duration_seconds": 52.218,
+      "file": "ACA-Phase-Two-Lesson-3-2-listen.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-2-listen.vtt",
+      "bytes": 1137570,
+      "sha256": "115aef8514958bd2c64233c984c204470018cfa78a15830347ffdf50ebe7a8fd",
+      "fictional_training_example": true
+    },
+    {
+      "key": "disagreement",
+      "title": "Replace a rebuttal with a listening question",
+      "duration_seconds": 48.587,
+      "file": "ACA-Phase-Two-Lesson-3-2-disagreement.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-2-disagreement.vtt",
+      "bytes": 1058977,
+      "sha256": "f0dc86fce1c468b2011ae2a8afa9f0163c57d4fecbf44c421b407d697c6e2454",
+      "fictional_training_example": true
+    },
+    {
+      "key": "reflection",
+      "title": "Follow six steps of reflective guidance",
+      "duration_seconds": 48.248,
+      "file": "ACA-Phase-Two-Lesson-3-2-reflection.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-2-reflection.vtt",
+      "bytes": 1049428,
+      "sha256": "e6cf1a29223b379c5e8a0818175296f631de02f2cbe794bf39a7093d066a3a71",
+      "fictional_training_example": true
+    },
+    {
+      "key": "support",
+      "title": "Choose the response and retain honest evidence",
+      "duration_seconds": 52.297,
+      "file": "ACA-Phase-Two-Lesson-3-2-support.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-2-support.vtt",
+      "bytes": 1143461,
+      "sha256": "fce0512741df610bcf4778205e47fc1051cada2a0c41f4f75c0987977f6d426a",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": true
+}
