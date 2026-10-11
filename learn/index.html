@@ -10,19 +10,8 @@
     />
     <title>ACA Learner Portal</title>
     <!-- ACA official-domain review: owner authorization enforced by existing Supabase RLS. -->
-    <script type="module" crossorigin data-aca-phase-two-official-review-bootstrap="true">
-const review = new URLSearchParams(window.location.search).get('review') === 'phase-two';
-if (review) {
-  const style=document.createElement("link");
-  style.rel="stylesheet";
-  style.href="/learn/assets/index-Cl7erNtS.css";
-  document.head.appendChild(style);
-  await import("/learn/assets/index-DKH9cvLc.js");
-} else {
-  await import("/learn/assets/index-CADaM_JG.js");
-}
-</script>
-    <link rel="stylesheet" crossorigin href="/learn/assets/index-lNdtIwBQ.css">
+    <script type="module" crossorigin src="/learn/assets/index-CI55ZMT5.js"></script>
+    <link rel="stylesheet" crossorigin href="/learn/assets/index-BfYhuBWx.css">
   </head>
   <body>
     <div id="root"></div>
