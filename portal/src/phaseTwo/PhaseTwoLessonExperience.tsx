@@ -59,7 +59,7 @@ export function PhaseTwoLessonExperience({
   allowMediaReview = false,
 }: PhaseTwoLessonExperienceProps) {
   const usable = validProducedLesson(production, pageId)
-  const expectedGuidedVoiceId = ['6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? 'Ufzf3hcVZVWx3QjtOPI5' : ['5.1','5.2','5.3','5.4','5.5','5.6'].includes(pageId) ? 'beda795369e7487b863b0e7b82a82bd3' : ['4.1','4.2','4.3','4.4','4.5','4.6'].includes(pageId) ? '00e3d285aba44b27a83c47c02c9c2d9c' : ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6'].includes(pageId) ? '50ab8f40f8a34d66aa4338729900c1b0' : ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6'].includes(pageId) ? '8NNnQuXc0FKua22CvviM' : 'ac277b338cf64d8b9686784c43c563da'
+  const expectedGuidedVoiceId = pageId === '6.1' ? '0db3abd83c74452fb2460b0dd113daad' : ['6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? 'Ufzf3hcVZVWx3QjtOPI5' : ['5.1','5.2','5.3','5.4','5.5','5.6'].includes(pageId) ? 'beda795369e7487b863b0e7b82a82bd3' : ['4.1','4.2','4.3','4.4','4.5','4.6'].includes(pageId) ? '00e3d285aba44b27a83c47c02c9c2d9c' : ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6'].includes(pageId) ? '50ab8f40f8a34d66aa4338729900c1b0' : ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6'].includes(pageId) ? '8NNnQuXc0FKua22CvviM' : 'ac277b338cf64d8b9686784c43c563da'
   const [producedMedia, setProducedMedia] = useState<{ guided: GuidedInstructionMedia; demos: VisualDemoClip[] } | null>(null)
   const [revisedIntro,setRevisedIntro] = useState<{url:string; transcript:string; approvalStatus:'founder_review_pending'; captions_url:string; poster_url:string} | null>(null)
   useEffect(() => {
@@ -95,7 +95,7 @@ export function PhaseTwoLessonExperience({
           report.voice_id !== expectedGuidedVoiceId) return
       setProducedMedia({
         guided: {
-          url: location.origin + root + report.guided_audio.file,
+          url: location.origin + root + report.guided_audio.file + (pageId === '6.1' ? '?v=j6-alex-audio-20261011' : ''),
           duration_seconds: chapters.duration_seconds,
           voice_id: report.voice_id,
           chapters: chapters.chapters.map((chapter: GuidedInstructionMedia['chapters'][number], index: number) => ({ ...chapter, transcript: ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? production?.media_transcripts?.chapters[index] ?? '' : chapter.transcript })),
@@ -106,8 +106,8 @@ export function PhaseTwoLessonExperience({
           transcript: string; duration_seconds: number; fictional_training_example: true
         }, index: number) => ({
           key: clip.key, title: clip.title,
-          url: location.origin + root + clip.file,
-          captions_url: location.origin + root + clip.captions,
+          url: location.origin + root + clip.file + (pageId === '6.1' ? '?v=j6-alex-audio-20261011' : ''),
+          captions_url: location.origin + root + clip.captions + (pageId === '6.1' ? '?v=j6-alex-audio-20261011' : ''),
           transcript: ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? production?.media_transcripts?.demonstrations[index] ?? '' : clip.transcript,
           duration_seconds: clip.duration_seconds,
           fictional_training_example: true as const,

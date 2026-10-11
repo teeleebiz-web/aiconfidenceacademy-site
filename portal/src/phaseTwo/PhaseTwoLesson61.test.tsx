@@ -12,7 +12,7 @@ it('renders the actual Lesson 6.1 package with working chapter and demonstration
   render(<PhaseTwoLessonExperience pageId="6.1" lessonTitle={data.title} journeyTitle="Journey Six — Demonstrate and Execute"
     purpose={data.learner_promise} medium="audio" production={production} onOpenWorkbook={open}
     introVideo={{url:'https://aiconfidenceacademy.org/assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-Introduction-wide.mp4',transcript:data.media_transcripts.introduction,approvalStatus:'founder_review_pending'}}
-    guidedInstruction={{url:'https://aiconfidenceacademy.org/assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a',duration_seconds:750,voice_id:'Ufzf3hcVZVWx3QjtOPI5',approvalStatus:'founder_review_pending',chapters:data.teaching.map((x,i)=>({title:x.heading,start_seconds:i*180,transcript:data.media_transcripts.chapters[i]}))}}
+    guidedInstruction={{url:'https://aiconfidenceacademy.org/assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a',duration_seconds:750,voice_id:'0db3abd83c74452fb2460b0dd113daad',approvalStatus:'founder_review_pending',chapters:data.teaching.map((x,i)=>({title:x.heading,start_seconds:i*180,transcript:data.media_transcripts.chapters[i]}))}}
     demoClips={data.media_transcripts.demonstrations.map((transcript,i)=>({key:'example-'+i,title:'Example '+(i+1),url:'/example-'+i+'.mp4',captions_url:'/example-'+i+'.vtt',transcript,duration_seconds:45,fictional_training_example:true}))} allowMediaReview />)
   expect(screen.getByLabelText('Lesson 6.1 instructor introduction video')).toHaveProperty('controls',true)
   expect(screen.queryByText('Audio placeholder')).toBeNull()
@@ -35,7 +35,7 @@ it('renders the actual Lesson 6.1 package with working chapter and demonstration
   vi.stubGlobal('location',{origin:'https://aiconfidenceacademy.org'})
   vi.stubGlobal('fetch',vi.fn(async (url:string)=>({ok:true,json:async()=>url.endsWith('guided-chapters.json') ? {
     duration_seconds:866,chapters:data.teaching.map((x,i)=>({title:x.heading,start_seconds:i*180})),
-  } : {lesson:'6.1',voice_id:'Ufzf3hcVZVWx3QjtOPI5',guided_audio:{file:'ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a'},
+  } : {lesson:'6.1',voice_id:'0db3abd83c74452fb2460b0dd113daad',guided_audio:{file:'ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a'},
     demonstrations:data.media_transcripts.demonstrations.map((transcript,i)=>({key:'example-'+i,title:'Example '+(i+1),file:'example-'+i+'.mp4',captions:'example-'+i+'.vtt',transcript,duration_seconds:45,fictional_training_example:true})),
   }})))
   try {

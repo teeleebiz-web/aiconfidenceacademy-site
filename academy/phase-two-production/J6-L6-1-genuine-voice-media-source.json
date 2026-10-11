@@ -1,1 +1,2705 @@
-{"voice_id":"Ufzf3hcVZVWx3QjtOPI5","guided_chapters":[{"title":"Recognize what your work demonstrates","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=876a8ccc-ad5b-413d-9846-c99f03b1f62e.wav","duration_seconds":200.9338775510204},{"title":"Build a verified inventory of ten capabilities","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=85ef3b60-bb1d-49e7-91c7-3381f637efed.wav","duration_seconds":219.06285714285715},{"title":"Connect capability to people and practical value","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=10fdd0ec-c6d2-49e7-bf10-5f0873cbaa58.wav","duration_seconds":219.24571428571429},{"title":"Write and verify a privacy-safe Evidence Story","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=6fd3de78-755b-453f-b5ac-b7a1e80a85de.wav","duration_seconds":224.70530612244897}],"demonstrations":[{"key":"capability","title":"Turn activity into a supported capability","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=e279021d-ceb1-4b76-a72f-0865111ad26e.wav","duration_seconds":52.19265306122449,"word_timestamps":[{"word":"This","start":0,"end":0.186},{"word":"is","start":0.232,"end":0.313},{"word":"a","start":0.36,"end":0.383},{"word":"fictional","start":0.453,"end":0.836},{"word":"proposal-review","start":0.894,"end":1.625},{"word":"exercise.","start":1.683,"end":2.426},{"word":"The","start":2.81,"end":2.926},{"word":"first","start":2.984,"end":3.181},{"word":"statement","start":3.204,"end":3.564},{"word":"says:","start":3.611,"end":4.052},{"word":"I","start":4.609,"end":4.667},{"word":"used","start":4.795,"end":5.004},{"word":"an","start":5.039,"end":5.108},{"word":"AI","start":5.19,"end":5.55},{"word":"tool.","start":5.619,"end":5.991},{"word":"It","start":6.513,"end":6.653},{"word":"names","start":6.711,"end":6.943},{"word":"an","start":6.978,"end":7.047},{"word":"activity,","start":7.094,"end":7.639},{"word":"but","start":7.825,"end":7.964},{"word":"it","start":7.999,"end":8.057},{"word":"does","start":8.092,"end":8.255},{"word":"not","start":8.313,"end":8.464},{"word":"show","start":8.51,"end":8.707},{"word":"what","start":8.766,"end":8.882},{"word":"the","start":8.916,"end":8.986},{"word":"person","start":9.044,"end":9.358},{"word":"can","start":9.416,"end":9.543},{"word":"do.","start":9.601,"end":9.81},{"word":"The","start":10.89,"end":11.006},{"word":"retained","start":11.076,"end":11.471},{"word":"teaching","start":11.494,"end":11.819},{"word":"evidence","start":11.877,"end":12.225},{"word":"includes","start":12.26,"end":12.608},{"word":"a","start":12.643,"end":12.678},{"word":"scope","start":12.713,"end":13.015},{"word":"note,","start":13.061,"end":13.363},{"word":"fictional","start":13.63,"end":14.013},{"word":"inputs,","start":14.083,"end":14.594000000000001},{"word":"two","start":14.873000000000001,"end":15.07},{"word":"drafts,","start":15.128,"end":15.662},{"word":"a","start":15.929,"end":15.999},{"word":"review","start":16.092,"end":16.347},{"word":"checklist","start":16.405,"end":16.951},{"word":"and","start":17.171,"end":17.415},{"word":"a","start":17.462,"end":17.485},{"word":"corrected","start":17.543,"end":17.926000000000002},{"word":"walkthrough.","start":17.972,"end":18.507},{"word":"A","start":19.667,"end":19.749000000000002},{"word":"supported","start":19.818,"end":20.236},{"word":"statement","start":20.271,"end":20.689},{"word":"is:","start":20.747,"end":21.096},{"word":"I","start":21.595,"end":21.641000000000002},{"word":"designed","start":21.769,"end":22.256999999999998},{"word":"and","start":22.291,"end":22.361},{"word":"tested","start":22.407,"end":22.756},{"word":"a","start":22.802,"end":22.825000000000003},{"word":"reviewed","start":22.895000000000003,"end":23.243000000000002},{"word":"proposal","start":23.278,"end":23.754},{"word":"workflow","start":23.812,"end":24.381},{"word":"using","start":24.846,"end":25.147},{"word":"fictional","start":25.217,"end":25.634999999999998},{"word":"cases.","start":25.681,"end":26.262},{"word":"The","start":27.167,"end":27.295},{"word":"person","start":27.353,"end":27.631},{"word":"can","start":27.678,"end":27.794},{"word":"show","start":27.864,"end":28.073},{"word":"the","start":28.154,"end":28.224},{"word":"draft","start":28.270000000000003,"end":28.583000000000002},{"word":"comparison","start":28.630000000000003,"end":29.21},{"word":"and","start":29.268,"end":29.385},{"word":"explain","start":29.443,"end":29.814},{"word":"why","start":29.872,"end":30.046000000000003},{"word":"a","start":30.104000000000003,"end":30.139000000000003},{"word":"missing","start":30.197000000000003,"end":30.487000000000002},{"word":"delivery","start":30.534000000000002,"end":30.882},{"word":"date","start":30.952,"end":31.184},{"word":"must","start":31.219,"end":31.393},{"word":"remain","start":31.439,"end":31.695},{"word":"a","start":31.73,"end":31.765},{"word":"question.","start":31.811,"end":32.299},{"word":"The","start":33.32,"end":33.436},{"word":"limit","start":33.506,"end":33.761},{"word":"belongs","start":33.82,"end":34.191},{"word":"beside","start":34.237,"end":34.597},{"word":"the","start":34.621,"end":34.69},{"word":"statement:","start":34.737,"end":35.213},{"word":"this","start":36.014,"end":36.2},{"word":"was","start":36.258,"end":36.374},{"word":"fictional","start":36.455,"end":36.861000000000004},{"word":"practice,","start":36.919000000000004,"end":37.581},{"word":"with","start":37.987,"end":38.173},{"word":"no","start":38.243,"end":38.394000000000005},{"word":"real","start":38.522000000000006,"end":38.742000000000004},{"word":"customer","start":38.811,"end":39.218},{"word":"outcome","start":39.287,"end":39.88},{"word":"or","start":39.961,"end":40.17},{"word":"organizational","start":40.24,"end":41.006},{"word":"sending","start":41.075,"end":41.389},{"word":"permission.","start":41.435,"end":41.9},{"word":"Do","start":42.794,"end":42.933},{"word":"not","start":43.003,"end":43.165},{"word":"add","start":43.223,"end":43.514},{"word":"an","start":43.56,"end":43.63},{"word":"expert","start":43.723,"end":44.187},{"word":"title","start":44.222,"end":44.57},{"word":"or","start":44.616,"end":44.709},{"word":"measured","start":44.778999999999996,"end":45.092},{"word":"savings.","start":45.127,"end":45.638000000000005},{"word":"For","start":46.335,"end":46.474000000000004},{"word":"your","start":46.532,"end":46.637},{"word":"project,","start":46.683,"end":47.264},{"word":"choose","start":47.716,"end":48.007000000000005},{"word":"the","start":48.03,"end":48.099000000000004},{"word":"verb","start":48.146,"end":48.459},{"word":"your","start":48.645,"end":48.843},{"word":"evidence","start":48.912,"end":49.307},{"word":"supports","start":49.33,"end":49.795},{"word":"and","start":49.829,"end":49.957},{"word":"open","start":50.038,"end":50.317},{"word":"the","start":50.375,"end":50.445},{"word":"work","start":50.491,"end":50.723},{"word":"that","start":50.781,"end":50.909},{"word":"proves","start":50.956,"end":51.269},{"word":"the","start":51.315,"end":51.385000000000005},{"word":"claim.","start":51.432,"end":51.815}]},{"key":"inventory","title":"Check the inventory against the evidence","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=0fc1067b-a59d-48d3-b6f8-73762583a105.wav","duration_seconds":51.800816326530615,"word_timestamps":[{"word":"A","start":0,"end":0.07},{"word":"verified","start":0.163,"end":0.685},{"word":"inventory","start":0.731,"end":1.289},{"word":"needs","start":1.347,"end":1.556},{"word":"ten","start":1.614,"end":1.869},{"word":"capability","start":1.95,"end":2.601},{"word":"entries.","start":2.67,"end":3.077},{"word":"Each","start":3.576,"end":3.785},{"word":"includes","start":3.831,"end":4.214},{"word":"a","start":4.238,"end":4.272},{"word":"supported","start":4.331,"end":4.737},{"word":"verb,","start":4.783,"end":5.132},{"word":"evidence,","start":5.445,"end":6.06},{"word":"the","start":6.211,"end":6.316},{"word":"check","start":6.362,"end":6.687},{"word":"and","start":6.873,"end":7.047},{"word":"a","start":7.105,"end":7.129},{"word":"limit.","start":7.187,"end":7.5},{"word":"In","start":8.127,"end":8.266},{"word":"this","start":8.313,"end":8.452},{"word":"fictional","start":8.51,"end":8.916},{"word":"example,","start":8.963,"end":9.52},{"word":"the","start":9.741,"end":9.845},{"word":"review","start":9.915,"end":10.205},{"word":"entry","start":10.286,"end":10.542},{"word":"points","start":10.612,"end":10.89},{"word":"to","start":10.937,"end":11.006},{"word":"a","start":11.088,"end":11.111},{"word":"draft","start":11.169,"end":11.552},{"word":"containing","start":11.598,"end":12.028},{"word":"an","start":12.086,"end":12.156},{"word":"unsupported","start":12.249,"end":12.864},{"word":"date","start":12.899,"end":13.328},{"word":"and","start":13.491,"end":13.665},{"word":"the","start":13.7,"end":13.769},{"word":"corrected","start":13.804,"end":14.211},{"word":"missing-information","start":14.269,"end":15.047},{"word":"walkthrough.","start":15.105,"end":15.593},{"word":"The","start":16.22,"end":16.347},{"word":"improvement","start":16.394,"end":16.823},{"word":"entry","start":16.87,"end":17.102},{"word":"points","start":17.172,"end":17.45},{"word":"to","start":17.497,"end":17.566},{"word":"the","start":17.624,"end":17.694},{"word":"specific","start":17.729,"end":18.193},{"word":"correction","start":18.240000000000002,"end":18.727},{"word":"and","start":18.948,"end":19.203},{"word":"the","start":19.25,"end":19.319},{"word":"revised","start":19.366,"end":19.795},{"word":"result.","start":19.83,"end":20.225},{"word":"They","start":20.922,"end":21.072},{"word":"describe","start":21.131,"end":21.549},{"word":"distinct","start":21.583,"end":21.955},{"word":"actions,","start":22.012999999999998,"end":22.466},{"word":"but","start":23.058,"end":23.209},{"word":"each","start":23.255000000000003,"end":23.441000000000003},{"word":"must","start":23.499000000000002,"end":23.685000000000002},{"word":"have","start":23.731,"end":23.905},{"word":"support.","start":23.939999999999998,"end":24.393},{"word":"An","start":25.496,"end":25.659},{"word":"AI","start":25.74,"end":26.052999999999997},{"word":"suggestion","start":26.122999999999998,"end":26.657},{"word":"says","start":26.727,"end":27.098},{"word":"the","start":27.284,"end":27.4},{"word":"work","start":27.458,"end":27.654999999999998},{"word":"saved","start":27.724999999999998,"end":28.026999999999997},{"word":"ten","start":28.061999999999998,"end":28.235999999999997},{"word":"hours","start":28.293999999999997,"end":28.689},{"word":"and","start":28.724,"end":28.863},{"word":"made","start":28.921,"end":29.083},{"word":"the","start":29.107,"end":29.176},{"word":"author","start":29.246,"end":29.500999999999998},{"word":"a","start":29.548,"end":29.583},{"word":"certified","start":29.628999999999998,"end":30.104999999999997},{"word":"consultant.","start":30.14,"end":30.744},{"word":"Neither","start":31.660999999999998,"end":31.951},{"word":"claim","start":31.997999999999998,"end":32.265},{"word":"appears","start":32.323,"end":32.741},{"word":"in","start":32.787,"end":32.845},{"word":"the","start":32.879999999999995,"end":32.949999999999996},{"word":"supplied","start":32.984,"end":33.379},{"word":"evidence.","start":33.426,"end":33.925},{"word":"Remove","start":34.691,"end":35.039},{"word":"both.","start":35.086,"end":35.399},{"word":"If","start":36.257999999999996,"end":36.397999999999996},{"word":"one","start":36.479,"end":36.607},{"word":"of","start":36.629999999999995,"end":36.676},{"word":"your","start":36.723,"end":36.839},{"word":"ten","start":36.885,"end":37.06},{"word":"entries","start":37.129,"end":37.489},{"word":"is","start":37.536,"end":37.617},{"word":"missing","start":37.675,"end":37.942},{"word":"its","start":37.988,"end":38.092999999999996},{"word":"evidence,","start":38.138999999999996,"end":38.662},{"word":"mark","start":39.138,"end":39.37},{"word":"it","start":39.416,"end":39.486},{"word":"pending","start":39.533,"end":39.927},{"word":"and","start":40.113,"end":40.322},{"word":"resolve","start":40.379999999999995,"end":40.763},{"word":"it","start":40.798,"end":40.855999999999995},{"word":"before","start":40.903,"end":41.181},{"word":"final","start":41.239,"end":41.57599999999999},{"word":"submission.","start":41.634,"end":42.156},{"word":"Keep","start":42.69,"end":42.911},{"word":"the","start":42.958,"end":43.027},{"word":"same","start":43.074,"end":43.306},{"word":"course","start":43.352000000000004,"end":43.619},{"word":"work;","start":43.653999999999996,"end":43.921},{"word":"do","start":44.548,"end":44.653},{"word":"not","start":44.721999999999994,"end":44.849999999999994},{"word":"fill","start":44.896,"end":45.071},{"word":"a","start":45.117,"end":45.14},{"word":"gap","start":45.187,"end":45.45399999999999},{"word":"with","start":45.522999999999996,"end":45.674},{"word":"an","start":45.721000000000004,"end":45.778999999999996},{"word":"invented","start":45.81399999999999,"end":46.232},{"word":"achievement.","start":46.266,"end":46.8},{"word":"Practice","start":47.491,"end":47.944},{"word":"explaining","start":47.979,"end":48.408},{"word":"one","start":48.489,"end":48.64},{"word":"checked","start":48.675,"end":48.942},{"word":"entry","start":49,"end":49.232},{"word":"while","start":49.278999999999996,"end":49.476},{"word":"showing","start":49.511,"end":49.801},{"word":"the","start":49.848,"end":49.929},{"word":"exact","start":49.999,"end":50.417},{"word":"supporting","start":50.463,"end":50.881},{"word":"artifact.","start":50.928,"end":51.531}]},{"key":"value","title":"Select the strongest Value Connections","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=1d45be7e-528b-49e1-8555-091157bb060c.wav","duration_seconds":50.5730612244898,"word_timestamps":[{"word":"Build","start":0,"end":0.313},{"word":"three","start":0.372,"end":0.639},{"word":"Value","start":0.697,"end":1.045},{"word":"Connections","start":1.068,"end":1.556},{"word":"from","start":1.614,"end":1.753},{"word":"checked","start":1.811,"end":2.09},{"word":"capabilities.","start":2.136,"end":2.914},{"word":"In","start":4.098,"end":4.238},{"word":"our","start":4.296,"end":4.4},{"word":"fictional","start":4.458,"end":4.83},{"word":"case,","start":4.876,"end":5.166},{"word":"the","start":5.213,"end":5.294},{"word":"capability","start":5.341,"end":5.979},{"word":"is","start":6.037,"end":6.13},{"word":"a","start":6.177,"end":6.211},{"word":"reviewed","start":6.281,"end":6.664},{"word":"proposal","start":6.711,"end":7.198},{"word":"workflow.","start":7.256,"end":7.744},{"word":"The","start":8.545,"end":8.649},{"word":"context","start":8.707,"end":9.207},{"word":"is","start":9.253,"end":9.334},{"word":"an","start":9.369,"end":9.427},{"word":"incomplete","start":9.497,"end":10.066},{"word":"proposal","start":10.112,"end":10.565},{"word":"draft.","start":10.612,"end":11.076},{"word":"The","start":11.668,"end":11.784},{"word":"people","start":11.842,"end":12.132},{"word":"include","start":12.167,"end":12.504},{"word":"the","start":12.527,"end":12.597},{"word":"reviewer","start":12.655,"end":13.131},{"word":"and","start":13.421,"end":13.723},{"word":"the","start":13.781,"end":13.851},{"word":"person","start":13.897,"end":14.303},{"word":"relying","start":14.466,"end":14.907},{"word":"on","start":14.953,"end":15.023},{"word":"the","start":15.07,"end":15.139},{"word":"date.","start":15.186,"end":15.58},{"word":"The","start":16.312,"end":16.44},{"word":"observed","start":16.498,"end":16.904},{"word":"improvement","start":16.95,"end":17.531},{"word":"is","start":17.717,"end":17.891},{"word":"that","start":17.926000000000002,"end":18.042},{"word":"the","start":18.065,"end":18.135},{"word":"revised","start":18.193,"end":18.715},{"word":"fictional","start":18.796,"end":19.214},{"word":"draft","start":19.272,"end":19.644},{"word":"flags","start":19.714,"end":20.085},{"word":"the","start":20.12,"end":20.19},{"word":"missing","start":20.248,"end":20.549},{"word":"date","start":20.631,"end":21.037},{"word":"instead","start":21.095,"end":21.442999999999998},{"word":"of","start":21.478,"end":21.525},{"word":"inventing","start":21.583,"end":21.977},{"word":"it.","start":22.036,"end":22.14},{"word":"The","start":22.805,"end":22.956},{"word":"evidence","start":23.014,"end":23.351},{"word":"includes","start":23.384999999999998,"end":23.711},{"word":"the","start":23.745,"end":23.815},{"word":"input,","start":23.884999999999998,"end":24.338},{"word":"first","start":24.581,"end":24.86},{"word":"draft,","start":24.906,"end":25.348},{"word":"correction","start":25.673,"end":26.195},{"word":"and","start":26.358,"end":26.52},{"word":"revised","start":26.59,"end":27.019},{"word":"walkthrough.","start":27.076999999999998,"end":27.6},{"word":"A","start":28.262,"end":28.343},{"word":"second","start":28.436,"end":28.703},{"word":"connection","start":28.749,"end":29.144},{"word":"concerns","start":29.201999999999998,"end":29.62},{"word":"a","start":29.655,"end":29.689999999999998},{"word":"clearer","start":29.736,"end":30.026},{"word":"reviewer","start":30.096,"end":30.456},{"word":"handoff.","start":30.514,"end":30.990000000000002},{"word":"A","start":31.616999999999997,"end":31.698},{"word":"third","start":31.78,"end":32.012},{"word":"concerns","start":32.07,"end":32.546},{"word":"reusable","start":32.626999999999995,"end":33.184},{"word":"review","start":33.242,"end":33.521},{"word":"guidance.","start":33.579,"end":34.102000000000004},{"word":"Select","start":34.532,"end":34.88},{"word":"the","start":34.915,"end":34.984},{"word":"two","start":35.031,"end":35.193},{"word":"best","start":35.263,"end":35.46},{"word":"supported","start":35.495000000000005,"end":35.867000000000004},{"word":"by","start":35.902,"end":35.983000000000004},{"word":"the","start":36.028999999999996,"end":36.099000000000004},{"word":"retained","start":36.157,"end":36.552},{"word":"work","start":36.598,"end":36.854},{"word":"and","start":36.912,"end":37.039},{"word":"explain","start":37.086,"end":37.376000000000005},{"word":"your","start":37.434,"end":37.527},{"word":"choice.","start":37.562,"end":38.038},{"word":"Do","start":38.734,"end":38.862},{"word":"not","start":38.943,"end":39.083},{"word":"claim","start":39.129000000000005,"end":39.35},{"word":"a","start":39.408,"end":39.431},{"word":"real","start":39.501000000000005,"end":39.686},{"word":"team","start":39.744,"end":39.977000000000004},{"word":"already","start":40.046,"end":40.394999999999996},{"word":"benefited","start":40.453,"end":40.94},{"word":"when","start":40.987,"end":41.126000000000005},{"word":"the","start":41.161,"end":41.231},{"word":"test","start":41.265,"end":41.498000000000005},{"word":"was","start":41.544,"end":41.647999999999996},{"word":"fictional.","start":41.718,"end":42.194},{"word":"A","start":43.285,"end":43.400999999999996},{"word":"possible","start":43.482,"end":43.864999999999995},{"word":"future","start":43.9,"end":44.190999999999995},{"word":"benefit","start":44.236999999999995,"end":44.596999999999994},{"word":"stays","start":44.642999999999994,"end":44.91},{"word":"a","start":44.94499999999999,"end":44.98},{"word":"possible","start":45.038,"end":45.41},{"word":"benefit","start":45.455999999999996,"end":45.803999999999995},{"word":"until","start":45.851,"end":46.059999999999995},{"word":"the","start":46.105999999999995,"end":46.175999999999995},{"word":"intended","start":46.221999999999994,"end":46.63999999999999},{"word":"setting","start":46.687,"end":46.977},{"word":"has","start":47.022999999999996,"end":47.150999999999996},{"word":"evidence.","start":47.221,"end":47.742999999999995},{"word":"Keep","start":48.312,"end":48.498},{"word":"the","start":48.544,"end":48.614},{"word":"people,","start":48.648999999999994,"end":48.93899999999999},{"word":"conditions","start":48.985,"end":49.415},{"word":"and","start":49.449999999999996,"end":49.531},{"word":"limits","start":49.589,"end":49.833},{"word":"visible.","start":49.879,"end":50.343999999999994}]},{"key":"story","title":"Tell the Evidence Story and show the work","audio_url":"https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=be5ab68b-6bb8-44eb-994a-dfe34661685b.wav","duration_seconds":57.78285714285714,"word_timestamps":[{"word":"Use","start":0,"end":0.232},{"word":"context,","start":0.267,"end":0.94},{"word":"purpose,","start":1.091,"end":1.625},{"word":"action,","start":1.765,"end":2.241},{"word":"AI","start":2.554,"end":2.902},{"word":"role,","start":2.972,"end":3.39},{"word":"human","start":3.553,"end":3.831},{"word":"judgment,","start":3.889,"end":4.365},{"word":"result","start":4.632,"end":5.016},{"word":"and","start":5.085,"end":5.19},{"word":"limit.","start":5.259,"end":5.573},{"word":"Our","start":6.374,"end":6.525},{"word":"supplied","start":6.583,"end":7.036},{"word":"fictional","start":7.082,"end":7.465},{"word":"story","start":7.512,"end":7.964},{"word":"says","start":8.22,"end":8.452},{"word":"the","start":8.499,"end":8.568},{"word":"person","start":8.626,"end":8.94},{"word":"wanted","start":9.009,"end":9.288},{"word":"missing","start":9.346,"end":9.625},{"word":"delivery","start":9.671,"end":10.066},{"word":"details","start":10.124,"end":10.6},{"word":"to","start":10.658,"end":10.739},{"word":"remain","start":10.82,"end":11.099},{"word":"visible,","start":11.157,"end":11.668},{"word":"designed","start":12.051,"end":12.446},{"word":"a","start":12.481,"end":12.504},{"word":"review","start":12.574,"end":12.852},{"word":"workflow","start":12.91,"end":13.421},{"word":"and","start":13.607,"end":13.769},{"word":"tested","start":13.827,"end":14.199},{"word":"two","start":14.234,"end":14.408},{"word":"fictional","start":14.501,"end":14.907},{"word":"cases.","start":14.954,"end":15.464},{"word":"AI","start":16.265,"end":16.579},{"word":"prepared","start":16.66,"end":17.02},{"word":"a","start":17.043,"end":17.066},{"word":"draft.","start":17.113,"end":17.658},{"word":"The","start":18.25,"end":18.366},{"word":"person","start":18.425,"end":18.726},{"word":"found","start":18.796,"end":19.017},{"word":"an","start":19.075,"end":19.133},{"word":"unsupported","start":19.214,"end":19.829},{"word":"date,","start":19.887,"end":20.271},{"word":"corrected","start":20.619,"end":21.048000000000002},{"word":"the","start":21.083,"end":21.153},{"word":"review","start":21.211,"end":21.478},{"word":"instruction","start":21.524,"end":22.105},{"word":"and","start":22.395,"end":22.662},{"word":"checked","start":22.709,"end":22.964},{"word":"the","start":22.987000000000002,"end":23.057000000000002},{"word":"revised","start":23.115000000000002,"end":23.556},{"word":"walkthrough.","start":23.614,"end":24.16},{"word":"The","start":24.79,"end":24.929},{"word":"result","start":24.999,"end":25.369999999999997},{"word":"was","start":25.416999999999998,"end":25.532999999999998},{"word":"a","start":25.579,"end":25.614},{"word":"visible","start":25.672,"end":26.032},{"word":"missing-date","start":26.09,"end":26.648},{"word":"question","start":26.682,"end":27.066},{"word":"in","start":27.124,"end":27.192999999999998},{"word":"that","start":27.24,"end":27.366999999999997},{"word":"exercise.","start":27.424999999999997,"end":28.215},{"word":"The","start":29.073999999999998,"end":29.201999999999998},{"word":"limit","start":29.271,"end":29.515},{"word":"is","start":29.573,"end":29.666},{"word":"no","start":29.747,"end":29.863999999999997},{"word":"real","start":29.991,"end":30.2},{"word":"customer","start":30.282,"end":30.688},{"word":"outcome","start":30.758,"end":31.152},{"word":"or","start":31.198999999999998,"end":31.268},{"word":"permission","start":31.326,"end":31.698},{"word":"to","start":31.744,"end":31.802},{"word":"send.","start":31.86,"end":32.244},{"word":"Remove","start":32.870999999999995,"end":33.219},{"word":"private","start":33.265,"end":33.614},{"word":"details","start":33.647999999999996,"end":34.066},{"word":"before","start":34.113,"end":34.415},{"word":"sharing.","start":34.461,"end":34.867},{"word":"Label","start":35.564,"end":35.866},{"word":"a","start":35.924,"end":35.947},{"word":"sanitized","start":36.004999999999995,"end":36.69},{"word":"or","start":36.736999999999995,"end":36.806},{"word":"recreated","start":36.875,"end":37.397999999999996},{"word":"illustration","start":37.456,"end":38.048},{"word":"accurately;","start":38.117999999999995,"end":38.698},{"word":"it","start":39.465,"end":39.581},{"word":"is","start":39.626999999999995,"end":39.697},{"word":"not","start":39.766,"end":39.929},{"word":"an","start":39.975,"end":40.033},{"word":"original","start":40.08,"end":40.475},{"word":"result","start":40.533,"end":40.834},{"word":"record.","start":40.903999999999996,"end":41.287},{"word":"Finish","start":41.879,"end":42.193},{"word":"by","start":42.239,"end":42.355},{"word":"explaining","start":42.413,"end":42.888999999999996},{"word":"one","start":42.971000000000004,"end":43.168},{"word":"capability","start":43.215,"end":43.852999999999994},{"word":"in","start":43.911,"end":43.980999999999995},{"word":"a","start":44.027,"end":44.05},{"word":"professional","start":44.108999999999995,"end":44.608},{"word":"context","start":44.677,"end":45.281},{"word":"and","start":45.361999999999995,"end":45.513},{"word":"opening","start":45.583,"end":45.943},{"word":"the","start":45.989,"end":46.059},{"word":"supporting","start":46.094,"end":46.512},{"word":"work.","start":46.57,"end":46.848},{"word":"Save","start":48.039,"end":48.399},{"word":"the","start":48.434000000000005,"end":48.503},{"word":"verified","start":48.561,"end":49.119},{"word":"ten-entry","start":49.154,"end":49.688},{"word":"inventory,","start":49.746,"end":50.361000000000004},{"word":"two","start":50.837,"end":51.023},{"word":"selected","start":51.081,"end":51.499},{"word":"Value","start":51.557,"end":51.882000000000005},{"word":"Connections","start":51.917,"end":52.497},{"word":"and","start":52.555,"end":52.695},{"word":"privacy-safe","start":52.764,"end":53.496},{"word":"story","start":53.531,"end":53.902},{"word":"in","start":53.995000000000005,"end":54.099000000000004},{"word":"Professional","start":54.157000000000004,"end":54.657000000000004},{"word":"Positioning","start":54.703,"end":55.191},{"word":"Evidence","start":55.260000000000005,"end":55.829},{"word":"and","start":56.05,"end":56.27},{"word":"the","start":56.329,"end":56.398},{"word":"connected","start":56.433,"end":56.828},{"word":"workbook.","start":56.886,"end":57.42}]}],"visual_plan":{"introduction":"Welcome back to the AI Confidence Academy. This is Phase Two, Journey Six, Lesson One: Recognize Capability and Connect It to Value.\n\nYou have built, reviewed, improved and tested work across the course. This final journey brings that evidence together. Today you will explain what you can do, who that work can help, and what the evidence actually supports.\n\nSaying I used an AI tool describes an activity. Saying I designed and tested a reviewed proposal workflow using fictional cases describes a capability you can show. The difference is the work behind the statement.\n\nWe will use five practical verbs: explain, do, review, improve and show. Each statement needs a supporting example and an honest limit. Capability does not automatically give you a professional title, permission to act, or a qualification you have not earned.\n\nYou will create an inventory of ten capabilities from your own course work. Then develop three Value Connections, select the two strongest, and write one short Evidence Story for your continuing project. A Value Connection identifies your capability, its context, the people it serves, the improvement and the supporting evidence.\n\nYour Evidence Story will explain the purpose, your action, the AI role, your judgment, the result and the remaining limit. Remove private details and label fictional, sanitized or recreated examples accurately.\n\nKeep the same Project Record and connected workbook. By the end, you will explain one capability in a professional setting and show the work that supports it. AI assists. Humans verify. Let's begin.","chapters":[{"title":"Recognize what your work demonstrates","transcript":"Open your continuing Project Record and the evidence you retained across the first five journeys. You have requests, decisions, drafts, reviews, corrections, tests and operating guidance. This lesson helps you describe what that work demonstrates in a professional setting. You are using the same project, with its real strengths and remaining limits.\n\nAn activity says what you spent time doing. A capability says what you can explain or perform, supported by work another person can inspect. I used an AI tool describes activity. I designed and tested a reviewed proposal workflow using fictional cases describes a capability. The second statement names the task, the review and the conditions of the test. It also points toward evidence.\n\nUse five practical verbs to examine your work: explain, do, review, improve and show. Explain means you can describe the purpose, choices and limits in your own words. Do means you can perform a bounded task. Review means you can check work against a stated standard. Improve means you can identify a defect, make a useful correction and examine the revised result. Show means you can demonstrate the work and point to evidence supporting your account.\n\nThese verbs describe different parts of a capability. A person may explain a workflow without having run it. Someone may produce a draft without having reviewed its accuracy. A revised instruction may look clearer without a completed retest. Choose the verb that matches your evidence. Use several verbs when each is supported. You do not need to pretend every course activity proves every kind of capability.\n\nOur fictional teaching case concerns a proposal-review workflow. The supplied evidence includes a scope note, one normal fictional case, a missing-information case, a human review checklist and a before-and-after correction. In the first walkthrough, the draft included a delivery date that the fictional input did not provide. In the revised walkthrough, the missing date stays visible as a question for human review. These observations are supplied for teaching. They are not results from your project.\n\nThe case supports a statement about designing and testing a reviewed workflow with those fictional cases. It supports an explanation of why a missing date should remain a question. It does not support claims about actual customer sales, measured time savings, all possible errors or live business deployment. A narrow statement with visible work is more useful than a large claim without support.\n\nCapability and authority are separate. Authority means the role, permission or qualification that allows an action. Showing that you can prepare a checked draft does not give you permission to send it for an organization. Finishing an Academy exercise does not create a job title, professional license or qualification that has not been earned. Name your actual role and the actual permission boundary.\n\nNow look at your own evidence. Choose one retained piece of work. Write the activity first, then rewrite it as a capability using a supported verb. Add the evidence reference and the condition that limits the statement. If the evidence is missing, mark the statement pending. Keep your professional account grounded in what you can demonstrate."},{"title":"Build a verified inventory of ten capabilities","transcript":"Create an inventory of ten capabilities from your course work. An inventory is a clear list. Verified means you have compared each statement with supporting work and corrected claims that go beyond it. Ten is the target for this lesson. It is not a reason to invent a tenth result when only nine are supported. Find the missing work or keep the incomplete entry pending until you can support it.\n\nUse the same project and the evidence already retained across the course. You might examine how you defined a need, chose an AI role, wrote a clear request, reviewed an output, handled an exception, listened to a concern, designed a delivery route, tested a result, documented guidance or corrected a failed safeguard. These are places to look for evidence. They are not a prewritten list of capabilities you may claim without checking your work.\n\nFor each entry, write the capability, a suitable Explain, Do, Review, Improve or Show verb, the evidence reference, what you checked and the limit. A useful reference identifies the relevant artifact and the part that supports the statement. Use a version or date when it helps another person find the right work. Avoid copying private source material into a public account of your capability.\n\nReturn to our supplied proposal example. One entry might say: I can review a fictional proposal draft for unsupported delivery details. Its evidence is the supplied first and revised draft, the review note and the missing-information walkthrough. The check compares the delivery claim with the supplied input. Its limit is that these were fictional cases, with no real customer delivery or live organizational approval. That entry makes the claim inspectable.\n\nCompare an improvement claim carefully. If you say you improved the workflow, show the defect, correction and observed revised result. If you say you reduced errors, explain the actual cases examined and what changed. Do not turn a single corrected case into a percentage, a guaranteed outcome or a statement about every future use. Measured savings need a real baseline, a comparable check and a recorded result. If you have no such measurement, leave the number out.\n\nYou may use AI to help phrase your inventory. Supply a privacy-safe evidence index and use the approved request displayed in this lesson. Ask it to connect activities to supported verbs, realistic value and a limit. The request tells AI not to add titles or results. Read its answer against your actual artifacts. A polished sentence can still contain an invented achievement.\n\nRemove or revise unsupported statements. If AI changes a tabletop walkthrough into a deployed system, restore the actual test type. If it adds a specialist title, remove the title unless independently earned and appropriate. If it says a client benefited, check whether a real client was involved and whether that result was observed. Keep the distinction between a possible benefit and an established result.\n\nWhen the ten entries are ready, choose one and practice explaining it aloud. Open the supporting work as you speak. Can another person follow the connection without guessing? Can you identify your contribution and the AI contribution? Can you name the limit without weakening a truthful achievement? Save the checked inventory in the same Project Record and workbook. Unfinished evidence remains visible for correction before final submission."},{"title":"Connect capability to people and practical value","transcript":"A capability becomes useful in context. Context is the setting, task and conditions in which the work may help. People are those who use the result or bear the consequences. Value is the practical improvement that matters to those people. This lesson uses the Value Connection: capability, context, people, improvement and evidence.\n\nWrite three Value Connections using capabilities from your checked inventory. Each should name what you can do, where that capability fits, who it serves, what may improve and which evidence supports the account. Keep the proposed use separate from an observed result. You can explain how a reviewed draft may help a team without claiming that an untested team has already benefited.\n\nIn the supplied proposal case, the capability is designing and testing a review workflow using fictional cases. The context is preparing a proposal draft with incomplete delivery information. The people are a proposal reviewer and the person who might rely on the stated date. The demonstrated improvement is that the revised fictional draft leaves the missing date visible for review instead of presenting it as confirmed. The evidence is the input, first draft, correction and revised walkthrough. Real customer outcomes remain untested.\n\nA second connection may concern human handoff. If the retained workflow identifies the unresolved question and the responsible reviewer, the evidence may support a clearer handoff in the tested exercise. It does not prove the real reviewer has access, accepts responsibility or responds within a certain time. State the actual tested conditions and any permission or access still needed.\n\nA third connection may concern reusable review guidance. A checklist can make the expected checks easier to understand in the supplied case. To claim it improves real work, you would need evidence from the intended setting. In the current exercise, describe what the checklist helped you inspect and what the walkthrough showed. Do not manufacture a business outcome to make the connection sound more impressive.\n\nYour own three connections may serve different people or different parts of the same project. Choose them because you have supporting work and a realistic use. A volunteer coordinator, a small-business owner, a colleague or a person managing an everyday task may each need clearer information, fewer unsupported claims or an understandable review route. Fit the statement to the actual audience rather than using a grand claim about transforming every organization.\n\nSelect the two strongest connections. Strongest means the claim is clear, the people and context are identifiable, the supporting work is available and the limit is honest. Explain why you chose them. A connection with a modest but demonstrated improvement may be stronger than one promising a large benefit without a test. Retain the third draft and the selection reason so your judgment is visible.\n\nFor each selected connection, ask whether the claimed improvement was observed, measured or only proposed. Use wording that matches the answer. Name the evidence needed before a proposed benefit can become a result claim. Keep private names, records and organizational details out of any shareable description. You are preparing professional positioning evidence, meaning a truthful account of what your work can demonstrate. You are not granting yourself authority or promising a result the project has not established."},{"title":"Write and verify a privacy-safe Evidence Story","transcript":"Write one short Evidence Story for your continuing project. An Evidence Story is a clear account of the work and the evidence behind it. Use seven parts: context, purpose, action, AI role, human judgment, result and limit. These parts help another person understand the task, your contribution and what the work actually established.\n\nContext explains the setting and conditions. Purpose names the problem or useful outcome you were working toward. Action describes what you did. AI role identifies how AI helped, such as preparing a draft or suggesting test cases. Human judgment explains what you checked, decided or corrected. Result states what you observed in the actual work. Limit names what the evidence does not establish.\n\nHere is a supplied fictional teaching story. In a fictional proposal-review exercise, I wanted missing delivery information to remain visible. I designed a review workflow and tested a normal case and a case with no delivery date. AI prepared a first draft. I compared its delivery claim with the supplied input, found an unsupported date and corrected the review instruction. In the revised walkthrough, the draft flagged the missing date for human review. The retained input, drafts, checklist and walkthrough support that correction. This was fictional practice; it does not establish real sales, time savings or permission to send proposals for an organization.\n\nThe story names the contribution without claiming everything was done by AI or everything was done by the human. It shows the review decision that mattered. It gives the result the right scale. It also allows another person to open the work and ask a useful question. Use the same structure for your project, with your actual evidence and actual limitations.\n\nProtect privacy before sharing. Remove identifying details and information you do not have permission to disclose. A sanitized example has private or sensitive details removed or replaced. A recreated example has been built again to illustrate a point. Label both accurately. A recreated document is not the original record of a result. If you use a recreated illustration, explain which permitted evidence supports the underlying claim and what the illustration itself can show.\n\nRead the story sentence by sentence. Point to supporting work for every material claim. Does the stated result match the observed test? Does the AI role match the retained request and output? Does the human judgment match the review note or decision? Does the story imply live use when the test was a tabletop? Remove a claim you cannot demonstrate or mark the evidence need clearly before claiming completion.\n\nNow practice the applied completion check. Explain one capability in a professional context and show the supporting work. Identify the limit that prevents your statement from becoming an inflated claim. A listener should be able to understand what you can do and how you know. You should be able to answer a follow-up question without inventing a result or disclosing private information.\n\nSave the verified ten-capability inventory, two selected Value Connections and one privacy-safe Evidence Story as Professional Positioning Evidence in your existing Project Record. Complete the matching Journey Six workbook section. Carry missing evidence into Lesson Six Point Two, where you will finish the bounded artifact with evidence and revision. During the journey's two independent hours, strengthen the weakest evidence and rehearse your demonstration. That practice supports the same project. AI assists. Humans verify."}],"demos":[{"key":"capability","title":"Turn activity into a supported capability","transcript":"This is a fictional proposal-review exercise. The first statement says: I used an AI tool. It names an activity, but it does not show what the person can do. The retained teaching evidence includes a scope note, fictional inputs, two drafts, a review checklist and a corrected walkthrough. A supported statement is: I designed and tested a reviewed proposal workflow using fictional cases. The person can show the draft comparison and explain why a missing delivery date must remain a question. The limit belongs beside the statement: this was fictional practice, with no real customer outcome or organizational sending permission. Do not add an expert title or measured savings. For your project, choose the verb your evidence supports and open the work that proves the claim.","scenes":[["Activity","I used an AI tool.","What can the person demonstrate?"],["Capability","I designed and tested a reviewed proposal workflow using fictional cases.","Show inputs, drafts, checklist and walkthrough."],["Limit","Fictional practice; no live customer result or sending permission.","Capability does not grant authority."]]},{"key":"inventory","title":"Check the inventory against the evidence","transcript":"A verified inventory needs ten capability entries. Each includes a supported verb, evidence, the check and a limit. In this fictional example, the review entry points to a draft containing an unsupported date and the corrected missing-information walkthrough. The improvement entry points to the specific correction and the revised result. They describe distinct actions, but each must have support. An AI suggestion says the work saved ten hours and made the author a certified consultant. Neither claim appears in the supplied evidence. Remove both. If one of your ten entries is missing its evidence, mark it pending and resolve it before final submission. Keep the same course work; do not fill a gap with an invented achievement. Practice explaining one checked entry while showing the exact supporting artifact.","scenes":[["Ten checked entries","Capability \u2022 Verb \u2022 Evidence \u2022 Check \u2022 Limit","Use work retained across the course."],["Unsupported additions","Ten hours saved; certified consultant.","Neither appears in the supplied evidence."],["Human correction","Remove invented claims. Keep missing evidence pending.","Show one checked entry and its supporting work."]]},{"key":"value","title":"Select the strongest Value Connections","transcript":"Build three Value Connections from checked capabilities. In our fictional case, the capability is a reviewed proposal workflow. The context is an incomplete proposal draft. The people include the reviewer and the person relying on the date. The observed improvement is that the revised fictional draft flags the missing date instead of inventing it. The evidence includes the input, first draft, correction and revised walkthrough. A second connection concerns a clearer reviewer handoff. A third concerns reusable review guidance. Select the two best supported by the retained work and explain your choice. Do not claim a real team already benefited when the test was fictional. A possible future benefit stays a possible benefit until the intended setting has evidence. Keep the people, conditions and limits visible.","scenes":[["Value Connection","Capability \u2022 Context \u2022 People \u2022 Improvement \u2022 Evidence","Separate observed improvement from proposed benefit."],["Three candidates","Missing-date review \u2022 Reviewer handoff \u2022 Review guidance","Check the retained work for each connection."],["Select two","Choose the clearest, best-supported connections.","Record the selection reason and remaining limits."]]},{"key":"story","title":"Tell the Evidence Story and show the work","transcript":"Use context, purpose, action, AI role, human judgment, result and limit. Our supplied fictional story says the person wanted missing delivery details to remain visible, designed a review workflow and tested two fictional cases. AI prepared a draft. The person found an unsupported date, corrected the review instruction and checked the revised walkthrough. The result was a visible missing-date question in that exercise. The limit is no real customer outcome or permission to send. Remove private details before sharing. Label a sanitized or recreated illustration accurately; it is not an original result record. Finish by explaining one capability in a professional context and opening the supporting work. Save the verified ten-entry inventory, two selected Value Connections and privacy-safe story in Professional Positioning Evidence and the connected workbook.","scenes":[["Seven story parts","Context \u2022 Purpose \u2022 Action \u2022 AI role \u2022 Human judgment \u2022 Result \u2022 Limit","Identify the human contribution and observed result."],["Privacy-safe evidence","Remove private details; label sanitized or recreated examples.","An illustration is not an original result record."],["Verify and save","Ten capabilities \u2022 Two selected connections \u2022 One Evidence Story","Explain one capability, show the work and name its limit."]]}]}}
+{
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
+  "guided_chapters": [
+    {
+      "title": "Recognize what your work demonstrates",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=a6d55840-e607-4375-b770-75175b3c47b5.wav",
+      "duration_seconds": 201.09061224489795
+    },
+    {
+      "title": "Build a verified inventory of ten capabilities",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=f7a4b148-4e79-488c-af34-366e86458ea5.wav",
+      "duration_seconds": 201.9265306122449
+    },
+    {
+      "title": "Connect capability to people and practical value",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=ecdfb094-9881-45f0-aa90-6af653896d16.wav",
+      "duration_seconds": 203.8073469387755
+    },
+    {
+      "title": "Write and verify a privacy-safe Evidence Story",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=41396b8b-0735-4c57-921a-eca74eb40e89.wav",
+      "duration_seconds": 211.25224489795917
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "capability",
+      "title": "Turn activity into a supported capability",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=3e9fa3ac-bc6d-464b-9a14-cf779d37d765.wav",
+      "duration_seconds": 48.50938775510204,
+      "word_timestamps": [
+        {
+          "word": "This",
+          "start": 0.299,
+          "end": 0.469
+        },
+        {
+          "word": "is",
+          "start": 0.555,
+          "end": 0.6827
+        },
+        {
+          "word": "a",
+          "start": 0.725,
+          "end": 0.8107
+        },
+        {
+          "word": "fictional",
+          "start": 0.853,
+          "end": 1.109
+        },
+        {
+          "word": "proposal-review",
+          "start": 1.237,
+          "end": 1.8347
+        },
+        {
+          "word": "exercise.",
+          "start": 2.005,
+          "end": 2.624
+        },
+        {
+          "word": "The",
+          "start": 3.029,
+          "end": 3.2
+        },
+        {
+          "word": "first",
+          "start": 3.243,
+          "end": 3.413
+        },
+        {
+          "word": "statement",
+          "start": 3.584,
+          "end": 3.712
+        },
+        {
+          "word": "says:",
+          "start": 3.883,
+          "end": 4.501
+        },
+        {
+          "word": "I",
+          "start": 4.907,
+          "end": 5.077
+        },
+        {
+          "word": "used",
+          "start": 5.12,
+          "end": 5.2907
+        },
+        {
+          "word": "an",
+          "start": 5.376,
+          "end": 5.461
+        },
+        {
+          "word": "AI",
+          "start": 5.504,
+          "end": 5.8027
+        },
+        {
+          "word": "tool.",
+          "start": 5.888,
+          "end": 6.272
+        },
+        {
+          "word": "It",
+          "start": 6.485,
+          "end": 6.5707
+        },
+        {
+          "word": "names",
+          "start": 6.613,
+          "end": 6.784
+        },
+        {
+          "word": "an",
+          "start": 6.912,
+          "end": 6.9547
+        },
+        {
+          "word": "activity,",
+          "start": 6.997,
+          "end": 7.637
+        },
+        {
+          "word": "but",
+          "start": 7.936,
+          "end": 8.021
+        },
+        {
+          "word": "it",
+          "start": 8.064,
+          "end": 8.1067
+        },
+        {
+          "word": "does",
+          "start": 8.149,
+          "end": 8.2347
+        },
+        {
+          "word": "not",
+          "start": 8.32,
+          "end": 8.448
+        },
+        {
+          "word": "show",
+          "start": 8.491,
+          "end": 8.661
+        },
+        {
+          "word": "what",
+          "start": 8.747,
+          "end": 8.832
+        },
+        {
+          "word": "the",
+          "start": 8.875,
+          "end": 8.917
+        },
+        {
+          "word": "person",
+          "start": 8.96,
+          "end": 9.1307
+        },
+        {
+          "word": "can",
+          "start": 9.259,
+          "end": 9.429
+        },
+        {
+          "word": "do.",
+          "start": 9.557,
+          "end": 9.811
+        },
+        {
+          "word": "The",
+          "start": 9.937,
+          "end": 10.065
+        },
+        {
+          "word": "retained",
+          "start": 10.108,
+          "end": 10.4068
+        },
+        {
+          "word": "teaching",
+          "start": 10.492,
+          "end": 10.705
+        },
+        {
+          "word": "evidence",
+          "start": 10.833,
+          "end": 11.004
+        },
+        {
+          "word": "includes",
+          "start": 11.217,
+          "end": 11.8148
+        },
+        {
+          "word": "a",
+          "start": 11.985,
+          "end": 12.3268
+        },
+        {
+          "word": "scope",
+          "start": 12.369,
+          "end": 12.625
+        },
+        {
+          "word": "note,",
+          "start": 12.711,
+          "end": 13.116
+        },
+        {
+          "word": "fictional",
+          "start": 13.351,
+          "end": 13.692
+        },
+        {
+          "word": "inputs,",
+          "start": 13.82,
+          "end": 14.481
+        },
+        {
+          "word": "two",
+          "start": 14.759,
+          "end": 14.8868
+        },
+        {
+          "word": "drafts,",
+          "start": 14.972,
+          "end": 15.441
+        },
+        {
+          "word": "a",
+          "start": 15.527,
+          "end": 15.7828
+        },
+        {
+          "word": "review",
+          "start": 15.825,
+          "end": 15.953
+        },
+        {
+          "word": "checklist",
+          "start": 16.167,
+          "end": 16.593
+        },
+        {
+          "word": "and",
+          "start": 16.807,
+          "end": 17.148
+        },
+        {
+          "word": "a",
+          "start": 17.191,
+          "end": 17.276
+        },
+        {
+          "word": "corrected",
+          "start": 17.319,
+          "end": 17.5748
+        },
+        {
+          "word": "walkthrough.",
+          "start": 17.745,
+          "end": 18.705
+        },
+        {
+          "word": "A",
+          "start": 19.281,
+          "end": 19.324
+        },
+        {
+          "word": "supported",
+          "start": 19.367,
+          "end": 19.7508
+        },
+        {
+          "word": "statement",
+          "start": 19.921,
+          "end": 20.1348
+        },
+        {
+          "word": "is:",
+          "start": 20.348,
+          "end": 20.775
+        },
+        {
+          "word": "I",
+          "start": 21.031,
+          "end": 21.2868
+        },
+        {
+          "word": "designed",
+          "start": 21.329,
+          "end": 21.6708
+        },
+        {
+          "word": "and",
+          "start": 21.841,
+          "end": 21.9268
+        },
+        {
+          "word": "tested",
+          "start": 21.969,
+          "end": 22.3108
+        },
+        {
+          "word": "a",
+          "start": 22.396,
+          "end": 22.524
+        },
+        {
+          "word": "reviewed",
+          "start": 22.567,
+          "end": 22.9508
+        },
+        {
+          "word": "proposal",
+          "start": 22.993,
+          "end": 23.42
+        },
+        {
+          "word": "workflow",
+          "start": 23.505,
+          "end": 23.9748
+        },
+        {
+          "word": "using",
+          "start": 24.188,
+          "end": 24.529
+        },
+        {
+          "word": "fictional",
+          "start": 24.743,
+          "end": 25.084
+        },
+        {
+          "word": "cases.",
+          "start": 25.212,
+          "end": 25.77
+        },
+        {
+          "word": "The",
+          "start": 26.158,
+          "end": 26.2006
+        },
+        {
+          "word": "person",
+          "start": 26.243,
+          "end": 26.4139
+        },
+        {
+          "word": "can",
+          "start": 26.627,
+          "end": 26.755
+        },
+        {
+          "word": "show",
+          "start": 26.798,
+          "end": 27.011
+        },
+        {
+          "word": "the",
+          "start": 27.097,
+          "end": 27.139
+        },
+        {
+          "word": "draft",
+          "start": 27.182,
+          "end": 27.4379
+        },
+        {
+          "word": "comparison",
+          "start": 27.523,
+          "end": 27.8646
+        },
+        {
+          "word": "and",
+          "start": 28.121,
+          "end": 28.7179
+        },
+        {
+          "word": "explain",
+          "start": 28.803,
+          "end": 28.931
+        },
+        {
+          "word": "why",
+          "start": 29.145,
+          "end": 29.443
+        },
+        {
+          "word": "a",
+          "start": 29.529,
+          "end": 29.6139
+        },
+        {
+          "word": "missing",
+          "start": 29.657,
+          "end": 29.7419
+        },
+        {
+          "word": "delivery",
+          "start": 29.913,
+          "end": 30.1686
+        },
+        {
+          "word": "date",
+          "start": 30.297,
+          "end": 30.467
+        },
+        {
+          "word": "must",
+          "start": 30.638,
+          "end": 30.979
+        },
+        {
+          "word": "remain",
+          "start": 31.065,
+          "end": 31.15
+        },
+        {
+          "word": "a",
+          "start": 31.321,
+          "end": 31.363
+        },
+        {
+          "word": "question.",
+          "start": 31.406,
+          "end": 32.089
+        },
+        {
+          "word": "The",
+          "start": 32.643,
+          "end": 32.771
+        },
+        {
+          "word": "limit",
+          "start": 32.814,
+          "end": 32.9846
+        },
+        {
+          "word": "belongs",
+          "start": 33.027,
+          "end": 33.3259
+        },
+        {
+          "word": "beside",
+          "start": 33.454,
+          "end": 33.795
+        },
+        {
+          "word": "the",
+          "start": 33.881,
+          "end": 33.9659
+        },
+        {
+          "word": "statement:",
+          "start": 34.009,
+          "end": 34.457
+        },
+        {
+          "word": "this",
+          "start": 34.734,
+          "end": 34.8619
+        },
+        {
+          "word": "was",
+          "start": 34.905,
+          "end": 34.99
+        },
+        {
+          "word": "fictional",
+          "start": 35.075,
+          "end": 35.331
+        },
+        {
+          "word": "practice,",
+          "start": 35.459,
+          "end": 35.993
+        },
+        {
+          "word": "with",
+          "start": 36.313,
+          "end": 36.4406
+        },
+        {
+          "word": "no",
+          "start": 36.483,
+          "end": 36.6539
+        },
+        {
+          "word": "real",
+          "start": 36.739,
+          "end": 36.9099
+        },
+        {
+          "word": "customer",
+          "start": 36.995,
+          "end": 37.2939
+        },
+        {
+          "word": "outcome",
+          "start": 37.422,
+          "end": 37.763
+        },
+        {
+          "word": "or",
+          "start": 37.934,
+          "end": 38.3606
+        },
+        {
+          "word": "organizational",
+          "start": 38.489,
+          "end": 39.0006
+        },
+        {
+          "word": "sending",
+          "start": 39.214,
+          "end": 39.3846
+        },
+        {
+          "word": "permission.",
+          "start": 39.513,
+          "end": 39.97
+        },
+        {
+          "word": "Do",
+          "start": 40.172,
+          "end": 40.3428
+        },
+        {
+          "word": "not",
+          "start": 40.386,
+          "end": 40.5135
+        },
+        {
+          "word": "add",
+          "start": 40.599,
+          "end": 40.7695
+        },
+        {
+          "word": "an",
+          "start": 40.855,
+          "end": 40.8975
+        },
+        {
+          "word": "expert",
+          "start": 40.94,
+          "end": 41.2815
+        },
+        {
+          "word": "title",
+          "start": 41.324,
+          "end": 41.5375
+        },
+        {
+          "word": "or",
+          "start": 41.708,
+          "end": 41.9215
+        },
+        {
+          "word": "measured",
+          "start": 41.964,
+          "end": 42.22
+        },
+        {
+          "word": "savings.",
+          "start": 42.306,
+          "end": 42.945
+        },
+        {
+          "word": "For",
+          "start": 43.244,
+          "end": 43.4148
+        },
+        {
+          "word": "your",
+          "start": 43.458,
+          "end": 43.5428
+        },
+        {
+          "word": "project,",
+          "start": 43.586,
+          "end": 44.14
+        },
+        {
+          "word": "choose",
+          "start": 44.481,
+          "end": 44.6948
+        },
+        {
+          "word": "the",
+          "start": 44.78,
+          "end": 44.865
+        },
+        {
+          "word": "verb",
+          "start": 44.908,
+          "end": 45.121
+        },
+        {
+          "word": "your",
+          "start": 45.207,
+          "end": 45.292
+        },
+        {
+          "word": "evidence",
+          "start": 45.335,
+          "end": 45.548
+        },
+        {
+          "word": "supports",
+          "start": 45.719,
+          "end": 46.017
+        },
+        {
+          "word": "and",
+          "start": 46.188,
+          "end": 46.572
+        },
+        {
+          "word": "open",
+          "start": 46.615,
+          "end": 46.785
+        },
+        {
+          "word": "the",
+          "start": 46.913,
+          "end": 46.9988
+        },
+        {
+          "word": "work",
+          "start": 47.041,
+          "end": 47.212
+        },
+        {
+          "word": "that",
+          "start": 47.297,
+          "end": 47.425
+        },
+        {
+          "word": "proves",
+          "start": 47.468,
+          "end": 47.681
+        },
+        {
+          "word": "the",
+          "start": 47.767,
+          "end": 47.852
+        },
+        {
+          "word": "claim.",
+          "start": 47.895,
+          "end": 48.272
+        }
+      ]
+    },
+    {
+      "key": "inventory",
+      "title": "Check the inventory against the evidence",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=e90f7899-7740-4cbb-8e23-4080ddbc4418.wav",
+      "duration_seconds": 48.97959183673469,
+      "word_timestamps": [
+        {
+          "word": "A",
+          "start": 0.299,
+          "end": 0.384
+        },
+        {
+          "word": "verified",
+          "start": 0.427,
+          "end": 0.725
+        },
+        {
+          "word": "inventory",
+          "start": 0.896,
+          "end": 1.365
+        },
+        {
+          "word": "needs",
+          "start": 1.493,
+          "end": 1.664
+        },
+        {
+          "word": "ten",
+          "start": 1.792,
+          "end": 2.048
+        },
+        {
+          "word": "capability",
+          "start": 2.219,
+          "end": 2.773
+        },
+        {
+          "word": "entries.",
+          "start": 2.944,
+          "end": 3.541
+        },
+        {
+          "word": "Each",
+          "start": 3.84,
+          "end": 4.053
+        },
+        {
+          "word": "includes",
+          "start": 4.139,
+          "end": 4.48
+        },
+        {
+          "word": "a",
+          "start": 4.565,
+          "end": 4.608
+        },
+        {
+          "word": "supported",
+          "start": 4.651,
+          "end": 4.949
+        },
+        {
+          "word": "verb,",
+          "start": 5.077,
+          "end": 5.504
+        },
+        {
+          "word": "evidence,",
+          "start": 5.76,
+          "end": 6.272
+        },
+        {
+          "word": "the",
+          "start": 6.571,
+          "end": 6.6987
+        },
+        {
+          "word": "check",
+          "start": 6.741,
+          "end": 6.9547
+        },
+        {
+          "word": "and",
+          "start": 7.125,
+          "end": 7.424
+        },
+        {
+          "word": "a",
+          "start": 7.467,
+          "end": 7.509
+        },
+        {
+          "word": "limit.",
+          "start": 7.552,
+          "end": 7.875
+        },
+        {
+          "word": "In",
+          "start": 7.985,
+          "end": 8.0706
+        },
+        {
+          "word": "this",
+          "start": 8.113,
+          "end": 8.1986
+        },
+        {
+          "word": "fictional",
+          "start": 8.284,
+          "end": 8.497
+        },
+        {
+          "word": "example,",
+          "start": 8.625,
+          "end": 9.223
+        },
+        {
+          "word": "the",
+          "start": 9.564,
+          "end": 9.692
+        },
+        {
+          "word": "review",
+          "start": 9.735,
+          "end": 9.777
+        },
+        {
+          "word": "entry",
+          "start": 10.033,
+          "end": 10.2466
+        },
+        {
+          "word": "points",
+          "start": 10.332,
+          "end": 10.5026
+        },
+        {
+          "word": "to",
+          "start": 10.631,
+          "end": 10.716
+        },
+        {
+          "word": "a",
+          "start": 10.759,
+          "end": 10.844
+        },
+        {
+          "word": "draft",
+          "start": 10.887,
+          "end": 11.1426
+        },
+        {
+          "word": "containing",
+          "start": 11.313,
+          "end": 11.612
+        },
+        {
+          "word": "an",
+          "start": 11.74,
+          "end": 11.7826
+        },
+        {
+          "word": "unsupported",
+          "start": 11.868,
+          "end": 12.4226
+        },
+        {
+          "word": "date",
+          "start": 12.551,
+          "end": 12.764
+        },
+        {
+          "word": "and",
+          "start": 12.977,
+          "end": 13.319
+        },
+        {
+          "word": "the",
+          "start": 13.361,
+          "end": 13.4466
+        },
+        {
+          "word": "corrected",
+          "start": 13.489,
+          "end": 13.745
+        },
+        {
+          "word": "missing-information",
+          "start": 13.959,
+          "end": 14.684
+        },
+        {
+          "word": "walkthrough.",
+          "start": 14.855,
+          "end": 15.708
+        },
+        {
+          "word": "The",
+          "start": 16.092,
+          "end": 16.177
+        },
+        {
+          "word": "improvement",
+          "start": 16.263,
+          "end": 16.6466
+        },
+        {
+          "word": "entry",
+          "start": 16.689,
+          "end": 16.945
+        },
+        {
+          "word": "points",
+          "start": 16.988,
+          "end": 17.201
+        },
+        {
+          "word": "to",
+          "start": 17.329,
+          "end": 17.372
+        },
+        {
+          "word": "the",
+          "start": 17.415,
+          "end": 17.5
+        },
+        {
+          "word": "specific",
+          "start": 17.543,
+          "end": 17.841
+        },
+        {
+          "word": "correction",
+          "start": 17.969,
+          "end": 18.268
+        },
+        {
+          "word": "and",
+          "start": 18.524,
+          "end": 18.865
+        },
+        {
+          "word": "the",
+          "start": 18.908,
+          "end": 18.993
+        },
+        {
+          "word": "revised",
+          "start": 19.036,
+          "end": 19.377
+        },
+        {
+          "word": "result.",
+          "start": 19.463,
+          "end": 20.025
+        },
+        {
+          "word": "They",
+          "start": 20.375,
+          "end": 20.4598
+        },
+        {
+          "word": "describe",
+          "start": 20.503,
+          "end": 20.8438
+        },
+        {
+          "word": "distinct",
+          "start": 20.929,
+          "end": 21.27
+        },
+        {
+          "word": "actions,",
+          "start": 21.398,
+          "end": 21.868
+        },
+        {
+          "word": "but",
+          "start": 22.166,
+          "end": 22.337
+        },
+        {
+          "word": "each",
+          "start": 22.38,
+          "end": 22.593
+        },
+        {
+          "word": "must",
+          "start": 22.721,
+          "end": 22.8918
+        },
+        {
+          "word": "have",
+          "start": 22.977,
+          "end": 23.1478
+        },
+        {
+          "word": "support.",
+          "start": 23.191,
+          "end": 23.852
+        },
+        {
+          "word": "An",
+          "start": 24.343,
+          "end": 24.4705
+        },
+        {
+          "word": "AI",
+          "start": 24.513,
+          "end": 24.8118
+        },
+        {
+          "word": "suggestion",
+          "start": 24.897,
+          "end": 25.366
+        },
+        {
+          "word": "says",
+          "start": 25.409,
+          "end": 25.622
+        },
+        {
+          "word": "the",
+          "start": 25.836,
+          "end": 26.262
+        },
+        {
+          "word": "work",
+          "start": 26.305,
+          "end": 26.433
+        },
+        {
+          "word": "saved",
+          "start": 26.518,
+          "end": 26.689
+        },
+        {
+          "word": "ten",
+          "start": 26.774,
+          "end": 26.945
+        },
+        {
+          "word": "hours",
+          "start": 26.988,
+          "end": 27.1585
+        },
+        {
+          "word": "and",
+          "start": 27.329,
+          "end": 27.4998
+        },
+        {
+          "word": "made",
+          "start": 27.543,
+          "end": 27.6705
+        },
+        {
+          "word": "the",
+          "start": 27.713,
+          "end": 27.841
+        },
+        {
+          "word": "author",
+          "start": 27.884,
+          "end": 28.0118
+        },
+        {
+          "word": "a",
+          "start": 28.183,
+          "end": 28.225
+        },
+        {
+          "word": "certified",
+          "start": 28.268,
+          "end": 28.5238
+        },
+        {
+          "word": "consultant.",
+          "start": 28.78,
+          "end": 29.569
+        },
+        {
+          "word": "Neither",
+          "start": 29.846,
+          "end": 30.102
+        },
+        {
+          "word": "claim",
+          "start": 30.23,
+          "end": 30.4438
+        },
+        {
+          "word": "appears",
+          "start": 30.529,
+          "end": 30.785
+        },
+        {
+          "word": "in",
+          "start": 30.913,
+          "end": 30.998
+        },
+        {
+          "word": "the",
+          "start": 31.041,
+          "end": 31.0838
+        },
+        {
+          "word": "supplied",
+          "start": 31.127,
+          "end": 31.425
+        },
+        {
+          "word": "evidence.",
+          "start": 31.511,
+          "end": 31.937
+        },
+        {
+          "word": "Remove",
+          "start": 32.236,
+          "end": 32.5345
+        },
+        {
+          "word": "both.",
+          "start": 32.62,
+          "end": 33.116
+        },
+        {
+          "word": "If",
+          "start": 33.398,
+          "end": 33.526
+        },
+        {
+          "word": "one",
+          "start": 33.611,
+          "end": 33.739
+        },
+        {
+          "word": "of",
+          "start": 33.782,
+          "end": 33.8248
+        },
+        {
+          "word": "your",
+          "start": 33.867,
+          "end": 33.9528
+        },
+        {
+          "word": "ten",
+          "start": 33.995,
+          "end": 34.123
+        },
+        {
+          "word": "entries",
+          "start": 34.166,
+          "end": 34.4648
+        },
+        {
+          "word": "is",
+          "start": 34.593,
+          "end": 34.7635
+        },
+        {
+          "word": "missing",
+          "start": 34.849,
+          "end": 35.0195
+        },
+        {
+          "word": "its",
+          "start": 35.19,
+          "end": 35.2755
+        },
+        {
+          "word": "evidence,",
+          "start": 35.361,
+          "end": 35.809
+        },
+        {
+          "word": "mark",
+          "start": 36.086,
+          "end": 36.3848
+        },
+        {
+          "word": "it",
+          "start": 36.428,
+          "end": 36.5128
+        },
+        {
+          "word": "pending",
+          "start": 36.556,
+          "end": 36.726
+        },
+        {
+          "word": "and",
+          "start": 36.94,
+          "end": 37.11
+        },
+        {
+          "word": "resolve",
+          "start": 37.153,
+          "end": 37.537
+        },
+        {
+          "word": "it",
+          "start": 37.58,
+          "end": 37.622
+        },
+        {
+          "word": "before",
+          "start": 37.665,
+          "end": 37.75
+        },
+        {
+          "word": "final",
+          "start": 37.964,
+          "end": 38.262
+        },
+        {
+          "word": "submission.",
+          "start": 38.39,
+          "end": 39.137
+        },
+        {
+          "word": "Keep",
+          "start": 39.542,
+          "end": 39.7128
+        },
+        {
+          "word": "the",
+          "start": 39.798,
+          "end": 39.883
+        },
+        {
+          "word": "same",
+          "start": 39.926,
+          "end": 40.0968
+        },
+        {
+          "word": "course",
+          "start": 40.182,
+          "end": 40.31
+        },
+        {
+          "word": "work;",
+          "start": 40.438,
+          "end": 40.822
+        },
+        {
+          "word": "do",
+          "start": 41.035,
+          "end": 41.2488
+        },
+        {
+          "word": "not",
+          "start": 41.291,
+          "end": 41.419
+        },
+        {
+          "word": "fill",
+          "start": 41.505,
+          "end": 41.6328
+        },
+        {
+          "word": "a",
+          "start": 41.675,
+          "end": 41.7608
+        },
+        {
+          "word": "gap",
+          "start": 41.803,
+          "end": 41.974
+        },
+        {
+          "word": "with",
+          "start": 42.102,
+          "end": 42.1875
+        },
+        {
+          "word": "an",
+          "start": 42.23,
+          "end": 42.2728
+        },
+        {
+          "word": "invented",
+          "start": 42.316,
+          "end": 42.742
+        },
+        {
+          "word": "achievement.",
+          "start": 42.828,
+          "end": 43.456
+        },
+        {
+          "word": "Practice",
+          "start": 43.701,
+          "end": 44.128
+        },
+        {
+          "word": "explaining",
+          "start": 44.213,
+          "end": 44.597
+        },
+        {
+          "word": "one",
+          "start": 44.768,
+          "end": 45.0666
+        },
+        {
+          "word": "checked",
+          "start": 45.195,
+          "end": 45.4506
+        },
+        {
+          "word": "entry",
+          "start": 45.493,
+          "end": 45.792
+        },
+        {
+          "word": "while",
+          "start": 45.963,
+          "end": 46.432
+        },
+        {
+          "word": "showing",
+          "start": 46.475,
+          "end": 46.7306
+        },
+        {
+          "word": "the",
+          "start": 46.901,
+          "end": 46.9866
+        },
+        {
+          "word": "exact",
+          "start": 47.072,
+          "end": 47.413
+        },
+        {
+          "word": "supporting",
+          "start": 47.541,
+          "end": 47.84
+        },
+        {
+          "word": "artifact.",
+          "start": 47.968,
+          "end": 48.74
+        }
+      ]
+    },
+    {
+      "key": "value",
+      "title": "Select the strongest Value Connections",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=4acee417-61e8-48b6-965f-38442a851f88.wav",
+      "duration_seconds": 48.53551020408163,
+      "word_timestamps": [
+        {
+          "word": "Build",
+          "start": 0.299,
+          "end": 0.5547
+        },
+        {
+          "word": "three",
+          "start": 0.768,
+          "end": 0.981
+        },
+        {
+          "word": "Value",
+          "start": 1.109,
+          "end": 1.365
+        },
+        {
+          "word": "Connections",
+          "start": 1.408,
+          "end": 1.621
+        },
+        {
+          "word": "from",
+          "start": 1.835,
+          "end": 1.9627
+        },
+        {
+          "word": "checked",
+          "start": 2.005,
+          "end": 2.2187
+        },
+        {
+          "word": "capabilities.",
+          "start": 2.304,
+          "end": 3.051
+        },
+        {
+          "word": "In",
+          "start": 3.413,
+          "end": 3.584
+        },
+        {
+          "word": "our",
+          "start": 3.627,
+          "end": 3.712
+        },
+        {
+          "word": "fictional",
+          "start": 3.755,
+          "end": 3.968
+        },
+        {
+          "word": "case,",
+          "start": 4.096,
+          "end": 4.501
+        },
+        {
+          "word": "the",
+          "start": 4.736,
+          "end": 4.864
+        },
+        {
+          "word": "capability",
+          "start": 4.907,
+          "end": 5.333
+        },
+        {
+          "word": "is",
+          "start": 5.504,
+          "end": 5.589
+        },
+        {
+          "word": "a",
+          "start": 5.632,
+          "end": 5.6747
+        },
+        {
+          "word": "reviewed",
+          "start": 5.717,
+          "end": 6.0587
+        },
+        {
+          "word": "proposal",
+          "start": 6.101,
+          "end": 6.485
+        },
+        {
+          "word": "workflow.",
+          "start": 6.571,
+          "end": 7.509
+        },
+        {
+          "word": "The",
+          "start": 8.021,
+          "end": 8.064
+        },
+        {
+          "word": "context",
+          "start": 8.107,
+          "end": 8.576
+        },
+        {
+          "word": "is",
+          "start": 8.704,
+          "end": 8.832
+        },
+        {
+          "word": "an",
+          "start": 8.875,
+          "end": 8.917
+        },
+        {
+          "word": "incomplete",
+          "start": 8.96,
+          "end": 9.344
+        },
+        {
+          "word": "proposal",
+          "start": 9.557,
+          "end": 9.8987
+        },
+        {
+          "word": "draft.",
+          "start": 9.941,
+          "end": 10.56
+        },
+        {
+          "word": "The",
+          "start": 10.923,
+          "end": 11.008
+        },
+        {
+          "word": "people",
+          "start": 11.051,
+          "end": 11.1787
+        },
+        {
+          "word": "include",
+          "start": 11.307,
+          "end": 11.563
+        },
+        {
+          "word": "the",
+          "start": 11.605,
+          "end": 11.6907
+        },
+        {
+          "word": "reviewer",
+          "start": 11.733,
+          "end": 11.989
+        },
+        {
+          "word": "and",
+          "start": 12.117,
+          "end": 12.501
+        },
+        {
+          "word": "the",
+          "start": 12.544,
+          "end": 12.5867
+        },
+        {
+          "word": "person",
+          "start": 12.629,
+          "end": 12.8
+        },
+        {
+          "word": "relying",
+          "start": 12.928,
+          "end": 13.184
+        },
+        {
+          "word": "on",
+          "start": 13.312,
+          "end": 13.355
+        },
+        {
+          "word": "the",
+          "start": 13.397,
+          "end": 13.44
+        },
+        {
+          "word": "date.",
+          "start": 13.483,
+          "end": 13.798
+        },
+        {
+          "word": "The",
+          "start": 13.943,
+          "end": 14.0709
+        },
+        {
+          "word": "observed",
+          "start": 14.114,
+          "end": 14.4549
+        },
+        {
+          "word": "improvement",
+          "start": 14.626,
+          "end": 15.052
+        },
+        {
+          "word": "is",
+          "start": 15.18,
+          "end": 15.265
+        },
+        {
+          "word": "that",
+          "start": 15.308,
+          "end": 15.436
+        },
+        {
+          "word": "the",
+          "start": 15.479,
+          "end": 15.521
+        },
+        {
+          "word": "revised",
+          "start": 15.564,
+          "end": 15.9909
+        },
+        {
+          "word": "fictional",
+          "start": 16.119,
+          "end": 16.4175
+        },
+        {
+          "word": "draft",
+          "start": 16.546,
+          "end": 16.8015
+        },
+        {
+          "word": "flags",
+          "start": 16.93,
+          "end": 17.3135
+        },
+        {
+          "word": "the",
+          "start": 17.399,
+          "end": 17.442
+        },
+        {
+          "word": "missing",
+          "start": 17.484,
+          "end": 17.5695
+        },
+        {
+          "word": "date",
+          "start": 17.74,
+          "end": 17.953
+        },
+        {
+          "word": "instead",
+          "start": 18.124,
+          "end": 18.252
+        },
+        {
+          "word": "of",
+          "start": 18.423,
+          "end": 18.508
+        },
+        {
+          "word": "inventing",
+          "start": 18.551,
+          "end": 18.892
+        },
+        {
+          "word": "it.",
+          "start": 18.977,
+          "end": 19.404
+        },
+        {
+          "word": "The",
+          "start": 19.745,
+          "end": 19.8309
+        },
+        {
+          "word": "evidence",
+          "start": 19.873,
+          "end": 20.044
+        },
+        {
+          "word": "includes",
+          "start": 20.215,
+          "end": 20.556
+        },
+        {
+          "word": "the",
+          "start": 20.642,
+          "end": 20.7269
+        },
+        {
+          "word": "input,",
+          "start": 20.77,
+          "end": 21.282
+        },
+        {
+          "word": "first",
+          "start": 21.41,
+          "end": 21.6229
+        },
+        {
+          "word": "draft,",
+          "start": 21.751,
+          "end": 22.114
+        },
+        {
+          "word": "correction",
+          "start": 22.263,
+          "end": 22.561
+        },
+        {
+          "word": "and",
+          "start": 22.817,
+          "end": 22.945
+        },
+        {
+          "word": "revised",
+          "start": 22.988,
+          "end": 23.372
+        },
+        {
+          "word": "walkthrough.",
+          "start": 23.457,
+          "end": 24.14
+        },
+        {
+          "word": "A",
+          "start": 24.439,
+          "end": 24.4815
+        },
+        {
+          "word": "second",
+          "start": 24.524,
+          "end": 24.7375
+        },
+        {
+          "word": "connection",
+          "start": 24.908,
+          "end": 25.1215
+        },
+        {
+          "word": "concerns",
+          "start": 25.335,
+          "end": 25.7189
+        },
+        {
+          "word": "a",
+          "start": 25.847,
+          "end": 25.8895
+        },
+        {
+          "word": "clearer",
+          "start": 25.932,
+          "end": 26.2309
+        },
+        {
+          "word": "reviewer",
+          "start": 26.316,
+          "end": 26.657
+        },
+        {
+          "word": "handoff.",
+          "start": 26.743,
+          "end": 27.368
+        },
+        {
+          "word": "A",
+          "start": 27.609,
+          "end": 27.6518
+        },
+        {
+          "word": "third",
+          "start": 27.695,
+          "end": 27.9078
+        },
+        {
+          "word": "concerns",
+          "start": 28.249,
+          "end": 28.8038
+        },
+        {
+          "word": "reusable",
+          "start": 28.974,
+          "end": 29.401
+        },
+        {
+          "word": "review",
+          "start": 29.572,
+          "end": 29.742
+        },
+        {
+          "word": "guidance.",
+          "start": 29.956,
+          "end": 30.66
+        },
+        {
+          "word": "Select",
+          "start": 31.023,
+          "end": 31.321
+        },
+        {
+          "word": "the",
+          "start": 31.407,
+          "end": 31.4918
+        },
+        {
+          "word": "two",
+          "start": 31.535,
+          "end": 31.7478
+        },
+        {
+          "word": "best",
+          "start": 31.833,
+          "end": 32.0038
+        },
+        {
+          "word": "supported",
+          "start": 32.132,
+          "end": 32.473
+        },
+        {
+          "word": "by",
+          "start": 32.644,
+          "end": 32.729
+        },
+        {
+          "word": "the",
+          "start": 32.772,
+          "end": 32.8145
+        },
+        {
+          "word": "retained",
+          "start": 32.857,
+          "end": 33.241
+        },
+        {
+          "word": "work",
+          "start": 33.284,
+          "end": 33.497
+        },
+        {
+          "word": "and",
+          "start": 33.668,
+          "end": 33.881
+        },
+        {
+          "word": "explain",
+          "start": 33.967,
+          "end": 34.094
+        },
+        {
+          "word": "your",
+          "start": 34.308,
+          "end": 34.4358
+        },
+        {
+          "word": "choice.",
+          "start": 34.478,
+          "end": 35.033
+        },
+        {
+          "word": "Do",
+          "start": 35.374,
+          "end": 35.502
+        },
+        {
+          "word": "not",
+          "start": 35.545,
+          "end": 35.7158
+        },
+        {
+          "word": "claim",
+          "start": 35.758,
+          "end": 35.929
+        },
+        {
+          "word": "a",
+          "start": 36.014,
+          "end": 36.057
+        },
+        {
+          "word": "real",
+          "start": 36.1,
+          "end": 36.2278
+        },
+        {
+          "word": "team",
+          "start": 36.356,
+          "end": 36.526
+        },
+        {
+          "word": "already",
+          "start": 36.654,
+          "end": 36.91
+        },
+        {
+          "word": "benefited",
+          "start": 37.038,
+          "end": 37.3798
+        },
+        {
+          "word": "when",
+          "start": 37.55,
+          "end": 37.636
+        },
+        {
+          "word": "the",
+          "start": 37.678,
+          "end": 37.7638
+        },
+        {
+          "word": "test",
+          "start": 37.806,
+          "end": 37.977
+        },
+        {
+          "word": "was",
+          "start": 38.062,
+          "end": 38.1478
+        },
+        {
+          "word": "fictional.",
+          "start": 38.191,
+          "end": 38.775
+        },
+        {
+          "word": "A",
+          "start": 39.019,
+          "end": 39.104
+        },
+        {
+          "word": "possible",
+          "start": 39.147,
+          "end": 39.403
+        },
+        {
+          "word": "future",
+          "start": 39.616,
+          "end": 39.787
+        },
+        {
+          "word": "benefit",
+          "start": 39.915,
+          "end": 40.3417
+        },
+        {
+          "word": "stays",
+          "start": 40.64,
+          "end": 41.024
+        },
+        {
+          "word": "a",
+          "start": 41.067,
+          "end": 41.152
+        },
+        {
+          "word": "possible",
+          "start": 41.195,
+          "end": 41.408
+        },
+        {
+          "word": "benefit",
+          "start": 41.579,
+          "end": 42.048
+        },
+        {
+          "word": "until",
+          "start": 42.176,
+          "end": 42.475
+        },
+        {
+          "word": "the",
+          "start": 42.646,
+          "end": 42.731
+        },
+        {
+          "word": "intended",
+          "start": 42.774,
+          "end": 43.072
+        },
+        {
+          "word": "setting",
+          "start": 43.2,
+          "end": 43.4137
+        },
+        {
+          "word": "has",
+          "start": 43.584,
+          "end": 43.712
+        },
+        {
+          "word": "evidence.",
+          "start": 43.798,
+          "end": 44.651
+        },
+        {
+          "word": "Keep",
+          "start": 45.291,
+          "end": 45.4617
+        },
+        {
+          "word": "the",
+          "start": 45.547,
+          "end": 45.632
+        },
+        {
+          "word": "people,",
+          "start": 45.675,
+          "end": 46.102
+        },
+        {
+          "word": "conditions",
+          "start": 46.358,
+          "end": 46.656
+        },
+        {
+          "word": "and",
+          "start": 46.912,
+          "end": 47.339
+        },
+        {
+          "word": "limits",
+          "start": 47.424,
+          "end": 47.6377
+        },
+        {
+          "word": "visible.",
+          "start": 47.766,
+          "end": 48.307
+        }
+      ]
+    },
+    {
+      "key": "story",
+      "title": "Tell the Evidence Story and show the work",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=0d82e00f-7409-43c3-83ab-866982df5ae6.wav",
+      "duration_seconds": 53.23755102040816,
+      "word_timestamps": [
+        {
+          "word": "Use",
+          "start": 0.299,
+          "end": 0.469
+        },
+        {
+          "word": "context,",
+          "start": 0.512,
+          "end": 1.173
+        },
+        {
+          "word": "purpose,",
+          "start": 1.365,
+          "end": 1.877
+        },
+        {
+          "word": "action,",
+          "start": 2.133,
+          "end": 2.731
+        },
+        {
+          "word": "AI",
+          "start": 2.901,
+          "end": 3.4987
+        },
+        {
+          "word": "role,",
+          "start": 3.584,
+          "end": 3.947
+        },
+        {
+          "word": "human",
+          "start": 4.139,
+          "end": 4.309
+        },
+        {
+          "word": "judgment,",
+          "start": 4.437,
+          "end": 4.992
+        },
+        {
+          "word": "result",
+          "start": 5.163,
+          "end": 5.333
+        },
+        {
+          "word": "and",
+          "start": 5.589,
+          "end": 5.888
+        },
+        {
+          "word": "limit.",
+          "start": 5.931,
+          "end": 6.656
+        },
+        {
+          "word": "Our",
+          "start": 7.083,
+          "end": 7.253
+        },
+        {
+          "word": "supplied",
+          "start": 7.296,
+          "end": 7.637
+        },
+        {
+          "word": "fictional",
+          "start": 7.723,
+          "end": 7.9787
+        },
+        {
+          "word": "story",
+          "start": 8.107,
+          "end": 8.32
+        },
+        {
+          "word": "says",
+          "start": 8.448,
+          "end": 8.661
+        },
+        {
+          "word": "the",
+          "start": 8.832,
+          "end": 9.173
+        },
+        {
+          "word": "person",
+          "start": 9.216,
+          "end": 9.3867
+        },
+        {
+          "word": "wanted",
+          "start": 9.515,
+          "end": 9.6427
+        },
+        {
+          "word": "missing",
+          "start": 9.771,
+          "end": 9.8987
+        },
+        {
+          "word": "delivery",
+          "start": 10.069,
+          "end": 10.325
+        },
+        {
+          "word": "details",
+          "start": 10.453,
+          "end": 10.581
+        },
+        {
+          "word": "to",
+          "start": 10.837,
+          "end": 10.965
+        },
+        {
+          "word": "remain",
+          "start": 11.008,
+          "end": 11.0507
+        },
+        {
+          "word": "visible,",
+          "start": 11.264,
+          "end": 11.755
+        },
+        {
+          "word": "designed",
+          "start": 12.032,
+          "end": 12.3307
+        },
+        {
+          "word": "a",
+          "start": 12.416,
+          "end": 12.4587
+        },
+        {
+          "word": "review",
+          "start": 12.501,
+          "end": 12.5867
+        },
+        {
+          "word": "workflow",
+          "start": 12.757,
+          "end": 13.184
+        },
+        {
+          "word": "and",
+          "start": 13.312,
+          "end": 13.653
+        },
+        {
+          "word": "tested",
+          "start": 13.696,
+          "end": 14.037
+        },
+        {
+          "word": "two",
+          "start": 14.123,
+          "end": 14.293
+        },
+        {
+          "word": "fictional",
+          "start": 14.336,
+          "end": 14.6347
+        },
+        {
+          "word": "cases.",
+          "start": 14.763,
+          "end": 15.467
+        },
+        {
+          "word": "AI",
+          "start": 16,
+          "end": 16.341
+        },
+        {
+          "word": "prepared",
+          "start": 16.469,
+          "end": 16.597
+        },
+        {
+          "word": "a",
+          "start": 16.811,
+          "end": 16.896
+        },
+        {
+          "word": "draft.",
+          "start": 16.939,
+          "end": 17.268
+        },
+        {
+          "word": "The",
+          "start": 17.426,
+          "end": 17.5539
+        },
+        {
+          "word": "person",
+          "start": 17.596,
+          "end": 17.724
+        },
+        {
+          "word": "found",
+          "start": 17.895,
+          "end": 18.108
+        },
+        {
+          "word": "an",
+          "start": 18.194,
+          "end": 18.236
+        },
+        {
+          "word": "unsupported",
+          "start": 18.279,
+          "end": 18.7059
+        },
+        {
+          "word": "date,",
+          "start": 18.834,
+          "end": 19.218
+        },
+        {
+          "word": "corrected",
+          "start": 19.389,
+          "end": 19.687
+        },
+        {
+          "word": "the",
+          "start": 19.815,
+          "end": 19.9005
+        },
+        {
+          "word": "review",
+          "start": 19.943,
+          "end": 20.0285
+        },
+        {
+          "word": "instruction",
+          "start": 20.199,
+          "end": 20.4979
+        },
+        {
+          "word": "and",
+          "start": 20.754,
+          "end": 21.1379
+        },
+        {
+          "word": "checked",
+          "start": 21.18,
+          "end": 21.3939
+        },
+        {
+          "word": "the",
+          "start": 21.436,
+          "end": 21.5219
+        },
+        {
+          "word": "revised",
+          "start": 21.564,
+          "end": 21.863
+        },
+        {
+          "word": "walkthrough.",
+          "start": 21.948,
+          "end": 22.61
+        },
+        {
+          "word": "The",
+          "start": 22.887,
+          "end": 23.015
+        },
+        {
+          "word": "result",
+          "start": 23.058,
+          "end": 23.2285
+        },
+        {
+          "word": "was",
+          "start": 23.485,
+          "end": 23.655
+        },
+        {
+          "word": "a",
+          "start": 23.698,
+          "end": 23.783
+        },
+        {
+          "word": "visible",
+          "start": 23.826,
+          "end": 24.0819
+        },
+        {
+          "word": "missing-date",
+          "start": 24.295,
+          "end": 24.892
+        },
+        {
+          "word": "question",
+          "start": 24.935,
+          "end": 25.148
+        },
+        {
+          "word": "in",
+          "start": 25.404,
+          "end": 25.66
+        },
+        {
+          "word": "that",
+          "start": 25.703,
+          "end": 25.831
+        },
+        {
+          "word": "exercise.",
+          "start": 25.916,
+          "end": 26.749
+        },
+        {
+          "word": "The",
+          "start": 27.41,
+          "end": 27.5379
+        },
+        {
+          "word": "limit",
+          "start": 27.581,
+          "end": 27.7939
+        },
+        {
+          "word": "is",
+          "start": 27.879,
+          "end": 27.9645
+        },
+        {
+          "word": "no",
+          "start": 28.007,
+          "end": 28.1779
+        },
+        {
+          "word": "real",
+          "start": 28.221,
+          "end": 28.3485
+        },
+        {
+          "word": "customer",
+          "start": 28.434,
+          "end": 28.7325
+        },
+        {
+          "word": "outcome",
+          "start": 28.86,
+          "end": 29.244
+        },
+        {
+          "word": "or",
+          "start": 29.33,
+          "end": 29.4579
+        },
+        {
+          "word": "permission",
+          "start": 29.5,
+          "end": 29.7139
+        },
+        {
+          "word": "to",
+          "start": 29.884,
+          "end": 29.9699
+        },
+        {
+          "word": "send.",
+          "start": 30.012,
+          "end": 30.448
+        },
+        {
+          "word": "Remove",
+          "start": 30.713,
+          "end": 31.054
+        },
+        {
+          "word": "private",
+          "start": 31.139,
+          "end": 31.3528
+        },
+        {
+          "word": "details",
+          "start": 31.438,
+          "end": 31.6088
+        },
+        {
+          "word": "before",
+          "start": 31.907,
+          "end": 32.035
+        },
+        {
+          "word": "sharing.",
+          "start": 32.206,
+          "end": 32.718
+        },
+        {
+          "word": "Label",
+          "start": 33.017,
+          "end": 33.2728
+        },
+        {
+          "word": "a",
+          "start": 33.401,
+          "end": 33.443
+        },
+        {
+          "word": "sanitized",
+          "start": 33.486,
+          "end": 33.998
+        },
+        {
+          "word": "or",
+          "start": 34.126,
+          "end": 34.211
+        },
+        {
+          "word": "recreated",
+          "start": 34.254,
+          "end": 34.638
+        },
+        {
+          "word": "illustration",
+          "start": 34.723,
+          "end": 35.1928
+        },
+        {
+          "word": "accurately;",
+          "start": 35.363,
+          "end": 35.918
+        },
+        {
+          "word": "it",
+          "start": 36.046,
+          "end": 36.43
+        },
+        {
+          "word": "is",
+          "start": 36.473,
+          "end": 36.515
+        },
+        {
+          "word": "not",
+          "start": 36.601,
+          "end": 36.814
+        },
+        {
+          "word": "an",
+          "start": 36.942,
+          "end": 37.027
+        },
+        {
+          "word": "original",
+          "start": 37.07,
+          "end": 37.283
+        },
+        {
+          "word": "result",
+          "start": 37.497,
+          "end": 37.667
+        },
+        {
+          "word": "record.",
+          "start": 37.838,
+          "end": 38.606
+        },
+        {
+          "word": "Finish",
+          "start": 39.246,
+          "end": 39.502
+        },
+        {
+          "word": "by",
+          "start": 39.587,
+          "end": 39.715
+        },
+        {
+          "word": "explaining",
+          "start": 39.801,
+          "end": 40.099
+        },
+        {
+          "word": "one",
+          "start": 40.227,
+          "end": 40.398
+        },
+        {
+          "word": "capability",
+          "start": 40.483,
+          "end": 40.91
+        },
+        {
+          "word": "in",
+          "start": 41.123,
+          "end": 41.209
+        },
+        {
+          "word": "a",
+          "start": 41.251,
+          "end": 41.294
+        },
+        {
+          "word": "professional",
+          "start": 41.337,
+          "end": 41.635
+        },
+        {
+          "word": "context",
+          "start": 41.849,
+          "end": 42.275
+        },
+        {
+          "word": "and",
+          "start": 42.446,
+          "end": 42.574
+        },
+        {
+          "word": "opening",
+          "start": 42.617,
+          "end": 42.83
+        },
+        {
+          "word": "the",
+          "start": 43.043,
+          "end": 43.1288
+        },
+        {
+          "word": "supporting",
+          "start": 43.171,
+          "end": 43.427
+        },
+        {
+          "word": "work.",
+          "start": 43.555,
+          "end": 43.95
+        },
+        {
+          "word": "Save",
+          "start": 44.174,
+          "end": 44.4298
+        },
+        {
+          "word": "the",
+          "start": 44.515,
+          "end": 44.6
+        },
+        {
+          "word": "verified",
+          "start": 44.643,
+          "end": 44.984
+        },
+        {
+          "word": "ten-entry",
+          "start": 45.283,
+          "end": 45.795
+        },
+        {
+          "word": "inventory,",
+          "start": 45.88,
+          "end": 46.542
+        },
+        {
+          "word": "two",
+          "start": 46.776,
+          "end": 46.947
+        },
+        {
+          "word": "selected",
+          "start": 46.99,
+          "end": 47.3738
+        },
+        {
+          "word": "Value",
+          "start": 47.459,
+          "end": 47.758
+        },
+        {
+          "word": "Connections",
+          "start": 47.8,
+          "end": 47.971
+        },
+        {
+          "word": "and",
+          "start": 48.27,
+          "end": 48.739
+        },
+        {
+          "word": "privacy-safe",
+          "start": 48.782,
+          "end": 49.4645
+        },
+        {
+          "word": "story",
+          "start": 49.507,
+          "end": 49.7205
+        },
+        {
+          "word": "in",
+          "start": 49.891,
+          "end": 50.1045
+        },
+        {
+          "word": "Professional",
+          "start": 50.147,
+          "end": 50.531
+        },
+        {
+          "word": "Positioning",
+          "start": 50.659,
+          "end": 51.0005
+        },
+        {
+          "word": "Evidence",
+          "start": 51.086,
+          "end": 51.3418
+        },
+        {
+          "word": "and",
+          "start": 51.555,
+          "end": 51.8965
+        },
+        {
+          "word": "the",
+          "start": 51.939,
+          "end": 52.0245
+        },
+        {
+          "word": "connected",
+          "start": 52.067,
+          "end": 52.2378
+        },
+        {
+          "word": "workbook.",
+          "start": 52.408,
+          "end": 52.99766439909297
+        }
+      ]
+    }
+  ],
+  "visual_plan": {
+    "introduction": "Welcome back to the AI Confidence Academy. This is Phase Two, Journey Six, Lesson One: Recognize Capability and Connect It to Value.\n\nYou have built, reviewed, improved and tested work across the course. This final journey brings that evidence together. Today you will explain what you can do, who that work can help, and what the evidence actually supports.\n\nSaying I used an AI tool describes an activity. Saying I designed and tested a reviewed proposal workflow using fictional cases describes a capability you can show. The difference is the work behind the statement.\n\nWe will use five practical verbs: explain, do, review, improve and show. Each statement needs a supporting example and an honest limit. Capability does not automatically give you a professional title, permission to act, or a qualification you have not earned.\n\nYou will create an inventory of ten capabilities from your own course work. Then develop three Value Connections, select the two strongest, and write one short Evidence Story for your continuing project. A Value Connection identifies your capability, its context, the people it serves, the improvement and the supporting evidence.\n\nYour Evidence Story will explain the purpose, your action, the AI role, your judgment, the result and the remaining limit. Remove private details and label fictional, sanitized or recreated examples accurately.\n\nKeep the same Project Record and connected workbook. By the end, you will explain one capability in a professional setting and show the work that supports it. AI assists. Humans verify. Let's begin.",
+    "chapters": [
+      {
+        "title": "Recognize what your work demonstrates",
+        "transcript": "Open your continuing Project Record and the evidence you retained across the first five journeys. You have requests, decisions, drafts, reviews, corrections, tests and operating guidance. This lesson helps you describe what that work demonstrates in a professional setting. You are using the same project, with its real strengths and remaining limits.\n\nAn activity says what you spent time doing. A capability says what you can explain or perform, supported by work another person can inspect. I used an AI tool describes activity. I designed and tested a reviewed proposal workflow using fictional cases describes a capability. The second statement names the task, the review and the conditions of the test. It also points toward evidence.\n\nUse five practical verbs to examine your work: explain, do, review, improve and show. Explain means you can describe the purpose, choices and limits in your own words. Do means you can perform a bounded task. Review means you can check work against a stated standard. Improve means you can identify a defect, make a useful correction and examine the revised result. Show means you can demonstrate the work and point to evidence supporting your account.\n\nThese verbs describe different parts of a capability. A person may explain a workflow without having run it. Someone may produce a draft without having reviewed its accuracy. A revised instruction may look clearer without a completed retest. Choose the verb that matches your evidence. Use several verbs when each is supported. You do not need to pretend every course activity proves every kind of capability.\n\nOur fictional teaching case concerns a proposal-review workflow. The supplied evidence includes a scope note, one normal fictional case, a missing-information case, a human review checklist and a before-and-after correction. In the first walkthrough, the draft included a delivery date that the fictional input did not provide. In the revised walkthrough, the missing date stays visible as a question for human review. These observations are supplied for teaching. They are not results from your project.\n\nThe case supports a statement about designing and testing a reviewed workflow with those fictional cases. It supports an explanation of why a missing date should remain a question. It does not support claims about actual customer sales, measured time savings, all possible errors or live business deployment. A narrow statement with visible work is more useful than a large claim without support.\n\nCapability and authority are separate. Authority means the role, permission or qualification that allows an action. Showing that you can prepare a checked draft does not give you permission to send it for an organization. Finishing an Academy exercise does not create a job title, professional license or qualification that has not been earned. Name your actual role and the actual permission boundary.\n\nNow look at your own evidence. Choose one retained piece of work. Write the activity first, then rewrite it as a capability using a supported verb. Add the evidence reference and the condition that limits the statement. If the evidence is missing, mark the statement pending. Keep your professional account grounded in what you can demonstrate."
+      },
+      {
+        "title": "Build a verified inventory of ten capabilities",
+        "transcript": "Create an inventory of ten capabilities from your course work. An inventory is a clear list. Verified means you have compared each statement with supporting work and corrected claims that go beyond it. Ten is the target for this lesson. It is not a reason to invent a tenth result when only nine are supported. Find the missing work or keep the incomplete entry pending until you can support it.\n\nUse the same project and the evidence already retained across the course. You might examine how you defined a need, chose an AI role, wrote a clear request, reviewed an output, handled an exception, listened to a concern, designed a delivery route, tested a result, documented guidance or corrected a failed safeguard. These are places to look for evidence. They are not a prewritten list of capabilities you may claim without checking your work.\n\nFor each entry, write the capability, a suitable Explain, Do, Review, Improve or Show verb, the evidence reference, what you checked and the limit. A useful reference identifies the relevant artifact and the part that supports the statement. Use a version or date when it helps another person find the right work. Avoid copying private source material into a public account of your capability.\n\nReturn to our supplied proposal example. One entry might say: I can review a fictional proposal draft for unsupported delivery details. Its evidence is the supplied first and revised draft, the review note and the missing-information walkthrough. The check compares the delivery claim with the supplied input. Its limit is that these were fictional cases, with no real customer delivery or live organizational approval. That entry makes the claim inspectable.\n\nCompare an improvement claim carefully. If you say you improved the workflow, show the defect, correction and observed revised result. If you say you reduced errors, explain the actual cases examined and what changed. Do not turn a single corrected case into a percentage, a guaranteed outcome or a statement about every future use. Measured savings need a real baseline, a comparable check and a recorded result. If you have no such measurement, leave the number out.\n\nYou may use AI to help phrase your inventory. Supply a privacy-safe evidence index and use the approved request displayed in this lesson. Ask it to connect activities to supported verbs, realistic value and a limit. The request tells AI not to add titles or results. Read its answer against your actual artifacts. A polished sentence can still contain an invented achievement.\n\nRemove or revise unsupported statements. If AI changes a tabletop walkthrough into a deployed system, restore the actual test type. If it adds a specialist title, remove the title unless independently earned and appropriate. If it says a client benefited, check whether a real client was involved and whether that result was observed. Keep the distinction between a possible benefit and an established result.\n\nWhen the ten entries are ready, choose one and practice explaining it aloud. Open the supporting work as you speak. Can another person follow the connection without guessing? Can you identify your contribution and the AI contribution? Can you name the limit without weakening a truthful achievement? Save the checked inventory in the same Project Record and workbook. Unfinished evidence remains visible for correction before final submission."
+      },
+      {
+        "title": "Connect capability to people and practical value",
+        "transcript": "A capability becomes useful in context. Context is the setting, task and conditions in which the work may help. People are those who use the result or bear the consequences. Value is the practical improvement that matters to those people. This lesson uses the Value Connection: capability, context, people, improvement and evidence.\n\nWrite three Value Connections using capabilities from your checked inventory. Each should name what you can do, where that capability fits, who it serves, what may improve and which evidence supports the account. Keep the proposed use separate from an observed result. You can explain how a reviewed draft may help a team without claiming that an untested team has already benefited.\n\nIn the supplied proposal case, the capability is designing and testing a review workflow using fictional cases. The context is preparing a proposal draft with incomplete delivery information. The people are a proposal reviewer and the person who might rely on the stated date. The demonstrated improvement is that the revised fictional draft leaves the missing date visible for review instead of presenting it as confirmed. The evidence is the input, first draft, correction and revised walkthrough. Real customer outcomes remain untested.\n\nA second connection may concern human handoff. If the retained workflow identifies the unresolved question and the responsible reviewer, the evidence may support a clearer handoff in the tested exercise. It does not prove the real reviewer has access, accepts responsibility or responds within a certain time. State the actual tested conditions and any permission or access still needed.\n\nA third connection may concern reusable review guidance. A checklist can make the expected checks easier to understand in the supplied case. To claim it improves real work, you would need evidence from the intended setting. In the current exercise, describe what the checklist helped you inspect and what the walkthrough showed. Do not manufacture a business outcome to make the connection sound more impressive.\n\nYour own three connections may serve different people or different parts of the same project. Choose them because you have supporting work and a realistic use. A volunteer coordinator, a small-business owner, a colleague or a person managing an everyday task may each need clearer information, fewer unsupported claims or an understandable review route. Fit the statement to the actual audience rather than using a grand claim about transforming every organization.\n\nSelect the two strongest connections. Strongest means the claim is clear, the people and context are identifiable, the supporting work is available and the limit is honest. Explain why you chose them. A connection with a modest but demonstrated improvement may be stronger than one promising a large benefit without a test. Retain the third draft and the selection reason so your judgment is visible.\n\nFor each selected connection, ask whether the claimed improvement was observed, measured or only proposed. Use wording that matches the answer. Name the evidence needed before a proposed benefit can become a result claim. Keep private names, records and organizational details out of any shareable description. You are preparing professional positioning evidence, meaning a truthful account of what your work can demonstrate. You are not granting yourself authority or promising a result the project has not established."
+      },
+      {
+        "title": "Write and verify a privacy-safe Evidence Story",
+        "transcript": "Write one short Evidence Story for your continuing project. An Evidence Story is a clear account of the work and the evidence behind it. Use seven parts: context, purpose, action, AI role, human judgment, result and limit. These parts help another person understand the task, your contribution and what the work actually established.\n\nContext explains the setting and conditions. Purpose names the problem or useful outcome you were working toward. Action describes what you did. AI role identifies how AI helped, such as preparing a draft or suggesting test cases. Human judgment explains what you checked, decided or corrected. Result states what you observed in the actual work. Limit names what the evidence does not establish.\n\nHere is a supplied fictional teaching story. In a fictional proposal-review exercise, I wanted missing delivery information to remain visible. I designed a review workflow and tested a normal case and a case with no delivery date. AI prepared a first draft. I compared its delivery claim with the supplied input, found an unsupported date and corrected the review instruction. In the revised walkthrough, the draft flagged the missing date for human review. The retained input, drafts, checklist and walkthrough support that correction. This was fictional practice; it does not establish real sales, time savings or permission to send proposals for an organization.\n\nThe story names the contribution without claiming everything was done by AI or everything was done by the human. It shows the review decision that mattered. It gives the result the right scale. It also allows another person to open the work and ask a useful question. Use the same structure for your project, with your actual evidence and actual limitations.\n\nProtect privacy before sharing. Remove identifying details and information you do not have permission to disclose. A sanitized example has private or sensitive details removed or replaced. A recreated example has been built again to illustrate a point. Label both accurately. A recreated document is not the original record of a result. If you use a recreated illustration, explain which permitted evidence supports the underlying claim and what the illustration itself can show.\n\nRead the story sentence by sentence. Point to supporting work for every material claim. Does the stated result match the observed test? Does the AI role match the retained request and output? Does the human judgment match the review note or decision? Does the story imply live use when the test was a tabletop? Remove a claim you cannot demonstrate or mark the evidence need clearly before claiming completion.\n\nNow practice the applied completion check. Explain one capability in a professional context and show the supporting work. Identify the limit that prevents your statement from becoming an inflated claim. A listener should be able to understand what you can do and how you know. You should be able to answer a follow-up question without inventing a result or disclosing private information.\n\nSave the verified ten-capability inventory, two selected Value Connections and one privacy-safe Evidence Story as Professional Positioning Evidence in your existing Project Record. Complete the matching Journey Six workbook section. Carry missing evidence into Lesson Six Point Two, where you will finish the bounded artifact with evidence and revision. During the journey's two independent hours, strengthen the weakest evidence and rehearse your demonstration. That practice supports the same project. AI assists. Humans verify."
+      }
+    ],
+    "demos": [
+      {
+        "key": "capability",
+        "title": "Turn activity into a supported capability",
+        "transcript": "This is a fictional proposal-review exercise. The first statement says: I used an AI tool. It names an activity, but it does not show what the person can do. The retained teaching evidence includes a scope note, fictional inputs, two drafts, a review checklist and a corrected walkthrough. A supported statement is: I designed and tested a reviewed proposal workflow using fictional cases. The person can show the draft comparison and explain why a missing delivery date must remain a question. The limit belongs beside the statement: this was fictional practice, with no real customer outcome or organizational sending permission. Do not add an expert title or measured savings. For your project, choose the verb your evidence supports and open the work that proves the claim.",
+        "scenes": [
+          [
+            "Activity",
+            "I used an AI tool.",
+            "What can the person demonstrate?"
+          ],
+          [
+            "Capability",
+            "I designed and tested a reviewed proposal workflow using fictional cases.",
+            "Show inputs, drafts, checklist and walkthrough."
+          ],
+          [
+            "Limit",
+            "Fictional practice; no live customer result or sending permission.",
+            "Capability does not grant authority."
+          ]
+        ]
+      },
+      {
+        "key": "inventory",
+        "title": "Check the inventory against the evidence",
+        "transcript": "A verified inventory needs ten capability entries. Each includes a supported verb, evidence, the check and a limit. In this fictional example, the review entry points to a draft containing an unsupported date and the corrected missing-information walkthrough. The improvement entry points to the specific correction and the revised result. They describe distinct actions, but each must have support. An AI suggestion says the work saved ten hours and made the author a certified consultant. Neither claim appears in the supplied evidence. Remove both. If one of your ten entries is missing its evidence, mark it pending and resolve it before final submission. Keep the same course work; do not fill a gap with an invented achievement. Practice explaining one checked entry while showing the exact supporting artifact.",
+        "scenes": [
+          [
+            "Ten checked entries",
+            "Capability \u2022 Verb \u2022 Evidence \u2022 Check \u2022 Limit",
+            "Use work retained across the course."
+          ],
+          [
+            "Unsupported additions",
+            "Ten hours saved; certified consultant.",
+            "Neither appears in the supplied evidence."
+          ],
+          [
+            "Human correction",
+            "Remove invented claims. Keep missing evidence pending.",
+            "Show one checked entry and its supporting work."
+          ]
+        ]
+      },
+      {
+        "key": "value",
+        "title": "Select the strongest Value Connections",
+        "transcript": "Build three Value Connections from checked capabilities. In our fictional case, the capability is a reviewed proposal workflow. The context is an incomplete proposal draft. The people include the reviewer and the person relying on the date. The observed improvement is that the revised fictional draft flags the missing date instead of inventing it. The evidence includes the input, first draft, correction and revised walkthrough. A second connection concerns a clearer reviewer handoff. A third concerns reusable review guidance. Select the two best supported by the retained work and explain your choice. Do not claim a real team already benefited when the test was fictional. A possible future benefit stays a possible benefit until the intended setting has evidence. Keep the people, conditions and limits visible.",
+        "scenes": [
+          [
+            "Value Connection",
+            "Capability \u2022 Context \u2022 People \u2022 Improvement \u2022 Evidence",
+            "Separate observed improvement from proposed benefit."
+          ],
+          [
+            "Three candidates",
+            "Missing-date review \u2022 Reviewer handoff \u2022 Review guidance",
+            "Check the retained work for each connection."
+          ],
+          [
+            "Select two",
+            "Choose the clearest, best-supported connections.",
+            "Record the selection reason and remaining limits."
+          ]
+        ]
+      },
+      {
+        "key": "story",
+        "title": "Tell the Evidence Story and show the work",
+        "transcript": "Use context, purpose, action, AI role, human judgment, result and limit. Our supplied fictional story says the person wanted missing delivery details to remain visible, designed a review workflow and tested two fictional cases. AI prepared a draft. The person found an unsupported date, corrected the review instruction and checked the revised walkthrough. The result was a visible missing-date question in that exercise. The limit is no real customer outcome or permission to send. Remove private details before sharing. Label a sanitized or recreated illustration accurately; it is not an original result record. Finish by explaining one capability in a professional context and opening the supporting work. Save the verified ten-entry inventory, two selected Value Connections and privacy-safe story in Professional Positioning Evidence and the connected workbook.",
+        "scenes": [
+          [
+            "Seven story parts",
+            "Context \u2022 Purpose \u2022 Action \u2022 AI role \u2022 Human judgment \u2022 Result \u2022 Limit",
+            "Identify the human contribution and observed result."
+          ],
+          [
+            "Privacy-safe evidence",
+            "Remove private details; label sanitized or recreated examples.",
+            "An illustration is not an original result record."
+          ],
+          [
+            "Verify and save",
+            "Ten capabilities \u2022 Two selected connections \u2022 One Evidence Story",
+            "Explain one capability, show the work and name its limit."
+          ]
+        ]
+      }
+    ]
+  }
+}
