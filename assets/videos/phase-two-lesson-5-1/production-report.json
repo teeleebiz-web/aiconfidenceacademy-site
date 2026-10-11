@@ -1,0 +1,57 @@
+{
+  "lesson": "5.1",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-5-1-Guided-Instruction.m4a",
+    "duration_seconds": 761.923,
+    "chapters": 4,
+    "bytes": 10744862
+  },
+  "demonstrations": [
+    {
+      "key": "inventory",
+      "title": "Classify the fictional order message",
+      "duration_seconds": 39.105,
+      "file": "ACA-Phase-Two-Lesson-5-1-inventory.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-1-inventory.vtt",
+      "bytes": 860833,
+      "sha256": "38055215526eb41b9766795520b3eff0dae6adf777f1f3cbb80732e46beaf2c6",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "minimize",
+      "title": "Prepare the safer practice input",
+      "duration_seconds": 41.639,
+      "file": "ACA-Phase-Two-Lesson-5-1-minimize.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-1-minimize.vtt",
+      "bytes": 910117,
+      "sha256": "41046e42051c89dd1be138c7a0713a3633cad0d8d341f89bb61236185b0ddb95",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "environment",
+      "title": "Pause when authority or environment is unknown",
+      "duration_seconds": 44.93,
+      "file": "ACA-Phase-Two-Lesson-5-1-environment.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-1-environment.vtt",
+      "bytes": 968894,
+      "sha256": "0e1490e22eb167fa220fd8a57f1cd61234723cc56d2b7505afa0b4f13a33e65d",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "boundary",
+      "title": "Reject the unrelated disclosure instruction",
+      "duration_seconds": 45.871,
+      "file": "ACA-Phase-Two-Lesson-5-1-boundary.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-1-boundary.vtt",
+      "bytes": 989406,
+      "sha256": "d7847337a6b3c6b7025ccde3ef299880e2d7318a2a3acecd4b29f3e5ac0b6a03",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
