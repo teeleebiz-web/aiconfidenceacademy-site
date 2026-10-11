@@ -7,6 +7,52 @@ const emptyNeed = (): Need => ({ person: '', symptom: '', possibleCause: '', evi
 const template = 'Help distinguish symptoms, possible causes and assumptions in these notes. Suggest five neutral questions to test the need. Do not present audience preferences as established facts. Notes:\n'
 const starterQuestions = ['', '', '', '', '']
 
+/**
+ * Restore only Lesson 1.2's own saved evidence fields from the continuing
+ * Project Record. Keep Lesson 1.1's surrounding section keys untouched.
+ * Treat incomplete or older JSON as untrusted input, never as a fake save.
+ */
+export function restoreLesson12Record(value: unknown) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+  const saved = value as Record<string, unknown>
+  const field = (item: Record<string, unknown>, key: string) =>
+    typeof item[key] === 'string' ? item[key] as string : ''
+  const savedNeeds = Array.isArray(saved.needs) ? saved.needs : []
+  const validEvidenceTypes = ['unverified', 'observed', 'reported', 'assumed', 'simulated']
+  const needs: Need[] = Array.from({ length: 3 }, (_, i) => {
+    const item = savedNeeds[i]
+    const row: Record<string, unknown> =
+      item && typeof item === 'object' && !Array.isArray(item) ? item as Record<string, unknown> : {}
+    return {
+      person: field(row, 'person'),
+      symptom: field(row, 'symptom'),
+      possibleCause: field(row, 'possibleCause'),
+      evidence: field(row, 'evidence'),
+      evidenceType: validEvidenceTypes.includes(String(row.evidenceType))
+        ? String(row.evidenceType) : 'unverified',
+      question: field(row, 'question'),
+    }
+  })
+  const chosen: Record<string, unknown> =
+    saved.selected_need && typeof saved.selected_need === 'object' && !Array.isArray(saved.selected_need)
+      ? saved.selected_need as Record<string, unknown> : {}
+  const selected = typeof saved.selected_index === 'number' &&
+    Number.isInteger(saved.selected_index) && saved.selected_index >= 0 &&
+    saved.selected_index < 3 ? saved.selected_index : 0
+  const savedQuestions = Array.isArray(saved.neutral_questions) ? saved.neutral_questions : []
+  const questions = Array.from({ length: 5 }, (_, i) =>
+    typeof savedQuestions[i] === 'string' ? savedQuestions[i] as string : '')
+  return {
+    needs, selected, questions,
+    situation: field(chosen, 'situation'),
+    barrier: field(chosen, 'barrier'),
+    desired: field(chosen, 'desired_result'),
+    sourceToCheck: field(saved, 'evidence_to_request'),
+    wouldChange: field(saved, 'evidence_that_would_change_choice'),
+    correction: field(saved, 'learner_ai_revision_note'),
+  }
+}
+
 export function PhaseTwoNeedPractice({ enrollmentId }: { enrollmentId?: string }) {
   const [needs, setNeeds] = useState<Need[]>([emptyNeed(), emptyNeed(), emptyNeed()])
   const [selected, setSelected] = useState(0)
@@ -25,7 +71,23 @@ export function PhaseTwoNeedPractice({ enrollmentId }: { enrollmentId?: string }
     if (!enrollmentId) return
     let cancelled = false
     loadPhaseTwoProject(enrollmentId).then(result => {
-      if (!cancelled && result) setProject({path: result.project_path, title: result.project_title})
+      if (cancelled || !result) return
+      const section = result.sections?.professional_ai_operating_model
+      const saved = section && typeof section === 'object' && !Array.isArray(section)
+        ? (section as Record<string, unknown>).audience_need_lesson_1_2 : undefined
+      const restored = restoreLesson12Record(saved)
+      if (restored) {
+        setNeeds(restored.needs)
+        setSelected(restored.selected)
+        setQuestions(restored.questions)
+        setSituation(restored.situation)
+        setBarrier(restored.barrier)
+        setDesired(restored.desired)
+        setSourceToCheck(restored.sourceToCheck)
+        setWouldChange(restored.wouldChange)
+        setCorrection(restored.correction)
+      }
+      setProject({path: result.project_path, title: result.project_title})
     }).catch(() => { if (!cancelled) setStatus('Your existing project could not load. You can still copy your work.') })
     return () => { cancelled = true }
   }, [enrollmentId])
