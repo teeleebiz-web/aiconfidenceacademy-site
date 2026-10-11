@@ -1,54 +1,54 @@
 {
   "lesson": "6.1",
-  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
   "guided_audio": {
     "file": "ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a",
-    "duration_seconds": 866.648,
+    "duration_seconds": 820.777,
     "chapters": 4,
-    "bytes": 12095309
+    "bytes": 11542048
   },
   "demonstrations": [
     {
       "key": "capability",
       "title": "Turn activity into a supported capability",
-      "duration_seconds": 52.192,
+      "duration_seconds": 48.509,
       "file": "ACA-Phase-Two-Lesson-6-1-capability.mp4",
       "captions": "ACA-Phase-Two-Lesson-6-1-capability.vtt",
-      "bytes": 1124659,
-      "sha256": "8a502127296a359e125d518c746d4185b57d54ce808ce872283042627ff790ef",
+      "bytes": 1055008,
+      "sha256": "7f76c4167df9da6a3f19b7761215dbdeeb302c76ac5a9828b1126e5731d731a1",
       "transcript": "",
       "fictional_training_example": true
     },
     {
       "key": "inventory",
       "title": "Check the inventory against the evidence",
-      "duration_seconds": 51.801,
+      "duration_seconds": 48.979,
       "file": "ACA-Phase-Two-Lesson-6-1-inventory.mp4",
       "captions": "ACA-Phase-Two-Lesson-6-1-inventory.vtt",
-      "bytes": 1138996,
-      "sha256": "4a5855f4b9658b1a15ccb225e1955b8a04a0816a7bcabd44ebe0e24ce0790803",
+      "bytes": 1086055,
+      "sha256": "d585928d6f47f88bcbdf63633661363457005a17d63a8c9cb913281263fc547b",
       "transcript": "",
       "fictional_training_example": true
     },
     {
       "key": "value",
       "title": "Select the strongest Value Connections",
-      "duration_seconds": 50.573,
+      "duration_seconds": 48.535,
       "file": "ACA-Phase-Two-Lesson-6-1-value.mp4",
       "captions": "ACA-Phase-Two-Lesson-6-1-value.vtt",
-      "bytes": 1113379,
-      "sha256": "f1b1b759d75022c0c678a0cfdb5fcc809c8579062afcfd546703014b2d1d6465",
+      "bytes": 1085022,
+      "sha256": "23b86bd81662fc4822bfbfe31f5e1462f852054f5ea77c4daf1e2a418e9ccfd5",
       "transcript": "",
       "fictional_training_example": true
     },
     {
       "key": "story",
       "title": "Tell the Evidence Story and show the work",
-      "duration_seconds": 57.783,
+      "duration_seconds": 53.237,
       "file": "ACA-Phase-Two-Lesson-6-1-story.mp4",
       "captions": "ACA-Phase-Two-Lesson-6-1-story.vtt",
-      "bytes": 1245854,
-      "sha256": "c8c7211a62a05d44d36729f5f0778ddfe7678e5d3fc8b72f720d9dbb5d7e6993",
+      "bytes": 1183598,
+      "sha256": "e18aaa476214aafff8df5ddabdc6308608376469c236b7297df242202c08cec9",
       "transcript": "",
       "fictional_training_example": true
     }
