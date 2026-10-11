@@ -1,0 +1,57 @@
+{
+  "lesson": "6.6",
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-6-6-Guided-Instruction.m4a",
+    "duration_seconds": 783.186,
+    "chapters": 4,
+    "bytes": 10918209
+  },
+  "demonstrations": [
+    {
+      "key": "index",
+      "title": "Assemble the required portfolio evidence",
+      "duration_seconds": 36.545,
+      "file": "ACA-Phase-Two-Lesson-6-6-index.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-6-index.vtt",
+      "bytes": 858446,
+      "sha256": "796358bfcd88637927cf412a349b93bc413c9800a6e6b1bc48a5b51e894313ff",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "review",
+      "title": "Show growth and answer review questions",
+      "duration_seconds": 37.773,
+      "file": "ACA-Phase-Two-Lesson-6-6-review.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-6-review.vtt",
+      "bytes": 888782,
+      "sha256": "39aac35e8bfc9b28fe039027076921458bfde1bbcea12eb0630fb4c7f5d72500",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "roadmap",
+      "title": "Build the thirty-, sixty-, and ninety-day plan",
+      "duration_seconds": 48.875,
+      "file": "ACA-Phase-Two-Lesson-6-6-roadmap.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-6-roadmap.vtt",
+      "bytes": 1113127,
+      "sha256": "e8830b233aba9d8e745e2dc644ee2f86f732e3ca1ebf53c6b3147bd6e10f29b1",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "submit",
+      "title": "Check the package and retain submission evidence",
+      "duration_seconds": 44.826,
+      "file": "ACA-Phase-Two-Lesson-6-6-submit.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-6-submit.vtt",
+      "bytes": 1030136,
+      "sha256": "6604c1c988faa2c069457e83051c116317084f3763ffb7c7e441bad301fb29f2",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
