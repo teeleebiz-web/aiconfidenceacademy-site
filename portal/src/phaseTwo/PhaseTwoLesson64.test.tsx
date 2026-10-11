@@ -42,7 +42,7 @@ it('renders the actual Lesson 6.4 package with working chapter and demonstration
     render(<PhaseTwoLessonExperience pageId="6.4" lessonTitle={data.title} journeyTitle="Journey Six — Demonstrate and Execute"
       purpose={data.learner_promise} medium="video" production={data as PhaseTwoProducedLesson} allowMediaReview />)
     const video=await screen.findByLabelText('Lesson 6.4 instructor introduction video')
-    await waitFor(()=>expect(video.getAttribute('src')).toBe('https://aiconfidenceacademy.org/assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-Introduction-wide.mp4'))
+    await waitFor(()=>expect(video.getAttribute('src')).toBe('https://aiconfidenceacademy.org/assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-Introduction-wide.mp4?v=j6-invitations-20261011'))
     expect(video.getAttribute('poster')).toBe('https://aiconfidenceacademy.org/assets/videos/phase-two-lesson-6-4/poster-wide.webp')
     expect(video.style.aspectRatio).toBe('')
     expect(screen.getByLabelText('Lesson 6.4 guided instruction audio')).toBeTruthy()

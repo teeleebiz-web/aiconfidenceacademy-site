@@ -169,7 +169,7 @@ export function PhaseTwoLessonExperience({
                 playsInline
                 preload="auto"
                 poster={approvedVideo.poster_url ?? (['6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster-wide.webp' : pageId === '1.1' ? '/assets/videos/phase-two-lesson-1-1/poster.webp' : ['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4','3.5','3.6','4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster.webp' : undefined)}
-                src={approvedVideo.url}
+                src={approvedVideo.url + (['6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? (approvedVideo.url.includes('?') ? '&' : '?') + 'v=j6-invitations-20261011' : '')}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
                 {approvedVideo.captions_url && <track kind="captions" label="Optional English captions" srcLang="en" src={approvedVideo.captions_url} />}

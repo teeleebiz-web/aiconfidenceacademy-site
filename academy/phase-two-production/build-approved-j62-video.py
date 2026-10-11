@@ -79,7 +79,7 @@ def make_instructor_clip(src,seconds,destination):
       "-ar","48000","-ac","2",str(destination)])
 
 raw=json.loads(MANIFEST.read_text())
-assert raw.get("lipsync_id")=="391af96d97504c01b6fe7f95326b85d6"
+assert raw.get("lipsync_id")=="bbe48fd747f9465283779f6f1109f43b"
 assert raw.get("visual_source_asset_id")=="509bace71492492a85d1052e8adf9e1d"
 url=raw["source_url"]
 assert url.startswith("https://") and "heygen" in url.split("/")[2]
