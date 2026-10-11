@@ -1,0 +1,57 @@
+{
+  "lesson": "5.3",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-5-3-Guided-Instruction.m4a",
+    "duration_seconds": 642.961,
+    "chapters": 4,
+    "bytes": 9061614
+  },
+  "demonstrations": [
+    {
+      "key": "format",
+      "title": "Choose the operating format",
+      "duration_seconds": 31.921,
+      "file": "ACA-Phase-Two-Lesson-5-3-format.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-3-format.vtt",
+      "bytes": 689010,
+      "sha256": "c794c4305cd292bad38f5f5f08fc1f6bf5d02ff56e78e1ffbd46911912a8790f",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "clearer",
+      "title": "Build the seven-part document",
+      "duration_seconds": 39.262,
+      "file": "ACA-Phase-Two-Lesson-5-3-clearer.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-3-clearer.vtt",
+      "bytes": 848800,
+      "sha256": "ce5cff21507b0d4552d9e53de20f9066210d6ca6bdcf5f4cb56d42279270edb0",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "exception",
+      "title": "Walk through missing approval",
+      "duration_seconds": 34.455,
+      "file": "ACA-Phase-Two-Lesson-5-3-exception.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-3-exception.vtt",
+      "bytes": 753575,
+      "sha256": "6c5780899ef7a388adedb776b57d915d0589613827a311e86d59a565abe8956b",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "correction",
+      "title": "Correct and retest the procedure",
+      "duration_seconds": 36.65,
+      "file": "ACA-Phase-Two-Lesson-5-3-correction.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-3-correction.vtt",
+      "bytes": 793402,
+      "sha256": "93ea925409af3f77b8693208903ffcc78874ba4352ee6360b4b5ef02f7a967f6",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
