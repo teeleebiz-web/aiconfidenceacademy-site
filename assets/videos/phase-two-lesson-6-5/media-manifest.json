@@ -1,11 +1,11 @@
 {
-  "approved_lipsync_id": "b35a09276cae491a907ef6ca829ba059",
+  "approved_lipsync_id": "960b0382c29246c1acf121935b913ea3",
   "visual_source_asset_id": "509bace71492492a85d1052e8adf9e1d",
   "visual_source_url": "https://aiconfidenceacademy.org/assets/videos/confidence-with-ai-man-extended/film.m3u8",
-  "narration_source_video_id": "speech:FZpebwvrX9MS74pQcK6P",
+  "narration_source_video_id": "speech:7D0tuGn9eoEYI8Edky9r",
   "orientation": "landscape",
-  "source_duration_seconds": 99.12,
-  "completed_duration_seconds": 105.421,
+  "source_duration_seconds": 99.6,
+  "completed_duration_seconds": 105.888,
   "opening_seconds": 1.5,
   "instructor_last_word_landing_seconds": 0.85,
   "end_card_seconds": 1.9,
@@ -13,7 +13,7 @@
   "start_frame_is_beginning_card": true,
   "last_frame_is_beginning_card": true,
   "format": "1920x1080 H.264 MP4 / AAC",
-  "bytes": 12787764,
-  "sha256": "721d16a6cf7bb0b42b97b8427e3808b39969cae1e3b3dd66749739f07bbe5886",
+  "bytes": 13005463,
+  "sha256": "58227dcfc2956e79b313cb80e2e5957936bd7242a56b5136e3168d1cb3ee8ae7",
   "max_display_width_px": 640
 }
