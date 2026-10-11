@@ -1,0 +1,177 @@
+{
+  "number": 6,
+  "lesson_id": "6.6",
+  "title": "Submit the Portfolio and Execution Plan",
+  "blocks": [
+    {
+      "type": "note",
+      "title": "Assemble and submit the existing work",
+      "text": "Use PROGRESS Closeout: portfolio, review, ownership, gaps, roadmap, evidence, support, and sustain. Assemble retained evidence; revise only to correct a real gap. Saving workbook notes does not send files or confirm receipt."
+    },
+    {
+      "type": "text",
+      "text": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake tabletop has retained complete-input, missing-date, absent-approval, revision, and demonstration evidence. Live delivery, measured savings, real organizational permission, and certification are not established. A proposed continuation schedules a permitted bounded pilot, quality review, and conditional decision about wider use. No pilot, reviewer response, or submission receipt is invented."
+    },
+    {
+      "type": "heading",
+      "text": "Index the six journey results"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_projectContext",
+      "label": "Continuing capstone, current version, charter, and safe references",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_journey1",
+      "label": "Journey One result: retained evidence, version, and status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_journey2",
+      "label": "Journey Two result: retained evidence, version, and status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_journey3",
+      "label": "Journey Three result: retained evidence, version, and status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_journey4",
+      "label": "Journey Four result: retained evidence, version, and status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_journey5",
+      "label": "Journey Five result: retained evidence, version, and status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_journey6",
+      "label": "Journey Six result: retained evidence, version, and status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Review growth, ownership, and gaps"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_artifact",
+      "label": "Functioning bounded artifact, tests, and revision evidence",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_reflection",
+      "label": "Final growth reflection: changed decision, improved result, and evidence",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 5
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_demonstration",
+      "label": "Final demonstration reference and actual questions/responses or labeled rehearsal",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_gaps",
+      "label": "Remaining issue, focused correction, affected retest, and honest unresolved status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_responsible",
+      "label": "Responsible statement, ownership, human decisions, and actual AI assistance",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_positioning",
+      "label": "Verified positioning set and existing Lesson 6.5 action references",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Plan 30, 60, and 90 days"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_day30",
+      "label": "30-day plan: action, owner/collaborator, permission, boundary, checkpoint, decision",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 5
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_day60",
+      "label": "60-day plan: action, owner/collaborator, permission, boundary, checkpoint, decision",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 5
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_day90",
+      "label": "90-day plan: action, owner/collaborator, permission, boundary, checkpoint, decision",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 5
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_support",
+      "label": "Support, unresolved dependencies, backup, and sustained quality review",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_aiReview",
+      "label": "AI gap review: suggestions accepted, corrected, or rejected with reasons",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Verify files and retain actual submission status"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_finalCheck",
+      "label": "Final file review: privacy-safe evidence, sources, versions, and human decisions",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l6_submission",
+      "label": "Established submission route, Sunday deadline, actual delivery and acknowledgment status",
+      "hint": "Use actual retained evidence and current references. Label proposed actions and rehearsal. Keep missing permission, review, delivery, or receipt visible; do not invent a credential decision.",
+      "lines": 5
+    },
+    {
+      "type": "note",
+      "title": "Applied completion check",
+      "text": "Completion requires all six journey results, a functioning bounded artifact, test and revision evidence, the demonstration and a defensible execution plan. Resolve missing evidence through focused revision."
+    }
+  ]
+}
