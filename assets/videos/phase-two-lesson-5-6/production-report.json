@@ -1,0 +1,57 @@
+{
+  "lesson": "5.6",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-5-6-Guided-Instruction.m4a",
+    "duration_seconds": 779.451,
+    "chapters": 4,
+    "bytes": 10992384
+  },
+  "demonstrations": [
+    {
+      "key": "cases",
+      "title": "Run three bounded scenarios",
+      "duration_seconds": 36.179,
+      "file": "ACA-Phase-Two-Lesson-5-6-cases.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-6-cases.vtt",
+      "bytes": 775912,
+      "sha256": "16d8a0d54301883cca2fc82e9d6abf6c0d054c29ed85c57d2d05725c241aa36a",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "fallback",
+      "title": "Make the human takeover usable",
+      "duration_seconds": 37.146,
+      "file": "ACA-Phase-Two-Lesson-5-6-fallback.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-6-fallback.vtt",
+      "bytes": 808512,
+      "sha256": "fcc1218aa19f646c17437dbbcbae495281f24d81f3694a6f882fd8b656bb7be5",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "retest",
+      "title": "Correct the failed safeguard",
+      "duration_seconds": 35.474,
+      "file": "ACA-Phase-Two-Lesson-5-6-retest.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-6-retest.vtt",
+      "bytes": 779551,
+      "sha256": "c7a4ca564cf77d6652cef7cff1203d62ebc93f5312e56ce41fe4bc0f5629e468",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "evidence",
+      "title": "Consolidate the responsible operating evidence",
+      "duration_seconds": 40.568,
+      "file": "ACA-Phase-Two-Lesson-5-6-evidence.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-6-evidence.vtt",
+      "bytes": 869447,
+      "sha256": "301d2c2a0f6c1af1efe57e1460c46ec5bf712e7b45e8a13a50b9d57582189708",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

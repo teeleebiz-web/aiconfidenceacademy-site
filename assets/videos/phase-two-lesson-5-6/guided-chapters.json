@@ -1,0 +1,32 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "audio_url": "/assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-Guided-Instruction.m4a",
+  "duration_seconds": 779.451,
+  "chapters": [
+    {
+      "title": "Bring the operating evidence into one test",
+      "start_seconds": 0.0,
+      "duration_seconds": 182.23,
+      "transcript": ""
+    },
+    {
+      "title": "Run normal, error and exception cases",
+      "start_seconds": 183.13,
+      "duration_seconds": 185.887,
+      "transcript": ""
+    },
+    {
+      "title": "Correct a failed safeguard and retest",
+      "start_seconds": 369.917,
+      "duration_seconds": 190.433,
+      "transcript": ""
+    },
+    {
+      "title": "Retain ownership, limits and the journey result",
+      "start_seconds": 561.25,
+      "duration_seconds": 218.201,
+      "transcript": ""
+    }
+  ]
+}
