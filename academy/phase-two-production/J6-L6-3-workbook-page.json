@@ -1,0 +1,139 @@
+{
+  "number": 3,
+  "lesson_id": "6.3",
+  "title": "Complete the Quality, Responsibility, and Readiness Review",
+  "blocks": [
+    {
+      "type": "note",
+      "title": "Review the finished version of the same project",
+      "text": "Use READY Quality Review: Relevant, Evidenced, Accountable, Designed, and Yours. Keep it distinct from READY Automation Screen. AI may identify gaps; it does not assign a certification decision."
+    },
+    {
+      "type": "text",
+      "text": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake tabletop from Lesson 6.2 has retained tests for complete input, a missing delivery date, and absent human approval. Its polished presentation claims readiness for any business, but gives no usable test references, names no review/correction route, uses color-only status marks, and says AI created the entire result. No live deployment, customer result, measured saving, actual organizational permission, or certification decision is established."
+    },
+    {
+      "type": "heading",
+      "text": "Bring forward the finished package"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_projectContext",
+      "label": "Continuing capstone, charter, and privacy-safe evidence references",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Apply the five READY Quality Review checks"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_relevant",
+      "label": "Relevant: need, audience, intended use, and charter fit",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_evidenced",
+      "label": "Evidenced: claims, sources, tests, versions, and missing support",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_accountable",
+      "label": "Accountable: actual human owner and review/correction route",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_designed",
+      "label": "Designed: usability, accessibility observations, alternatives, and limits",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_yours",
+      "label": "Yours: personal judgment, truthful authorship, and supporting decisions",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_aiReview",
+      "label": "AI review suggestions accepted, revised, or rejected and why",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Correct, check, and retain the evidence"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_correction",
+      "label": "Important weakness and before-and-after correction",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_check",
+      "label": "Actual follow-up check, current version, and remaining uncertainty",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Finalize the responsible statement and disclosure"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_statement",
+      "label": "Final Responsible Practice Statement in your own language",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_disclosure",
+      "label": "AI-role disclosure: actual AI support, human work, audience, and placement",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 6
+    },
+    {
+      "type": "heading",
+      "text": "Explain the limit and save the review"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_unresolved",
+      "label": "Unresolved issues and their consequence for intended use",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_useDecision",
+      "label": "Applied explanation: remaining limit, appropriate or narrowed use, and human correction",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l3_evidenceIndex",
+      "label": "Saved READY review, corrections, final statements, and evidence index",
+      "hint": "Use your actual work, current version, and meaningful evidence references. Keep pending issues visible; do not invent approval, outcomes, or authorship.",
+      "lines": 4
+    },
+    {
+      "type": "note",
+      "title": "Applied completion check",
+      "text": "Explain one remaining limitation and why the stated use is still appropriate or must be narrowed. Confirm that a human can review and correct the result."
+    }
+  ]
+}

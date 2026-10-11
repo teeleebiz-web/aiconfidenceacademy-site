@@ -265,3 +265,35 @@ it('opens the actual Journey Six Lesson Two workbook, saves and reopens notes, p
   view.unmount();render(<PhaseTwoWorkbook enrollmentId="existing" journey={6} initialLesson={2} onBack={back}/>);expect(await screen.findByDisplayValue('Retested version 2 correction')).toBeTruthy()
   print.mockRestore()
 })
+
+it('opens actual Journey Six Lesson Three, saves and reopens review notes, preserves Lessons One and Two, locks future lessons, prints and returns',async()=>{
+  const first=(await import('../../../academy/phase-two-production/J6-L6-1-workbook-page.json')).default
+  const second=(await import('../../../academy/phase-two-production/J6-L6-2-workbook-page.json')).default
+  const third=(await import('../../../academy/phase-two-production/J6-L6-3-workbook-page.json')).default
+  const data=fixture([1,2,3]);data.workbook.key='journey-6';data.workbook.title='Journey Six Workbook'
+  data.workbook.pages=[first,second,third] as never
+  data.answers={p2_j6_l1_story:'Retained Lesson One story',p2_j6_l2_revision:'Retained Lesson Two correction',p2_j6_l3_statement:'Saved responsible commitments'} as never
+  let saved={...data.answers}
+  const rpc=vi.spyOn(supabase,'rpc').mockImplementation((async(name:string,args:any)=>{
+    if(name==='save_aca_phase_two_workbook'){
+      saved={...saved,...(args as {p_answers:Record<string,string>}).p_answers} as never
+      return {data:{...data,answers:saved,revision:1},error:null} as never
+    }
+    return {data:{...data,answers:saved},error:null} as never
+  }) as never)
+  const back=vi.fn(),print=vi.spyOn(window,'print').mockImplementation(()=>{})
+  const view=render(<PhaseTwoWorkbook enrollmentId="existing" journey={6} initialLesson={3} onBack={back}/>)
+  expect(await screen.findByDisplayValue('Saved responsible commitments')).toBeTruthy()
+  const chooser=screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect(chooser.value).toBe('3');expect([...chooser.options].slice(3).every(x=>x.disabled)).toBe(true)
+  fireEvent.change(screen.getByLabelText(/^Final Responsible Practice Statement/),{target:{value:'Reviewed final version 3 commitments'}})
+  fireEvent.click(screen.getByRole('button',{name:'Save'}))
+  await waitFor(()=>expect(rpc).toHaveBeenCalledWith('save_aca_phase_two_workbook',expect.objectContaining({p_journey:6,p_answers:expect.objectContaining({p2_j6_l3_statement:'Reviewed final version 3 commitments'})})))
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Retained Lesson Two correction')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Retained Lesson One story')).toBeTruthy()
+  fireEvent.change(chooser,{target:{value:'3'}});expect(await screen.findByDisplayValue('Reviewed final version 3 commitments')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}));expect(print).toHaveBeenCalledOnce()
+  fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 6.3/}));await waitFor(()=>expect(back).toHaveBeenCalledOnce())
+  view.unmount();render(<PhaseTwoWorkbook enrollmentId="existing" journey={6} initialLesson={3} onBack={back}/>);expect(await screen.findByDisplayValue('Reviewed final version 3 commitments')).toBeTruthy()
+  print.mockRestore()
+})

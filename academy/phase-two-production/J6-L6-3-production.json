@@ -1,0 +1,194 @@
+{
+  "production_version": "1.0",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "6.3",
+  "primary_media": "audio",
+  "title": "Complete the Quality, Responsibility, and Readiness Review",
+  "learner_promise": "Review your finished capstone under READY, correct weaknesses, and show that its claims, human ownership, responsible-practice statement, and AI-role disclosure fit its actual intended use.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Teaching",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Worked demonstration",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Project application",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Verification",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Apply all five READY Quality Review checks to the same finished capstone.",
+    "Correct important weaknesses and record the follow-up checks.",
+    "Finalize a concrete Responsible Practice Statement and truthful AI-role disclosure.",
+    "Explain a remaining limitation and the human review/correction route without claiming certification."
+  ],
+  "teaching": [
+    {
+      "heading": "Review the finished package with READY",
+      "paragraphs": [
+        "Set the current artifact beside your charter and Lesson 6.2 evidence. For Relevant, write the need, audience, intended setting, and criterion the work serves. For Evidenced, pair each important claim with a source, test, or version reference a reviewer can open. Mark a missing reference pending.",
+        "Use three distinct entries in your review: what is supported, what needs correction, and what remains unestablished. READY Quality Review evaluates the finished capstone. It is a different check from the earlier READY Automation Screen; keep the full name with your notes."
+      ],
+      "think_prompt": "Which claim in your package needs a clearer reference or a narrower statement?"
+    },
+    {
+      "heading": "Make ownership, usability, and authorship visible",
+      "paragraphs": [
+        "For Accountable, write the actual human owner and the steps another person can use to inspect, challenge, correct, and retest the work. A proposed reviewer is still a dependency until the role is established.",
+        "For Designed, perform a relevant audience task and record what you observe about clarity, navigation, readable alternatives, and access. For Yours, select one human decision and show the retained work that explains it. Record the AI contribution separately."
+      ],
+      "think_prompt": "Can another person interpret the artifact and find the correction route without relying on color alone or on your memory?"
+    },
+    {
+      "heading": "Correct weaknesses and finalize the responsible statement",
+      "paragraphs": [
+        "Prioritize a weakness by its effect on the stated use. Record the gap, the correction, the revised version, and the follow-up check. Match each safeguard to the current artifact rather than copy a rule from an early draft.",
+        "Finalize your Responsible Practice Statement in your own words. Include intended use, permitted or protected inputs, verification, human ownership, a correction route, and the relevant limit or stop condition. Replace a broad assurance with an action you can carry out."
+      ],
+      "think_prompt": "Which commitment in your statement points to a safeguard or check that exists in the finished version?"
+    },
+    {
+      "heading": "Disclose the AI role and decide the appropriate use",
+      "paragraphs": [
+        "Write an AI-role disclosure from the retained record: the tasks AI supported, the decisions and checks you performed, and the limits the audience needs to know. Choose where the intended reviewer can find it. Do not invent independent authorship, approval, or live outcomes.",
+        "List unresolved issues and their consequence for use. A limitation may fit a narrow, honest purpose. If it undermines a required criterion, keep the result pending, narrow the use, or continue the correction. Save the review and statements with the same project."
+      ],
+      "think_prompt": "What remaining limitation is compatible with the stated use, and what issue would require you to narrow or pause that use?"
+    }
+  ],
+  "worked_case": {
+    "label": "A polished package still needs evidence and human ownership",
+    "setup": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake tabletop from Lesson 6.2 has retained tests for complete input, a missing delivery date, and absent human approval. Its polished presentation claims readiness for any business, but gives no usable test references, names no review/correction route, uses color-only status marks, and says AI created the entire result. No live deployment, customer result, measured saving, actual organizational permission, or certification decision is established.",
+    "evidence_table": [
+      {
+        "claim": "Ready for any business.",
+        "evidence": "Only supplied fictional tabletop tests are available.",
+        "action": "Relevant: narrow the explanation to the approved tabletop purpose."
+      },
+      {
+        "claim": "The package proves the result works.",
+        "evidence": "The visible presentation gives no usable references to the retained tests.",
+        "action": "Evidenced: attach the three test references and current version; remove unsupported outcome claims."
+      },
+      {
+        "claim": "Someone will review and correct it.",
+        "evidence": "No human owner or practical route appears in the first presentation.",
+        "action": "Accountable: name the fictional project author and write the inspection, correction, and retest steps."
+      },
+      {
+        "claim": "The status marks are clear and accessible.",
+        "evidence": "Red and green marks have no text meaning.",
+        "action": "Designed: add written states and instructions; check a relevant reader task and retain remaining access limits."
+      },
+      {
+        "claim": "AI created the entire result.",
+        "evidence": "The supplied author chose the criteria, inspected the drafts, and checked corrections.",
+        "action": "Yours: describe AI drafting support and the human decisions accurately."
+      }
+    ],
+    "revised_example": "The revised package presents a reviewed fictional tabletop. It includes Version 2 and the complete-input, missing-date, and absent-approval test references. It identifies the project author, explains how to review, correct, and retest the work, and adds written status labels. Its statement and disclosure describe the supplied safeguards and actual division of work. Live deployment, measured benefit, real organizational permission, and untested access needs remain unestablished.",
+    "demonstration_steps": [
+      "Inspect the first presentation under all five READY Quality Review checks.",
+      "Replace the broad claim with the supported tabletop purpose and add usable evidence references.",
+      "Make human ownership, correction instructions, written status meaning, and truthful authorship visible.",
+      "Check the revised reader task and compare the responsible statement and disclosure with the current version.",
+      "Explain the remaining limit, appropriate use, and unresolved issues without assigning certification."
+    ],
+    "question": "Why is a labeled tabletop explanation appropriate while unrestricted live use remains unestablished?"
+  },
+  "application": [
+    {
+      "minutes": 6,
+      "heading": "Review all five READY areas",
+      "instruction": "Open the finished artifact, charter, Lesson 6.2 evidence, and earlier responsibility work. Record Relevant, Evidenced, Accountable, Designed, and Yours with meaningful references and gaps. Use the approved request with a privacy-safe package.",
+      "evidence": "Five-part READY review and inspected AI suggestions."
+    },
+    {
+      "minutes": 8,
+      "heading": "Correct and check an important weakness",
+      "instruction": "Choose a weakness that affects intended use. Make a proportionate correction in the current artifact and perform a relevant follow-up check. Keep actual observations, human decisions, and remaining access or permission dependencies.",
+      "evidence": "Gap, before/after correction, current version, check, and honest limit."
+    },
+    {
+      "minutes": 7,
+      "heading": "Finalize the statement and disclosure",
+      "instruction": "Write the Responsible Practice Statement in your own language using current safeguards. Write an accurate AI-role disclosure and choose a location appropriate to the intended reviewer. Compare both with the retained evidence.",
+      "evidence": "Final statement, truthful disclosure, and context/placement decision."
+    },
+    {
+      "minutes": 4,
+      "heading": "Decide the appropriate use and save",
+      "instruction": "List unresolved issues and explain whether use stays appropriate, must narrow, or needs further correction. Save the READY review and final statements in the existing Project Record and workbook.",
+      "evidence": "Unresolved-issue list, use decision, evidence index, and completion explanation."
+    }
+  ],
+  "approved_ai_request": "Review this capstone under Relevant, Evidenced, Accountable, Designed and Yours. Identify missing evidence and responsibility gaps. Do not assign a certification decision. Inputs: [package].",
+  "responsibility_map_fields": [
+    "Need, audience, charter, and intended use",
+    "Claims, sources, tests, and version references",
+    "Human owner and review/correction route",
+    "Usability, accessibility observations, and alternatives",
+    "Human judgment and truthful AI contribution",
+    "Current safeguards, unresolved issues, and appropriate use"
+  ],
+  "verification": [
+    {
+      "minutes": 4,
+      "heading": "Explain the remaining limitation",
+      "prompt": "Explain one remaining limitation and why the stated use is still appropriate or must be narrowed. Confirm that a human can review and correct the result."
+    },
+    {
+      "minutes": 3,
+      "heading": "Verify authorship and support",
+      "prompt": "Check the AI-role disclosure, personal decisions, meaningful sources, tests, and current version. Does each material claim match its evidence?"
+    },
+    {
+      "minutes": 3,
+      "heading": "Verify access and human ownership",
+      "prompt": "Open the review/correction route and accessibility observations. Compare the final statement with actual safeguards and list issues that still require correction."
+    }
+  ],
+  "completion_criteria": [
+    "All five READY Quality Review areas are documented against the finished artifact.",
+    "Important weaknesses have a correction and actual follow-up check, or remain visibly pending.",
+    "The final Responsible Practice Statement describes concrete current safeguards in your own language.",
+    "The disclosure accurately describes AI support and human judgment in its intended context.",
+    "Sources, authorship, accessibility observations, limits, and human ownership have been checked.",
+    "A remaining limitation and appropriate or narrowed use are explained with a practical human correction route.",
+    "The READY review, corrections, statement, disclosure, and unresolved issues are saved with the same project."
+  ],
+  "handoff": "Carry the reviewed capstone, final statement, AI-role disclosure, evidence, and unresolved issues into Lesson 6.4 — Demonstrate the Project and Answer Questions. You will prepare a five-to-seven-minute explanation of the same work.",
+  "media_transcripts": {
+    "introduction": "Welcome to Journey Six, Lesson Three: Complete the Quality, Responsibility, and Readiness Review. Bring forward the finished artifact, the correction you made, and the evidence you saved in Lesson Two. Today, you will check whether that package is ready to be shown and explained responsibly. We will use the READY Quality Review: Relevant, Evidenced, Accountable, Designed, and Yours. Relevant asks whether the work serves the need in your approved charter. Evidenced asks whether the claims, sources, and tests support what you say. Accountable asks who owns the result and how a person can review and correct it. Designed asks whether people can use and understand the work, including its accessibility. Yours asks whether you can explain your judgment and describe the contribution of AI truthfully. This quality review is different from the earlier READY Automation Screen. A beautiful presentation does not make an untested result complete. You will identify a weakness, make a proportionate correction, and check the revised version. Then you will finalize your Responsible Practice Statement in your own words and write a clear disclosure of what AI actually contributed. Keep unresolved issues visible. If a remaining limitation makes the intended use unsuitable, narrow the use or continue the correction. AI can help you inspect the package, but it does not award certification or take responsibility for your decisions. Open the connected workbook, keep your evidence nearby, and let us review the work with care.",
+    "chapters": [
+      "Bring forward the finished artifact and evidence from Lesson Six Point Two. You have already worked on a bounded result, preserved a baseline, made a material correction, and checked the revised version. Today, you will review the quality and responsibility of the complete package. A capstone package is your continuing project together with the records that explain its purpose, development, checks, and limits. It should help another person understand both the result and the judgment behind it.\n\nUse the READY Quality Review: Relevant, Evidenced, Accountable, Designed, and Yours. Relevant checks the need the work is meant to serve. Evidenced checks the support for your claims, sources, and tests. Accountable checks human ownership and the way a person can review and correct the result. Designed checks usability, accessibility, and a presentation people can follow. Yours checks your personal judgment and truthful account of authorship. This review is distinct from the earlier READY Automation Screen. Keep the full name visible so the two checks are not confused.\n\nBegin with Relevant. Open the approved charter and original success criteria. Identify the people the artifact is for, the need it addresses, and the setting in which you intend it to be used. Compare that purpose with the finished version. A useful correction can strengthen the original result. An unrelated addition may make the package longer without serving the need. State whether the current artifact fits the agreed purpose or whether its use must be narrowed.\n\nThen check Evidenced. Put each important claim beside a meaningful source, test, observation, or version reference. A claim is a statement you ask someone else to believe. Evidence is the work that gives them a reason to believe it. If the claim is about an improvement, show the before and after comparison and the retest. If it is about a live outcome, a fictional walkthrough cannot establish it. Keep missing evidence pending rather than treating confidence or polished design as proof.\n\nOur supplied fictional case continues the reviewed intake exercise. Its presentation looks polished and calls the work ready for any business. The visible package does not yet give a reader usable references to the tests. The retained fictional records concern complete input, a missing date, and absent approval. They support a limited tabletop explanation once they are included clearly. They do not establish live delivery, measured savings, or suitability for every organization. The first correction is to make the evidence accessible and narrow the claim.\n\nPause and inspect your own package. Name one charter requirement, the evidence that supports it, and a statement that still needs qualification. Write that comparison in your workbook. READY helps you inspect the work. It does not award certification, grant permission, or replace the human decision about the result.",
+      "Continue the READY Quality Review with Accountable, Designed, and Yours. These checks ask whether a person can take responsibility for the result, whether the intended audience can use it, and whether you can explain your own contribution truthfully. Strong work makes those answers visible. It does not leave a reader guessing who owns a decision or how a problem can be corrected.\n\nAccountable means identifying the human owner and a practical review and correction route. Name the person or role that actually holds responsibility in your setting. Explain what they review, where they can see the supporting work, and what happens when a problem is found. Do not invent an approval or an assignment that has not occurred. If a reviewer or permission is still needed, keep that dependency visible. A statement that someone will check later is not evidence that a check already happened.\n\nFor the supplied fictional intake exercise, the project author owns the tabletop design. The review instructions tell a person to open the inputs, compare them with the charter, inspect the missing-date handling, and check that delivery stays blocked without approval. A correction is made in a new version and the affected paths are retested. This is a supplied teaching route. It gives no real organizational permission to send information. Your own project needs an ownership and correction route appropriate to its actual use.\n\nDesigned asks whether people can understand and use the artifact. Follow the audience's intended task from beginning to end. Are headings clear? Can someone find the current version and evidence? Is important meaning available in words rather than only a color or an image? If the result uses audio, consider how a person who needs a readable alternative can follow the same information. If it is interactive, check the relevant navigation and controls in the setting you can actually test. Record observations rather than declare accessibility established without checking.\n\nIn the fictional package, red and green status marks initially have no text labels. The revision adds Pending, Unapproved, and Approved as words, explains each state, and places the review instruction beside the status. That is a specific design correction. It does not prove that every access need has been met. Keep any untested need visible and explain the available alternative or the narrower setting in which the result can be used.\n\nYours asks whether you can explain your judgment and give a truthful account of authorship. AI may have helped draft, organize, or suggest checks. Your role includes the purpose, decisions, verification, and corrections you actually made. Identify both contributions. Do not claim that you made every word alone if AI drafted material, and do not erase the human work by saying AI did everything. Choose one decision and explain the evidence that led you to it.",
+      "A quality review becomes useful when it changes the work. Use the approved request to ask AI to inspect the capstone under Relevant, Evidenced, Accountable, Designed, and Yours. The request asks for missing evidence and responsibility gaps and tells AI not to assign a certification decision. Supply a privacy-safe package with its intended use and meaningful evidence references. Keep the useful response, but inspect each suggestion yourself before accepting it.\n\nPrioritize weaknesses by their consequence for the intended use. A missing source for a central claim, an unclear human owner, or an inaccessible instruction may matter more than a decorative change. Write the weakness, the correction, and the check that will show whether the correction worked. Match the safeguard to the final artifact. A safeguard is a practical action that helps prevent or handle a problem. A rule copied from an early draft may no longer fit the work you have finished.\n\nThe supplied fictional package needs several connected corrections. The author removes the unsupported claim that the design is ready for any business. The revised explanation identifies a fictional tabletop with no live delivery or measured benefit. The author adds usable references to the three retained tests, names the review and correction route, and adds written status labels. The author then checks that a reader can find the evidence and explain the unapproved state. These are supplied teaching observations. Your package needs your own recorded correction and follow-up check.\n\nNow finalize your Responsible Practice Statement in your own language. Bring forward the commitments and accountability work you already developed. A responsible-practice statement is a concise account of how you will handle your artifact with care. State its intended use, what information you use, what you exclude or protect, what you verify, who owns important decisions, and how a problem will be reviewed and corrected. Include the relevant limit or stop condition. Each commitment should describe something you can actually do.\n\nFor the fictional intake example, a suitable statement says the design is used for a fictional tabletop only, private customer records are excluded, missing dates remain questions, and delivery waits for recorded human approval. The author keeps the test notes, makes the review route visible, and corrects and retests any change that affects the gate. This statement describes the supplied example. It is not a policy adopted by a real organization or a promise you should copy without checking your own setting.\n\nRead your statement beside the current version. Does it name the safeguard you actually retained? Does it claim a review that happened, or accurately describe a future review? Does it say who takes responsibility? Replace broad assurances with concrete actions and honest limits. Save the final statement with the READY review and corrections in your continuing Project Record. Keep unresolved issues visible rather than bury them behind a reassuring paragraph.",
+      "An AI-role disclosure explains what AI actually contributed and what a person did to review the result. It gives your intended audience the information they need to understand the work. Keep it specific to the artifact and context. A disclosure is not a long list of every conversation with a tool. It is a truthful explanation of the contribution, the human judgment, and the limits that matter to someone relying on the result.\n\nUse your retained request, output, versions, and decisions to write the disclosure. Identify the tasks AI supported, such as drafting a summary, suggesting a structure, or proposing review questions. Identify the human actions you actually performed, such as selecting the purpose, checking a source, rejecting a claim, changing an approval step, or retesting an exception. Avoid vague wording that makes AI seem responsible for a decision a person must own. Also avoid a claim of independent authorship when the record shows AI assistance.\n\nIn the supplied fictional case, the disclosure says AI helped draft an intake explanation and suggest review checks. The project author chose the charter criteria, inspected the drafts, retained the approval gate, corrected unsupported claims, and checked the tabletop records. The work has not been deployed for real customers. Place that disclosure where the intended reviewer can find it in the package. Your own disclosure must describe your own record; the teaching example does not establish what you did.\n\nList unresolved issues separately and explain their consequence. A remaining limitation may be compatible with a narrow use. A fictional tabletop can be useful for explaining a design when it is labeled accurately and does not promise live performance. The same package cannot be presented as a live, approved operational service merely because its slides look complete. If the remaining issue undermines the stated use, narrow the use or continue the correction before submission. A visible limitation does not excuse a failure of a required success criterion.\n\nDo the applied completion check. Explain one remaining limitation and why the stated use is still appropriate or must be narrowed. Confirm that a human can review and correct the result. Open the evidence and the correction route as you explain. This is a demonstration of judgment, not a request for AI to declare you certified. If you cannot point to the support or responsible person, keep that part pending and resolve it.\n\nSave the READY review, corrections and follow-up checks, final Responsible Practice Statement, context-appropriate AI-role disclosure, and unresolved-issue list. Verify authorship, accessibility observations, source support, limits, and human ownership against the current version. Complete the matching workbook section. Carry the same package into Lesson Six Point Four, where you will prepare a five-to-seven-minute demonstration and answer questions about the work. AI assists. Humans verify."
+    ],
+    "demonstrations": [
+      "This is a supplied fictional intake tabletop. The polished cover says ready for any business. READY Quality Review asks five different questions. Relevant: does the work serve its approved need? Evidenced: can a reader find the claims, sources, and tests? Accountable: who reviews and corrects it? Designed: can the audience use and understand it? Yours: can the author explain personal judgment and AI assistance truthfully? The supplied records support a reviewed fictional tabletop. They do not establish live delivery or universal suitability. Include meaningful test references and narrow the claim. Keep this review distinct from the earlier READY Automation Screen. AI can help identify gaps. It cannot assign a certification decision. Your own review needs evidence from your actual package.",
+      "In the supplied fictional package, a reader sees red and green status marks but no written meaning or correction route. The author adds Pending, Unapproved, and Approved as text labels and explains each state. The review instructions tell a person to open the inputs and test references, check the charter, and confirm that delivery stays blocked without approval. The project author owns this tabletop design. A correction is saved in a new version and the affected paths are retested. The author checks that a reader can find the evidence and explain the unapproved state. That observation supports a specific design correction. It does not prove every access need is met or grant real sending permission. For your artifact, identify actual ownership, access observations, and unresolved dependencies.",
+      "A responsible-practice statement describes concrete care for the current artifact. In this supplied fictional example, the design is for tabletop explanation only. Private customer records are excluded, missing dates remain questions, and delivery waits for recorded human approval. The author retains test notes and corrects and retests changes to the gate. The AI-role disclosure says AI helped draft the explanation and suggest review checks. The human chose the criteria, inspected the drafts, corrected unsupported claims, and checked the records. Neither AI did everything nor I worked without AI would describe that supplied record truthfully. Write both statements in your own language using your actual evidence. Match safeguards to the finished version and place the disclosure where the intended reviewer can find it.",
+      "The supplied fictional tabletop can help explain an intake design when its tests, ownership, and limits are visible. It has not established live integration or real customer outcomes. That limit is compatible with a clearly labeled tabletop explanation. It is incompatible with a claim that the service is ready for unrestricted live use. If a required approval step still fails, describing the limit does not make that criterion satisfied. Keep the issue pending and correct it. Explain one remaining limitation and why the stated use is appropriate or must be narrowed. Show how a person can review and correct the result. Save the READY review, corrections, final responsible statement, AI disclosure, and unresolved issues in the existing Project Record and workbook. Carry the same package into Lesson 6.4."
+    ]
+  },
+  "editorial_notes": {
+    "status": "Protected founder review; existing learner publication status remains draft.",
+    "media": "Same approved website recording in 1920×1080 landscape and saved Journey Six voice; four guided audio chapters and four captioned demonstrations.",
+    "source": "ACA_Phase_Two_Six_Week_Curriculum_Master.pdf v2.0, October 4, 2026, Journey Six Lesson 6.3, page 44.",
+    "example_data": "Supplied fictional tabletop continuation. No learner test, live outcome, access approval, human certification, or organizational adoption is invented."
+  }
+}
