@@ -1,15 +1,16 @@
 {
-  "lipsync_id": "0c57bf1607864ae9b12ce980c0fa60ba",
+  "lipsync_id": "16f402524165487e90905dbff9540b2d",
   "visual_source_asset_id": "509bace71492492a85d1052e8adf9e1d",
   "visual_source_url": "https://aiconfidenceacademy.org/assets/videos/confidence-with-ai-man-extended/film.m3u8",
-  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
-  "narration_source_video_id": "speech:zs2UGpRHV6lKQQKaMUGX",
-  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=c8667c7f-98b3-4ddc-aa5d-a98413ab451f.wav",
-  "narration_duration_seconds": 111.59510204081633,
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
+  "narration_source_video_id": "speech:8c6df61e1e154060860449ee6cc76871",
+  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=e74f2c8b-ae76-4938-bcc2-7bd4de2e8615.wav",
+  "narration_duration_seconds": 99.44816326530612,
   "introduction_transcript": "Welcome back to the AI Confidence Academy. This is Journey Six, Lesson Six—the final lesson of Phase Two.\n\nWe want to thank you sincerely for coming along, learning with us, and allowing us to learn alongside you. Our goal throughout this journey has been to connect learning with practical work, thoughtful decisions, and human responsibility. We have brought those pieces together, and today we will bring this phase to completion.\n\nYou have explored opportunities, developed workflows, considered the people affected by your decisions, created useful work, and practiced testing and improving it. In Journey Six, we have focused on recognizing your capabilities, finishing your project, reviewing its quality, demonstrating your work, and choosing a realistic next opportunity.\n\nIn this final lesson, you will assemble your portfolio using the evidence you have already created. You will reflect on what changed in your thinking and your work, check the remaining requirements, and prepare your final submission.\n\nYou will also create a thirty-, sixty-, and ninety-day execution plan, giving your learning a practical direction beyond the Academy.\n\nThank you for the time, effort, and trust you have brought to ACA. Let us bring your work together and prepare you to carry it forward.\n\nOn behalf of the founders, your instructors, and the entire team here at the AI Confidence Academy, we want to thank you again for joining us in this experience and taking this journey with us. It has been a pleasure to learn alongside you.\n\nWe hope you leave feeling more confident, more capable, and ready to put what you have learned into practice. We are grateful that you chose ACA to be part of your learning.\n\nThank you sincerely for being here.",
-  "source_duration_reported_seconds": 99.12,
-  "source_url": "https://resource2.heygen.ai/video_translate/0c57bf1607864ae9b12ce980c0fa60ba/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.6%2520approved%2520combined%2520welcome%2520and%2520thank%2520you.mp4%3B",
-  "completed_lipsync_id": "0c57bf1607864ae9b12ce980c0fa60ba",
-  "lipsync_input_source_url": "https://resource2.heygen.ai/video_translate/b35a09276cae491a907ef6ca829ba059/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.5%2520approved%2520wide%2520instructor.mp4%3B",
-  "lipsync_input_source_id": "b35a09276cae491a907ef6ca829ba059"
+  "source_url": "https://resource2.heygen.ai/video_translate/16f402524165487e90905dbff9540b2d/original.mp4",
+  "lipsync_input_source_url": "https://resource2.heygen.ai/video_translate/0c57bf1607864ae9b12ce980c0fa60ba/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.6%2520approved%2520combined%2520welcome%2520and%2520thank%2520you.mp4%3B",
+  "lipsync_input_source_id": "0c57bf1607864ae9b12ce980c0fa60ba",
+  "voice_name": "Alex Wright - Informative",
+  "narration_request_id": "8c6df61e1e154060860449ee6cc76871",
+  "narration_last_word_end_seconds": 99.196
 }

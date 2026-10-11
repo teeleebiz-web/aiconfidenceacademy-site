@@ -1,15 +1,16 @@
 {
-  "lipsync_id": "d3fc939f7390436192eb994a0ad5b040",
+  "lipsync_id": "bd0bc33da5034a27ab1cb11bb12f36b9",
   "visual_source_asset_id": "509bace71492492a85d1052e8adf9e1d",
   "visual_source_url": "https://aiconfidenceacademy.org/assets/videos/confidence-with-ai-man-extended/film.m3u8",
-  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
-  "narration_source_video_id": "speech:a8NSQrlBnI0GogfBfwT1",
-  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=fd6f9750-bbaf-43b7-b0dd-be598104507d.wav",
-  "narration_duration_seconds": 100.36244897959183,
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
+  "narration_source_video_id": "speech:6864a4d25fd249668d0ce18759ae9bf6",
+  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=4b230881-9f64-4e51-b73c-bc92c8789a75.wav",
+  "narration_duration_seconds": 91.97714285714285,
   "introduction_transcript": "Welcome to Journey Six, Lesson Four: Demonstrate the Project and Answer Questions. Bring forward the finished artifact, evidence, responsible practice statement, and honest limits you reviewed in Lesson Three. Today, you will prepare a five-to-seven-minute demonstration that another person can follow. Use the STORY Presentation Path: situation, target, operations, result, and your judgment. Explain the need and the intended result. Show the important steps in the artifact, identify where AI helped, and make your human decisions visible. Present only results your evidence supports, with the limits that matter to the audience. A useful demonstration shows both a normal request and an exception that needs human review. It explains what changed after testing instead of reciting every prompt you used. Choose a small number of clear visuals or a live demonstration, and keep all displayed information safe to share. You will create a timed outline, a one-page cue sheet, and a simple visual sequence. Rehearse once, record the difficult moments, and prepare three likely questions about your work. Then revise and rehearse the weakest section. AI can act as a practice reviewer and ask useful questions. It must not invent results or answer on your behalf. Your task is to explain why the project matters, what you tested, what changed, and what remains limited in your own words. Open the connected workbook and let us prepare your demonstration. Let's begin.",
-  "source_url": "https://resource2.heygen.ai/video_translate/d3fc939f7390436192eb994a0ad5b040/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.4%2520invitation%2520ending%2520correction.mp4%3B",
-  "source_duration_reported_seconds": 94.64,
-  "completed_lipsync_id": "d3fc939f7390436192eb994a0ad5b040",
-  "lipsync_input_source_url": "https://resource2.heygen.ai/video_translate/6d63aa5dedfd474e930e0ae6b7bafb16/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.4%2520approved%2520wide%2520instructor.mp4%3B",
-  "lipsync_input_source_id": "6d63aa5dedfd474e930e0ae6b7bafb16"
+  "source_url": "https://resource2.heygen.ai/video_translate/bd0bc33da5034a27ab1cb11bb12f36b9/original.mp4",
+  "lipsync_input_source_url": "https://resource2.heygen.ai/video_translate/d3fc939f7390436192eb994a0ad5b040/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.4%2520invitation%2520ending%2520correction.mp4%3B",
+  "lipsync_input_source_id": "d3fc939f7390436192eb994a0ad5b040",
+  "voice_name": "Alex Wright - Informative",
+  "narration_request_id": "6864a4d25fd249668d0ce18759ae9bf6",
+  "narration_last_word_end_seconds": 91.732
 }

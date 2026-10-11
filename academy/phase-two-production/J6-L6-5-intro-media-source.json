@@ -1,15 +1,16 @@
 {
-  "lipsync_id": "960b0382c29246c1acf121935b913ea3",
+  "lipsync_id": "ed1781bfc7b34dffba40dc193ca33122",
   "visual_source_asset_id": "509bace71492492a85d1052e8adf9e1d",
   "visual_source_url": "https://aiconfidenceacademy.org/assets/videos/confidence-with-ai-man-extended/film.m3u8",
-  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
-  "narration_source_video_id": "speech:7D0tuGn9eoEYI8Edky9r",
-  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=61bf1601-afc4-4070-8c93-2f19a40f8171.wav",
-  "narration_duration_seconds": 99.60489795918367,
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
+  "narration_source_video_id": "speech:9ba4224a3d56414ab3a0e6c7dd05ea89",
+  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=81690b6d-62b8-4283-b30b-00a6e83132af.wav",
+  "narration_duration_seconds": 94.66775510204081,
   "introduction_transcript": "Welcome to Journey Six, Lesson Five: Position the Work and Choose the Next Opportunity. Bring forward the capstone, evidence, and honest explanation you demonstrated in Lesson Four. Today, you will describe that work professionally and choose a realistic next step. Use the Truth Test: can you demonstrate the claim, explain it, support the wording, and provide evidence? A tested, bounded prototype may support a statement about designing and reviewing a workflow. It does not prove that you can automate any business, and it does not create a credential or guarantee a client, income, or employment. You will adapt the same supported truth into four formats: a seventy-five-word introduction, a forty-word profile, three evidence-based bullets, and a short spoken introduction in your own voice. Then use the Opportunity Map to compare a current-role opportunity, an adjacent opportunity, and a longer-term possibility. For each, identify the opportunity, fit, evidence, gap, people, and next step. Choose a primary opportunity and a backup, and define one specific thirty-day action that builds the evidence you still need. AI can help organize the language and comparison using only your verified inventory. You must inspect every claim, preserve your voice, and keep unknowns and permissions visible. Your completion check is to correct an inflated professional claim and explain the gap you will address before pursuing your chosen opportunity. Open the connected workbook and let us position your work with care. Let's begin.",
-  "source_url": "https://resource2.heygen.ai/video_translate/960b0382c29246c1acf121935b913ea3/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.5%2520invitation%2520ending%2520correction.mp4%3B",
-  "source_duration_reported_seconds": 99.12,
-  "completed_lipsync_id": "960b0382c29246c1acf121935b913ea3",
-  "lipsync_input_source_url": "https://resource2.heygen.ai/video_translate/b35a09276cae491a907ef6ca829ba059/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.5%2520approved%2520wide%2520instructor.mp4%3B",
-  "lipsync_input_source_id": "b35a09276cae491a907ef6ca829ba059"
+  "source_url": "https://resource2.heygen.ai/video_translate/ed1781bfc7b34dffba40dc193ca33122/original.mp4",
+  "lipsync_input_source_url": "https://resource2.heygen.ai/video_translate/960b0382c29246c1acf121935b913ea3/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.5%2520invitation%2520ending%2520correction.mp4%3B",
+  "lipsync_input_source_id": "960b0382c29246c1acf121935b913ea3",
+  "voice_name": "Alex Wright - Informative",
+  "narration_request_id": "9ba4224a3d56414ab3a0e6c7dd05ea89",
+  "narration_last_word_end_seconds": 94.419
 }

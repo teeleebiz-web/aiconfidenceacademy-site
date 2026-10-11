@@ -79,7 +79,8 @@ def make_instructor_clip(src,seconds,destination):
       "-ar","48000","-ac","2",str(destination)])
 
 raw=json.loads(MANIFEST.read_text())
-assert raw.get("lipsync_id")=="bbe48fd747f9465283779f6f1109f43b"
+assert raw.get("lipsync_id")=="6a9c18071c4c452b865e0649c6cb53c0"
+assert raw.get("voice_id")=="0db3abd83c74452fb2460b0dd113daad"
 assert raw.get("visual_source_asset_id")=="509bace71492492a85d1052e8adf9e1d"
 url=raw["source_url"]
 assert url.startswith("https://") and "heygen" in url.split("/")[2]
@@ -91,6 +92,8 @@ src_info=probe(source)
 duration=float(src_info["format"]["duration"])
 streams=src_info["streams"]
 assert 80<=duration<=170,duration
+assert duration >= raw["narration_last_word_end_seconds"], duration
+assert abs(duration-raw["narration_duration_seconds"]) < 2.0, duration
 assert any(s["codec_type"]=="audio" for s in streams)
 source_video=next(s for s in streams if s["codec_type"]=="video")
 assert (int(source_video["width"]),int(source_video["height"]))==(1920,1080)
@@ -140,6 +143,10 @@ summary={
  "visual_source_asset_id":raw["visual_source_asset_id"],
  "visual_source_url":raw["visual_source_url"],
  "narration_source_video_id":raw["narration_source_video_id"],
+ "voice_id":raw["voice_id"],
+ "voice_name":raw["voice_name"],
+ "narration_audio_url":raw["narration_audio_url"],
+ "narration_duration_seconds":raw["narration_duration_seconds"],
  "orientation":"landscape",
  "source_duration_seconds":round(duration,3),
  "completed_duration_seconds":round(fdur,3),
