@@ -165,7 +165,6 @@ export function PhaseTwoLessonExperience({
             <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
               <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
               <video
-                style={pageId === '6.1' ? { aspectRatio: '9 / 16', maxWidth: 360 } : undefined}
                 controls
                 playsInline
                 preload="auto"
