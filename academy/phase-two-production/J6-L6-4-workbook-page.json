@@ -1,0 +1,146 @@
+{
+  "number": 4,
+  "lesson_id": "6.4",
+  "title": "Demonstrate the Project and Answer Questions",
+  "blocks": [
+    {
+      "type": "note",
+      "title": "Demonstrate the same reviewed project",
+      "text": "STORY Presentation Path: situation, target, operations, result, and your judgment. Prepare a five-to-seven-minute demonstration with useful visuals, human decisions, supported results, and honest limits. AI may ask practice questions; you answer for the work."
+    },
+    {
+      "type": "text",
+      "text": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake tabletop shows complete input and a missing-date or absent-approval exception. Its author demonstrates the revised written status and human delivery gate, opens retained check references, and explains what changed after testing. A first fictional rehearsal lasts 8:20; after removing prompt repetition and putting the exception reference beside the cue, a second fictional full rehearsal lasts 6:10. These supplied observations do not establish your rehearsal, live delivery, measured savings, real organizational permission, or certification."
+    },
+    {
+      "type": "heading",
+      "text": "Bring forward the reviewed package"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_projectContext",
+      "label": "Continuing capstone, reviewed version, audience, and evidence references",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Plan all five STORY parts"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_situation",
+      "label": "Situation: need, context, and affected people — planned time",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_target",
+      "label": "Target: intended bounded result and success criterion — planned time",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_operations",
+      "label": "Operations: normal request, review exception, AI support, and human decisions — planned time",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_result",
+      "label": "Result: supported tests, before/after change, references, and limits — planned time",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_judgment",
+      "label": "Your judgment: personal decision, remaining limit, and next check — planned time",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Prepare the cue sheet and safe visuals"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_cueSheet",
+      "label": "One-page cue sheet: STORY reminders, time, visual action, and evidence",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_visualSequence",
+      "label": "Simple visual sequence or live demonstration, exact version, and safe fallback",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_shareCheck",
+      "label": "Actual sharing check: privacy, permission, readable meaning, and displayed material",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Rehearse, answer, and revise"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_rehearsal",
+      "label": "First rehearsal: actual total time, difficult moment, and observation",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_aiReview",
+      "label": "AI practice-review questions inspected and accepted or rejected with reasons",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_questions",
+      "label": "Three likely questions and your own answers: assumptions, tests, costs, people, and failure",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_revision",
+      "label": "Weakest-section revision and actual new rehearsal observation",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Deliver and save the demonstration"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_delivery",
+      "label": "Actual five-to-seven-minute delivery: time, presentation reference, own explanation, and limits",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l4_evidenceIndex",
+      "label": "Saved presentation, cue sheet, visual order, and question-response notes",
+      "hint": "Use your own current artifact, actual observations and time, meaningful references, and honest limits. Keep unknown costs and permissions visible.",
+      "lines": 4
+    },
+    {
+      "type": "note",
+      "title": "Applied completion check",
+      "text": "Deliver a five-to-seven-minute demonstration. Answer why the project matters, what was tested, what changed and what remains limited without relying on AI to speak for you."
+    }
+  ]
+}
