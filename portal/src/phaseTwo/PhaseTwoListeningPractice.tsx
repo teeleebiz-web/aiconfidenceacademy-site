@@ -119,7 +119,7 @@ export function PhaseTwoListeningPractice({ enrollmentId, approvedAiRequest }: {
       <label><input type="checkbox" checked={privacyChecked} onChange={e => setPrivacyChecked(e.target.checked)} />I checked that this shared record contains no personal disclosures and clearly labels the role-play simulated.</label>
     </div>
     <div className="p2-workflow-practice-save">
-      {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save listening section to My Project Record'}</button> : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+      {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save listening section to My Project Record'}</button> : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 3.2 simulated listening section copied.')}>Copy my Lesson 3.2 record</button>
       <details><summary>Read or copy my listening section</summary><textarea aria-label="Lesson 3.2 listening record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your simulated listening section is ready to save for human review.' : 'Complete five listening questions, six reflective questions, the summary check, revised question, support action and privacy review before saving.')}</p>

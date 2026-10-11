@@ -54,7 +54,7 @@ it('keeps owner preview copyable without pretending that it saved a learner reco
   expect(api.load).not.toHaveBeenCalled()
   expect(screen.queryByRole('button', { name: /Save people section/ })).toBeNull()
   expect(screen.getByRole('button', { name: 'Copy my Lesson 3.1 record' })).toBeTruthy()
-  expect(screen.getByText(/Saving requires your existing active learner Project Record/)).toBeTruthy()
+  expect(screen.getByText(/Saving to My Project Record requires an active enrollment/)).toBeTruthy()
   fireEvent.click(screen.getByRole('button', { name: 'Add another concern' }))
   expect(screen.getAllByRole('combobox')).toHaveLength(6)
   expect(api.save).not.toHaveBeenCalled()

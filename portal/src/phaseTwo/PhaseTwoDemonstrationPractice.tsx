@@ -85,7 +85,7 @@ export function PhaseTwoDemonstrationPractice({ enrollmentId, approvedAiRequest 
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I checked sharing safety, evidence support, actual five-to-seven-minute delivery, rehearsal changes, and my own answers about why the work matters, tests, changes, and limits.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save STORY Demonstration and Questions to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 6.4 demonstration record copied.')}>Copy my Lesson 6.4 record</button>
       <details><summary>Read or copy my demonstration record</summary><textarea aria-label="Lesson 6.4 demonstration record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your demonstration and question-response notes are ready to save.' : 'Complete the outline, cue sheet, visuals, sharing check, rehearsals, own answers, and actual delivery before saving.')}</p>

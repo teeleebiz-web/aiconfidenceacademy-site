@@ -98,7 +98,7 @@ export function PhaseTwoValuePractice({ enrollmentId }: { enrollmentId?: string 
     <label>What evidence would change your conclusion?<textarea value={reversal} onChange={e=>setReversal(e.target.value)}/></label>
     <div className="p2-value-actions">
       {enrollmentId&&project?<button type="button" onClick={()=>void save()} disabled={!complete||saving}>{saving?'Saving…':'Save to My Project Record'}</button>
-        :<p>Founder preview: copy your work. No false learner save is shown.</p>}
+        :<p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={()=>void copy(JSON.stringify(record,null,2),'Lesson 1.3 project evidence copied.')}>Copy my Lesson 1.3 work</button>
       <p role="status">{status||(complete?'Your value hypothesis is ready for review.':'Complete the five tasks and value comparison before saving.')}</p>
     </div>

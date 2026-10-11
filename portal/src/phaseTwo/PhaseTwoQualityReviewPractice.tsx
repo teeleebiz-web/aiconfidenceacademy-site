@@ -83,7 +83,7 @@ export function PhaseTwoQualityReviewPractice({ enrollmentId, approvedAiRequest 
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I checked all five READY Quality Review areas, corrections, source support, authorship, accessibility observations, statement, disclosure, limits, and human review/correction route.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save READY Review and Responsible Practice Statement to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 6.3 quality review copied.')}>Copy my Lesson 6.3 record</button>
       <details><summary>Read or copy my quality review</summary><textarea aria-label="Lesson 6.3 quality review record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your READY review and final statements are ready to save.' : 'Complete the five checks, correction, follow-up, statements, unresolved issues, and use explanation before saving.')}</p>

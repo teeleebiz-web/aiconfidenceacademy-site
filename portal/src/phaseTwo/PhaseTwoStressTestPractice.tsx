@@ -97,7 +97,7 @@ export function PhaseTwoStressTestPractice({ enrollmentId, approvedAiRequest }: 
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I checked the integrated artifacts, actual three-case results, human takeover, correction and retest, responsibility records, ownership, remaining limits and functioning route demonstration.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save stress-test evidence to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 5.6 stress-test evidence copied.')}>Copy my Lesson 5.6 record</button>
       <details><summary>Read or copy my integrated operating record</summary><textarea aria-label="Lesson 5.6 operating record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your operating evidence and human review are ready to save.' : 'Complete the cases, correction, retest, responsibilities and demonstration before saving.')}</p>

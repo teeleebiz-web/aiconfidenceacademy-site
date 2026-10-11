@@ -140,7 +140,7 @@ export function PhaseTwoExceptionPractice({ enrollmentId, approvedAiRequest }: {
     <p>Demonstrate the original failure, material correction, actual retest and retained human control. Saving preserves reported evidence for human review; it does not mark the lesson complete or approve deployment. Carry the integrated record into Lesson 3.1.</p>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save Journey Two test evidence to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 2.6 test evidence and Journey Two integration copied.')}>Copy my Lesson 2.6 record</button>
       <details><summary>Read or copy my test evidence</summary><textarea aria-label="Lesson 2.6 test record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your reported test evidence and integrated work are ready to save for review.' : 'Retain all four actual cases, correction, same-input retest, updated map/concept and demonstration before saving.')}</p>

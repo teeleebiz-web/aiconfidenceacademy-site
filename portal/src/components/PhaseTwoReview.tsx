@@ -2,7 +2,7 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import sealUrl from '../../../aca-official-seal.png'
 import { supabase } from '../lib/supabase'
-import { PhaseTwoExperiencePreview } from '../phaseTwo/PhaseTwoExperiencePreview'
+import { usePageStart } from '../lib/usePageStart'
 import { inspectPhaseTwoDraft } from '../phaseTwo/phaseTwoDraftIntegrity'
 import { PhaseTwoLessonExperience } from '../phaseTwo/PhaseTwoLessonExperience'
 import { PhaseTwoWorkbook } from '../phaseTwo/PhaseTwoWorkbook'
@@ -61,23 +61,15 @@ type ReviewData = { journeys: ReviewJourney[]; lessons: ReviewLesson[] }
 type ReviewStatus = 'loading' | 'signed-out' | 'denied' | 'ready' | 'error'
 
 const courseCode = 'phase-two-ai-professional-builder'
-const teachingSections: Array<{ key: keyof Omit<PhaseTwoSource, 'journey'>; title: string; number: string }> = [
-  { key: 'teaching', title: 'Teaching', number: '01' },
-  { key: 'worked_case', title: 'Worked case', number: '02' },
-  { key: 'apply_to_project', title: 'Apply it to your project', number: '03' },
-  { key: 'ai_request', title: 'AI request', number: '04' },
-  { key: 'verify_and_save', title: 'Verify and save', number: '05' },
-  { key: 'applied_completion_check', title: 'Applied completion check', number: '06' },
-]
-
 export function PhaseTwoReview() {
   const [session, setSession] = useState<Session | null>(null)
   const [authReady, setAuthReady] = useState(false)
   const [status, setStatus] = useState<ReviewStatus>('loading')
   const [validationIssues, setValidationIssues] = useState<string[]>([])
   const [data, setData] = useState<ReviewData>({ journeys: [], lessons: [] })
-  const [chosen, setChosen] = useState('1.1')
-  const [reviewView, setReviewView] = useState<'source' | 'learner'>('source')
+  const [chosen, setChosen] = useState(new URLSearchParams(window.location.search).get('lesson') ?? '1.1')
+  const [showCurriculum, setShowCurriculum] = useState(new URLSearchParams(window.location.search).get('view') === 'curriculum')
+  const [workbookJourney, setWorkbookJourney] = useState(1)
   const [workbookPreview, setWorkbookPreview] = useState<string | null>(null)
   const [reviewEmail, setReviewEmail] = useState('')
   const [reviewPassword, setReviewPassword] = useState('')
@@ -108,7 +100,7 @@ export function PhaseTwoReview() {
           },
         })
         if (result.error) throw result.error
-        setSignInMessage('Check your email for a secure sign-in link to this review.')
+        setSignInMessage('Check your email for a secure sign-in link to your learning space.')
       }
     } catch {
       setSignInMessage(signInMethod === 'password'
@@ -189,28 +181,49 @@ export function PhaseTwoReview() {
     return () => { cancelled = true }
   }, [authReady, session?.user.id])
 
-  const lesson = useMemo(() => data.lessons.find(item => item.page_id === chosen) ?? data.lessons[0], [chosen, data.lessons])
-  const journey = data.journeys.find(item => item.id === lesson?.journey_id)
-  const journeyLessons = data.lessons.filter(item => item.journey_id === journey?.id)
-  const introduction = journeyLessons[0]?.content.phase_two?.journey
-  const videoCount = journeyLessons.filter(item => item.content.planned_media === 'video').length
-  const audioCount = journeyLessons.filter(item => item.content.planned_media === 'audio').length
-  const requestedPageId = new URLSearchParams(window.location.search).get('lesson')
-  const lessonForReview = data.lessons.find(item =>
-    item.page_id === requestedPageId &&
-    item.content.phase_two_production?.approval_status === 'founder_review_not_published'
-  ) ?? data.lessons.find(item => item.page_id === '1.1')
+  const lessonForReview = useMemo(() => data.lessons.find(item => item.page_id === chosen && item.content.phase_two_production?.approval_status === 'founder_review_not_published') ?? data.lessons[0], [chosen, data.lessons])
   const lessonJourney = data.journeys.find(item => item.id === lessonForReview?.journey_id)
-
-  // Open one complete learner lesson per direct link, without a construction dashboard.
-  // Every source record remains access-controlled through the existing Academy login.
-  if (status === 'ready' && workbookPreview) {
-    return <PhaseTwoWorkbook journey={Number(workbookPreview.split('.')[0])}
-      initialLesson={Number(workbookPreview.split('.')[1])}
-      onBack={() => setWorkbookPreview(null)} />
+  const position = data.lessons.findIndex(item => item.id === lessonForReview?.id)
+  const navigate = (pageId?: string) => {
+    setWorkbookPreview(null)
+    setShowCurriculum(!pageId)
+    if (pageId) setChosen(pageId)
+    const params = new URLSearchParams(window.location.search)
+    if (pageId) { params.set('lesson', pageId); params.delete('view') }
+    else { params.delete('lesson'); params.set('view', 'curriculum') }
+    window.history.pushState({}, '', '/learn/?' + params)
   }
-  if (status === 'ready' && lessonForReview) {
-    return <PhaseTwoLessonExperience
+  useEffect(() => {
+    const back = () => {
+      const params = new URLSearchParams(window.location.search)
+      setChosen(params.get('lesson') ?? '1.1')
+      setShowCurriculum(params.get('view') === 'curriculum')
+      setWorkbookPreview(null)
+    }
+    window.addEventListener('popstate', back)
+    return () => window.removeEventListener('popstate', back)
+  }, [])
+  usePageStart(status !== 'ready' ? null : workbookPreview ? null : showCurriculum ? 'phase-two-curriculum' : 'phase-two:' + lessonForReview?.page_id)
+  const phaseLinks = <nav className="curriculum-phase-links" aria-label="Academy phases">
+    <a href="/learn/?review=phase-one&view=curriculum">Phase 1</a>
+    <a href="/learn/?review=phase-two&view=curriculum" aria-current="page">Phase 2</a>
+  </nav>
+
+  if (status === 'ready' && workbookPreview) {
+    return <div>{phaseLinks}<PhaseTwoWorkbook journey={workbookJourney}
+      initialLesson={workbookJourney === Number(workbookPreview.split('.')[0]) ? Number(workbookPreview.split('.')[1]) : undefined}
+      backLessonId={showCurriculum ? undefined : workbookPreview}
+      availableJourneys={data.journeys.map(item => item.journey_number)}
+      onSelectJourney={setWorkbookJourney}
+      onBack={() => setWorkbookPreview(null)} /></div>
+  }
+  if (status === 'ready' && lessonForReview && !showCurriculum) {
+    return <div>{phaseLinks}<nav className="curriculum-lesson-links" aria-label="Move through Phase Two">
+      <button type="button" disabled={position <= 0} onClick={() => navigate(data.lessons[position - 1]?.page_id)}>Previous lesson</button>
+      <button type="button" onClick={() => navigate()}>Your lessons</button>
+      <button type="button" disabled={position >= data.lessons.length - 1} onClick={() => navigate(data.lessons[position + 1]?.page_id)}>Next lesson</button>
+    </nav><PhaseTwoLessonExperience
+      key={lessonForReview.id}
       pageId={lessonForReview.page_id}
       journeyTitle={lessonJourney?.title ?? 'AI Strategy and Business Opportunity'}
       lessonTitle={lessonForReview.title}
@@ -220,7 +233,8 @@ export function PhaseTwoReview() {
       introVideo={lessonForReview.content.phase_two_media_plan?.avatar_introduction}
       guidedInstruction={lessonForReview.content.phase_two_media_plan?.guided_instruction}
       allowMediaReview
-      onOpenWorkbook={() => setWorkbookPreview(lessonForReview.page_id)}
+      onBackToLessons={() => navigate()}
+      onOpenWorkbook={() => { setWorkbookJourney(Number(lessonForReview.page_id.split('.')[0])); setWorkbookPreview(lessonForReview.page_id) }}
       demoClips={['founder_approved','founder_review_pending'].includes(lessonForReview.content.phase_two_media_plan?.demonstration_clips?.approvalStatus ?? '')
         ? lessonForReview.content.phase_two_media_plan?.demonstration_clips?.clips
         : undefined}
@@ -228,7 +242,7 @@ export function PhaseTwoReview() {
         lessonForReview.content.phase_two_media_plan?.audio_lesson?.generated_introduction?.voice_id === 'ac277b338cf64d8b9686784c43c563da'
           ? lessonForReview.content.phase_two_media_plan.audio_lesson.generated_introduction
           : undefined}
-    />
+    /></div>
   }
 
   return (
@@ -290,145 +304,30 @@ export function PhaseTwoReview() {
           </section>
         )}
 
-        {status === 'ready' && lesson && journey && (
-          <>
-            <header className="p2-overview">
-              <div>
-                <p className="eyebrow">Phase Two · 2026 curriculum · Version 2.0</p>
-                <h1>AI Professional and Builder Pathway</h1>
-                <p>Six journeys. Thirty-six lessons. One continuing business project.</p>
-                <p className="p2-review-note">Owner-only review. All lessons and media positions remain unpublished; proposed video/audio assignments require founder review.</p>
-              </div>
-              <div className="p2-totals" aria-label="Curriculum counts">
-                <strong>36</strong><span>lessons</span><small>18 video slots · 18 audio slots</small>
-              </div>
-            </header>
-
-            <div className="p2-review-view-toggle" role="group" aria-label="Founder review perspectives">
-              <button type="button" aria-pressed={reviewView === 'source'}
-                onClick={() => setReviewView('source')}>Curriculum source review</button>
-              <button type="button" aria-pressed={reviewView === 'learner'}
-                onClick={() => setReviewView('learner')}>Learner experience walkthrough</button>
+        {status === 'ready' && showCurriculum && <>
+          {phaseLinks}
+          <header className="p2-overview"><div>
+            <p className="eyebrow">Phase Two</p>
+            <h1>AI Professional and Builder Pathway</h1>
+            <p>Choose a journey and lesson to continue your learning.</p>
+          </div></header>
+          <section aria-labelledby="p2-workbooks-heading">
+            <h2 id="p2-workbooks-heading">My Workbooks</h2>
+            <div className="workbook-links">{data.journeys.map(item => <button type="button" key={item.id}
+              onClick={() => { setWorkbookJourney(item.journey_number); setWorkbookPreview(item.journey_number + '.1') }}>
+              Workbook {item.journey_number} — Journey {item.journey_number}
+            </button>)}</div>
+          </section>
+          {data.journeys.map(item => <section key={item.id} className="p2-journey-panel">
+            <div><p className="eyebrow">Journey {item.journey_number}</p><h2>{item.title}</h2><p>{item.promise}</p>
+              <div className="p2-lesson-nav">{data.lessons.filter(lesson => lesson.journey_id === item.id).map(lesson =>
+                <button type="button" key={lesson.id} onClick={() => navigate(lesson.page_id)}>
+                  <small>Lesson {lesson.page_id}</small><strong>{lesson.title}</strong>
+                </button>)}</div>
             </div>
+          </section>)}
+        </>}
 
-            {reviewView === 'learner' ? (
-              <PhaseTwoExperiencePreview journeys={data.journeys} lessons={data.lessons} />
-            ) : (
-              <>
-            <nav className="p2-journey-nav" aria-label="Phase Two journey selection">
-              {data.journeys.map(item => (
-                <button
-                  type="button"
-                  key={item.id}
-                  aria-pressed={item.id === journey.id}
-                  className={item.id === journey.id ? 'p2-journey-choice chosen' : 'p2-journey-choice'}
-                  onClick={() => { const first = data.lessons.find(l => l.journey_id === item.id); if (first) setChosen(first.page_id) }}
-                >
-                  <small>Journey {item.journey_number}</small>
-                  <span>{item.title}</span>
-                </button>
-              ))}
-            </nav>
-
-            <section className="p2-journey-panel" aria-labelledby="p2-journey-title">
-              <div>
-                <p className="eyebrow">Week {journey.journey_number} · Six guided lessons</p>
-                <h2 id="p2-journey-title">{journey.title}</h2>
-                <p>{journey.promise}</p>
-                {introduction && <div className="p2-journey-evidence">
-                  <p><strong>Journey result:</strong> {introduction.journey_result}</p>
-                  <p><strong>Independent application:</strong> {introduction.independent_application}</p>
-                  <p><strong>Evidence review:</strong> {introduction.evidence_review}</p>
-                </div>}
-              </div>
-              <div className="p2-media-count">
-                <span>{videoCount} video-led</span><span>{audioCount} audio-led</span>
-                <small>Media files and transcripts are pending production.</small>
-              </div>
-            </section>
-
-            <div className="p2-content-layout">
-              <nav className="p2-lesson-nav" aria-label="Lessons in selected journey">
-                <h2>Lessons</h2>
-                {journeyLessons.map(item => (
-                  <button type="button" key={item.id} aria-current={lesson.id === item.id ? 'page' : undefined}
-                    onClick={() => setChosen(item.page_id)}>
-                    <small>{item.page_id} · {item.content.planned_media === 'video' ? 'Video' : 'Audio'} placeholder</small>
-                    <strong>{item.title}</strong>
-                  </button>
-                ))}
-              </nav>
-              <article className="p2-lesson-article" aria-labelledby="p2-lesson-title">
-                <header>
-                  <p className="eyebrow">Lesson {lesson.page_id} · Approximately 60 minutes · Unpublished</p>
-                  <h2 id="p2-lesson-title">{lesson.title}</h2>
-                  <p>{lesson.purpose}</p>
-                </header>
-
-                <section className="p2-media-placeholder" aria-label="Media production placeholder">
-                  <div className="p2-media-icon" aria-hidden="true">{lesson.content.planned_media === 'video' ? '▶' : '♫'}</div>
-                  <div>
-                    <strong>{lesson.content.planned_media === 'video' ? 'Avatar and demonstration video' : 'Guided audio instruction'}</strong>
-                    <p>{lesson.content.planned_media === 'video'
-                      ? 'Video placeholder. The approved recording, captions and accessible transcript will be attached after review.'
-                      : 'Audio placeholder. The approved narration and readable transcript will be attached after review.'}</p>
-                    <small>Provisional lesson media assignment — not approved or recorded.</small>
-                  </div>
-                </section>
-
-                <section className="p2-lesson-rhythm" aria-labelledby="p2-session-flow">
-                  <div>
-                    <p className="eyebrow">Approved lesson rhythm</p>
-                    <h3 id="p2-session-flow">Your 60-minute learning session</h3>
-                    <p>The durations are teaching targets, not timers or automatic completion credit.</p>
-                  </div>
-                  <ol aria-label="Lesson activity plan">
-                    {(lesson.journey_position === 6
-                      ? [
-                          ['10 min', 'Integration instruction'],
-                          ['10 min', 'Challenge case'],
-                          ['30 min', 'Project testing and revision'],
-                          ['10 min', 'Evidence review'],
-                        ]
-                      : [
-                          ['15 min', 'Teaching'],
-                          ['10 min', 'Worked demonstration'],
-                          ['25 min', 'Project application'],
-                          ['10 min', 'Verification and applied check'],
-                        ]).map(([duration, label]) => (
-                      <li key={label}><strong>{duration}</strong><span>{label}</span></li>
-                    ))}
-                  </ol>
-                </section>
-
-                {!lesson.content.phase_two ? <p role="alert">The approved Phase Two teaching brief is missing for this lesson.</p> : (
-                  <div className="p2-teaching-sections">
-                    {teachingSections.map(section => (
-                      <section className="p2-section" key={section.key}>
-                        <p className="p2-section-number">{section.number}</p>
-                        <h3>{section.title}</h3>
-                        {section.key === 'ai_request'
-                          ? <pre className="p2-ai-request">{lesson.content.phase_two![section.key]}</pre>
-                          : <p>{lesson.content.phase_two![section.key]}</p>}
-                      </section>
-                    ))}
-                  </div>
-                )}
-                <footer className="p2-lesson-end">
-                  <p><strong>Source:</strong> Current six-week curriculum master, Version 2.0, October 4, 2026.</p>
-                  <p>Lesson content is review-only. No progress, workbook submission, learner access or release is activated here.</p>
-                  {data.lessons.find(item => item.course_position === lesson.course_position + 1) && (
-                    <button type="button" onClick={() => setChosen(data.lessons.find(item => item.course_position === lesson.course_position + 1)!.page_id)}>
-                      Review next lesson →
-                    </button>
-                  )}
-                </footer>
-              </article>
-            </div>
-              </>
-            )}
-          </>
-        )}
       </main>
       <footer className="p2-site-footer">AI Confidence Academy · People come first. AI is the tool. Confidence is the product. · AI assists, humans verify.</footer>
     </div>

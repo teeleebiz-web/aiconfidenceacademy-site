@@ -276,8 +276,13 @@ describe('LessonView', () => {
   expect(workbook.nextElementSibling?.textContent).toBe('Guided practice')
  })
 
-it('does not offer backward navigation even when a prior lesson is supplied', () => {
- render(<LessonView lesson={lesson} previousLesson={{...lesson, page_id:'1.0'}} nextLesson={{...lesson,page_id:'1.2'}} onBack={() => undefined} onOpenLesson={() => undefined} onSave={async () => undefined} />)
- expect(screen.queryByRole('button', {name:/previous lesson|back to|return to/i})).toBeNull()
- expect(screen.getByRole('button', {name:/next lesson 1.2/i})).toBeTruthy()
+it('returns to the curriculum and opens adjacent lessons when full navigation is available', async () => {
+ const user=userEvent.setup(), back=vi.fn(), open=vi.fn()
+ render(<LessonView lesson={{...lesson,page_id:'1.2'}} previousLesson={{...lesson,id:'previous',page_id:'1.1'}} nextLesson={{...lesson,id:'next',page_id:'1.3'}} onBack={back} onOpenLesson={open} onSave={async () => undefined} />)
+ await user.click(screen.getByRole('button',{name:/previous lesson.*1.1/i}))
+ expect(open).toHaveBeenLastCalledWith(expect.objectContaining({id:'previous'}))
+ await user.click(screen.getByRole('button',{name:/next lesson 1.3/i}))
+ expect(open).toHaveBeenLastCalledWith(expect.objectContaining({id:'next'}))
+ await user.click(screen.getAllByRole('button',{name:/your lessons/i})[0])
+ expect(back).toHaveBeenCalledOnce()
 })

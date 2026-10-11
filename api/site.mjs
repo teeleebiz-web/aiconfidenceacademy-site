@@ -39,7 +39,17 @@ export default function handler(request, response) {
           lessonReleaseMessage,
         }
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
-      root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation })
+      root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation,
+      workbookReviewerCheck: async token => {
+        const scoped = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+          auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+          global: { headers: { Authorization: `Bearer ${token}` } },
+        })
+        const { data, error } = await scoped.rpc('is_aca_curriculum_owner')
+        if (error) throw Object.assign(new Error('Your workbook access could not be checked. Please try again.'), { status: 503 })
+        return data === true
+      },
+    })
   }
   if (typeof path === 'string') request.url = '/' + path.replace(/^\/+/, '')
   return new Promise(resolve => {

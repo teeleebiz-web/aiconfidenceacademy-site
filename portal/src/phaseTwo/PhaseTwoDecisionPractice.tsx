@@ -89,7 +89,7 @@ export function PhaseTwoDecisionPractice({enrollmentId}:{enrollmentId?:string}) 
     <div className="p2-decision-actions">
       {enrollmentId&&project
         ? <button type="button" disabled={!complete||saving} onClick={()=>void save()}>{saving?'Saving…':'Save to My Project Record'}</button>
-        : <p>Founder preview: copy your exercise. No learner save is simulated.</p>}
+        : <p>Copy your exercise to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={()=>void copy(JSON.stringify(record,null,2),'Your Lesson 1.4 decision evidence was copied.')}>Copy Lesson 1.4 evidence</button>
       <p role="status">{message||(complete?'Ready for review.':'Complete the six request elements and decision record before saving.')}</p>
     </div>

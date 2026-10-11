@@ -95,7 +95,7 @@ export function PhaseTwoContinuityPractice({ enrollmentId, approvedAiRequest }: 
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I reviewed all nine FLOW elements, CARE, three READY screens, actual failure and backup evidence, effort comparison, corrections, operating responsibility and my human decision.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save continuity evidence to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 5.4 operating evidence copied.')}>Copy my Lesson 5.4 record</button>
       <details><summary>Read or copy my operating record</summary><textarea aria-label="Lesson 5.4 operating record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your operating evidence and human decision are ready to save.' : 'Complete the map, screens, tests, responsibility and human decision before saving.')}</p>

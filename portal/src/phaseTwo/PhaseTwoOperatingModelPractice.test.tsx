@@ -5,7 +5,7 @@ import { PhaseTwoOperatingModelPractice } from './PhaseTwoOperatingModelPractice
 it('concludes Journey One with six human-first fields, three stress cases, and clear proceed/pause decisions',()=>{
   render(<PhaseTwoOperatingModelPractice />)
   expect(screen.getByRole('heading',{name:'Stress test your Professional AI Operating Model'})).toBeTruthy()
-  expect(screen.getByText(/Founder preview: copy your evidence/)).toBeTruthy()
+  expect(screen.getByText(/Copy your evidence to keep it/)).toBeTruthy()
   expect(screen.queryByRole('button',{name:'Save Journey One Operating Model'})).toBeNull()
   for(const prefix of ['Purpose and outcome','Appropriate AI role','Human responsibility','Review process','Responsible boundaries','Growth commitments']){
     expect(screen.getByLabelText(new RegExp(prefix))).toBeTruthy()

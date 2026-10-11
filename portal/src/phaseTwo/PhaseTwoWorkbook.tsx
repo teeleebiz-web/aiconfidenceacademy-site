@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
 import { supabase } from '../lib/supabase'
+import { WorkbookJourneyTabs } from '../components/WorkbookJourneyTabs'
+import { usePageStart } from '../lib/usePageStart'
 import { WorkbookStore, type Transport } from '../../../academy/workbook/store'
 import '../../../academy/workbook/workbook.css'
 import './phaseTwoWorkbook.css'
@@ -25,7 +27,8 @@ function transportFor(enrollmentId: string | null, journey: number): Transport {
   }
   return async (method, patch) => {
     if (method === 'GET') return read()
-    if (!enrollmentId || !patch) throw new Error('Owner review is read-only.')
+    if (!enrollmentId) return read()
+    if (!patch) throw new Error('Your workbook save is incomplete.')
     const { error } = await supabase.rpc('save_aca_phase_two_workbook', {
       p_enrollment_id: enrollmentId, p_journey: journey,
       p_page: patch.page, p_base_revision: patch.baseRevision, p_answers: patch.answers,
@@ -61,10 +64,13 @@ function buildStudyCopy(title: string, pages: Array<{number:number;title:string;
   ].join('\n')
 }
 
-export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack }: {
+export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, backLessonId, availableJourneys = [journey], onSelectJourney, onBack }: {
   enrollmentId?: string
   journey: number
   initialLesson?: number
+  backLessonId?: string
+  availableJourneys?: number[]
+  onSelectJourney?: (journey: number) => void
   onBack: () => void
 }) {
   const transport = useMemo(() => transportFor(enrollmentId ?? null,journey),[enrollmentId,journey])
@@ -92,6 +98,15 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
   const answers = enrollmentId ? state.answers : {...state.answers,...previewAnswers}
   const page=state.workbook?.pages.find(p=>p.number===state.last_page)
   const released=state.workbook?.pages ?? []
+  usePageStart(page ? 'phase-two-workbook:' + journey + ':' + page.number : null)
+  const changeJourney = async (number: number) => {
+    if (number === journey || !availableJourneys.includes(number)) return
+    if (enrollmentId && store.pending) {
+      await store.save()
+      if (store.pending) { setNotice('Please save your workbook answers before changing workbooks.'); return }
+    }
+    onSelectJourney?.(number)
+  }
   const titles=approvedTitles[journey] ?? released.reduce<string[]>((items, lesson) => {
     items[lesson.number - 1] = lesson.title
     return items
@@ -121,14 +136,15 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
   </main>
   return <main className="wb-shell p2-workbook" aria-label="Phase Two released workbook">
     <div className="wb-toolbar">
-      <button className="wb-back p2-workbook-back" type="button" onClick={()=>void goBack()}>← Back to {initialLesson?'Lesson '+journey+'.'+initialLesson:'My Workbooks'}</button>
+      <button className="wb-back p2-workbook-back" type="button" onClick={()=>void goBack()}>← Back to {backLessonId ? 'Lesson ' + backLessonId : initialLesson?'Lesson '+journey+'.'+initialLesson:'My Workbooks'}</button>
       <div className="wb-save">
-        <span role="status">{enrollmentId ? state.status==='saved'?'Saved':state.status==='saving'?'Saving…':state.status==='unsaved'?'Changes to save':'Save needed' : 'Founder preview — test notes are not saved'}</span>
+        <span role="status">{enrollmentId ? state.status==='saved'?'Saved':state.status==='saving'?'Saving…':state.status==='unsaved'?'Changes to save':'Save needed' : 'Print or download to keep your notes'}</span>
         <button type="button" className="wb-print" onClick={()=>window.print()}>Print / Save PDF</button>
         <button type="button" onClick={download}>Download study copy</button>
         {enrollmentId && <button type="button" disabled={state.status==='saving'} onClick={()=>void store.save()}>Save</button>}
       </div>
     </div>
+    {onSelectJourney && <WorkbookJourneyTabs journey={journey} availableJourneys={availableJourneys} onSelect={number => void changeJourney(number)} />}
     {notice&&<p role="status">{notice}</p>}
     {state.message&&<p className="wb-error" role="alert">{state.message}</p>}
     <div className="wb-layout">
@@ -167,7 +183,7 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, onBack 
               <textarea id={b.id} rows={b.lines??4} maxLength={4000}
                 value={answers[b.id]??''}
                 onChange={e=>enrollmentId ? store.change(b.id!,e.target.value) : setPreviewAnswers(a=>({...a,[b.id!]:e.target.value}))}
-                placeholder={enrollmentId?'Write your notes here…':'Founder preview notes (not saved to a learner record)'} />
+                placeholder="Write your notes here…" />
               <div className="p2-wb-print-answer">{answers[b.id]||'Notes: ___________________________________________________'}</div>
             </div>:null)}
         </div>

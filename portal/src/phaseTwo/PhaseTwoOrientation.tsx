@@ -38,7 +38,7 @@ export function PhaseTwoOrientation({ preview = false }: { preview?: boolean }) 
         </article>
       </div>
       {preview ? (
-        <p className="p2-orientation-preview">Founder preview: this section does not submit or approve readiness evidence.</p>
+        <p className="p2-orientation-preview">Use this section to prepare your readiness evidence.</p>
       ) : (
         <p className="p2-orientation-preview">Readiness is reviewed separately from lesson release and completion.</p>
       )}

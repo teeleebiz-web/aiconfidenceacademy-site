@@ -109,7 +109,7 @@ it('allows founder review to see only released pages, print, and return in the s
   expect(screen.getByDisplayValue('Verified example')).toBeTruthy()
   fireEvent.change(screen.getByLabelText('Your evidence'),{target:{value:'Founder practice notes'}})
   expect(screen.getByDisplayValue('Founder practice notes')).toBeTruthy()
-  expect(screen.getByText(/test notes are not saved/)).toBeTruthy()
+  expect(screen.getByText(/Print or download to keep your notes/)).toBeTruthy()
   fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}))
   expect(print).toHaveBeenCalledOnce()
   fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 1.1/}))
@@ -404,4 +404,35 @@ it('opens actual Journey Six Lesson Six, saves and reopens closeout notes, prese
   fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 6.6/}));await waitFor(()=>expect(back).toHaveBeenCalledOnce())
   view.unmount();render(<PhaseTwoWorkbook enrollmentId="existing" journey={6} initialLesson={6} onBack={back}/>);expect(await screen.findByDisplayValue('Reviewed conditional expansion checkpoint')).toBeTruthy()
   print.mockRestore()
+})
+
+it.each([false,true])('saves pending learner work before switching and blocks a failed save (failure=%s)',async failure=>{
+  let record=fixture([1,2])
+  const rpc=vi.spyOn(supabase,'rpc').mockImplementation((async(name:string,args:any)=>{
+    if(name==='save_aca_phase_two_workbook') {
+      if(failure)return {data:null,error:{message:'Save unavailable'}} as never
+      record={...record,answers:{...record.answers,...args.p_answers},revision:1}
+    }
+    return {data:structuredClone(record),error:null} as never
+  }) as never)
+  const select=vi.fn(), back=vi.fn()
+  render(<PhaseTwoWorkbook enrollmentId="learner-enrollment" journey={1} initialLesson={2} backLessonId="5.4" availableJourneys={[1,2,3,4,5]} onSelectJourney={select} onBack={back}/>)
+  await screen.findByRole('heading',{name:'Find the Need and Establish the Evidence'})
+  expect(screen.getByRole('button',{name:'Workbook 6 — Journey 6'}).hasAttribute('disabled')).toBe(true)
+  fireEvent.change(screen.getByLabelText('Your evidence'),{target:{value:'Keep my latest answer'}})
+  fireEvent.click(screen.getByRole('button',{name:'Workbook 1 — Journey 1'}))
+  // Selecting the active workbook is a no-op.
+  expect(select).not.toHaveBeenCalled()
+  fireEvent.click(screen.getByRole('button',{name:'Workbook 2 — Journey 2'}))
+  if(failure){
+    await screen.findByText('Please save your workbook answers before changing workbooks.')
+    expect(select).not.toHaveBeenCalled()
+    expect(screen.getByDisplayValue('Keep my latest answer')).toBeTruthy()
+  }else{
+    await waitFor(()=>expect(select).toHaveBeenCalledWith(2))
+    expect(record.answers).toHaveProperty('p2-j1-2-first','Keep my latest answer')
+    expect(rpc.mock.calls.some(([name])=>name==='save_aca_phase_two_workbook')).toBe(true)
+    fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 5.4/}))
+    await waitFor(()=>expect(back).toHaveBeenCalledOnce())
+  }
 })

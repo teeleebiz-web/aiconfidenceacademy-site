@@ -8,7 +8,7 @@ describe('Phase Two curriculum orientation', () => {
     expect(screen.getByText(/sanitized AI request, an output you evaluated/i)).toBeTruthy()
     expect(screen.getByText(/a revision or decision you made/i)).toBeTruthy()
     expect(screen.getByText(/one privacy boundary and one claim that requires verification/i)).toBeTruthy()
-    expect(screen.getByText(/does not submit or approve readiness evidence/i)).toBeTruthy()
+    expect(screen.getByText(/Use this section to prepare your readiness evidence/i)).toBeTruthy()
   })
 
   it('keeps the two paths within the same six-week curriculum', () => {

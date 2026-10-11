@@ -95,7 +95,7 @@ export function PhaseTwoAccountabilityPractice({ enrollmentId, approvedAiRequest
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I checked real policy and authority, all TRACE and PAUSE parts, evidence and consequence, notice, human responsibilities, personal commitments, confidential information boundaries and reassessment.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save accountability evidence to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 5.5 accountability evidence copied.')}>Copy my Lesson 5.5 record</button>
       <details><summary>Read or copy my accountability record</summary><textarea aria-label="Lesson 5.5 accountability record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your evidence and human decision are ready to save.' : 'Complete the record, decision, notice and responsibilities before saving.')}</p>

@@ -90,7 +90,7 @@ export function PhaseTwoCapabilityPractice({ enrollmentId, approvedAiRequest }: 
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I checked all ten capability entries, supporting work and limits, the two selected connections, privacy-safe Evidence Story and professional demonstration. Pending evidence is visible.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save Professional Positioning Evidence to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 6.1 capability evidence copied.')}>Copy my Lesson 6.1 record</button>
       <details><summary>Read or copy my capability evidence</summary><textarea aria-label="Lesson 6.1 capability record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your positioning evidence and human review are ready to save.' : 'Complete the inventory, connections, story, evidence checks and demonstration before saving.')}</p>

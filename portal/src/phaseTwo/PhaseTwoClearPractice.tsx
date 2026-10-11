@@ -93,7 +93,7 @@ export function PhaseTwoClearPractice({enrollmentId,approvedAiRequest}:{enrollme
     <p>Obtain approval from the authorized person before real use. If approval is pending, save a reviewed draft awaiting approval. Fictional practice describes the approval route and does not count as real approval.</p>
     <div className="p2-workflow-practice-save">
       {enrollmentId&&project?<button type="button" disabled={!complete||saving} onClick={()=>void save()}>{saving?'Saving…':'Save CLEAR evidence to My Project Record'}</button>
-        :<p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        :<p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={()=>void copy(recordText,'Lesson 2.3 CLEAR evidence copied.')}>Copy my Lesson 2.3 record</button>
       <details><summary>Read or copy my CLEAR record</summary><textarea aria-label="Lesson 2.3 CLEAR record" readOnly rows={12} value={recordText}/></details>
       <p role="status">{status||(complete?'Your evidence is ready to save for review.':'Complete the five CLEAR findings, source check, revision and approval status before saving.')}</p>

@@ -109,7 +109,7 @@ export function PhaseTwoPeoplePractice({ enrollmentId, approvedAiRequest }: { en
       <p>Explain the before-and-after decision and its reason. Identify facts, listening and leadership approval still needed. Proposed changes remain subject to human review and testing.</p>
     </div>
     <div className="p2-workflow-practice-save">
-      {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save people section to My Project Record'}</button> : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+      {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save people section to My Project Record'}</button> : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 3.1 people section copied.')}>Copy my Lesson 3.1 record</button>
       <details><summary>Read or copy my people section</summary><textarea aria-label="Lesson 3.1 people record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your people section is ready to save for human review.' : 'Complete the people map, five concerns, evidence sources where required and design decision before saving.')}</p>

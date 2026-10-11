@@ -259,3 +259,30 @@ describe('unpublished Phase Two founder review', () => {
   })
 
 })
+
+it('navigates all completed lessons, both boundaries, the curriculum, and browser return', async () => {
+  const contents = lessons.map(item => item.content as typeof item.content & {phase_two_production?:{approval_status:string}})
+  contents.forEach(content => { content.phase_two_production={approval_status:'founder_review_not_published'} })
+  const user=userEvent.setup()
+  try {
+    render(<PhaseTwoReview />)
+    await screen.findByRole('heading',{name:'Synthetic lesson 1.1'})
+    expect((screen.getByRole('button',{name:'Previous lesson'}) as HTMLButtonElement).disabled).toBe(true)
+    for (let i=1;i<lessons.length;i++) {
+      await user.click(screen.getByRole('button',{name:'Next lesson'}))
+      expect(screen.getByRole('heading',{name:lessons[i].title})).toBeTruthy()
+      expect(new URLSearchParams(window.location.search).get('lesson')).toBe(lessons[i].page_id)
+    }
+    expect((screen.getByRole('button',{name:'Next lesson'}) as HTMLButtonElement).disabled).toBe(true)
+    await user.click(screen.getByRole('button',{name:'Previous lesson'}))
+    expect(screen.getByRole('heading',{name:'Synthetic lesson 6.5'})).toBeTruthy()
+    await user.click(screen.getByRole('button',{name:'Your lessons'}))
+    expect(screen.getAllByRole('button',{name:/^Lesson \d\.\d/})).toHaveLength(36)
+    expect(screen.getAllByRole('button',{name:/^Workbook \d — Journey \d/})).toHaveLength(6)
+    await user.click(screen.getByRole('button',{name:/^Lesson 1.1/}))
+    expect(screen.getByRole('heading',{name:'Synthetic lesson 1.1'})).toBeTruthy()
+    window.history.back()
+    expect(await screen.findByRole('heading',{name:'AI Professional and Builder Pathway'})).toBeTruthy()
+    expect(screen.queryByText(/owner review|founder preview|unpublished working/i)).toBeNull()
+  } finally { contents.forEach(content=>delete content.phase_two_production) }
+})

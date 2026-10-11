@@ -83,7 +83,7 @@ export function PhaseTwoCommunicationPractice({enrollmentId, approvedAiRequest}:
     <p>Read both versions against the source. Check conditions, timing, status and responsibilities. Keep unresolved claims visible for the full CLEAR review in Lesson 2.3.</p>
     <div className="p2-workflow-practice-save">
       {enrollmentId&&project ? <button type="button" disabled={!complete||saving} onClick={()=>void save()}>{saving?'Saving…':'Save communication evidence to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={()=>void copy(recordText,'Lesson 2.2 communication evidence copied.')}>Copy my Lesson 2.2 record</button>
       <details><summary>Read or copy my communication record</summary><textarea aria-label="Lesson 2.2 communication record" readOnly rows={12} value={recordText}/></details>
       <p role="status">{status||(complete?'Your evidence is ready to save for review.':'Complete the original, revised and adapted messages and their checks before saving.')}</p>

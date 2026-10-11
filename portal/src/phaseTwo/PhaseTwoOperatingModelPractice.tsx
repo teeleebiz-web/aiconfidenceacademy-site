@@ -113,7 +113,7 @@ export function PhaseTwoOperatingModelPractice({ enrollmentId }: { enrollmentId?
     <label>Confirmed project direction and one permission or risk still unresolved<textarea value={direction} onChange={e=>setDirection(e.target.value)}/></label>
     <div className="p2-operating-model-actions">
       {enrollmentId&&project?<button type="button" onClick={()=>void save()} disabled={!complete||saving}>{saving?'Saving…':'Save Journey One Operating Model'}</button>
-        :<p>Founder preview: copy your evidence; no learner save or journey completion is simulated.</p>}
+        :<p>Copy your evidence to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={()=>void copy(JSON.stringify(record,null,2),'Journey One operating model evidence copied.')}>Copy my Journey One evidence</button>
       <p role="status">{status||(complete?'Ready for human review; saving does not award completion or open Journey Two.':'Complete the six parts, three scenarios, revised rule and defend proceed/pause decisions.')}</p>
     </div>

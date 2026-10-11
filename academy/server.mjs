@@ -22,7 +22,7 @@ const exploreVideos = new Map([
   ['03', 'explore-chatgpt/ACA-Explore-ChatGPT-03.mp4'],
 ])
 const academyWelcomeVideo = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
-export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null, learnerOrigins = ['https://aiconfidenceacademy.org'] }) {
+export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null, learnerOrigins = ['https://aiconfidenceacademy.org'], workbookReviewerCheck }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
@@ -64,7 +64,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
         await handleLearnerMedia(req, res, { db, courseId, lessonId: requestPath.slice('/api/learner/lesson-media/'.length) }); return
       }
       const workbookKey = requestPath.slice('/api/learner/workbooks/'.length)
-      await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: false, workbookKey }); return
+      await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: false, workbookKey, reviewerCheck: workbookReviewerCheck }); return
     }
     if (requestPath === '/api/webhooks/stripe') {
       await handleStripeEnrollment(req, res, enrollmentAutomation); return

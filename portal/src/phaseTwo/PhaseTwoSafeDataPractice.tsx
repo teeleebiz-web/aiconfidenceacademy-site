@@ -89,7 +89,7 @@ export function PhaseTwoSafeDataPractice({ enrollmentId, approvedAiRequest }: { 
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I reviewed all five SAFE parts, the minimized input and removal reason, current sources and open questions, actual fictional test result and limits, and my human decision.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save SAFE record to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 5.1 SAFE record copied.')}>Copy my Lesson 5.1 record</button>
       <details><summary>Read or copy my SAFE record</summary><textarea aria-label="Lesson 5.1 SAFE record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your SAFE record and human decision are ready to save.' : 'Complete the SAFE checks, fictional test and human decision before saving.')}</p>

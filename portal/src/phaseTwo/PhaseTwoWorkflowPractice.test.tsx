@@ -5,7 +5,7 @@ import { PhaseTwoWorkflowPractice } from './PhaseTwoWorkflowPractice'
 it('uses existing Journey One project to teach the seven Workflow View dimensions and three evidence-labeled friction points',()=>{
   render(<PhaseTwoWorkflowPractice />)
   expect(screen.getByRole('heading',{name:'Map the actual work and locate three friction points'})).toBeTruthy()
-  expect(screen.getByText(/Founder preview: copy your work/)).toBeTruthy()
+  expect(screen.getByText(/Copy your work to keep it/)).toBeTruthy()
   expect(screen.queryByRole('button',{name:/Save Workflow View to My Project Record/})).toBeNull()
   expect(screen.getByRole('group',{name:'Current step 1'})).toBeTruthy()
   expect(screen.getByRole('group',{name:'Current step 4'})).toBeTruthy()

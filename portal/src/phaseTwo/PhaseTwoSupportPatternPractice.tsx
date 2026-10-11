@@ -96,7 +96,7 @@ export function PhaseTwoSupportPatternPractice({ enrollmentId, approvedAiRequest
     <p>Keep support, recommendation, decision and approval distinct. Any real adoption needs checked capabilities, appropriate permission and actual testing. Save unresolved limits honestly.</p>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save support comparison to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 2.4 comparison and concept copied.')}>Copy my Lesson 2.4 record</button>
       <details><summary>Read or copy my support comparison</summary><textarea aria-label="Lesson 2.4 support record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your comparison and concept are ready to save for review.' : 'Complete the four comparisons, chosen pattern, permissions, feature-check status and human route before saving.')}</p>

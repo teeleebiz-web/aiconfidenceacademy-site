@@ -93,7 +93,7 @@ it('closes teaching and media at the deadline and retains the workbook entrance'
   expect(container.querySelector('video')).toBeNull()
   expect(screen.queryByText('Sample teaching')).toBeNull()
   expect(screen.queryByText('Sample prompt')).toBeNull()
-  expect(screen.getByRole('link',{name:'Journey 1 Workbook'}).getAttribute('href')).toBe('/learn/?workbook=journey-one&lesson=1.1')
+  expect(screen.getByRole('link',{name:'Workbook 1 — Journey 1'}).getAttribute('href')).toBe('/learn/?workbook=journey-one&lesson=1.1')
   unmount();now.mockRestore()
 })
 

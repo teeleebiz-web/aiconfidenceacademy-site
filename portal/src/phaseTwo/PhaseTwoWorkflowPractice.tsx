@@ -118,7 +118,7 @@ export function PhaseTwoWorkflowPractice({ enrollmentId }: {enrollmentId?: strin
     <label>Why does your chosen change remove a cause rather than move the burden or automate a late step?<textarea value={noShift} onChange={e=>setNoShift(e.target.value)}/></label>
     <div className="p2-workflow-practice-save">
       {enrollmentId&&project?<button type="button" disabled={!complete||saving} onClick={()=>void save()}>{saving?'Saving…':'Save Workflow View to My Project Record'}</button>
-        :<p>Founder preview: copy your work. No enrolled-learner save is simulated.</p>}
+        :<p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={()=>void copy(JSON.stringify(record,null,2),'Lesson 2.1 Workflow View evidence copied.')}>Copy my Lesson 2.1 record</button>
       <p role="status">{status||(complete?'Your map is ready for review.':'Complete a current workflow, three frictions and one defensible improvement before saving.')}</p>
     </div>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
+import { WorkbookJourneyTabs } from '../../portal/src/components/WorkbookJourneyTabs'
 import { usePageStart } from '../../portal/src/lib/usePageStart'
 import { supabase } from '../../portal/src/lib/supabase'
 import sealUrl from '../../aca-official-seal.png'
@@ -39,7 +40,7 @@ export const workbookOpeningPage = (workbookKey: WorkbookKey, lessonId?: string 
   return lessonStartPages[workbookKey][Number(match[2]) - 1]
 }
 
-export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/api/academy/workbooks/', backHref = lessonId ? `/academy/phase-one/?lesson=${encodeURIComponent(lessonId)}` : '/academy/phase-one/?view=curriculum', backLabel = lessonId ? `Back to Lesson ${lessonId}` : 'My Workbooks' }: { lessonId?: string | null; workbookKey?: WorkbookKey; apiBase?: string; backHref?: string; backLabel?: string }) {
+export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/api/academy/workbooks/', backHref = lessonId ? `/academy/phase-one/?lesson=${encodeURIComponent(lessonId)}` : '/academy/phase-one/?view=curriculum', backLabel = lessonId ? `Back to Lesson ${lessonId}` : 'My Workbooks', workbookLinks = [] }: { lessonId?: string | null; workbookKey?: WorkbookKey; apiBase?: string; backHref?: string; backLabel?: string; workbookLinks?: Array<{journey: number; href: string}> }) {
   const transport = useMemo(() => makeTransport(workbookKey, apiBase), [workbookKey, apiBase])
   const [store, setStore] = useState(() => new WorkbookStore(transport))
   const state = useSyncExternalStore(store.subscribe, store.snapshot)
@@ -74,6 +75,31 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
     lesson: `${journeyNumber}.${index + 1}`,
     title: data?.pages.find(item => item.number === start)?.title ?? `Lesson ${journeyNumber}.${index + 1}`,
   }))
+  const [notice, setNotice] = useState('')
+  const changeWorkbook = async (journey: number) => {
+    const link = workbookLinks.find(item => item.journey === journey)
+    if (!link || journey === journeyNumber) return
+    await store.save()
+    if (store.pending) { setNotice('Please save your answers before changing workbooks.'); return }
+    window.location.assign(link.href)
+  }
+  const studyCopy = () => {
+    const lines = ['# AI CONFIDENCE ACADEMY — PHASE ONE', '# ' + data?.title]
+    const copyBlock = (block: Block) => {
+      if (block.type === 'field') lines.push('', '## ' + block.label, block.hint ?? '', state.answers[block.id!] ?? '(Your notes)')
+      else if (block.type === 'heading') lines.push('', '## ' + block.text)
+      else if (block.type === 'text') lines.push('', block.text ?? '')
+      else if (block.type === 'note' || block.type === 'check') lines.push('', '## ' + block.title, block.text ?? block.intro ?? '')
+      for (const child of block.items ?? []) copyBlock(child)
+      for (const row of block.rows ?? []) { lines.push('', row.label); for (const child of row.fields) copyBlock(child) }
+    }
+    for (const page of data?.pages ?? []) { lines.push('', '# ' + page.title); for (const block of page.blocks) copyBlock(block as Block) }
+    const blob = new Blob([lines.join('\n')], { type: 'text/markdown;charset=utf-8' })
+    const href = URL.createObjectURL(blob); const link = document.createElement('a')
+    link.href = href; link.download = 'ACA-Phase-One-Journey-' + journeyNumber + '-Released-Workbook.md'
+    document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(href)
+    setNotice('Your study copy includes your released lessons and current answers.')
+  }
   const move = (number: number) => {
     store.page(number)
   }
@@ -98,8 +124,10 @@ export function Workbook({ lessonId, workbookKey = 'journey-one', apiBase = '/ap
   return <main className="wb-shell">
     <div className="wb-toolbar">
       <a className="wb-back" href={backHref} onClick={async event => { event.preventDefault(); await store.save(); if (!store.pending) window.location.assign(backHref) }}>← {backLabel}</a>
-      <div className="wb-save"><span role="status" aria-live="polite">{state.status === 'saved' ? (state.updated_at ? 'Saved' : 'Ready for your answers') : state.status === 'saving' ? 'Saving…' : state.status === 'error' || state.status === 'conflict' ? 'Not saved yet' : 'Changes to save'}</span><button className="wb-print" type="button" onClick={() => window.print()}>Print / Save PDF</button><button disabled={state.status === 'saving'} onClick={() => void store.save()}>Save</button></div>
+      <div className="wb-save"><span role="status" aria-live="polite">{state.status === 'saved' ? (state.updated_at ? 'Saved' : 'Ready for your answers') : state.status === 'saving' ? 'Saving…' : state.status === 'error' || state.status === 'conflict' ? 'Not saved yet' : 'Changes to save'}</span><button className="wb-print" type="button" onClick={() => window.print()}>Print / Save PDF</button><button type="button" onClick={studyCopy}>Download study copy</button><button disabled={state.status === 'saving'} onClick={() => void store.save()}>Save</button></div>
     </div>
+    {workbookLinks.length > 0 && <WorkbookJourneyTabs journey={journeyNumber} availableJourneys={workbookLinks.map(item => item.journey)} onSelect={number => void changeWorkbook(number)} />}
+    {notice && <p role="status">{notice}</p>}
     {state.message && <p className="wb-error" role="alert">{state.message}</p>}
     <div className="wb-layout">
       <nav className="wb-navigation" aria-label={`Journey ${journeyNumber} workbook lessons`}><p className="wb-eyebrow">{data.navigationLabel ?? 'Journey One workbook'}</p><label htmlFor="wb-page-select">Choose a lesson</label><select id="wb-page-select" value={currentLessonStart} onChange={e => move(Number(e.target.value))}>{lessonLinks.map(item => <option key={item.lesson} value={item.page} disabled={!state.allowedPages.includes(item.page)}>{item.lesson}. {item.title}</option>)}</select><p>Your answers save as you write. You can also select Save.</p><div className="wb-chapters">{lessonLinks.map(item => <button key={item.lesson} onClick={() => move(item.page)} disabled={!state.allowedPages.includes(item.page)} aria-current={currentLessonStart === item.page ? 'page' : undefined}><strong>Lesson {item.lesson}</strong><span>{item.title}</span></button>)}</div></nav>

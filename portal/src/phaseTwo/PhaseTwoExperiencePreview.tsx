@@ -102,8 +102,8 @@ export function PhaseTwoExperiencePreview({
   return (
     <div className="p2-walkthrough">
       <div className="p2-walkthrough-warning" role="note">
-        <strong>Founder walkthrough · Unpublished</strong>
-        <span>Review the learner's reading experience using the approved draft material. Lessons, access, saves and media playback are not activated here.</span>
+        <strong>Your learning journey</strong>
+        <span>Read the course sections and prepare for your learning journey.</span>
       </div>
       <section className="p2-walkthrough-hero" aria-labelledby="p2-walkthrough-title">
         <p className="eyebrow">ACA AI Professional and Builder Pathway</p>
@@ -113,7 +113,7 @@ export function PhaseTwoExperiencePreview({
           <span>6 journeys</span><span>36 lessons</span><span>One continuing project</span>
         </div>
       </section>
-      <div className="p2-walkthrough-tabs" role="group" aria-label="Learner preview sections">
+      <div className="p2-walkthrough-tabs" role="group" aria-label="Course sections">
         <button type="button" aria-pressed={tab === 'orientation'} onClick={() => setTab('orientation')}>Orientation</button>
         <button type="button" aria-pressed={tab === 'lessons'} onClick={() => setTab('lessons')}>The lessons</button>
         <button type="button" aria-pressed={tab === 'project'} onClick={() => setTab('project')}>My Project Record</button>

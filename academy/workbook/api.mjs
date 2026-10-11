@@ -33,7 +33,7 @@ async function body(req) {
 
 // Only the already authenticated private owner entrance may use owner-review.
 // A supplied learner token is always verified; an invalid token never falls back.
-export async function workbookIdentity(req, db, courseId, ownerAuthenticated, workbookKey = 'journey-one') {
+export async function workbookIdentity(req, db, courseId, ownerAuthenticated, workbookKey = 'journey-one', reviewerCheck = async () => false) {
   const config = configurations[workbookKey]
   if (!config) throw fault(404, 'This workbook is not available.')
   const token = req.headers['x-aca-access-token']
@@ -44,6 +44,9 @@ export async function workbookIdentity(req, db, courseId, ownerAuthenticated, wo
   const { data, error } = await db.auth.getUser(token)
   if (error || !data?.user || data.user.is_anonymous) throw fault(401, 'Your Academy session has ended. Please sign in again.')
   const id = data.user.id
+  // Use the existing private Academy authorization after verifying the token.
+  // Keep workbook responses scoped to this account, never to another learner.
+  if (await reviewerCheck(token)) return { scope: id, learnerId: id, allowedPages: config.pages }
   const result = await db.from('enrollments')
     .select('id,status,starts_at,enrolled_at,access_expires_at,course:courses(status,drip_enabled)')
     .eq('learner_id', id).eq('course_id', courseId).in('status', ['active', 'completed']).maybeSingle()
@@ -71,14 +74,14 @@ export async function workbookIdentity(req, db, courseId, ownerAuthenticated, wo
   return { scope: id, learnerId: id, allowedPages }
 }
 
-export async function handleWorkbook(req, res, { db, courseId, ownerAuthenticated, workbookKey = 'journey-one' }) {
+export async function handleWorkbook(req, res, { db, courseId, ownerAuthenticated, workbookKey = 'journey-one', reviewerCheck }) {
   if (!['GET', 'PATCH'].includes(req.method)) { res.setHeader('Allow', 'GET, PATCH'); reply(res, 405, { error: 'Method not allowed.' }); return }
   try {
     const config = configurations[workbookKey]
     if (!config) throw fault(404, 'This workbook is not available.')
     if (req.headers['x-aca-workbook'] !== '1' || req.headers['sec-fetch-site'] === 'cross-site') throw fault(403, 'Open your workbook from the Academy website.')
     if (req.method === 'PATCH' && !req.headers['content-type']?.startsWith('application/json')) throw fault(415, 'A workbook save must contain JSON.')
-    const identity = await workbookIdentity(req, db, courseId, ownerAuthenticated, workbookKey)
+    const identity = await workbookIdentity(req, db, courseId, ownerAuthenticated, workbookKey, reviewerCheck)
     const definition = await db.from('aca_workbook_definitions').select('content').eq('course_id', courseId).eq('workbook_key', workbookKey).maybeSingle()
     if (definition.error || !Array.isArray(definition.data?.content?.pages)) throw fault(503, 'Your workbook could not be opened. Please try again.')
     const workbook = definition.data.content

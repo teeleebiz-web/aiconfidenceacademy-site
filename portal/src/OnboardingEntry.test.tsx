@@ -227,3 +227,14 @@ it('does not complete onboarding if the first lesson recording cannot load', asy
   expect(api.rpc.mock.calls.some(([name]) => name === 'complete_aca_onboarding')).toBe(false)
   expect(screen.queryByRole('heading', { name: 'Lesson 1.1' })).toBeNull()
 })
+
+
+it('opens full access workbooks without a lesson parameter and keeps the Academy welcome available', async()=>{
+ api.owner=true
+ window.history.replaceState(null,'','/learn/?review=phase-one&workbook=journey-three')
+ render(<App />)
+ expect(await screen.findByRole('heading',{name:'Workbook journey-three'})).toBeTruthy()
+ expect(screen.getByRole('link',{name:'Academy welcome'}).getAttribute('href')).toBe('/learn/?review=phase-one&view=welcome')
+ expect(screen.getByRole('link',{name:'Phase 1'}).getAttribute('href')).toBe('/learn/?review=phase-one&view=curriculum')
+ expect(api.signMedia).not.toHaveBeenCalled()
+})

@@ -101,7 +101,7 @@ export function PhaseTwoCapstonePractice({enrollmentId}:{enrollmentId?:string}) 
     <label>Which real-world decision or resource requires another person's approval?<textarea value={approval} onChange={e=>setApproval(e.target.value)}/></label>
     <div className="p2-capstone-actions">
       {enrollmentId&&project?<button type="button" disabled={!complete||saving} onClick={()=>void save()}>{saving?'Saving…':'Save to My Project Record'}</button>
-        :<p>Founder preview: your work can be copied. No learner save is simulated.</p>}
+        :<p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={()=>void copy(JSON.stringify(record,null,2),'Lesson 1.5 capstone evidence copied.')}>Copy my Lesson 1.5 evidence</button>
       <p role="status">{status||(complete?'Your capstone charter is ready for review.':'Complete the three options, FOCUS fields, charter and first test before saving.')}</p>
     </div>

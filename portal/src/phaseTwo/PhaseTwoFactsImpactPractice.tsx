@@ -94,7 +94,7 @@ export function PhaseTwoFactsImpactPractice({ enrollmentId, approvedAiRequest }:
       <label><input type="checkbox" checked={checked} onChange={e => setChecked(e.target.checked)} />I reviewed all six lenses, source evidence, two equivalent variations and one error case with actual responses, affected people, material correction, retest status, limits and my human decision.</label></div>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save FACTS and IMPACT review to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 5.2 review copied.')}>Copy my Lesson 5.2 record</button>
       <details><summary>Read or copy my review record</summary><textarea aria-label="Lesson 5.2 review record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your review and human decision are ready to save.' : 'Complete the evidence review, three tests, correction and human decision before saving.')}</p>

@@ -5,7 +5,7 @@ import { PhaseTwoDecisionPractice } from './PhaseTwoDecisionPractice'
 it('requires the six professional request elements and keeps preview work copyable without fake learner saving',()=>{
   render(<PhaseTwoDecisionPractice />)
   expect(screen.getByRole('heading',{name:'Build a professional request and decision memo'})).toBeTruthy()
-  expect(screen.getByText(/Founder preview: copy your exercise/)).toBeTruthy()
+  expect(screen.getByText(/Copy your exercise to keep it/)).toBeTruthy()
   const fields = [
     /Purpose — why does this work matter/,
     /Audience — who needs the outcome/,

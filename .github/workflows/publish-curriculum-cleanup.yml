@@ -1,0 +1,53 @@
+name: Publish authorized curriculum language and navigation cleanup
+on:
+  push:
+    branches: [phase-two-six-journey-owner-review]
+    paths: [.github/workflows/publish-curriculum-cleanup.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: github.event.head_commit.message == 'Clean learner language and organize curriculum workbook navigation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24, cache: npm}
+      - run: npm ci
+      - name: Verify access, saved work, navigation, and build
+        run: npm run check
+      - name: Publish only curriculum entry, new assets, and account workbook access
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach "$RUNNER_TEMP/aca-official" origin/main
+          test "$(git -C "$RUNNER_TEMP/aca-official" rev-parse HEAD)" = '880ca0c18da1d5e2061c3d4fde78d4f98c536b91'
+          node academy/publish-phase-two-review.mjs "$GITHUB_WORKSPACE/learn" "$RUNNER_TEMP/aca-official" learner-cleanup
+          for path in academy/server.mjs academy/workbook/api.mjs api/site.mjs; do
+            cp "$GITHUB_WORKSPACE/$path" "$RUNNER_TEMP/aca-official/$path"
+          done
+          cd "$RUNNER_TEMP/aca-official"
+          git add learn/index.html learn/assets/ academy/server.mjs academy/workbook/api.mjs api/site.mjs
+          python - <<'PY'
+          import subprocess,re
+          rows=subprocess.check_output(['git','diff','--cached','--name-status'],text=True).splitlines()
+          required={'learn/index.html','academy/server.mjs','academy/workbook/api.mjs','api/site.mjs'}
+          seen=set()
+          for row in rows:
+              status,path=row.split('\t')
+              if path in required:
+                  assert status=='M',row
+                  seen.add(path)
+              else:
+                  assert status=='A' and re.fullmatch(r'learn/assets/[A-Za-z0-9_.-]+\.(js|css)',path),row
+          assert seen==required,(seen,required)
+          html=open('learn/index.html').read()
+          assert 'data-aca-phase-two-official-review-bootstrap' not in html
+          assert re.search(r'<script type="module" crossorigin src="/learn/assets/[^\"]+\.js"></script>',html)
+          PY
+          git config user.name 'ACA curriculum publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Clean learner language and organize Phase One and Two workbooks'
+          git push origin HEAD:main

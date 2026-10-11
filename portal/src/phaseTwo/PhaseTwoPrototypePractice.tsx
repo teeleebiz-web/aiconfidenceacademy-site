@@ -108,7 +108,7 @@ export function PhaseTwoPrototypePractice({ enrollmentId, approvedAiRequest }: {
     <p>Check usability, factual support and ownership before saving. Saving preserves your reported evidence for review; human inspection determines whether the prototype meets its criteria. One normal case does not grant deployment approval.</p>
     <div className="p2-workflow-practice-save">
       {enrollmentId && project ? <button type="button" disabled={!complete || saving} onClick={() => void save()}>{saving ? 'Saving…' : 'Save prototype evidence to My Project Record'}</button>
-        : <p>Review preview: copy your work. Saving requires your existing active learner Project Record.</p>}
+        : <p>Copy your work to keep it. Saving to My Project Record requires an active enrollment.</p>}
       <button type="button" onClick={() => void copy(recordText, 'Lesson 2.5 working artifact and evidence copied.')}>Copy my Lesson 2.5 record</button>
       <details><summary>Read or copy my prototype evidence</summary><textarea aria-label="Lesson 2.5 prototype record" readOnly rows={12} value={recordText} /></details>
       <p role="status">{status || (complete ? 'Your working artifact and reported run evidence are ready to save for review.' : 'Preserve the baseline, working artifact, actual run, revision and demonstration before saving.')}</p>

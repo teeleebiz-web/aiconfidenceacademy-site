@@ -112,7 +112,7 @@ export function PhaseTwoNeedPractice({ enrollmentId }: { enrollmentId?: string }
       <div className="p2-need-practice-save">
         {enrollmentId && project
           ? <button disabled={!complete||saving} type="button" onClick={()=>void save()}>{saving?'Saving…':'Save to My Project Record'}</button>
-          : <p>Founder preview or no active project record: copy the completed work rather than displaying a false save confirmation.</p>}
+          : <p>Copy your completed work to keep it. Saving to My Project Record requires an active enrollment.</p>}
         <button type="button" onClick={()=>void copy(summary,'Lesson 1.2 project notes copied.')}>Copy my Lesson 1.2 record</button>
         <p role="status">{status || (complete?'Your record is ready for review.':'Complete the comparison, five questions and provisional decision before saving.')}</p>
       </div>

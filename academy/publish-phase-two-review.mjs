@@ -4,7 +4,8 @@ import { join, resolve } from 'node:path'
 // Run from an ACA GitHub Actions workflow after a verified Vite build.
 // Publishes *only* a conditional owner-review entry and new hashed assets.
 // Existing portal module and CSS are not replaced, deleted or overwritten.
-const [built, official] = process.argv.slice(2)
+const [built, official, mode] = process.argv.slice(2)
+if (mode && mode !== 'learner-cleanup') throw new Error('Unsupported publication mode.')
 if (!built || !official) throw new Error('Provide the built learn folder and the existing official checkout.')
 const builtDir = resolve(built)
 const officialDir = resolve(official)
@@ -77,11 +78,14 @@ const bootstrap = [
   '}',
   '</script>'
 ].join('\n')
-const finalHtml=currentHtml.replace(scriptPattern,bootstrap)
-if (finalHtml===currentHtml || !finalHtml.includes('data-aca-phase-two-official-review-bootstrap')) {
+const finalHtml = mode === 'learner-cleanup'
+  ? currentHtml.replace(scriptPattern, '<script type="module" crossorigin src="'+newJs+'"></script>')
+    .replace('<link rel="stylesheet" crossorigin href="'+oldCss+'">', '<link rel="stylesheet" crossorigin href="'+newCss+'">')
+  : currentHtml.replace(scriptPattern,bootstrap)
+if (finalHtml===currentHtml || (mode !== 'learner-cleanup' && !finalHtml.includes('data-aca-phase-two-official-review-bootstrap'))) {
   throw new Error('Failed to preserve the original learner entry with a review-only branch.')
 }
-if (!finalHtml.includes(oldCss)) throw new Error('Original learner styling was removed.')
+if (mode !== 'learner-cleanup' && !finalHtml.includes(oldCss)) throw new Error('Original learner styling was removed.')
 await writeFile(liveIndex,finalHtml,'utf8')
 console.log(JSON.stringify({
   officialEntry:'/learn/?review=phase-two',
