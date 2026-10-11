@@ -1,0 +1,128 @@
+{
+  "number": 2,
+  "lesson_id": "6.2",
+  "title": "Finish the Artifact with Evidence and Revision",
+  "blocks": [
+    {
+      "type": "note",
+      "title": "Finish the same bounded project",
+      "text": "Use the approved charter and actual retained work. Preserve a baseline, lead a material revision, and retest it. A required criterion that still fails remains pending."
+    },
+    {
+      "type": "text",
+      "text": "SUPPLIED FICTIONAL TRAINING CASE: A reviewed intake process must handle complete input, a missing delivery date, and absent human approval. The baseline produces a draft but treats completed input as permission to deliver. No live system, real customer, actual delivery, or measured benefit is demonstrated. The following tabletop observations are supplied for teaching; your project requires your own tests."
+    },
+    {
+      "type": "heading",
+      "text": "Bring forward the charter and baseline"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_projectContext",
+      "label": "Continuing project, charter, and privacy-safe artifact references",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_baseline",
+      "label": "Baseline version and original success criteria",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_criteria",
+      "label": "Criterion comparison: supported, unmet, or not yet established",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Lead the bounded correction"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_buildPlan",
+      "label": "Staged BUILD plan: remaining build, review, and tests",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_aiReview",
+      "label": "Useful AI request/output and human decision",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Test and retest with actual observations"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_normalTest",
+      "label": "Ordinary test: input, expected, observed, result, and version",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_exceptionTest",
+      "label": "Known exception: input, expected, observed, result, and version",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_feedback",
+      "label": "Feedback method, actual observation, and response",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_revision",
+      "label": "Material correction: before, after, and why it matters",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_retest",
+      "label": "Retest of the correction and other affected paths",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Reconcile, show, and save"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_scope",
+      "label": "Scope reconciliation and unestablished outcomes",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_evidenceIndex",
+      "label": "Finished artifact and meaningful evidence/version index",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l2_demonstration",
+      "label": "Completion explanation: show result, correction, charter fit, and limits",
+      "hint": "Use your actual work and meaningful references. Label feedback and fictional examples accurately; keep unresolved limits visible.",
+      "lines": 6
+    },
+    {
+      "type": "note",
+      "title": "Applied completion check",
+      "text": "Show the finished result and a before-and-after correction. Explain why the artifact satisfies the charter and what it has not yet established."
+    }
+  ]
+}
