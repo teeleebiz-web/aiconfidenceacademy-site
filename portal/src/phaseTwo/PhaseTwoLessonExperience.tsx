@@ -120,10 +120,10 @@ export function PhaseTwoLessonExperience({
   const selectedDemoClips = demoClips ?? producedMedia?.demos
   const selectedVideo = (allowMediaReview ? revisedIntro : null) ?? introVideo ?? (['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4','3.5','3.6','4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1'].includes(pageId) && allowMediaReview && producedMedia
     ? {
-      url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + (pageId === '2.1' ? '-Introduction-landscape.mp4' : '-Introduction.mp4'),
+      url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + (pageId === '6.1' ? '-Introduction-wide.mp4' : pageId === '2.1' ? '-Introduction-landscape.mp4' : '-Introduction.mp4'),
       transcript: ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1'].includes(pageId) ? production?.media_transcripts?.introduction ?? '' : pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : pageId === '1.3' ? LESSON_13_INTRO_TRANSCRIPT : pageId === '1.4' ? LESSON_14_INTRO_TRANSCRIPT : pageId === '1.5' ? LESSON_15_INTRO_TRANSCRIPT : pageId === '1.6' ? LESSON_16_INTRO_TRANSCRIPT : pageId === '2.1' ? LESSON_21_INTRO_TRANSCRIPT : pageId === '2.2' ? LESSON_22_INTRO_TRANSCRIPT : pageId === '2.3' ? LESSON_23_INTRO_TRANSCRIPT : pageId === '2.4' ? LESSON_24_INTRO_TRANSCRIPT : pageId === '2.5' ? LESSON_25_INTRO_TRANSCRIPT : LESSON_26_INTRO_TRANSCRIPT,
       approvalStatus: 'founder_review_pending' as const,
-      ...(pageId === '2.1' ? {poster_url: location.origin + '/assets/videos/phase-two-lesson-2-1/poster-landscape.webp'} : {}),
+      ...(pageId === '6.1' ? {poster_url: location.origin + '/assets/videos/phase-two-lesson-6-1/poster-wide.webp'} : pageId === '2.1' ? {poster_url: location.origin + '/assets/videos/phase-two-lesson-2-1/poster-landscape.webp'} : {}),
     } : null)
   const approvedGuidedAudio = (selectedGuidedAudio?.approvalStatus === 'founder_approved' ||
     (allowMediaReview && selectedGuidedAudio?.approvalStatus === 'founder_review_pending')) &&

@@ -241,7 +241,7 @@ describe('Phase Two learner lesson presentation', () => {
       await waitFor(() => expect(globalThis.fetch).toHaveBeenCalledTimes(2))
       if (voice === (pageId === '6.1' ? 'Ufzf3hcVZVWx3QjtOPI5' : ['5.1','5.2','5.3','5.4','5.5','5.6'].includes(pageId) ? 'beda795369e7487b863b0e7b82a82bd3' : ['4.1','4.2','4.3','4.4','4.5','4.6'].includes(pageId) ? '00e3d285aba44b27a83c47c02c9c2d9c' : '50ab8f40f8a34d66aa4338729900c1b0')) {
         await waitFor(() => expect(screen.getByLabelText(`Lesson ${pageId} guided instruction audio`)).toBeTruthy())
-        expect(screen.getByLabelText(`Lesson ${pageId} instructor introduction video`).getAttribute('src')).toContain('Lesson-' + pageId.replace('.', '-') + '-Introduction.mp4')
+        expect(screen.getByLabelText(`Lesson ${pageId} instructor introduction video`).getAttribute('src')).toContain('Lesson-' + pageId.replace('.', '-') + (pageId === '6.1' ? '-Introduction-wide.mp4' : '-Introduction.mp4'))
         expect(screen.getByText('Protected instructor introduction.')).toBeTruthy()
         expect(screen.getByText('Protected teaching 1')).toBeTruthy()
       } else {

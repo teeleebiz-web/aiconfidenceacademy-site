@@ -1,1 +1,10 @@
-{"video_id":"b9aaa49003dbeee3390481e79c9d78ce","source_url":"https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/b9aaa49003dbeee3390481e79c9d78ce.mp4?Expires=1792293534&Signature=YlE1nYyP9TKlEl64sCyXVk5QvCCSzhdgAJjy3WJ6xyhq5FTbofCTknDnkKZXJmOnWo0wlvjVmr2goBdwuHhOEvqPjwH0qEB4qV91VR-NjYzSvrLzyYkaqO3esazeFIjqkAOSNE-rcQzdcwM5IzIC-HzeZ-KburcsTDXcORZW9R2kD2I7vSknJmd57AQ9NKD1FxK4BJBjcM25PctNjmtSw~RJSsGkQ9ko1bxzBLMyi6X4k0qZOfN3C1fp3GMz7e~RBdXFInWxP3JIhHz7a6gIBdM5mL~wpXM6Sx-jtXQdnqrlFvTvHhoffYdQLHd-DLiZSgdfKYnU-i5aby~ViSu0bg__&Key-Pair-Id=K38HBHX5LX3X2H","source_duration_seconds":88.529}
+{
+  "lipsync_id": "e9cee5eceeaa48c0802dc8f9300498da",
+  "visual_source_asset_id": "509bace71492492a85d1052e8adf9e1d",
+  "narration_asset_id": "9fe755816dec49e094521e3679061fdd",
+  "narration_source_video_id": "b9aaa49003dbeee3390481e79c9d78ce",
+  "visual_source_url": "https://aiconfidenceacademy.org/assets/videos/confidence-with-ai-man-extended/film.m3u8",
+  "source_url": "https://resource2.heygen.ai/video_translate/e9cee5eceeaa48c0802dc8f9300498da/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Lesson%25206.1%2520%25E2%2580%2594%2520Exact%2520Wide%2520Website%2520Recording%2520with%2520Existing%2520Lesson%2520Narration.mp4%3B",
+  "source_duration_seconds": 88.56,
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5"
+}

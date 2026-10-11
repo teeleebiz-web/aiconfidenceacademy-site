@@ -68,10 +68,7 @@ def make_card_clip(image,seconds,destination):
 def make_instructor_clip(src,seconds,destination):
     call(["ffmpeg","-hide_banner","-loglevel","error","-y",
       "-i",str(src),"-filter_complex",
-      "[0:v]crop=trunc(ih*768/1376/2)*2:ih:(iw-ow)/2:0,split=2[room][presenter];"
-      "[room]scale=1920:1080:force_original_aspect_ratio=increase,"
-      "crop=1920:1080,boxblur=35:2[back];"
-      "[back][presenter]overlay=(W-w)/2:0,setsar=1,fps=30,"
+      "[0:v]scale=1920:1080,setsar=1,fps=30,"
       "tpad=stop_mode=clone:stop_duration="+str(seconds)+"[v];"
       "[0:a]aresample=48000,aformat=channel_layouts=stereo,"
       "apad=pad_dur="+str(seconds)+"[a]",
@@ -82,9 +79,10 @@ def make_instructor_clip(src,seconds,destination):
       "-ar","48000","-ac","2",str(destination)])
 
 raw=json.loads(MANIFEST.read_text())
-assert raw.get("video_id")=="b9aaa49003dbeee3390481e79c9d78ce"
+assert raw.get("lipsync_id")=="e9cee5eceeaa48c0802dc8f9300498da"
+assert raw.get("visual_source_asset_id")=="509bace71492492a85d1052e8adf9e1d"
 url=raw["source_url"]
-assert url.startswith("https://files2.heygen.ai/") and "/b9aaa49003dbeee3390481e79c9d78ce.mp4" in url
+assert url.startswith("https://") and "heygen" in url.split("/")[2]
 source=OUT/"original.mp4"
 with urlopen(Request(url,headers={"User-Agent":"ACA-approved-media-builder"}),timeout=120) as rsp,open(source,"wb") as dst:
     import shutil;shutil.copyfileobj(rsp,dst)
@@ -94,14 +92,15 @@ duration=float(src_info["format"]["duration"])
 streams=src_info["streams"]
 assert 80<=duration<=170,duration
 assert any(s["codec_type"]=="audio" for s in streams)
-assert any(s["codec_type"]=="video" for s in streams)
+source_video=next(s for s in streams if s["codec_type"]=="video")
+assert (int(source_video["width"]),int(source_video["height"]))==(1920,1080)
 print("Source approved avatar:",round(duration,2),"seconds",source.stat().st_size,"bytes",flush=True)
 
 begin=OUT/"begin.png"
 ending=OUT/"ending.png"
 card(begin)
 card(ending,True)
-Image.open(begin).save(OUT/"poster.webp","WEBP",quality=88,method=6)
+Image.open(begin).save(OUT/"poster-wide.webp","WEBP",quality=88,method=6)
 
 OPEN=1.5
 LAND=0.85
@@ -113,7 +112,7 @@ make_card_clip(ending,END,OUT/"02-ending.mp4")
 make_card_clip(begin,RETURN,OUT/"03-return.mp4")
 segments=OUT/"segments.txt"
 segments.write_text("\n".join(["file '"+str(OUT/(name))+"'" for name in ["00-opening.mp4","01-instructor.mp4","02-ending.mp4","03-return.mp4"]])+"\n")
-final=OUT/"ACA-Phase-Two-Lesson-6-1-Introduction.mp4"
+final=OUT/"ACA-Phase-Two-Lesson-6-1-Introduction-wide.mp4"
 call(["ffmpeg","-hide_banner","-loglevel","error","-y",
   "-f","concat","-safe","0","-i",str(segments),
   "-c","copy","-movflags","+faststart",str(final)])
@@ -137,7 +136,11 @@ for name,second in points.items():
     assert output.stat().st_size>1000
 checksum=hashlib.sha256(final.read_bytes()).hexdigest()
 summary={
- "approved_heygen_video_id":raw["video_id"],
+ "approved_lipsync_id":raw["lipsync_id"],
+ "visual_source_asset_id":raw["visual_source_asset_id"],
+ "visual_source_url":raw["visual_source_url"],
+ "narration_source_video_id":raw["narration_source_video_id"],
+ "orientation":"landscape",
  "source_duration_seconds":round(duration,3),
  "completed_duration_seconds":round(fdur,3),
  "opening_seconds":OPEN,
