@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.269 --> 00:00:02.986
+Make a correction that changes the faulty action.
+
+00:00:03.323 --> 00:00:07.321
+Remove the writing-style priority rule and unsupported one-day
+
+00:00:07.365 --> 00:00:11.857
+promise. Use the supplied deadline and work-impact criteria
+
+00:00:12.037 --> 00:00:15.270
+consistently, with human review for missing or conflicting
+
+00:00:15.360 --> 00:00:18.397
+information. Retest the corrected rule with the same
+
+00:00:18.532 --> 00:00:21.317
+two variations and error case, and save what
+
+00:00:21.361 --> 00:00:24.370
+actually happens. Separate a verified finding from an
+
+00:00:24.460 --> 00:00:27.849
+unresolved question and a proposed action. The supplied
+
+00:00:27.984 --> 00:00:31.757
+policy does not establish the promise; broader behavior
+
+00:00:31.846 --> 00:00:35.888
+remains unproven. Keep the before-and-after correction, test limits
+
+00:00:35.978 --> 00:00:39.464
+and human continue, revise or pause decision. Carry
+
+00:00:39.508 --> 00:00:42.383
+the same SAFE record and project evidence into
+
+00:00:42.518 --> 00:00:43.334
+the next lesson.

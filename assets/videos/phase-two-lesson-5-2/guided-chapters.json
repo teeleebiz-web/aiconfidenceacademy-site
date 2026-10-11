@@ -1,0 +1,32 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "audio_url": "/assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-Guided-Instruction.m4a",
+  "duration_seconds": 774.514,
+  "chapters": [
+    {
+      "title": "Separate facts, missing essentials and assumptions",
+      "start_seconds": 0.0,
+      "duration_seconds": 183.928,
+      "transcript": ""
+    },
+    {
+      "title": "Use FACTS and IMPACT to verify material claims",
+      "start_seconds": 184.828,
+      "duration_seconds": 190.015,
+      "transcript": ""
+    },
+    {
+      "title": "Compare equivalent variations and one error case",
+      "start_seconds": 375.743,
+      "duration_seconds": 196.441,
+      "transcript": ""
+    },
+    {
+      "title": "Correct one weakness and retain the human decision",
+      "start_seconds": 573.084,
+      "duration_seconds": 201.43,
+      "transcript": ""
+    }
+  ]
+}
