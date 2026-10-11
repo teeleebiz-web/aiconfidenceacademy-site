@@ -1,0 +1,49 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.425
+This is a supplied fictional intake exercise. The
+
+00:00:03.471 --> 00:00:06.142
+approved charter requires complete intake to reach a
+
+00:00:06.200 --> 00:00:09.567
+named human reviewer, missing information to stay visible,
+
+00:00:09.834 --> 00:00:12.701
+and delivery to wait for approval. The baseline
+
+00:00:12.736 --> 00:00:14.640
+creates a draft but treats it as ready
+
+00:00:14.687 --> 00:00:17.798
+to deliver without an approval gate. A suggested
+
+00:00:17.856 --> 00:00:20.643
+dashboard would count records. It would not repair
+
+00:00:20.689 --> 00:00:23.989
+the failed approval criterion. Preserve the baseline and
+
+00:00:24.047 --> 00:00:27.472
+mark that criterion unmet. Choose the bounded correction:
+
+00:00:28.064 --> 00:00:31.245
+separate complete input from approved output and keep
+
+00:00:31.315 --> 00:00:34.775
+delivery blocked while approval is absent. Record the
+
+00:00:34.833 --> 00:00:39.535
+build, review, and testing steps. These are tabletop
+
+00:00:39.616 --> 00:00:42.716
+teaching observations, not a deployed system or your
+
+00:00:42.786 --> 00:00:46.112
+own test results. For your project, open the
+
+00:00:46.158 --> 00:00:49.189
+original criteria and identify the evidence gap before
+
+00:00:49.223 --> 00:00:50.175
+accepting an addition.

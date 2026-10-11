@@ -1,0 +1,57 @@
+{
+  "lesson": "6.2",
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-6-2-Guided-Instruction.m4a",
+    "duration_seconds": 750.115,
+    "chapters": 4,
+    "bytes": 10486149
+  },
+  "demonstrations": [
+    {
+      "key": "charter",
+      "title": "Find the gap before adding a feature",
+      "duration_seconds": 50.468,
+      "file": "ACA-Phase-Two-Lesson-6-2-charter.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-2-charter.vtt",
+      "bytes": 1114808,
+      "sha256": "e38f05a3644cbdcc4adcbaada22d4a7709c666b52f2b141c6a6811be7da0d49e",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "build",
+      "title": "Make and explain a material correction",
+      "duration_seconds": 52.271,
+      "file": "ACA-Phase-Two-Lesson-6-2-build.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-2-build.vtt",
+      "bytes": 1152488,
+      "sha256": "50a37e3973907df779220add8a5cbaf7d7c9ff533193d1531609b0ae744f8278",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "retest",
+      "title": "Retest the ordinary and exception paths",
+      "duration_seconds": 53.838,
+      "file": "ACA-Phase-Two-Lesson-6-2-retest.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-2-retest.vtt",
+      "bytes": 1192951,
+      "sha256": "7821c9c92250691a52d1ae7d13a4bf607053c5668894f53fcdaaeda34880fe92",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "finish",
+      "title": "Show what is complete and what is unestablished",
+      "duration_seconds": 55.144,
+      "file": "ACA-Phase-Two-Lesson-6-2-finish.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-2-finish.vtt",
+      "bytes": 1215220,
+      "sha256": "811d2b26213eb9687f0083e8de4a4d6c3fc2843979d86d8b9a0731130ff045f6",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

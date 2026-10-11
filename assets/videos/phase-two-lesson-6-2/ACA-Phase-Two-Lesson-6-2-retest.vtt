@@ -1,0 +1,49 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.170
+The supplied fictional case uses three tabletop tests.
+
+00:00:03.646 --> 00:00:06.118
+First, complete intake with a date reaches the
+
+00:00:06.177 --> 00:00:09.776
+named reviewer as a draft. Second, intake without
+
+00:00:09.810 --> 00:00:11.807
+a date remains pending and asks for the
+
+00:00:11.842 --> 00:00:16.347
+missing information. Third, complete intake without approval stays
+
+00:00:16.417 --> 00:00:19.749
+unapproved and does not permit delivery. The baseline
+
+00:00:19.795 --> 00:00:23.072
+fails the third case. After repairing the gate,
+
+00:00:23.420 --> 00:00:26.427
+repeat that case on the revised version. Then
+
+00:00:26.497 --> 00:00:29.190
+rerun the ordinary and missing-input cases to check
+
+00:00:29.237 --> 00:00:33.451
+for unintended changes. Keep the input, expected behavior,
+
+00:00:33.857 --> 00:00:37.213
+observed behavior, result, and version for each test.
+
+00:00:38.107 --> 00:00:41.717
+Criteria-based feedback is a comparison with stated criteria.
+
+00:00:42.309 --> 00:00:44.806
+Label it accurately; it is not approval by
+
+00:00:44.864 --> 00:00:48.768
+a person. These supplied observations are teaching evidence.
+
+00:00:48.989 --> 00:00:51.659
+Your completion claim needs your own recorded tests
+
+00:00:51.729 --> 00:00:53.505
+and a retested material correction.
