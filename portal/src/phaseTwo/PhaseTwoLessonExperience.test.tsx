@@ -228,7 +228,7 @@ describe('Phase Two learner lesson presentation', () => {
     } finally { vi.unstubAllGlobals() }
   })
 
-  it.each([...['3.1', '3.2', '3.3', '3.4', '3.5', '3.6'].flatMap(pageId => ['50ab8f40f8a34d66aa4338729900c1b0', '8NNnQuXc0FKua22CvviM'].map(voice => [pageId, voice])), ...['5.1','5.2','5.3','5.4'].flatMap(pageId => ['beda795369e7487b863b0e7b82a82bd3','00e3d285aba44b27a83c47c02c9c2d9c'].map(voice=>[pageId,voice])), ...['4.1','4.2','4.3','4.4','4.5','4.6'].flatMap(pageId=>['00e3d285aba44b27a83c47c02c9c2d9c','50ab8f40f8a34d66aa4338729900c1b0'].map(voice=>[pageId,voice]))])('loads the approved journey voice and protected written equivalents (%s, %s)', async (pageId, voice) => {
+  it.each([...['3.1', '3.2', '3.3', '3.4', '3.5', '3.6'].flatMap(pageId => ['50ab8f40f8a34d66aa4338729900c1b0', '8NNnQuXc0FKua22CvviM'].map(voice => [pageId, voice])), ...['5.1','5.2','5.3','5.4','5.5'].flatMap(pageId => ['beda795369e7487b863b0e7b82a82bd3','00e3d285aba44b27a83c47c02c9c2d9c'].map(voice=>[pageId,voice])), ...['4.1','4.2','4.3','4.4','4.5','4.6'].flatMap(pageId=>['00e3d285aba44b27a83c47c02c9c2d9c','50ab8f40f8a34d66aa4338729900c1b0'].map(voice=>[pageId,voice]))])('loads the approved journey voice and protected written equivalents (%s, %s)', async (pageId, voice) => {
     vi.stubGlobal('location', { origin: 'https://aiconfidenceacademy.org' })
     vi.stubGlobal('fetch', vi.fn(async (url: string) => ({ ok: true, json: async () => url.endsWith('guided-chapters.json') ? {
       duration_seconds: 600, chapters: [1,2,3,4].map(n => ({ title: `Chapter ${n}`, start_seconds: (n-1)*150 })),
@@ -239,7 +239,7 @@ describe('Phase Two learner lesson presentation', () => {
       render(<PhaseTwoLessonExperience pageId={pageId} lessonTitle="People review" journeyTitle="Journey 3" purpose="Consider the people affected." medium="audio"
         production={{ ...(lessonProduction as Record<string, unknown>), media_transcripts: { introduction: 'Protected instructor introduction.', chapters: [1,2,3,4].map(n => `Protected teaching ${n}`), demonstrations: [1,2,3,4].map(n => `Protected demonstration ${n}`) } } as never} allowMediaReview />)
       await waitFor(() => expect(globalThis.fetch).toHaveBeenCalledTimes(2))
-      if (voice === (['5.1','5.2','5.3','5.4'].includes(pageId) ? 'beda795369e7487b863b0e7b82a82bd3' : ['4.1','4.2','4.3','4.4','4.5','4.6'].includes(pageId) ? '00e3d285aba44b27a83c47c02c9c2d9c' : '50ab8f40f8a34d66aa4338729900c1b0')) {
+      if (voice === (['5.1','5.2','5.3','5.4','5.5'].includes(pageId) ? 'beda795369e7487b863b0e7b82a82bd3' : ['4.1','4.2','4.3','4.4','4.5','4.6'].includes(pageId) ? '00e3d285aba44b27a83c47c02c9c2d9c' : '50ab8f40f8a34d66aa4338729900c1b0')) {
         await waitFor(() => expect(screen.getByLabelText(`Lesson ${pageId} guided instruction audio`)).toBeTruthy())
         expect(screen.getByLabelText(`Lesson ${pageId} instructor introduction video`).getAttribute('src')).toContain('Lesson-' + pageId.replace('.', '-') + '-Introduction.mp4')
         expect(screen.getByText('Protected instructor introduction.')).toBeTruthy()
