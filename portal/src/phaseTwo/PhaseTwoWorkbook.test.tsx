@@ -219,3 +219,19 @@ it('opens Lesson 4.6, retains offer and sample answers, shows exactly six Journe
   fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 4.6/}));expect(onBack).toHaveBeenCalledOnce()
   print.mockRestore()
 })
+
+it('opens Journey Six Lesson 1 with retained notes, locks future pages, prints and returns',async()=>{
+  const data=fixture([1]);data.workbook.key='journey-6';data.workbook.title='Journey Six Workbook'
+  data.answers={'p2_j6_l1_story':'Saved privacy-safe Evidence Story'} as never
+  data.workbook.pages=[{number:1,lesson_id:'6.1',kicker:'Journey Six',title:'Recognize Capability and Connect It to Value',blocks:[{type:'field',id:'p2_j6_l1_story',label:'My Evidence Story',hint:'Use actual work.',lines:6}]}] as never
+  const rpc=vi.spyOn(supabase,'rpc').mockResolvedValue({data,error:null} as never)
+  const back=vi.fn(),print=vi.spyOn(window,'print').mockImplementation(()=>{})
+  render(<PhaseTwoWorkbook journey={6} initialLesson={1} onBack={back}/>)
+  expect(await screen.findByDisplayValue('Saved privacy-safe Evidence Story')).toBeTruthy()
+  expect(rpc).toHaveBeenCalledWith('get_aca_phase_two_workbook',{p_enrollment_id:null,p_journey:6})
+  const chooser=screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect(chooser.value).toBe('1');expect([...chooser.options].slice(1).every(x=>x.disabled)).toBe(true)
+  fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}));expect(print).toHaveBeenCalledOnce()
+  fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 6.1/}));expect(back).toHaveBeenCalledOnce()
+  print.mockRestore()
+})

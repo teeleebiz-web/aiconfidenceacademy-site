@@ -6,6 +6,7 @@ import './phaseTwoWorkbook.css'
 
 type Block = { type: string; id?: string; text?: string; title?: string; theme?: string; label?: string; hint?: string; lines?: number }
 const approvedTitles: Record<number, string[]> = {
+  6: ['Recognize Capability and Connect It to Value','Finish the Artifact with Evidence and Revision','Complete Quality Responsibility and Readiness Review','Demonstrate the Project and Answer Questions','Position the Work and Choose the Next Opportunity','Submit the Portfolio and Execution Plan'],
   1: ['Professional AI Judgment and Direction','Find the Need and Establish the Evidence',
       'Select AI Roles and Define Business Value','Direct Professional Requests and Decision Support',
       'Scope a Solution and a Project Worth Completing','Stress Test the Professional Operating Model'],
