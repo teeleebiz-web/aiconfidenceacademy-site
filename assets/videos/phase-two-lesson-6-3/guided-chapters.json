@@ -1,0 +1,32 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "audio_url": "/assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-Guided-Instruction.m4a",
+  "duration_seconds": 742.461,
+  "chapters": [
+    {
+      "title": "Review the finished package with READY",
+      "start_seconds": 0.0,
+      "duration_seconds": 184.346,
+      "transcript": ""
+    },
+    {
+      "title": "Make ownership, usability, and authorship visible",
+      "start_seconds": 185.246,
+      "duration_seconds": 179.2,
+      "transcript": ""
+    },
+    {
+      "title": "Correct weaknesses and finalize the responsible statement",
+      "start_seconds": 365.346,
+      "duration_seconds": 186.593,
+      "transcript": ""
+    },
+    {
+      "title": "Disclose the AI role and decide the appropriate use",
+      "start_seconds": 552.839,
+      "duration_seconds": 189.623,
+      "transcript": ""
+    }
+  ]
+}
