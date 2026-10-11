@@ -15,6 +15,9 @@ it('renders the actual Lesson 6.1 package with working chapter and demonstration
     guidedInstruction={{url:'https://aiconfidenceacademy.org/assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a',duration_seconds:750,voice_id:'Ufzf3hcVZVWx3QjtOPI5',approvalStatus:'founder_review_pending',chapters:data.teaching.map((x,i)=>({title:x.heading,start_seconds:i*180,transcript:data.media_transcripts.chapters[i]}))}}
     demoClips={data.media_transcripts.demonstrations.map((transcript,i)=>({key:'example-'+i,title:'Example '+(i+1),url:'/example-'+i+'.mp4',captions_url:'/example-'+i+'.vtt',transcript,duration_seconds:45,fictional_training_example:true}))} allowMediaReview />)
   expect(screen.getByLabelText('Lesson 6.1 instructor introduction video')).toHaveProperty('controls',true)
+  const instructor=screen.getByLabelText('Lesson 6.1 instructor introduction video')
+  expect(instructor.style.aspectRatio).toBe('9 / 16')
+  expect(instructor.style.maxWidth).toBe('360px')
   expect(screen.queryByText('Audio placeholder')).toBeNull()
   const audio=screen.getByLabelText('Lesson 6.1 guided instruction audio') as HTMLAudioElement
   for (const [i,button] of within(screen.getByRole('group',{name:'Guided instruction chapters'})).getAllByRole('button').entries()) {

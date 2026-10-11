@@ -34,27 +34,31 @@ def font(sz,serif=False):
 
 def text_center(d,y,text,face,color):
     x0,y0,x1,y1=d.textbbox((0,0),text,font=face)
-    d.text(((1920-(x1-x0))/2,y),text,font=face,fill=color)
+    d.text(((1080-(x1-x0))/2,y),text,font=face,fill=color)
 
 def card(path,close=False):
-    canvas=Image.new("RGB",(1920,1080),NAVY)
+    canvas=Image.new("RGB",(1080,1920),NAVY)
     d=ImageDraw.Draw(canvas)
-    d.rectangle((50,50,1870,1030),outline=GOLD,width=3)
-    d.rectangle((76,76,1844,1004),outline="#566d83",width=1)
+    d.rectangle((40,40,1040,1880),outline=GOLD,width=3)
+    d.rectangle((60,60,1020,1860),outline="#566d83",width=1)
     logo=Image.open(SEAL).convert("RGBA")
-    logo.thumbnail((210,210),Image.Resampling.LANCZOS)
-    canvas.paste(logo,((1920-logo.width)//2,118),logo)
-    text_center(d,370,"AI CONFIDENCE ACADEMY",font(47,True),GOLD)
-    text_center(d,451,"PHASE TWO   ·   JOURNEY SIX",font(27),LITE)
-    d.line((810,516,1110,516),fill=GOLD,width=3)
+    logo.thumbnail((260,260),Image.Resampling.LANCZOS)
+    canvas.paste(logo,((1080-logo.width)//2,240),logo)
+    text_center(d,590,"AI CONFIDENCE",font(52,True),GOLD)
+    text_center(d,665,"ACADEMY",font(52,True),GOLD)
+    text_center(d,795,"PHASE TWO   ·   JOURNEY SIX",font(30),LITE)
+    d.line((390,880,690,880),fill=GOLD,width=3)
     if close:
-        text_center(d,580,"Continue with your project",font(54,True),"#ffffff")
-        text_center(d,665,"Keep the evidence. Own the decision.",font(28),LITE)
+        text_center(d,1020,"Continue with",font(58,True),"#ffffff")
+        text_center(d,1100,"your project",font(58,True),"#ffffff")
+        text_center(d,1250,"Keep the evidence.",font(35),LITE)
+        text_center(d,1310,"Own the decision.",font(35),LITE)
     else:
-        text_center(d,566,"LESSON 6.1",font(33),GOLD)
-        text_center(d,637,"Recognize Capability",font(54,True),"#ffffff")
-        text_center(d,727,"and Connect It to Value",font(54,True),"#ffffff")
-    text_center(d,921,"AI assists. Humans verify.",font(26),GOLD)
+        text_center(d,990,"LESSON 6.1",font(38),GOLD)
+        text_center(d,1120,"Recognize Capability",font(54,True),"#ffffff")
+        text_center(d,1220,"and Connect It",font(54,True),"#ffffff")
+        text_center(d,1320,"to Value",font(54,True),"#ffffff")
+    text_center(d,1670,"AI assists. Humans verify.",font(32),GOLD)
     canvas.save(path,optimize=True)
 
 def make_card_clip(image,seconds,destination):
@@ -68,10 +72,8 @@ def make_card_clip(image,seconds,destination):
 def make_instructor_clip(src,seconds,destination):
     call(["ffmpeg","-hide_banner","-loglevel","error","-y",
       "-i",str(src),"-filter_complex",
-      "[0:v]crop=trunc(ih*768/1376/2)*2:ih:(iw-ow)/2:0,split=2[room][presenter];"
-      "[room]scale=1920:1080:force_original_aspect_ratio=increase,"
-      "crop=1920:1080,boxblur=35:2[back];"
-      "[back][presenter]overlay=(W-w)/2:0,setsar=1,fps=30,"
+      "[0:v]crop=trunc(ih*768/1376/2)*2:ih:(iw-ow)/2:0,"
+      "scale=1080:1920,setsar=1,fps=30,"
       "tpad=stop_mode=clone:stop_duration="+str(seconds)+"[v];"
       "[0:a]aresample=48000,aformat=channel_layouts=stereo,"
       "apad=pad_dur="+str(seconds)+"[a]",
@@ -122,7 +124,7 @@ fdur=float(info["format"]["duration"])
 assert abs(fdur-(duration+OPEN+LAND+END+RETURN))<0.8,(fdur,duration)
 v=next(s for s in info["streams"] if s["codec_type"]=="video")
 a=next(s for s in info["streams"] if s["codec_type"]=="audio")
-assert v["codec_name"]=="h264" and int(v["width"])==1920 and int(v["height"])==1080
+assert v["codec_name"]=="h264" and int(v["width"])==1080 and int(v["height"])==1920
 assert a["codec_name"]=="aac"
 assert final.stat().st_size<48_000_000,final.stat().st_size
 
@@ -146,10 +148,11 @@ summary={
  "returned_beginning_card_seconds":RETURN,
  "start_frame_is_beginning_card":True,
  "last_frame_is_beginning_card":True,
- "format":"1920x1080 H.264 MP4 / AAC",
+ "format":"1080x1920 H.264 MP4 / AAC",
  "bytes":final.stat().st_size,
  "sha256":checksum,
- "max_display_width_px":640,
+ "orientation":"portrait",
+ "max_display_width_px":360,
 }
 (OUT/"media-manifest.json").write_text(json.dumps(summary,indent=2)+"\n")
 print(json.dumps(summary),flush=True)
