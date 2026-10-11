@@ -1,0 +1,2514 @@
+{
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "guided_chapters": [
+    {
+      "title": "Apply the Truth Test to professional claims",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=8f19c19d-5842-4fbb-a007-ab335b6005e3.wav",
+      "duration_seconds": 178.70367346938775
+    },
+    {
+      "title": "Create four formats from the same supported truth",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=5b8c124e-7861-46aa-97ac-52952f919ba7.wav",
+      "duration_seconds": 185.83510204081634
+    },
+    {
+      "title": "Compare three opportunities with the Opportunity Map",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=2a6e5057-a968-4598-b034-00847ce813ed.wav",
+      "duration_seconds": 191.6342857142857
+    },
+    {
+      "title": "Choose a thirty-day evidence-building action and save",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=733e6d10-abb4-461c-a4a8-4f1f7e7806c4.wav",
+      "duration_seconds": 184.45061224489797
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "truth",
+      "title": "Correct an inflated claim with the Truth Test",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=d69ccc9c-4da6-4939-8126-f19a4a42cf10.wav",
+      "duration_seconds": 54.073469387755104,
+      "word_timestamps": [
+        {
+          "word": "This",
+          "start": 0,
+          "end": 0.372
+        },
+        {
+          "word": "is",
+          "start": 0.534,
+          "end": 0.708
+        },
+        {
+          "word": "a",
+          "start": 0.766,
+          "end": 0.789
+        },
+        {
+          "word": "supplied",
+          "start": 0.848,
+          "end": 1.428
+        },
+        {
+          "word": "fictional",
+          "start": 1.556,
+          "end": 2.009
+        },
+        {
+          "word": "intake",
+          "start": 2.09,
+          "end": 2.496
+        },
+        {
+          "word": "prototype.",
+          "start": 2.531,
+          "end": 3.274
+        },
+        {
+          "word": "The",
+          "start": 4.145,
+          "end": 4.261
+        },
+        {
+          "word": "first",
+          "start": 4.319,
+          "end": 4.528
+        },
+        {
+          "word": "claim",
+          "start": 4.563,
+          "end": 4.795
+        },
+        {
+          "word": "says:",
+          "start": 4.865,
+          "end": 5.271
+        },
+        {
+          "word": "I",
+          "start": 6.026,
+          "end": 6.072
+        },
+        {
+          "word": "can",
+          "start": 6.153,
+          "end": 6.269
+        },
+        {
+          "word": "automate",
+          "start": 6.327,
+          "end": 6.734
+        },
+        {
+          "word": "any",
+          "start": 6.792,
+          "end": 6.954
+        },
+        {
+          "word": "business",
+          "start": 7.024,
+          "end": 7.465
+        },
+        {
+          "word": "and",
+          "start": 7.5,
+          "end": 7.639
+        },
+        {
+          "word": "guarantee",
+          "start": 7.721,
+          "end": 8.208
+        },
+        {
+          "word": "major",
+          "start": 8.278,
+          "end": 8.603
+        },
+        {
+          "word": "savings.",
+          "start": 8.661,
+          "end": 9.195
+        },
+        {
+          "word": "The",
+          "start": 9.845,
+          "end": 9.961
+        },
+        {
+          "word": "retained",
+          "start": 10.031,
+          "end": 10.414
+        },
+        {
+          "word": "tabletop",
+          "start": 10.449,
+          "end": 10.983
+        },
+        {
+          "word": "evidence",
+          "start": 11.053,
+          "end": 11.447
+        },
+        {
+          "word": "does",
+          "start": 11.482,
+          "end": 11.656
+        },
+        {
+          "word": "not",
+          "start": 11.714,
+          "end": 11.877
+        },
+        {
+          "word": "establish",
+          "start": 11.923,
+          "end": 12.411
+        },
+        {
+          "word": "that.",
+          "start": 12.458,
+          "end": 12.748
+        },
+        {
+          "word": "Apply",
+          "start": 14.106,
+          "end": 14.512
+        },
+        {
+          "word": "the",
+          "start": 14.594,
+          "end": 14.663
+        },
+        {
+          "word": "Truth",
+          "start": 14.71,
+          "end": 14.954
+        },
+        {
+          "word": "Test:",
+          "start": 15,
+          "end": 15.372
+        },
+        {
+          "word": "can",
+          "start": 15.848,
+          "end": 15.987
+        },
+        {
+          "word": "the",
+          "start": 16.022,
+          "end": 16.091
+        },
+        {
+          "word": "author",
+          "start": 16.149,
+          "end": 16.393
+        },
+        {
+          "word": "demonstrate",
+          "start": 16.451,
+          "end": 16.95
+        },
+        {
+          "word": "it,",
+          "start": 16.973,
+          "end": 17.09
+        },
+        {
+          "word": "explain",
+          "start": 17.345,
+          "end": 17.891000000000002
+        },
+        {
+          "word": "it,",
+          "start": 17.937,
+          "end": 18.065
+        },
+        {
+          "word": "support",
+          "start": 18.39,
+          "end": 18.75
+        },
+        {
+          "word": "the",
+          "start": 18.785,
+          "end": 18.854
+        },
+        {
+          "word": "wording,",
+          "start": 18.901,
+          "end": 19.284
+        },
+        {
+          "word": "and",
+          "start": 19.563000000000002,
+          "end": 19.69
+        },
+        {
+          "word": "provide",
+          "start": 19.737000000000002,
+          "end": 20.073
+        },
+        {
+          "word": "evidence?",
+          "start": 20.108,
+          "end": 20.596
+        },
+        {
+          "word": "The",
+          "start": 21.081,
+          "end": 21.232
+        },
+        {
+          "word": "available",
+          "start": 21.29,
+          "end": 21.730999999999998
+        },
+        {
+          "word": "record",
+          "start": 21.778,
+          "end": 22.067999999999998
+        },
+        {
+          "word": "shows",
+          "start": 22.102999999999998,
+          "end": 22.405
+        },
+        {
+          "word": "a",
+          "start": 22.463,
+          "end": 22.509
+        },
+        {
+          "word": "bounded",
+          "start": 22.602,
+          "end": 22.95
+        },
+        {
+          "word": "design,",
+          "start": 22.985,
+          "end": 23.531
+        },
+        {
+          "word": "three",
+          "start": 24.006999999999998,
+          "end": 24.297
+        },
+        {
+          "word": "intake",
+          "start": 24.355,
+          "end": 24.75
+        },
+        {
+          "word": "checks,",
+          "start": 24.773,
+          "end": 25.133
+        },
+        {
+          "word": "a",
+          "start": 25.249,
+          "end": 25.33
+        },
+        {
+          "word": "revision,",
+          "start": 25.412,
+          "end": 25.933999999999997
+        },
+        {
+          "word": "and",
+          "start": 26.259,
+          "end": 26.433
+        },
+        {
+          "word": "a",
+          "start": 26.491,
+          "end": 26.514
+        },
+        {
+          "word": "visible",
+          "start": 26.584,
+          "end": 26.99
+        },
+        {
+          "word": "human",
+          "start": 27.049,
+          "end": 27.35
+        },
+        {
+          "word": "approval",
+          "start": 27.374,
+          "end": 27.756999999999998
+        },
+        {
+          "word": "gate.",
+          "start": 27.814999999999998,
+          "end": 28.198
+        },
+        {
+          "word": "Correct",
+          "start": 28.906,
+          "end": 29.22
+        },
+        {
+          "word": "the",
+          "start": 29.253999999999998,
+          "end": 29.323999999999998
+        },
+        {
+          "word": "claim",
+          "start": 29.359,
+          "end": 29.603
+        },
+        {
+          "word": "to:",
+          "start": 29.671999999999997,
+          "end": 29.905
+        },
+        {
+          "word": "I",
+          "start": 30.729,
+          "end": 30.799
+        },
+        {
+          "word": "designed",
+          "start": 30.926000000000002,
+          "end": 31.378999999999998
+        },
+        {
+          "word": "and",
+          "start": 31.436999999999998,
+          "end": 31.518
+        },
+        {
+          "word": "reviewed",
+          "start": 31.576,
+          "end": 31.948
+        },
+        {
+          "word": "a",
+          "start": 31.982999999999997,
+          "end": 32.018
+        },
+        {
+          "word": "fictional",
+          "start": 32.11,
+          "end": 32.516999999999996
+        },
+        {
+          "word": "intake",
+          "start": 32.598,
+          "end": 32.981
+        },
+        {
+          "word": "prototype",
+          "start": 33.004,
+          "end": 33.596000000000004
+        },
+        {
+          "word": "with",
+          "start": 33.631,
+          "end": 33.782
+        },
+        {
+          "word": "visible",
+          "start": 33.828,
+          "end": 34.177
+        },
+        {
+          "word": "gaps",
+          "start": 34.223,
+          "end": 34.548
+        },
+        {
+          "word": "and",
+          "start": 34.583,
+          "end": 34.664
+        },
+        {
+          "word": "human",
+          "start": 34.722,
+          "end": 34.978
+        },
+        {
+          "word": "approval.",
+          "start": 35.001,
+          "end": 35.465
+        },
+        {
+          "word": "Open",
+          "start": 36.325,
+          "end": 36.592
+        },
+        {
+          "word": "the",
+          "start": 36.626,
+          "end": 36.696
+        },
+        {
+          "word": "relevant",
+          "start": 36.742,
+          "end": 37.090999999999994
+        },
+        {
+          "word": "version",
+          "start": 37.149,
+          "end": 37.544
+        },
+        {
+          "word": "and",
+          "start": 37.625,
+          "end": 37.775999999999996
+        },
+        {
+          "word": "test",
+          "start": 37.822,
+          "end": 38.078
+        },
+        {
+          "word": "references.",
+          "start": 38.135999999999996,
+          "end": 38.751000000000005
+        },
+        {
+          "word": "Live",
+          "start": 39.575,
+          "end": 39.876999999999995
+        },
+        {
+          "word": "customer",
+          "start": 39.924,
+          "end": 40.307
+        },
+        {
+          "word": "delivery,",
+          "start": 40.364999999999995,
+          "end": 40.887
+        },
+        {
+          "word": "measured",
+          "start": 41.177,
+          "end": 41.503
+        },
+        {
+          "word": "savings,",
+          "start": 41.549,
+          "end": 42.105999999999995
+        },
+        {
+          "word": "enterprise",
+          "start": 42.42,
+          "end": 42.896
+        },
+        {
+          "word": "credentials,",
+          "start": 42.931,
+          "end": 43.581
+        },
+        {
+          "word": "and",
+          "start": 43.778000000000006,
+          "end": 43.917
+        },
+        {
+          "word": "organizational",
+          "start": 43.974999999999994,
+          "end": 44.637
+        },
+        {
+          "word": "permission",
+          "start": 44.695,
+          "end": 45.229
+        },
+        {
+          "word": "remain",
+          "start": 45.415,
+          "end": 45.763000000000005
+        },
+        {
+          "word": "unestablished.",
+          "start": 45.855999999999995,
+          "end": 46.681
+        },
+        {
+          "word": "The",
+          "start": 47.778,
+          "end": 47.952
+        },
+        {
+          "word": "corrected",
+          "start": 48.01,
+          "end": 48.393
+        },
+        {
+          "word": "wording",
+          "start": 48.428,
+          "end": 48.717999999999996
+        },
+        {
+          "word": "communicates",
+          "start": 48.765,
+          "end": 49.321999999999996
+        },
+        {
+          "word": "a",
+          "start": 49.357,
+          "end": 49.391999999999996
+        },
+        {
+          "word": "real",
+          "start": 49.449999999999996,
+          "end": 49.623999999999995
+        },
+        {
+          "word": "training",
+          "start": 49.682,
+          "end": 49.984
+        },
+        {
+          "word": "contribution",
+          "start": 50.03,
+          "end": 50.714999999999996
+        },
+        {
+          "word": "without",
+          "start": 50.842999999999996,
+          "end": 51.202999999999996
+        },
+        {
+          "word": "turning",
+          "start": 51.248999999999995,
+          "end": 51.54
+        },
+        {
+          "word": "an",
+          "start": 51.586,
+          "end": 51.656
+        },
+        {
+          "word": "ambition",
+          "start": 51.714,
+          "end": 52.143
+        },
+        {
+          "word": "into",
+          "start": 52.201,
+          "end": 52.387
+        },
+        {
+          "word": "a",
+          "start": 52.457,
+          "end": 52.492
+        },
+        {
+          "word": "verified",
+          "start": 52.538,
+          "end": 53.071999999999996
+        },
+        {
+          "word": "capability.",
+          "start": 53.119,
+          "end": 53.815
+        }
+      ]
+    },
+    {
+      "key": "formats",
+      "title": "Keep the same truth across four formats",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=ee737d18-dea2-474c-b14f-0f97a3c232e0.wav",
+      "duration_seconds": 51.435102040816325,
+      "word_timestamps": [
+        {
+          "word": "Use",
+          "start": 0,
+          "end": 0.279
+        },
+        {
+          "word": "one",
+          "start": 0.337,
+          "end": 0.58
+        },
+        {
+          "word": "verified",
+          "start": 0.627,
+          "end": 1.138
+        },
+        {
+          "word": "inventory",
+          "start": 1.196,
+          "end": 1.718
+        },
+        {
+          "word": "for",
+          "start": 1.765,
+          "end": 1.869
+        },
+        {
+          "word": "the",
+          "start": 1.904,
+          "end": 1.974
+        },
+        {
+          "word": "four",
+          "start": 2.02,
+          "end": 2.194
+        },
+        {
+          "word": "formats.",
+          "start": 2.252,
+          "end": 2.844
+        },
+        {
+          "word": "The",
+          "start": 3.541,
+          "end": 3.657
+        },
+        {
+          "word": "supplied",
+          "start": 3.704,
+          "end": 4.11
+        },
+        {
+          "word": "fictional",
+          "start": 4.156,
+          "end": 4.54
+        },
+        {
+          "word": "author's",
+          "start": 4.609,
+          "end": 4.992
+        },
+        {
+          "word": "seventy-five-word",
+          "start": 5.12,
+          "end": 6.014
+        },
+        {
+          "word": "introduction",
+          "start": 6.072,
+          "end": 6.699
+        },
+        {
+          "word": "names",
+          "start": 6.954,
+          "end": 7.233
+        },
+        {
+          "word": "the",
+          "start": 7.268,
+          "end": 7.338
+        },
+        {
+          "word": "intake",
+          "start": 7.396,
+          "end": 7.767
+        },
+        {
+          "word": "prototype,",
+          "start": 7.79,
+          "end": 8.475
+        },
+        {
+          "word": "AI",
+          "start": 8.928,
+          "end": 9.311
+        },
+        {
+          "word": "drafting",
+          "start": 9.381,
+          "end": 9.776
+        },
+        {
+          "word": "support,",
+          "start": 9.822,
+          "end": 10.286
+        },
+        {
+          "word": "human",
+          "start": 10.704,
+          "end": 10.971
+        },
+        {
+          "word": "inspection,",
+          "start": 11.018,
+          "end": 11.622
+        },
+        {
+          "word": "retained",
+          "start": 12.132,
+          "end": 12.527
+        },
+        {
+          "word": "checks,",
+          "start": 12.55,
+          "end": 12.98
+        },
+        {
+          "word": "and",
+          "start": 13.351,
+          "end": 13.491
+        },
+        {
+          "word": "the",
+          "start": 13.537,
+          "end": 13.607
+        },
+        {
+          "word": "limit",
+          "start": 13.677,
+          "end": 13.92
+        },
+        {
+          "word": "on",
+          "start": 13.967,
+          "end": 14.036
+        },
+        {
+          "word": "live",
+          "start": 14.118,
+          "end": 14.338
+        },
+        {
+          "word": "performance.",
+          "start": 14.373,
+          "end": 15.035
+        },
+        {
+          "word": "The",
+          "start": 15.952,
+          "end": 16.068
+        },
+        {
+          "word": "forty-word",
+          "start": 16.137999999999998,
+          "end": 16.614
+        },
+        {
+          "word": "profile",
+          "start": 16.66,
+          "end": 17.241
+        },
+        {
+          "word": "gives",
+          "start": 17.287,
+          "end": 17.473
+        },
+        {
+          "word": "a",
+          "start": 17.508,
+          "end": 17.531
+        },
+        {
+          "word": "concise",
+          "start": 17.589,
+          "end": 18.019
+        },
+        {
+          "word": "account",
+          "start": 18.042,
+          "end": 18.332
+        },
+        {
+          "word": "of",
+          "start": 18.367,
+          "end": 18.414
+        },
+        {
+          "word": "the",
+          "start": 18.46,
+          "end": 18.53
+        },
+        {
+          "word": "same",
+          "start": 18.576,
+          "end": 18.808
+        },
+        {
+          "word": "work.",
+          "start": 18.855,
+          "end": 19.18
+        },
+        {
+          "word": "Three",
+          "start": 20.003999999999998,
+          "end": 20.271
+        },
+        {
+          "word": "bullets",
+          "start": 20.317999999999998,
+          "end": 20.631
+        },
+        {
+          "word": "describe",
+          "start": 20.666,
+          "end": 21.223
+        },
+        {
+          "word": "design,",
+          "start": 21.258,
+          "end": 21.814999999999998
+        },
+        {
+          "word": "testing,",
+          "start": 22.164,
+          "end": 22.721
+        },
+        {
+          "word": "and",
+          "start": 22.825,
+          "end": 22.976
+        },
+        {
+          "word": "revision",
+          "start": 23.034,
+          "end": 23.464
+        },
+        {
+          "word": "with",
+          "start": 23.522,
+          "end": 23.65
+        },
+        {
+          "word": "evidence",
+          "start": 23.708,
+          "end": 24.091
+        },
+        {
+          "word": "references.",
+          "start": 24.137,
+          "end": 24.753
+        },
+        {
+          "word": "The",
+          "start": 25.757,
+          "end": 25.92
+        },
+        {
+          "word": "spoken",
+          "start": 25.966,
+          "end": 26.326
+        },
+        {
+          "word": "version",
+          "start": 26.372,
+          "end": 26.674000000000003
+        },
+        {
+          "word": "explains",
+          "start": 26.721,
+          "end": 27.150000000000002
+        },
+        {
+          "word": "the",
+          "start": 27.197000000000003,
+          "end": 27.266000000000002
+        },
+        {
+          "word": "contribution",
+          "start": 27.324,
+          "end": 28.009
+        },
+        {
+          "word": "in",
+          "start": 28.056,
+          "end": 28.125
+        },
+        {
+          "word": "comfortable",
+          "start": 28.195,
+          "end": 28.648000000000003
+        },
+        {
+          "word": "own",
+          "start": 28.694000000000003,
+          "end": 28.845000000000002
+        },
+        {
+          "word": "words.",
+          "start": 28.892000000000003,
+          "end": 29.414
+        },
+        {
+          "word": "Each",
+          "start": 29.948,
+          "end": 30.18
+        },
+        {
+          "word": "format",
+          "start": 30.25,
+          "end": 30.738
+        },
+        {
+          "word": "must",
+          "start": 30.819000000000003,
+          "end": 31.028000000000002
+        },
+        {
+          "word": "pass",
+          "start": 31.086000000000002,
+          "end": 31.411
+        },
+        {
+          "word": "the",
+          "start": 31.457,
+          "end": 31.527
+        },
+        {
+          "word": "Truth",
+          "start": 31.574,
+          "end": 31.841
+        },
+        {
+          "word": "Test.",
+          "start": 31.899,
+          "end": 32.351
+        },
+        {
+          "word": "Count",
+          "start": 33.025,
+          "end": 33.269
+        },
+        {
+          "word": "the",
+          "start": 33.315,
+          "end": 33.385000000000005
+        },
+        {
+          "word": "introduction",
+          "start": 33.443,
+          "end": 33.965
+        },
+        {
+          "word": "and",
+          "start": 34,
+          "end": 34.081
+        },
+        {
+          "word": "profile,",
+          "start": 34.128,
+          "end": 34.894000000000005
+        },
+        {
+          "word": "and",
+          "start": 35.068,
+          "end": 35.219
+        },
+        {
+          "word": "keep",
+          "start": 35.277,
+          "end": 35.451
+        },
+        {
+          "word": "exactly",
+          "start": 35.509,
+          "end": 35.927
+        },
+        {
+          "word": "three",
+          "start": 35.985,
+          "end": 36.264
+        },
+        {
+          "word": "supported",
+          "start": 36.31,
+          "end": 36.763000000000005
+        },
+        {
+          "word": "bullets.",
+          "start": 36.798,
+          "end": 37.204
+        },
+        {
+          "word": "Do",
+          "start": 37.738,
+          "end": 37.854
+        },
+        {
+          "word": "not",
+          "start": 37.924,
+          "end": 38.075
+        },
+        {
+          "word": "remove",
+          "start": 38.133,
+          "end": 38.458
+        },
+        {
+          "word": "a",
+          "start": 38.493,
+          "end": 38.516000000000005
+        },
+        {
+          "word": "limit",
+          "start": 38.597,
+          "end": 38.853
+        },
+        {
+          "word": "when",
+          "start": 38.888000000000005,
+          "end": 39.004000000000005
+        },
+        {
+          "word": "its",
+          "start": 39.05,
+          "end": 39.155
+        },
+        {
+          "word": "omission",
+          "start": 39.201,
+          "end": 39.608000000000004
+        },
+        {
+          "word": "would",
+          "start": 39.654,
+          "end": 39.817
+        },
+        {
+          "word": "mislead,",
+          "start": 39.863,
+          "end": 40.502
+        },
+        {
+          "word": "or",
+          "start": 40.85,
+          "end": 40.978
+        },
+        {
+          "word": "add",
+          "start": 41.036,
+          "end": 41.187
+        },
+        {
+          "word": "a",
+          "start": 41.221000000000004,
+          "end": 41.245000000000005
+        },
+        {
+          "word": "credential",
+          "start": 41.291000000000004,
+          "end": 41.813
+        },
+        {
+          "word": "to",
+          "start": 41.871,
+          "end": 41.941
+        },
+        {
+          "word": "make",
+          "start": 42.011,
+          "end": 42.162000000000006
+        },
+        {
+          "word": "the",
+          "start": 42.197,
+          "end": 42.266000000000005
+        },
+        {
+          "word": "profile",
+          "start": 42.313,
+          "end": 42.812
+        },
+        {
+          "word": "sound",
+          "start": 42.847,
+          "end": 43.102000000000004
+        },
+        {
+          "word": "stronger.",
+          "start": 43.16,
+          "end": 43.659000000000006
+        },
+        {
+          "word": "These",
+          "start": 44.356,
+          "end": 44.588
+        },
+        {
+          "word": "are",
+          "start": 44.611000000000004,
+          "end": 44.739000000000004
+        },
+        {
+          "word": "draft",
+          "start": 44.786,
+          "end": 45.146
+        },
+        {
+          "word": "teaching",
+          "start": 45.18000000000001,
+          "end": 45.528999999999996
+        },
+        {
+          "word": "examples.",
+          "start": 45.587,
+          "end": 46.19
+        },
+        {
+          "word": "They",
+          "start": 46.838,
+          "end": 47.035000000000004
+        },
+        {
+          "word": "are",
+          "start": 47.07,
+          "end": 47.163000000000004
+        },
+        {
+          "word": "not",
+          "start": 47.198,
+          "end": 47.326
+        },
+        {
+          "word": "published",
+          "start": 47.384,
+          "end": 47.709
+        },
+        {
+          "word": "profiles,",
+          "start": 47.732,
+          "end": 48.336
+        },
+        {
+          "word": "your",
+          "start": 48.521,
+          "end": 48.649
+        },
+        {
+          "word": "completed",
+          "start": 48.707,
+          "end": 49.102000000000004
+        },
+        {
+          "word": "work,",
+          "start": 49.148,
+          "end": 49.415
+        },
+        {
+          "word": "or",
+          "start": 49.508,
+          "end": 49.671
+        },
+        {
+          "word": "guarantees",
+          "start": 49.74,
+          "end": 50.275
+        },
+        {
+          "word": "of",
+          "start": 50.321,
+          "end": 50.379
+        },
+        {
+          "word": "an",
+          "start": 50.425000000000004,
+          "end": 50.484
+        },
+        {
+          "word": "opportunity.",
+          "start": 50.518,
+          "end": 51.145
+        }
+      ]
+    },
+    {
+      "key": "map",
+      "title": "Compare three opportunities before choosing",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=6c879b1e-b1df-42dd-8cf9-18ffa0266952.wav",
+      "duration_seconds": 50.91265306122449,
+      "word_timestamps": [
+        {
+          "word": "The",
+          "start": 0,
+          "end": 0.151
+        },
+        {
+          "word": "Opportunity",
+          "start": 0.209,
+          "end": 0.731
+        },
+        {
+          "word": "Map",
+          "start": 0.789,
+          "end": 0.998
+        },
+        {
+          "word": "has",
+          "start": 1.068,
+          "end": 1.207
+        },
+        {
+          "word": "six",
+          "start": 1.277,
+          "end": 1.509
+        },
+        {
+          "word": "parts:",
+          "start": 1.591,
+          "end": 2.02
+        },
+        {
+          "word": "opportunity,",
+          "start": 2.612,
+          "end": 3.332
+        },
+        {
+          "word": "fit,",
+          "start": 3.646,
+          "end": 3.982
+        },
+        {
+          "word": "evidence,",
+          "start": 4.4,
+          "end": 5.016
+        },
+        {
+          "word": "gap,",
+          "start": 5.236,
+          "end": 5.619
+        },
+        {
+          "word": "people,",
+          "start": 5.944,
+          "end": 6.455
+        },
+        {
+          "word": "and",
+          "start": 6.606,
+          "end": 6.757
+        },
+        {
+          "word": "next",
+          "start": 6.85,
+          "end": 7.082
+        },
+        {
+          "word": "step.",
+          "start": 7.105,
+          "end": 7.43
+        },
+        {
+          "word": "Compare",
+          "start": 8.255,
+          "end": 8.649
+        },
+        {
+          "word": "three",
+          "start": 8.707,
+          "end": 8.951
+        },
+        {
+          "word": "supplied",
+          "start": 8.998,
+          "end": 9.474
+        },
+        {
+          "word": "fictional",
+          "start": 9.532,
+          "end": 9.915
+        },
+        {
+          "word": "options.",
+          "start": 9.985,
+          "end": 10.53
+        },
+        {
+          "word": "The",
+          "start": 11.157,
+          "end": 11.262
+        },
+        {
+          "word": "current-setting",
+          "start": 11.32,
+          "end": 11.912
+        },
+        {
+          "word": "option",
+          "start": 11.981,
+          "end": 12.283
+        },
+        {
+          "word": "is",
+          "start": 12.33,
+          "end": 12.399
+        },
+        {
+          "word": "to",
+          "start": 12.457,
+          "end": 12.516
+        },
+        {
+          "word": "seek",
+          "start": 12.574,
+          "end": 12.771
+        },
+        {
+          "word": "permitted",
+          "start": 12.829,
+          "end": 13.247
+        },
+        {
+          "word": "internal",
+          "start": 13.305,
+          "end": 13.723
+        },
+        {
+          "word": "review",
+          "start": 13.793,
+          "end": 14.164
+        },
+        {
+          "word": "of",
+          "start": 14.501,
+          "end": 14.629
+        },
+        {
+          "word": "the",
+          "start": 14.675,
+          "end": 14.745
+        },
+        {
+          "word": "bounded",
+          "start": 14.803,
+          "end": 15.151
+        },
+        {
+          "word": "intake",
+          "start": 15.232,
+          "end": 15.616
+        },
+        {
+          "word": "prototype.",
+          "start": 15.639,
+          "end": 16.301
+        },
+        {
+          "word": "The",
+          "start": 16.788,
+          "end": 16.905
+        },
+        {
+          "word": "evidence",
+          "start": 16.974,
+          "end": 17.322
+        },
+        {
+          "word": "fits,",
+          "start": 17.357,
+          "end": 17.752
+        },
+        {
+          "word": "but",
+          "start": 18.227999999999998,
+          "end": 18.391
+        },
+        {
+          "word": "the",
+          "start": 18.414,
+          "end": 18.495
+        },
+        {
+          "word": "actual",
+          "start": 18.553,
+          "end": 18.96
+        },
+        {
+          "word": "reviewer",
+          "start": 19.041,
+          "end": 19.436
+        },
+        {
+          "word": "and",
+          "start": 19.482,
+          "end": 19.552
+        },
+        {
+          "word": "permission",
+          "start": 19.598,
+          "end": 20.039
+        },
+        {
+          "word": "must",
+          "start": 20.097,
+          "end": 20.271
+        },
+        {
+          "word": "be",
+          "start": 20.317999999999998,
+          "end": 20.399
+        },
+        {
+          "word": "established.",
+          "start": 20.433999999999997,
+          "end": 21.107
+        },
+        {
+          "word": "The",
+          "start": 21.734,
+          "end": 21.885
+        },
+        {
+          "word": "adjacent",
+          "start": 21.931,
+          "end": 22.373
+        },
+        {
+          "word": "option",
+          "start": 22.431,
+          "end": 22.779000000000003
+        },
+        {
+          "word": "is",
+          "start": 22.837000000000003,
+          "end": 22.918000000000003
+        },
+        {
+          "word": "a",
+          "start": 22.965000000000003,
+          "end": 22.999000000000002
+        },
+        {
+          "word": "review",
+          "start": 23.081000000000003,
+          "end": 23.371000000000002
+        },
+        {
+          "word": "of",
+          "start": 23.429000000000002,
+          "end": 23.487000000000002
+        },
+        {
+          "word": "another",
+          "start": 23.534000000000002,
+          "end": 23.777
+        },
+        {
+          "word": "request",
+          "start": 23.835,
+          "end": 24.219
+        },
+        {
+          "word": "type",
+          "start": 24.265,
+          "end": 24.578000000000003
+        },
+        {
+          "word": "using",
+          "start": 24.636000000000003,
+          "end": 24.904000000000003
+        },
+        {
+          "word": "safe",
+          "start": 24.985000000000003,
+          "end": 25.240000000000002
+        },
+        {
+          "word": "examples;",
+          "start": 25.275000000000002,
+          "end": 25.867
+        },
+        {
+          "word": "that",
+          "start": 26.343000000000004,
+          "end": 26.517000000000003
+        },
+        {
+          "word": "type",
+          "start": 26.564,
+          "end": 26.854000000000003
+        },
+        {
+          "word": "has",
+          "start": 26.889000000000003,
+          "end": 27.005000000000003
+        },
+        {
+          "word": "not",
+          "start": 27.075000000000003,
+          "end": 27.226000000000003
+        },
+        {
+          "word": "been",
+          "start": 27.272000000000002,
+          "end": 27.423000000000002
+        },
+        {
+          "word": "tested.",
+          "start": 27.469,
+          "end": 27.899
+        },
+        {
+          "word": "The",
+          "start": 28.816000000000003,
+          "end": 28.932000000000002
+        },
+        {
+          "word": "longer-term",
+          "start": 29.002000000000002,
+          "end": 29.513
+        },
+        {
+          "word": "possibility",
+          "start": 29.571,
+          "end": 30.337000000000003
+        },
+        {
+          "word": "is",
+          "start": 30.407000000000004,
+          "end": 30.534000000000002
+        },
+        {
+          "word": "broader",
+          "start": 30.604,
+          "end": 30.929000000000002
+        },
+        {
+          "word": "workflow",
+          "start": 30.987000000000002,
+          "end": 31.417
+        },
+        {
+          "word": "support,",
+          "start": 31.498,
+          "end": 31.951
+        },
+        {
+          "word": "which",
+          "start": 32.322,
+          "end": 32.52
+        },
+        {
+          "word": "needs",
+          "start": 32.566,
+          "end": 32.787000000000006
+        },
+        {
+          "word": "much",
+          "start": 32.856,
+          "end": 33.054
+        },
+        {
+          "word": "more",
+          "start": 33.112,
+          "end": 33.263000000000005
+        },
+        {
+          "word": "experience",
+          "start": 33.298,
+          "end": 33.901
+        },
+        {
+          "word": "and",
+          "start": 33.936,
+          "end": 34.029
+        },
+        {
+          "word": "evidence.",
+          "start": 34.099000000000004,
+          "end": 34.691
+        },
+        {
+          "word": "Choose",
+          "start": 35.387,
+          "end": 35.689
+        },
+        {
+          "word": "a",
+          "start": 35.724000000000004,
+          "end": 35.747
+        },
+        {
+          "word": "primary",
+          "start": 35.805,
+          "end": 36.456
+        },
+        {
+          "word": "and",
+          "start": 36.583,
+          "end": 36.734
+        },
+        {
+          "word": "a",
+          "start": 36.781000000000006,
+          "end": 36.804
+        },
+        {
+          "word": "backup",
+          "start": 36.862,
+          "end": 37.21
+        },
+        {
+          "word": "with",
+          "start": 37.257000000000005,
+          "end": 37.384
+        },
+        {
+          "word": "reasons.",
+          "start": 37.454,
+          "end": 37.942
+        },
+        {
+          "word": "A",
+          "start": 38.743,
+          "end": 38.824
+        },
+        {
+          "word": "review",
+          "start": 38.917,
+          "end": 39.172
+        },
+        {
+          "word": "conversation",
+          "start": 39.230000000000004,
+          "end": 39.904
+        },
+        {
+          "word": "may",
+          "start": 39.962,
+          "end": 40.089
+        },
+        {
+          "word": "be",
+          "start": 40.148,
+          "end": 40.24
+        },
+        {
+          "word": "appropriate",
+          "start": 40.275000000000006,
+          "end": 40.844
+        },
+        {
+          "word": "before",
+          "start": 40.879000000000005,
+          "end": 41.181000000000004
+        },
+        {
+          "word": "a",
+          "start": 41.204,
+          "end": 41.239000000000004
+        },
+        {
+          "word": "pilot.",
+          "start": 41.274,
+          "end": 41.738
+        },
+        {
+          "word": "Do",
+          "start": 42.658,
+          "end": 42.809000000000005
+        },
+        {
+          "word": "not",
+          "start": 42.879,
+          "end": 43.006
+        },
+        {
+          "word": "present",
+          "start": 43.053000000000004,
+          "end": 43.355000000000004
+        },
+        {
+          "word": "a",
+          "start": 43.389,
+          "end": 43.413000000000004
+        },
+        {
+          "word": "fictional",
+          "start": 43.471000000000004,
+          "end": 43.854
+        },
+        {
+          "word": "tabletop",
+          "start": 43.9,
+          "end": 44.458
+        },
+        {
+          "word": "as",
+          "start": 44.527,
+          "end": 44.620000000000005
+        },
+        {
+          "word": "an",
+          "start": 44.667,
+          "end": 44.736000000000004
+        },
+        {
+          "word": "approved",
+          "start": 44.759,
+          "end": 45.154
+        },
+        {
+          "word": "operational",
+          "start": 45.224000000000004,
+          "end": 45.769
+        },
+        {
+          "word": "service,",
+          "start": 45.828,
+          "end": 46.396
+        },
+        {
+          "word": "or",
+          "start": 46.629000000000005,
+          "end": 46.745000000000005
+        },
+        {
+          "word": "treat",
+          "start": 46.791000000000004,
+          "end": 47
+        },
+        {
+          "word": "AI's",
+          "start": 47.058,
+          "end": 47.43
+        },
+        {
+          "word": "comparison",
+          "start": 47.476,
+          "end": 48.068
+        },
+        {
+          "word": "as",
+          "start": 48.126000000000005,
+          "end": 48.231
+        },
+        {
+          "word": "a",
+          "start": 48.289,
+          "end": 48.312
+        },
+        {
+          "word": "promise",
+          "start": 48.370000000000005,
+          "end": 48.707
+        },
+        {
+          "word": "of",
+          "start": 48.742000000000004,
+          "end": 48.788000000000004
+        },
+        {
+          "word": "clients,",
+          "start": 48.846000000000004,
+          "end": 49.322
+        },
+        {
+          "word": "income,",
+          "start": 49.415,
+          "end": 49.868
+        },
+        {
+          "word": "or",
+          "start": 49.914,
+          "end": 50.019
+        },
+        {
+          "word": "employment.",
+          "start": 50.077,
+          "end": 50.622
+        }
+      ]
+    },
+    {
+      "key": "action",
+      "title": "Build evidence through a bounded thirty-day action",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=5fd5cb01-0b4b-4aa7-bf3b-2ac2612f3832.wav",
+      "duration_seconds": 50.93877551020408,
+      "word_timestamps": [
+        {
+          "word": "The",
+          "start": 0,
+          "end": 0.139
+        },
+        {
+          "word": "supplied",
+          "start": 0.197,
+          "end": 0.755
+        },
+        {
+          "word": "fictional",
+          "start": 0.836,
+          "end": 1.242
+        },
+        {
+          "word": "primary",
+          "start": 1.3,
+          "end": 1.765
+        },
+        {
+          "word": "option",
+          "start": 1.823,
+          "end": 2.241
+        },
+        {
+          "word": "needs",
+          "start": 2.426,
+          "end": 2.67
+        },
+        {
+          "word": "a",
+          "start": 2.705,
+          "end": 2.728
+        },
+        {
+          "word": "responsible",
+          "start": 2.786,
+          "end": 3.402
+        },
+        {
+          "word": "person's",
+          "start": 3.448,
+          "end": 3.785
+        },
+        {
+          "word": "review",
+          "start": 3.831,
+          "end": 4.214
+        },
+        {
+          "word": "and",
+          "start": 4.342,
+          "end": 4.505
+        },
+        {
+          "word": "permission.",
+          "start": 4.574,
+          "end": 5.062
+        },
+        {
+          "word": "The",
+          "start": 6.084,
+          "end": 6.211
+        },
+        {
+          "word": "thirty-day",
+          "start": 6.281,
+          "end": 6.745
+        },
+        {
+          "word": "action",
+          "start": 6.815,
+          "end": 7.163
+        },
+        {
+          "word": "is",
+          "start": 7.233,
+          "end": 7.314
+        },
+        {
+          "word": "to",
+          "start": 7.361,
+          "end": 7.419
+        },
+        {
+          "word": "seek",
+          "start": 7.5,
+          "end": 7.709
+        },
+        {
+          "word": "that",
+          "start": 7.755,
+          "end": 7.895
+        },
+        {
+          "word": "permission,",
+          "start": 7.941,
+          "end": 8.464
+        },
+        {
+          "word": "prepare",
+          "start": 9.021,
+          "end": 9.427
+        },
+        {
+          "word": "safe",
+          "start": 9.497,
+          "end": 9.799
+        },
+        {
+          "word": "review",
+          "start": 9.845,
+          "end": 10.112
+        },
+        {
+          "word": "material,",
+          "start": 10.17,
+          "end": 10.67
+        },
+        {
+          "word": "retain",
+          "start": 11.262,
+          "end": 11.622
+        },
+        {
+          "word": "the",
+          "start": 11.668,
+          "end": 11.738
+        },
+        {
+          "word": "questions,",
+          "start": 11.773,
+          "end": 12.341
+        },
+        {
+          "word": "and",
+          "start": 12.852,
+          "end": 13.003
+        },
+        {
+          "word": "compare",
+          "start": 13.061,
+          "end": 13.468
+        },
+        {
+          "word": "the",
+          "start": 13.502,
+          "end": 13.572
+        },
+        {
+          "word": "prototype",
+          "start": 13.618,
+          "end": 14.222
+        },
+        {
+          "word": "with",
+          "start": 14.245,
+          "end": 14.385
+        },
+        {
+          "word": "the",
+          "start": 14.42,
+          "end": 14.489
+        },
+        {
+          "word": "agreed",
+          "start": 14.559000000000001,
+          "end": 14.884
+        },
+        {
+          "word": "requirement",
+          "start": 14.942,
+          "end": 15.546000000000001
+        },
+        {
+          "word": "by",
+          "start": 15.592,
+          "end": 15.685
+        },
+        {
+          "word": "the",
+          "start": 15.743,
+          "end": 15.813
+        },
+        {
+          "word": "end",
+          "start": 15.882000000000001,
+          "end": 16.033
+        },
+        {
+          "word": "of",
+          "start": 16.091,
+          "end": 16.138
+        },
+        {
+          "word": "thirty",
+          "start": 16.196,
+          "end": 16.451
+        },
+        {
+          "word": "days.",
+          "start": 16.521,
+          "end": 16.939
+        },
+        {
+          "word": "Identify",
+          "start": 17.368000000000002,
+          "end": 17.96
+        },
+        {
+          "word": "the",
+          "start": 18.03,
+          "end": 18.111
+        },
+        {
+          "word": "owner,",
+          "start": 18.193,
+          "end": 18.46
+        },
+        {
+          "word": "needed",
+          "start": 18.552,
+          "end": 18.843
+        },
+        {
+          "word": "permission,",
+          "start": 18.889000000000003,
+          "end": 19.412
+        },
+        {
+          "word": "evidence",
+          "start": 19.76,
+          "end": 20.178
+        },
+        {
+          "word": "checkpoint,",
+          "start": 20.201,
+          "end": 20.793
+        },
+        {
+          "word": "and",
+          "start": 21.002000000000002,
+          "end": 21.153
+        },
+        {
+          "word": "limit.",
+          "start": 21.234,
+          "end": 21.525
+        },
+        {
+          "word": "If",
+          "start": 22.1,
+          "end": 22.274
+        },
+        {
+          "word": "permission",
+          "start": 22.332,
+          "end": 22.704
+        },
+        {
+          "word": "is",
+          "start": 22.75,
+          "end": 22.82
+        },
+        {
+          "word": "not",
+          "start": 22.878,
+          "end": 23.006
+        },
+        {
+          "word": "established,",
+          "start": 23.052,
+          "end": 23.737000000000002
+        },
+        {
+          "word": "do",
+          "start": 24.004,
+          "end": 24.12
+        },
+        {
+          "word": "not",
+          "start": 24.201,
+          "end": 24.341
+        },
+        {
+          "word": "use",
+          "start": 24.422,
+          "end": 24.654
+        },
+        {
+          "word": "live",
+          "start": 24.712000000000003,
+          "end": 24.991
+        },
+        {
+          "word": "customer",
+          "start": 25.026000000000003,
+          "end": 25.409000000000002
+        },
+        {
+          "word": "inputs.",
+          "start": 25.467000000000002,
+          "end": 26.036
+        },
+        {
+          "word": "The",
+          "start": 26.558,
+          "end": 26.674
+        },
+        {
+          "word": "backup",
+          "start": 26.744,
+          "end": 27.150000000000002
+        },
+        {
+          "word": "is",
+          "start": 27.208000000000002,
+          "end": 27.278000000000002
+        },
+        {
+          "word": "a",
+          "start": 27.324,
+          "end": 27.348000000000003
+        },
+        {
+          "word": "clearly",
+          "start": 27.406000000000002,
+          "end": 27.731
+        },
+        {
+          "word": "labeled",
+          "start": 27.789,
+          "end": 28.114
+        },
+        {
+          "word": "fictional",
+          "start": 28.16,
+          "end": 28.544
+        },
+        {
+          "word": "review",
+          "start": 28.602,
+          "end": 28.985
+        },
+        {
+          "word": "using",
+          "start": 29.147000000000002,
+          "end": 29.438000000000002
+        },
+        {
+          "word": "permitted",
+          "start": 29.496000000000002,
+          "end": 29.844
+        },
+        {
+          "word": "examples,",
+          "start": 29.89,
+          "end": 30.552
+        },
+        {
+          "word": "with",
+          "start": 30.958000000000002,
+          "end": 31.121000000000002
+        },
+        {
+          "word": "the",
+          "start": 31.156,
+          "end": 31.225
+        },
+        {
+          "word": "organizational",
+          "start": 31.283,
+          "end": 32.027
+        },
+        {
+          "word": "gap",
+          "start": 32.085,
+          "end": 32.328
+        },
+        {
+          "word": "still",
+          "start": 32.398,
+          "end": 32.677
+        },
+        {
+          "word": "visible.",
+          "start": 32.735,
+          "end": 33.28
+        },
+        {
+          "word": "This",
+          "start": 34.046,
+          "end": 34.22
+        },
+        {
+          "word": "is",
+          "start": 34.267,
+          "end": 34.348
+        },
+        {
+          "word": "a",
+          "start": 34.395,
+          "end": 34.418
+        },
+        {
+          "word": "proposed",
+          "start": 34.464,
+          "end": 34.871
+        },
+        {
+          "word": "action,",
+          "start": 34.917,
+          "end": 35.312
+        },
+        {
+          "word": "not",
+          "start": 35.811,
+          "end": 35.997
+        },
+        {
+          "word": "evidence",
+          "start": 36.055,
+          "end": 36.426
+        },
+        {
+          "word": "of",
+          "start": 36.461,
+          "end": 36.519000000000005
+        },
+        {
+          "word": "a",
+          "start": 36.566,
+          "end": 36.589
+        },
+        {
+          "word": "completed",
+          "start": 36.647000000000006,
+          "end": 37.053
+        },
+        {
+          "word": "review",
+          "start": 37.1,
+          "end": 37.448
+        },
+        {
+          "word": "or",
+          "start": 37.576,
+          "end": 37.715
+        },
+        {
+          "word": "a",
+          "start": 37.761,
+          "end": 37.785
+        },
+        {
+          "word": "promised",
+          "start": 37.831,
+          "end": 38.179
+        },
+        {
+          "word": "pilot.",
+          "start": 38.203,
+          "end": 38.632000000000005
+        },
+        {
+          "word": "Save",
+          "start": 39.224000000000004,
+          "end": 39.526
+        },
+        {
+          "word": "the",
+          "start": 39.561,
+          "end": 39.631
+        },
+        {
+          "word": "language",
+          "start": 39.689,
+          "end": 40.014
+        },
+        {
+          "word": "set,",
+          "start": 40.049,
+          "end": 40.35
+        },
+        {
+          "word": "Truth",
+          "start": 40.908,
+          "end": 41.186
+        },
+        {
+          "word": "Test,",
+          "start": 41.233000000000004,
+          "end": 41.616
+        },
+        {
+          "word": "three-option",
+          "start": 42.092,
+          "end": 42.626000000000005
+        },
+        {
+          "word": "map,",
+          "start": 42.684,
+          "end": 42.986000000000004
+        },
+        {
+          "word": "choices,",
+          "start": 43.427,
+          "end": 43.996
+        },
+        {
+          "word": "boundaries,",
+          "start": 44.379000000000005,
+          "end": 44.948
+        },
+        {
+          "word": "and",
+          "start": 45.273,
+          "end": 45.436
+        },
+        {
+          "word": "action",
+          "start": 45.517,
+          "end": 45.993
+        },
+        {
+          "word": "in",
+          "start": 46.283,
+          "end": 46.411
+        },
+        {
+          "word": "the",
+          "start": 46.457,
+          "end": 46.527
+        },
+        {
+          "word": "existing",
+          "start": 46.585,
+          "end": 46.980000000000004
+        },
+        {
+          "word": "positioning",
+          "start": 47.038,
+          "end": 47.491
+        },
+        {
+          "word": "record.",
+          "start": 47.56,
+          "end": 47.909
+        },
+        {
+          "word": "Explain",
+          "start": 48.667,
+          "end": 49.178000000000004
+        },
+        {
+          "word": "the",
+          "start": 49.224000000000004,
+          "end": 49.294000000000004
+        },
+        {
+          "word": "gap",
+          "start": 49.34,
+          "end": 49.596000000000004
+        },
+        {
+          "word": "in",
+          "start": 49.654,
+          "end": 49.712
+        },
+        {
+          "word": "your",
+          "start": 49.758,
+          "end": 49.874
+        },
+        {
+          "word": "own",
+          "start": 49.932,
+          "end": 50.049
+        },
+        {
+          "word": "words.",
+          "start": 50.107,
+          "end": 50.594
+        }
+      ]
+    }
+  ],
+  "visual_plan": {
+    "chapters": [
+      {
+        "title": "Apply the Truth Test to professional claims",
+        "transcript": "Bring forward the artifact, evidence, and demonstration from Lesson Six Point Four. You have explained what the project does, what you tested, what changed, and what remains limited. Today you will position that same work for a realistic opportunity. Positioning means describing a contribution clearly for an intended audience. It should make your capability understandable without inflating the result or inventing a professional identity.\n\nUse the Truth Test for every important claim: can you demonstrate it, explain it, support the wording, and provide evidence? Demonstrate means you can show the relevant work or behavior. Explain means you can account for the decisions, AI support, tests, and limits in your own words. Support the wording means the strength of the statement matches what the record establishes. Provide evidence means a reviewer can find a meaningful artifact, version, source, or check reference. A confident tone does not replace any of these four checks.\n\nOur supplied fictional case continues the reviewed intake prototype. Its retained tabletop records show complete input, a missing-date exception, absent approval, and a correction that made the human delivery gate more visible. That supports a statement about designing and reviewing a bounded workflow example. It does not establish that the author can automate any business, deliver enterprise consulting, improve a real customer's results, or claim a credential. The work has not established live customer delivery, measured savings, or real organizational permission.\n\nCompare an inflated claim with supported wording. I can automate any business and guarantee major savings asks the reader to believe things that the retained record cannot show. I designed and reviewed a fictional intake prototype with a visible human approval gate names the actual kind of work and its boundary. Add the relevant test and revision references. If your evidence is from a real permitted internal prototype, identify that setting accurately. Do not upgrade a fictional exercise into an operational result.\n\nBuild a verified inventory before drafting. List the artifact, current version, human decisions, AI assistance, tests, observed corrections, and honest limits. Add any actual credentials separately, with support; do not assume a course exercise awards one. Identify which material can be shown to the intended audience and which must remain private. A privacy-safe reference can support your explanation without exposing someone else's information.\n\nPause and choose one professional claim from your draft. Run all four Truth Test questions, correct the wording, and note the evidence that supports the correction. Keep a remaining gap visible. Your task is not to sound bigger than the work. It is to explain the contribution well enough that someone can understand what you can show and what still needs to be learned."
+      },
+      {
+        "title": "Create four formats from the same supported truth",
+        "transcript": "Use the same verified inventory to create four formats: a seventy-five-word introduction, a forty-word profile, three evidence-based bullets, and a short spoken version. Each format can emphasize what its audience needs, but the underlying facts must stay the same. Changing the length does not authorize a stronger claim. Your voice should remain recognizable: clear, direct, and comfortable enough that you can explain the wording aloud.\n\nThe introduction gives a fuller account of your contribution. Name the bounded artifact, what you did, how AI supported the work, the checks or revision that matter, and a relevant limit or next step. In seventy-five words, choose the most useful facts rather than compress every assignment into a long list. Count the words and inspect the result again. A shorter paragraph that changes the meaning is not an acceptable substitute for the supported truth.\n\nThe forty-word profile gives an intended reader a concise description. State the kind of work and the evidence-backed contribution. Keep the boundary where omitting it would mislead. Our supplied fictional profile describes a reviewed workflow example, visible gaps, human approval, test notes, and revision evidence. It says that live delivery, savings, and organizational permission remain unestablished. The same author does not become an enterprise consultant merely because the profile is brief.\n\nWrite three bullets with concrete actions and meaningful support. One supplied bullet says the author designed a fictional intake prototype that keeps missing dates visible. A second says the author checked complete input, a missing date, and absent approval against retained tabletop records. A third says the author revised the written status and review gate and explained AI drafting support and human decisions. These are supplied training claims. Your bullets must describe your own recorded actions. Do not add a measured improvement, credential, client, or employment result that is not established.\n\nNow write a short spoken version. Use the words you would say to a person asking what you worked on. Explain the contribution and its limit without reading a dense profile word for word. Rehearse it aloud, check that you can explain every claim, and note any wording that feels unfamiliar or too strong. Preserve your voice when accepting an AI revision. You remain responsible for what the audience is asked to believe.\n\nUse the approved request with your privacy-safe inventory and evidence. It asks AI to create the four formats and compare opportunities without adding credentials or guarantees. Inspect each suggested line with the Truth Test. Record what you accepted, changed, or rejected and why. Save the four-format language set as a draft for your intended context. This activity does not publish a profile, contact an employer, or promise an opportunity."
+      },
+      {
+        "title": "Compare three opportunities with the Opportunity Map",
+        "transcript": "Use the Opportunity Map to compare a current-role opportunity, an adjacent opportunity, and a longer-term possibility. The map has six parts: opportunity, fit, evidence, gap, people, and next step. An opportunity is a specific contribution or use of capability you might pursue. Fit explains why it relates to your interests, responsibilities, and present ability. Evidence identifies the work you can show. Gap identifies what you still need to establish. People identifies who is affected or whose review, permission, collaboration, or support matters. Next step is a realistic action you can take.\n\nStart close to your current responsibilities or existing setting. You might seek permission to show a bounded prototype to the person responsible for an internal task. If you are not in an employed role, use your actual community, learning, or personal project setting. Do not invent a job or a manager to fill the map. The current-setting option can be a review conversation rather than a deployment. Its value is that it fits the work and people you actually know.\n\nAn adjacent opportunity is a nearby contribution that uses some of the same capability in a different task or setting. For the supplied fictional intake example, that might be a permitted review of a different request type using safe examples. The author can show the existing design, tests, and human gate. The new request type and affected people's needs have not been tested. The next step is to ask the relevant person what a suitable bounded review would require, not to advertise a proven operational service.\n\nA longer-term possibility may require substantially more evidence or experience. In the supplied case, broader workflow support across several teams is only a possibility. The current tabletop does not establish capability across those teams, enterprise credentials, implementation costs, or live reliability. The gap is larger and the people and permissions are less established. A realistic next step might be to identify the additional experience and evidence required. Do not confuse an interesting future direction with an opportunity you are ready to promise today.\n\nCompare all three options using the same questions. Which one best fits your verified work and actual setting? Which has a manageable gap? Who needs to be involved? What evidence would make the next decision better? You do not need invented rankings, income projections, or assurances of employment. If a relevant cost, permission, or role is unknown, record the unknown and the check needed to resolve it.\n\nChoose a primary opportunity and a backup. Explain the reason for both choices with evidence and boundaries. The backup should be a meaningful alternative if a permission or support dependency prevents the primary step. Keep the longer-term possibility visible without claiming readiness. Your choice is a human decision about a realistic next contribution, not an AI promise that a market or employer will accept you."
+      },
+      {
+        "title": "Choose a thirty-day evidence-building action and save",
+        "transcript": "Turn the primary opportunity into one specific thirty-day evidence-building action. Evidence-building means producing or obtaining the work that helps close a named gap. An action should identify what you will do, the boundary and permission it needs, who owns the step, the evidence you will retain, and the point within thirty days when you will review what happened. It should remain feasible in your actual setting.\n\nFor the supplied fictional intake example, a bounded action is to seek a responsible person's permission for a safe internal review, then retain their questions and compare the prototype with the agreed requirement before the end of thirty days. If permission is not established, the author does not proceed with live customer inputs. The backup is a clearly labeled fictional review using permitted examples, with the unresolved organizational dependency retained. These are proposed teaching actions, not completed reviews, assigned roles, or promised outcomes.\n\nMatch the action to the gap you named. If the gap is untested handling of a new request type, a polished profile will not close it. A permitted test plan and retained observations may help. If the gap is an unknown audience need, a suitable review conversation may come first. If it is a missing permission, establish the permission before using the affected material. Define the evidence checkpoint rather than declare in advance that the gap will be resolved.\n\nApply the Truth Test to the entire language set and opportunity map. Check that the introduction has seventy-five words, the profile has forty words, the bullets make three supported claims, and the spoken version preserves the same truth. Count and revise without inventing a new fact to fill space. Inspect the AI contribution, human decisions, evidence references, credentials, and boundaries. Remove a guarantee of clients, income, employment, or business results unless the statement is replaced with the actual supported contribution.\n\nDo the applied completion check. Correct an inflated professional claim using available evidence. Explain the gap you will address before pursuing the selected opportunity. Show the before wording, the corrected wording, the support, and the remaining limit. Then point to the primary choice, backup, and thirty-day action. Answer in your own words so another person can see the relationship between what you can demonstrate now and what you propose to establish next.\n\nSave the four-format language set, Truth Test notes, three-option Opportunity Map, primary and backup decisions, boundaries, and next action in the existing positioning section of your Project Record. Complete the connected workbook. Carry this supported language and action into Lesson Six Point Six, where you will assemble the portfolio and execution plan. Keep completed evidence, proposed actions, and unresolved gaps distinct as you prepare that final submission."
+      }
+    ],
+    "demos": [
+      {
+        "key": "truth",
+        "title": "Correct an inflated claim with the Truth Test",
+        "transcript": "This is a supplied fictional intake prototype. The first claim says: I can automate any business and guarantee major savings. The retained tabletop evidence does not establish that. Apply the Truth Test: can the author demonstrate it, explain it, support the wording, and provide evidence? The available record shows a bounded design, three intake checks, a revision, and a visible human approval gate. Correct the claim to: I designed and reviewed a fictional intake prototype with visible gaps and human approval. Open the relevant version and test references. Live customer delivery, measured savings, enterprise credentials, and organizational permission remain unestablished. The corrected wording communicates a real training contribution without turning an ambition into a verified capability.",
+        "scenes": [
+          [
+            "Inflated wording",
+            "“Automate any business and guarantee savings.”",
+            "Supplied fictional tabletop evidence cannot support this claim."
+          ],
+          [
+            "Apply the Truth Test",
+            "Demonstrate • Explain • Support wording • Evidence",
+            "Open the current artifact, three checks, and revision record."
+          ],
+          [
+            "Supported correction",
+            "Designed and reviewed a fictional intake prototype\nVisible gaps + human approval",
+            "Live delivery, savings, credentials, and permission remain unestablished."
+          ]
+        ]
+      },
+      {
+        "key": "formats",
+        "title": "Keep the same truth across four formats",
+        "transcript": "Use one verified inventory for the four formats. The supplied fictional author's seventy-five-word introduction names the intake prototype, AI drafting support, human inspection, retained checks, and the limit on live performance. The forty-word profile gives a concise account of the same work. Three bullets describe design, testing, and revision with evidence references. The spoken version explains the contribution in comfortable own words. Each format must pass the Truth Test. Count the introduction and profile, and keep exactly three supported bullets. Do not remove a limit when its omission would mislead, or add a credential to make the profile sound stronger. These are draft teaching examples. They are not published profiles, your completed work, or guarantees of an opportunity.",
+        "scenes": [
+          [
+            "One verified inventory",
+            "Artifact • Human decisions • AI support\nTests • Revision • Honest limit",
+            "Change the length and emphasis while preserving the supported truth."
+          ],
+          [
+            "Four formats",
+            "75-word introduction • 40-word profile\n3 evidence-based bullets • Short spoken version",
+            "Count, inspect, and rehearse the own-voice spoken version."
+          ],
+          [
+            "Truth Test every claim",
+            "No invented credential, result, or guarantee",
+            "A shorter format must still communicate the relevant limit."
+          ]
+        ]
+      },
+      {
+        "key": "map",
+        "title": "Compare three opportunities before choosing",
+        "transcript": "The Opportunity Map has six parts: opportunity, fit, evidence, gap, people, and next step. Compare three supplied fictional options. The current-setting option is to seek permitted internal review of the bounded intake prototype. The evidence fits, but the actual reviewer and permission must be established. The adjacent option is a review of another request type using safe examples; that type has not been tested. The longer-term possibility is broader workflow support, which needs much more experience and evidence. Choose a primary and a backup with reasons. A review conversation may be appropriate before a pilot. Do not present a fictional tabletop as an approved operational service, or treat AI's comparison as a promise of clients, income, or employment.",
+        "scenes": [
+          [
+            "Opportunity Map",
+            "Opportunity • Fit • Evidence\nGap • People • Next step",
+            "Use the same six questions for all three options."
+          ],
+          [
+            "Compare three options",
+            "Current setting: permitted internal review\nAdjacent: another request type\nLonger term: broader workflow support",
+            "New settings, permissions, and capability remain to be established."
+          ],
+          [
+            "Choose with reasons",
+            "Primary + Backup + Named gap",
+            "A proposal is not an approved role or a promised outcome."
+          ]
+        ]
+      },
+      {
+        "key": "action",
+        "title": "Build evidence through a bounded thirty-day action",
+        "transcript": "The supplied fictional primary option needs a responsible person's review and permission. The thirty-day action is to seek that permission, prepare safe review material, retain the questions, and compare the prototype with the agreed requirement by the end of thirty days. Identify the owner, needed permission, evidence checkpoint, and limit. If permission is not established, do not use live customer inputs. The backup is a clearly labeled fictional review using permitted examples, with the organizational gap still visible. This is a proposed action, not evidence of a completed review or a promised pilot. Save the language set, Truth Test, three-option map, choices, boundaries, and action in the existing positioning record. Explain the gap in your own words.",
+        "scenes": [
+          [
+            "Name the gap",
+            "Responsible review and permission are not established",
+            "Choose an action that builds evidence for this specific gap."
+          ],
+          [
+            "Thirty-day action",
+            "Seek permission • Prepare safe material\nRetain questions • Review evidence by day 30",
+            "Record the owner, permission, checkpoint, and use boundary."
+          ],
+          [
+            "Use the backup responsibly",
+            "No permission → No live customer inputs\nPermitted fictional review + visible remaining gap",
+            "Save the language set, map, boundaries, and next action."
+          ]
+        ]
+      }
+    ]
+  }
+}

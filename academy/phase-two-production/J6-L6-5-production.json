@@ -1,0 +1,190 @@
+{
+  "production_version": "1.0",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "6.5",
+  "primary_media": "audio",
+  "title": "Position the Work and Choose the Next Opportunity",
+  "learner_promise": "Describe your verified work in four professional formats, apply the Truth Test to each claim, and choose a primary opportunity, backup, and specific thirty-day action that builds missing evidence.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Teaching",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Worked demonstration",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Project application",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Verification",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Correct inflated professional wording using the four Truth Test checks.",
+    "Create a 75-word introduction, 40-word profile, three supported bullets, and a short spoken version.",
+    "Compare three opportunities by opportunity, fit, evidence, gap, people, and next step.",
+    "Choose a primary and backup and define a bounded thirty-day evidence-building action."
+  ],
+  "teaching": [
+    {
+      "heading": "Apply the Truth Test to professional claims",
+      "paragraphs": [
+        "Use the Truth Test: can you demonstrate the claim, explain it, support the wording, and provide evidence? Match the strength and setting of each statement to the retained work.",
+        "Build a privacy-safe verified inventory of the artifact, current version, human decisions, AI assistance, tests, revisions, and limits. Keep actual credentials separate from course exercises."
+      ],
+      "think_prompt": "Which professional claim needs narrower wording or a clearer evidence reference?"
+    },
+    {
+      "heading": "Create four formats from the same supported truth",
+      "paragraphs": [
+        "Create four formats from the same truth: a 75-word introduction, a 40-word profile, three evidence-based bullets, and a short spoken version in your own voice. Count and review the written formats, then rehearse the spoken one.",
+        "Use AI suggestions only after applying the Truth Test. Record accepted, changed, or rejected wording. Do not invent clients, credentials, results, income, or employment guarantees."
+      ],
+      "think_prompt": "Does your shortest format still communicate the limit an intended reader needs?"
+    },
+    {
+      "heading": "Compare three opportunities with the Opportunity Map",
+      "paragraphs": [
+        "Map a current-role or current-setting opportunity, an adjacent opportunity, and a longer-term possibility. For each record opportunity, fit, evidence, gap, people, and next step.",
+        "Choose a primary and a meaningful backup with reasons. Keep unknown costs, permissions, roles, and capability visible. A review conversation can be a suitable next contribution."
+      ],
+      "think_prompt": "Which option fits your actual evidence and setting, and what gap remains?"
+    },
+    {
+      "heading": "Choose a thirty-day evidence-building action and save",
+      "paragraphs": [
+        "Define one specific thirty-day action that builds evidence for the selected gap. Name the action, owner, needed permission, boundary, retained evidence, and checkpoint.",
+        "Correct an inflated claim and explain the gap before pursuing the opportunity. Save the language set, map, choices, boundaries, and next action in the existing positioning section."
+      ],
+      "think_prompt": "What evidence will your next action produce, and what will you do if permission is not established?"
+    }
+  ],
+  "worked_case": {
+    "label": "Position a bounded prototype without overstating readiness",
+    "setup": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake prototype has retained tabletop checks for complete input, a missing date, and absent approval, plus revision and demonstration evidence. It supports describing a bounded design and review contribution. It does not establish enterprise consulting, universal automation, live customer delivery, savings, actual organizational permission, a credential, or a guaranteed opportunity. The example compares proposed current-setting, adjacent, and longer-term options; review roles and permission still need to be established.",
+    "evidence_table": [
+      {
+        "claim": "I can automate any business and guarantee savings.",
+        "evidence": "Only a reviewed fictional intake prototype and tabletop records are established.",
+        "action": "Correct to a bounded design and review contribution; keep live performance and savings unestablished."
+      },
+      {
+        "claim": "A concise profile establishes an enterprise credential.",
+        "evidence": "The same artifact, checks, and decisions support the introduction and profile.",
+        "action": "Keep the same truth across formats; add no unsupported title or credential."
+      },
+      {
+        "claim": "The adjacent request type is ready for operational use.",
+        "evidence": "That request type has not been tested and its actual permission is unknown.",
+        "action": "Record the gap and seek a suitable bounded review before any wider use."
+      },
+      {
+        "claim": "The thirty-day action proves a completed review or job result.",
+        "evidence": "The review and permission are proposed next steps.",
+        "action": "Define evidence checkpoints and a backup without declaring outcomes in advance."
+      }
+    ],
+    "revised_example": "SUPPLIED FICTIONAL 75-WORD INTRODUCTION: I designed and reviewed a fictional intake prototype that makes missing information and human approval visible. I used AI to help draft explanations and suggest checks, then inspected the outputs, corrected unsupported claims, and retained test notes. My demonstration shows a normal request and a review exception. This work supports a bounded design example, not live business performance. My next step is to seek permitted review and build evidence for a carefully limited internal pilot.\n\nSUPPLIED FICTIONAL 40-WORD PROFILE: I design and review bounded AI assisted workflow examples. My fictional intake prototype includes visible gaps, human approval, test notes, and revision evidence. I explain AI support and personal decisions clearly. Live delivery, savings, and organizational permission remain unestablished here.\n\nTHREE SUPPLIED BULLETS: Designed a fictional intake prototype with visible missing-date handling. Checked complete input, missing date, and absent approval against retained tabletop records. Revised written status and human review instructions, with version and demonstration references.\n\nSPOKEN VERSION: I worked on a fictional intake example that keeps gaps and human approval visible. I used AI for drafting support, inspected the output, and kept test and correction notes. It explains a bounded design; it does not establish live results. I am choosing a permitted review step to build the missing evidence.",
+    "demonstration_steps": [
+      "Apply all four Truth Test questions and correct the inflated claim.",
+      "Use the verified inventory to create and inspect the four-format language set.",
+      "Compare current-setting, adjacent, and longer-term opportunities using all six map fields.",
+      "Choose a primary and backup with a named gap and realistic next step.",
+      "Define a thirty-day evidence-building action with permission, boundary, owner, and checkpoint."
+    ],
+    "question": "Why does a reviewed bounded prototype support a design contribution but not universal automation or an enterprise credential?"
+  },
+  "application": [
+    {
+      "minutes": 7,
+      "heading": "Draft and check the four formats",
+      "instruction": "Bring the reviewed artifact, demonstration, and inventory. Use the approved request with privacy-safe notes. Write a 75-word introduction, 40-word profile, three supported bullets, and short spoken version. Inspect AI wording and preserve your voice.",
+      "evidence": "Counted language set, verified inventory, Truth Test notes, and spoken rehearsal."
+    },
+    {
+      "minutes": 8,
+      "heading": "Compare three opportunities",
+      "instruction": "Map current-role/current-setting, adjacent, and longer-term options. Use opportunity, fit, evidence, gap, people, and next step for each; keep unknowns and permissions visible.",
+      "evidence": "Three-option Opportunity Map with meaningful evidence references."
+    },
+    {
+      "minutes": 6,
+      "heading": "Choose and define the thirty-day action",
+      "instruction": "Choose a primary and backup with reasons. Name the gap to address and one specific thirty-day evidence-building action with owner, needed permission, boundary, and checkpoint.",
+      "evidence": "Choices, named gap, bounded action, and backup condition."
+    },
+    {
+      "minutes": 4,
+      "heading": "Correct, explain, and save",
+      "instruction": "Correct an inflated claim with available evidence. Explain the selected gap in your own words. Save the language set, map, boundaries, next action, and references in the existing positioning section and workbook.",
+      "evidence": "Before/after claim, supported explanation, and saved positioning record."
+    }
+  ],
+  "approved_ai_request": "Create these four formats using only my verified inventory and evidence. Preserve my voice. Compare opportunities by fit, evidence, gaps, people and a realistic next step. Do not add credentials or guarantees. Inputs: [notes].",
+  "responsibility_map_fields": [
+    "Verified contribution and meaningful artifact/test references",
+    "Human judgment, actual AI support, and four Truth Test answers",
+    "Same supported truth across four formats",
+    "Opportunity, fit, evidence, gap, people, and next step",
+    "Primary, backup, boundaries, and unknown permissions",
+    "Thirty-day evidence-building action and checkpoint"
+  ],
+  "verification": [
+    {
+      "minutes": 4,
+      "heading": "Correct an inflated claim and explain the gap",
+      "prompt": "Correct an inflated professional claim using available evidence. Explain the gap you will address before pursuing the selected opportunity."
+    },
+    {
+      "minutes": 3,
+      "heading": "Apply the Truth Test to every format",
+      "prompt": "Can you demonstrate and explain each claim, support its wording, and provide evidence? Verify 75 and 40 words, three supported bullets, your voice, and honest limits."
+    },
+    {
+      "minutes": 3,
+      "heading": "Check the map and save the next step",
+      "prompt": "Confirm that all three opportunities have the six map fields and that the primary, backup, boundary, permission dependency, and thirty-day evidence checkpoint are realistic. Save in the existing positioning section."
+    }
+  ],
+  "completion_criteria": [
+    "Every material claim passes Demonstrate, Explain, Support wording, and Provide evidence.",
+    "The language set includes a 75-word introduction, 40-word profile, three evidence-based bullets, and a short own-voice spoken version.",
+    "Three opportunities cover current role/setting, adjacent contribution, and longer-term possibility with all six map fields.",
+    "The primary and backup choices have evidence-based reasons and a visible gap.",
+    "A specific thirty-day action names owner, permission, boundary, retained evidence, and checkpoint.",
+    "An inflated claim is corrected using available evidence and the selected gap is explained.",
+    "No credentials, clients, live outcomes, savings, income, employment, or permission are invented or guaranteed.",
+    "Language set, map, boundaries, next action, and meaningful references are saved in the existing positioning section."
+  ],
+  "handoff": "Carry the supported language set, Opportunity Map, boundaries, and thirty-day evidence-building action into Lesson 6.6 — Submit the Portfolio and Execution Plan. Keep verified work and proposed next steps distinct.",
+  "media_transcripts": {
+    "introduction": "Welcome to Journey Six, Lesson Five: Position the Work and Choose the Next Opportunity. Bring forward the capstone, evidence, and honest explanation you demonstrated in Lesson Four. Today, you will describe that work professionally and choose a realistic next step. Use the Truth Test: can you demonstrate the claim, explain it, support the wording, and provide evidence? A tested, bounded prototype may support a statement about designing and reviewing a workflow. It does not prove that you can automate any business, and it does not create a credential or guarantee a client, income, or employment. You will adapt the same supported truth into four formats: a seventy-five-word introduction, a forty-word profile, three evidence-based bullets, and a short spoken introduction in your own voice. Then use the Opportunity Map to compare a current-role opportunity, an adjacent opportunity, and a longer-term possibility. For each, identify the opportunity, fit, evidence, gap, people, and next step. Choose a primary opportunity and a backup, and define one specific thirty-day action that builds the evidence you still need. AI can help organize the language and comparison using only your verified inventory. You must inspect every claim, preserve your voice, and keep unknowns and permissions visible. Your completion check is to correct an inflated professional claim and explain the gap you will address before pursuing your chosen opportunity. Open the connected workbook and let us position your work with care.",
+    "chapters": [
+      "Bring forward the artifact, evidence, and demonstration from Lesson Six Point Four. You have explained what the project does, what you tested, what changed, and what remains limited. Today you will position that same work for a realistic opportunity. Positioning means describing a contribution clearly for an intended audience. It should make your capability understandable without inflating the result or inventing a professional identity.\n\nUse the Truth Test for every important claim: can you demonstrate it, explain it, support the wording, and provide evidence? Demonstrate means you can show the relevant work or behavior. Explain means you can account for the decisions, AI support, tests, and limits in your own words. Support the wording means the strength of the statement matches what the record establishes. Provide evidence means a reviewer can find a meaningful artifact, version, source, or check reference. A confident tone does not replace any of these four checks.\n\nOur supplied fictional case continues the reviewed intake prototype. Its retained tabletop records show complete input, a missing-date exception, absent approval, and a correction that made the human delivery gate more visible. That supports a statement about designing and reviewing a bounded workflow example. It does not establish that the author can automate any business, deliver enterprise consulting, improve a real customer's results, or claim a credential. The work has not established live customer delivery, measured savings, or real organizational permission.\n\nCompare an inflated claim with supported wording. I can automate any business and guarantee major savings asks the reader to believe things that the retained record cannot show. I designed and reviewed a fictional intake prototype with a visible human approval gate names the actual kind of work and its boundary. Add the relevant test and revision references. If your evidence is from a real permitted internal prototype, identify that setting accurately. Do not upgrade a fictional exercise into an operational result.\n\nBuild a verified inventory before drafting. List the artifact, current version, human decisions, AI assistance, tests, observed corrections, and honest limits. Add any actual credentials separately, with support; do not assume a course exercise awards one. Identify which material can be shown to the intended audience and which must remain private. A privacy-safe reference can support your explanation without exposing someone else's information.\n\nPause and choose one professional claim from your draft. Run all four Truth Test questions, correct the wording, and note the evidence that supports the correction. Keep a remaining gap visible. Your task is not to sound bigger than the work. It is to explain the contribution well enough that someone can understand what you can show and what still needs to be learned.",
+      "Use the same verified inventory to create four formats: a seventy-five-word introduction, a forty-word profile, three evidence-based bullets, and a short spoken version. Each format can emphasize what its audience needs, but the underlying facts must stay the same. Changing the length does not authorize a stronger claim. Your voice should remain recognizable: clear, direct, and comfortable enough that you can explain the wording aloud.\n\nThe introduction gives a fuller account of your contribution. Name the bounded artifact, what you did, how AI supported the work, the checks or revision that matter, and a relevant limit or next step. In seventy-five words, choose the most useful facts rather than compress every assignment into a long list. Count the words and inspect the result again. A shorter paragraph that changes the meaning is not an acceptable substitute for the supported truth.\n\nThe forty-word profile gives an intended reader a concise description. State the kind of work and the evidence-backed contribution. Keep the boundary where omitting it would mislead. Our supplied fictional profile describes a reviewed workflow example, visible gaps, human approval, test notes, and revision evidence. It says that live delivery, savings, and organizational permission remain unestablished. The same author does not become an enterprise consultant merely because the profile is brief.\n\nWrite three bullets with concrete actions and meaningful support. One supplied bullet says the author designed a fictional intake prototype that keeps missing dates visible. A second says the author checked complete input, a missing date, and absent approval against retained tabletop records. A third says the author revised the written status and review gate and explained AI drafting support and human decisions. These are supplied training claims. Your bullets must describe your own recorded actions. Do not add a measured improvement, credential, client, or employment result that is not established.\n\nNow write a short spoken version. Use the words you would say to a person asking what you worked on. Explain the contribution and its limit without reading a dense profile word for word. Rehearse it aloud, check that you can explain every claim, and note any wording that feels unfamiliar or too strong. Preserve your voice when accepting an AI revision. You remain responsible for what the audience is asked to believe.\n\nUse the approved request with your privacy-safe inventory and evidence. It asks AI to create the four formats and compare opportunities without adding credentials or guarantees. Inspect each suggested line with the Truth Test. Record what you accepted, changed, or rejected and why. Save the four-format language set as a draft for your intended context. This activity does not publish a profile, contact an employer, or promise an opportunity.",
+      "Use the Opportunity Map to compare a current-role opportunity, an adjacent opportunity, and a longer-term possibility. The map has six parts: opportunity, fit, evidence, gap, people, and next step. An opportunity is a specific contribution or use of capability you might pursue. Fit explains why it relates to your interests, responsibilities, and present ability. Evidence identifies the work you can show. Gap identifies what you still need to establish. People identifies who is affected or whose review, permission, collaboration, or support matters. Next step is a realistic action you can take.\n\nStart close to your current responsibilities or existing setting. You might seek permission to show a bounded prototype to the person responsible for an internal task. If you are not in an employed role, use your actual community, learning, or personal project setting. Do not invent a job or a manager to fill the map. The current-setting option can be a review conversation rather than a deployment. Its value is that it fits the work and people you actually know.\n\nAn adjacent opportunity is a nearby contribution that uses some of the same capability in a different task or setting. For the supplied fictional intake example, that might be a permitted review of a different request type using safe examples. The author can show the existing design, tests, and human gate. The new request type and affected people's needs have not been tested. The next step is to ask the relevant person what a suitable bounded review would require, not to advertise a proven operational service.\n\nA longer-term possibility may require substantially more evidence or experience. In the supplied case, broader workflow support across several teams is only a possibility. The current tabletop does not establish capability across those teams, enterprise credentials, implementation costs, or live reliability. The gap is larger and the people and permissions are less established. A realistic next step might be to identify the additional experience and evidence required. Do not confuse an interesting future direction with an opportunity you are ready to promise today.\n\nCompare all three options using the same questions. Which one best fits your verified work and actual setting? Which has a manageable gap? Who needs to be involved? What evidence would make the next decision better? You do not need invented rankings, income projections, or assurances of employment. If a relevant cost, permission, or role is unknown, record the unknown and the check needed to resolve it.\n\nChoose a primary opportunity and a backup. Explain the reason for both choices with evidence and boundaries. The backup should be a meaningful alternative if a permission or support dependency prevents the primary step. Keep the longer-term possibility visible without claiming readiness. Your choice is a human decision about a realistic next contribution, not an AI promise that a market or employer will accept you.",
+      "Turn the primary opportunity into one specific thirty-day evidence-building action. Evidence-building means producing or obtaining the work that helps close a named gap. An action should identify what you will do, the boundary and permission it needs, who owns the step, the evidence you will retain, and the point within thirty days when you will review what happened. It should remain feasible in your actual setting.\n\nFor the supplied fictional intake example, a bounded action is to seek a responsible person's permission for a safe internal review, then retain their questions and compare the prototype with the agreed requirement before the end of thirty days. If permission is not established, the author does not proceed with live customer inputs. The backup is a clearly labeled fictional review using permitted examples, with the unresolved organizational dependency retained. These are proposed teaching actions, not completed reviews, assigned roles, or promised outcomes.\n\nMatch the action to the gap you named. If the gap is untested handling of a new request type, a polished profile will not close it. A permitted test plan and retained observations may help. If the gap is an unknown audience need, a suitable review conversation may come first. If it is a missing permission, establish the permission before using the affected material. Define the evidence checkpoint rather than declare in advance that the gap will be resolved.\n\nApply the Truth Test to the entire language set and opportunity map. Check that the introduction has seventy-five words, the profile has forty words, the bullets make three supported claims, and the spoken version preserves the same truth. Count and revise without inventing a new fact to fill space. Inspect the AI contribution, human decisions, evidence references, credentials, and boundaries. Remove a guarantee of clients, income, employment, or business results unless the statement is replaced with the actual supported contribution.\n\nDo the applied completion check. Correct an inflated professional claim using available evidence. Explain the gap you will address before pursuing the selected opportunity. Show the before wording, the corrected wording, the support, and the remaining limit. Then point to the primary choice, backup, and thirty-day action. Answer in your own words so another person can see the relationship between what you can demonstrate now and what you propose to establish next.\n\nSave the four-format language set, Truth Test notes, three-option Opportunity Map, primary and backup decisions, boundaries, and next action in the existing positioning section of your Project Record. Complete the connected workbook. Carry this supported language and action into Lesson Six Point Six, where you will assemble the portfolio and execution plan. Keep completed evidence, proposed actions, and unresolved gaps distinct as you prepare that final submission."
+    ],
+    "demonstrations": [
+      "This is a supplied fictional intake prototype. The first claim says: I can automate any business and guarantee major savings. The retained tabletop evidence does not establish that. Apply the Truth Test: can the author demonstrate it, explain it, support the wording, and provide evidence? The available record shows a bounded design, three intake checks, a revision, and a visible human approval gate. Correct the claim to: I designed and reviewed a fictional intake prototype with visible gaps and human approval. Open the relevant version and test references. Live customer delivery, measured savings, enterprise credentials, and organizational permission remain unestablished. The corrected wording communicates a real training contribution without turning an ambition into a verified capability.",
+      "Use one verified inventory for the four formats. The supplied fictional author's seventy-five-word introduction names the intake prototype, AI drafting support, human inspection, retained checks, and the limit on live performance. The forty-word profile gives a concise account of the same work. Three bullets describe design, testing, and revision with evidence references. The spoken version explains the contribution in comfortable own words. Each format must pass the Truth Test. Count the introduction and profile, and keep exactly three supported bullets. Do not remove a limit when its omission would mislead, or add a credential to make the profile sound stronger. These are draft teaching examples. They are not published profiles, your completed work, or guarantees of an opportunity.",
+      "The Opportunity Map has six parts: opportunity, fit, evidence, gap, people, and next step. Compare three supplied fictional options. The current-setting option is to seek permitted internal review of the bounded intake prototype. The evidence fits, but the actual reviewer and permission must be established. The adjacent option is a review of another request type using safe examples; that type has not been tested. The longer-term possibility is broader workflow support, which needs much more experience and evidence. Choose a primary and a backup with reasons. A review conversation may be appropriate before a pilot. Do not present a fictional tabletop as an approved operational service, or treat AI's comparison as a promise of clients, income, or employment.",
+      "The supplied fictional primary option needs a responsible person's review and permission. The thirty-day action is to seek that permission, prepare safe review material, retain the questions, and compare the prototype with the agreed requirement by the end of thirty days. Identify the owner, needed permission, evidence checkpoint, and limit. If permission is not established, do not use live customer inputs. The backup is a clearly labeled fictional review using permitted examples, with the organizational gap still visible. This is a proposed action, not evidence of a completed review or a promised pilot. Save the language set, Truth Test, three-option map, choices, boundaries, and action in the existing positioning record. Explain the gap in your own words."
+    ]
+  },
+  "editorial_notes": {
+    "status": "Protected founder review; existing learner publication status remains draft.",
+    "media": "Same approved website recording in 1920×1080 landscape and saved Journey Six voice; four guided audio chapters and four captioned demonstrations.",
+    "source": "ACA_Phase_Two_Six_Week_Curriculum_Master.pdf v2.0, October 4, 2026, Journey Six Lesson 6.5, page 46.",
+    "example_data": "Supplied fictional prototype and proposed opportunity comparison. No learner credential, measurement, live outcome, permission, completed action, or guaranteed opportunity is invented."
+  }
+}

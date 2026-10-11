@@ -331,3 +331,39 @@ it('opens actual Journey Six Lesson Four, saves and reopens presentation notes, 
   view.unmount();render(<PhaseTwoWorkbook enrollmentId="existing" journey={6} initialLesson={4} onBack={back}/>);expect(await screen.findByDisplayValue('Reviewed presentation cues')).toBeTruthy()
   print.mockRestore()
 })
+
+it('opens actual Journey Six Lesson Five, saves and reopens positioning notes, preserves Lessons One through Four, locks future lessons, prints and returns',async()=>{
+  const first=(await import('../../../academy/phase-two-production/J6-L6-1-workbook-page.json')).default
+  const second=(await import('../../../academy/phase-two-production/J6-L6-2-workbook-page.json')).default
+  const third=(await import('../../../academy/phase-two-production/J6-L6-3-workbook-page.json')).default
+  const fourth=(await import('../../../academy/phase-two-production/J6-L6-4-workbook-page.json')).default
+  const fifth=(await import('../../../academy/phase-two-production/J6-L6-5-workbook-page.json')).default
+  const data=fixture([1,2,3,4,5]);data.workbook.key='journey-6';data.workbook.title='Journey Six Workbook'
+  data.workbook.pages=[first,second,third,fourth,fifth] as never
+  data.answers={p2_j6_l1_story:'Retained Lesson One story',p2_j6_l2_revision:'Retained Lesson Two correction',p2_j6_l3_statement:'Retained Lesson Three commitments',p2_j6_l4_cueSheet:'Retained Lesson Four cues',p2_j6_l5_action:'Saved bounded thirty-day action'} as never
+  let saved={...data.answers}
+  const rpc=vi.spyOn(supabase,'rpc').mockImplementation((async(name:string,args:any)=>{
+    if(name==='save_aca_phase_two_workbook'){
+      saved={...saved,...(args as {p_answers:Record<string,string>}).p_answers} as never
+      return {data:{...data,answers:saved,revision:1},error:null} as never
+    }
+    return {data:{...data,answers:saved},error:null} as never
+  }) as never)
+  const back=vi.fn(),print=vi.spyOn(window,'print').mockImplementation(()=>{})
+  const view=render(<PhaseTwoWorkbook enrollmentId="existing" journey={6} initialLesson={5} onBack={back}/>)
+  expect(await screen.findByDisplayValue('Saved bounded thirty-day action')).toBeTruthy()
+  const chooser=screen.getByLabelText('Choose a released lesson') as HTMLSelectElement
+  expect(chooser.value).toBe('5');expect([...chooser.options].slice(5).every(x=>x.disabled)).toBe(true)
+  fireEvent.change(screen.getByLabelText(/^Specific thirty-day action/),{target:{value:'Reviewed permission and evidence checkpoint'}})
+  fireEvent.click(screen.getByRole('button',{name:'Save'}))
+  await waitFor(()=>expect(rpc).toHaveBeenCalledWith('save_aca_phase_two_workbook',expect.objectContaining({p_journey:6,p_answers:expect.objectContaining({p2_j6_l5_action:'Reviewed permission and evidence checkpoint'})})))
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Retained Lesson Four cues')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Retained Lesson Three commitments')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Retained Lesson Two correction')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:/Previous lesson/}));expect(await screen.findByDisplayValue('Retained Lesson One story')).toBeTruthy()
+  fireEvent.change(chooser,{target:{value:'5'}});expect(await screen.findByDisplayValue('Reviewed permission and evidence checkpoint')).toBeTruthy()
+  fireEvent.click(screen.getByRole('button',{name:'Print / Save PDF'}));expect(print).toHaveBeenCalledOnce()
+  fireEvent.click(screen.getByRole('button',{name:/Back to Lesson 6.5/}));await waitFor(()=>expect(back).toHaveBeenCalledOnce())
+  view.unmount();render(<PhaseTwoWorkbook enrollmentId="existing" journey={6} initialLesson={5} onBack={back}/>);expect(await screen.findByDisplayValue('Reviewed permission and evidence checkpoint')).toBeTruthy()
+  print.mockRestore()
+})
