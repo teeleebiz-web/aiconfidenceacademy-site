@@ -1,0 +1,34 @@
+WEBVTT
+
+00:00:00.359 --> 00:00:03.234
+The fictional AI result contains a useful reminder
+
+00:00:03.368 --> 00:00:06.153
+draft and a claim that a participant received
+
+00:00:06.243 --> 00:00:08.623
+it. The evidence shows a draft and a
+
+00:00:08.668 --> 00:00:11.857
+hold state, with no independent receipt or participant
+
+00:00:11.902 --> 00:00:18.004
+confirmation. Use TRACE: task, role, artifacts, checks, explanation
+
+00:00:18.229 --> 00:00:21.822
+and accountability. Keep the checked wording as a
+
+00:00:21.867 --> 00:00:26.717
+simulated draft. Mark reception unverified, explain the consequence
+
+00:00:26.807 --> 00:00:29.367
+of assuming someone was informed, and name the
+
+00:00:29.413 --> 00:00:32.520
+reviewer and training owner. An AI confidence score
+
+00:00:32.699 --> 00:00:37.011
+cannot approve the claim. Retain sanitized references without
+
+00:00:37.280 --> 00:00:39.246
+publishing confidential details.

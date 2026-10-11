@@ -1,0 +1,57 @@
+{
+  "lesson": "5.5",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-5-5-Guided-Instruction.m4a",
+    "duration_seconds": 789.221,
+    "chapters": 4,
+    "bytes": 11134359
+  },
+  "demonstrations": [
+    {
+      "key": "trace",
+      "title": "Separate a draft from an unverified outcome",
+      "duration_seconds": 39.601,
+      "file": "ACA-Phase-Two-Lesson-5-5-trace.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-5-trace.vtt",
+      "bytes": 855802,
+      "sha256": "efb606352c8c1a60c2f283238968a9bf7f2f1c2da9a45b3af810e7d4c0adfed8",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "pause",
+      "title": "Choose the action using PAUSE",
+      "duration_seconds": 36.806,
+      "file": "ACA-Phase-Two-Lesson-5-5-pause.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-5-pause.vtt",
+      "bytes": 802675,
+      "sha256": "06adbf57651103255479932888a5e937ea7fb5afda6cd69328500d7e917d352d",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "notice",
+      "title": "Explain the actual AI role",
+      "duration_seconds": 35.004,
+      "file": "ACA-Phase-Two-Lesson-5-5-notice.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-5-notice.vtt",
+      "bytes": 757879,
+      "sha256": "a1a7e237c09a277bbd180006e8b8650a98d73b1001512e95cddc0956ac257394",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "decision",
+      "title": "Retain the decision and review trigger",
+      "duration_seconds": 39.758,
+      "file": "ACA-Phase-Two-Lesson-5-5-decision.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-5-decision.vtt",
+      "bytes": 860289,
+      "sha256": "4832f8f120456c5dd240024560ae459ebc0abf4d6e8ba574ce65943bced5adc8",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
