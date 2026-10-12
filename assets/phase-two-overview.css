@@ -1,7 +1,7 @@
 /* Phase Two overview uses the Academy's established navy, cream, and gold. */
 .phase-two-overview { scroll-margin-top: var(--aca-header-height, 86px); }
 .phase-two-overview [id] { scroll-margin-top: calc(var(--aca-header-height, 86px) + 24px); }
-.phase-two-overview > .phase-two-hero {
+main.phase-two-overview > .phase-two-hero {
   min-height: 0;
   padding-block: 52px;
   grid-template-columns: minmax(0, 1fr) 160px;
@@ -73,7 +73,7 @@
   .phase-two-overview .phase-two-example { grid-template-columns: 1fr; gap: 24px; }
 }
 @media (max-width: 650px) {
-  .phase-two-overview > .phase-two-hero { grid-template-columns: 1fr; padding-block: 36px; gap: 28px; }
+  main.phase-two-overview > .phase-two-hero { grid-template-columns: 1fr; padding-block: 36px; gap: 28px; }
   .phase-two-overview .phase-two-hero img { width: 130px; height: 130px; }
   .phase-two-overview .phase-two-section { padding-block: 44px; }
   .phase-two-overview .phase-two-project-grid,
