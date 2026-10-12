@@ -1,0 +1,488 @@
+-- Install only existing protected Lesson 2.6 and append its Journey Two workbook page.
+begin;
+do $install26$
+declare changed integer;
+begin
+ update public.lessons
+ set content=jsonb_set(content,'{phase_two_production}',$lesson26${
+  "production_version": "2.6-owner-review-2026-10-10",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "2.6",
+  "primary_media": "audio",
+  "title": "Test errors and exception paths",
+  "learner_promise": "Test the bounded working sample with normal and difficult inputs, correct and retest an observed failure, and assemble Journey Two evidence with tested behavior and retained human control.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Integration teaching and expected behavior",
+      "minutes": 10
+    },
+    {
+      "key": "worked_case",
+      "label": "Contradictory specifications and clarification",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Actual tests, correction and retesting",
+      "minutes": 30
+    },
+    {
+      "key": "verification",
+      "label": "Demonstration and Journey Two evidence review",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Define expected responses before observing normal, error and exception results.",
+    "Test missing information, conflicting specifications and an outside-scope request.",
+    "Inspect actual outputs for inaccurate or unsupported claims and record failed checks.",
+    "Correct an observed failure and retest the same input against the original expectation.",
+    "Compare baseline and revised work on clarity, usefulness, review effort and outcome quality.",
+    "Revise the future-state map and concept to reflect tested behavior.",
+    "Assemble communication, maps, concept, working artifact and test evidence in the continuing Project Record.",
+    "Demonstrate a corrected failure and explain the retained human control point."
+  ],
+  "teaching": [
+    {
+      "heading": "Write the expectation before the result",
+      "paragraphs": [
+        "Keep the prototype's authorized scope and saved artifact visible. An error is a result that fails a check; an exception needs a different route from the normal path. Define expected behavior before observing each test. Review any AI-generated case suggestions yourself; expected behavior and AI predictions are separate from actual test evidence.",
+        "Use four cases: the normal path, missing information, conflicting specifications and a request outside scope. For each, state the input, expected response, checks and human route. Keep the tests in a fictional or authorized environment with no unapproved customer action or consequential transaction."
+      ],
+      "think_prompt": "What words or behavior would show that each case met its expectation?"
+    },
+    {
+      "heading": "Run and inspect the actual cases",
+      "paragraphs": [
+        "Preserve the artifact version, exact request, input and actual output for each run. Check every important fact against the supplied input. Record met, not met or uncertain, with supporting words or behavior. Do not replace an inconvenient output with a predicted safe response.",
+        "In the fictional proposal example, missing participant count should remain a visible gap. Contradictory counts should be flagged and sent for clarification. A request to issue the proposal or confirm an unsupplied price stays outside the draft-only boundary. The proposal reviewer retains scope and price approval."
+      ],
+      "think_prompt": "Which finding comes from actual output, and which is only an expectation or prediction?"
+    },
+    {
+      "heading": "Correct and retest one observed failure",
+      "paragraphs": [
+        "Choose a failed criterion supported by preserved evidence. Make one material change to the reusable artifact or instructions. Preserve the earlier version. Retest the same failing input against the original expectation, then inspect the actual output. Recheck the normal path after a change that affects it.",
+        "If the initial cases pass, use an earlier recorded failure or extend authorized testing to find a real weakness. Do not invent failure evidence. Mark the corrected-failure completion item unfinished until demonstrated. Retain a failed or uncertain retest honestly and refer unresolved consequential defects to a named human owner."
+      ],
+      "think_prompt": "Did the same failing input meet the original expectation after correction, and does the useful normal path still work?"
+    },
+    {
+      "heading": "Integrate tested work and demonstrate",
+      "paragraphs": [
+        "Compare the baseline and revised work on clarity, usefulness, review effort and outcome quality. Use observed evidence rather than invented time or accuracy gains. Revise the future-state map and solution concept so tested behavior is distinguished from intended future steps.",
+        "Demonstrate the original failure, correction, same-input retest and retained human control. Assemble communication evidence, maps, concept, working artifact, test outputs and limitations in the continuing Project Record. Save one concise note about the most important correction and its evidence. Keep unresolved dependencies visible for the next journey."
+      ],
+      "think_prompt": "Can a reviewer trace the improvement claim from original input and output through correction and actual retest?"
+    }
+  ],
+  "worked_case": {
+    "label": "A proposal prototype receives contradictory participant counts",
+    "setup": "FICTIONAL TRAINING EXAMPLE: The saved prototype prepares a draft outline from supplied workshop specifications. One note states 12 participants and another states 20. The expectation is to flag both counts, request clarification and hold affected scope for the proposal reviewer. The before-and-after below is a scripted teaching illustration, not a live AI run or learner test result. Price and date remain unconfirmed; no proposal is issued.",
+    "evidence_table": [
+      {
+        "claim": "The later count can silently replace the earlier count.",
+        "evidence": "The supplied specifications conflict: 12 and 20. Neither note authorizes silently resolving the difference.",
+        "action": "Flag both counts and ask the proposal reviewer which is approved."
+      },
+      {
+        "claim": "The illustrated first output passes because it is clear.",
+        "evidence": "It says 'Workshop for 20 participants' and omits the conflicting count and clarification question.",
+        "action": "Record a failed conflict check and preserve the faulty output."
+      },
+      {
+        "claim": "A revised instruction proves the error is corrected.",
+        "evidence": "An instruction describes intended behavior. Correction is supported only by the actual rerun of the same failing input.",
+        "action": "Retest the unchanged conflicting brief against the original expectation and preserve the revised output."
+      },
+      {
+        "claim": "A corrected conflict case makes the sample deployment-ready.",
+        "evidence": "This is bounded test evidence. Other defects, review needs and dependencies may remain.",
+        "action": "Recheck normal usefulness, retain human approval and escalate unresolved consequential defects."
+      }
+    ],
+    "revised_example": "SCRIPTED FICTIONAL COMPARISON — Original input: Note A specifies 12 participants; Note B specifies 20. Expected response: flag both counts, ask which is correct and hold affected scope. Faulty illustrated output: 'Workshop for 20 participants' with no conflict noted. Material correction: require a conflict check, list both values and route clarification to the proposal reviewer. Revised illustrated output: 'Participant count unconfirmed: Note A says 12 and Note B says 20. Which count is approved? Hold affected scope pending the proposal reviewer's clarification. Price and date remain unconfirmed. Draft only.' Use your own actual output and retest as project evidence.",
+    "demonstration_steps": [
+      "Define expectations for four test paths",
+      "Inspect the contradiction and preserve the failure",
+      "Correct and retest the same failing input",
+      "Demonstrate, update maps and assemble Journey Two"
+    ],
+    "question": "What actual evidence shows that the conflicting count is handled correctly after revision, and who retains scope and price approval?"
+  },
+  "application": [
+    {
+      "heading": "Prepare and run the four cases",
+      "minutes": 12,
+      "instruction": "Continue the saved Lesson 2.5 artifact. Use your own AI assistant to suggest inputs, review the suggestions, and define expectations before running normal, missing-information, conflicting-specification and outside-scope cases. Preserve exact requests, inputs, actual outputs and check findings. Inspect factual support in every result.",
+      "evidence": "Four actual case records with expectations separated from observations."
+    },
+    {
+      "heading": "Correct and retest an observed failure",
+      "minutes": 10,
+      "instruction": "Select a supported failed check from this or earlier project testing. Preserve the faulty output. Lead a material correction, retest the same failing input against its original expectation, and recheck the normal path. If no actual failure has been corrected yet, retain that item as unfinished rather than inventing evidence.",
+      "evidence": "Original failure, revised artifact, actual same-input retest and normal-path recheck."
+    },
+    {
+      "heading": "Update the map, concept and integrated record",
+      "minutes": 8,
+      "instruction": "Compare baseline and revised work on clarity, usefulness, review effort and outcome quality. Revise the future-state map and solution concept to describe tested behavior, while marking proposed or unverified steps. Assemble communication, maps, concept, artifact and tests. Save the most important correction and unresolved dependencies.",
+      "evidence": "Updated tested-behavior map and concept, assembled Journey Two references and concise correction note."
+    }
+  ],
+  "approved_ai_request": "Suggest difficult but realistic test inputs for this bounded prototype. Include missing information, conflicting instructions and an out-of-scope request. State expected safe behavior for my review. Scope: [brief].",
+  "responsibility_map_fields": [
+    "Authorized scope and retained review/approval owner",
+    "Expected behavior recorded before actual result",
+    "Missing/conflicting information and human clarification route",
+    "Outside-scope action and stopped consequential step",
+    "Actual failed check, material correction and same-input retest",
+    "Tested versus intended future behavior",
+    "Unresolved defect consequence, named owner and next step"
+  ],
+  "verification": [
+    {
+      "heading": "Review actual test evidence",
+      "minutes": 3,
+      "prompt": "Check the four cases, factual support, original expectations, actual outputs and findings. Keep AI predictions separate. Compare baseline and revised work without inventing performance results."
+    },
+    {
+      "heading": "Demonstrate the corrected failure",
+      "minutes": 4,
+      "prompt": "Show the original failed result, material correction and actual retest of the same input. Explain the retained human control point. Support the improvement claim with evidence and keep an unresolved retest visible."
+    },
+    {
+      "heading": "Complete the Journey Two integration",
+      "minutes": 3,
+      "prompt": "Save communication evidence, maps, concept, accessible working artifact, tests, correction note and limits in the continuing record. Name the owner and next step for unresolved consequential defects. Resolve missing evidence before final submission."
+    }
+  ],
+  "completion_criteria": [
+    "Normal, missing-information, conflicting-specification and outside-scope cases actually run",
+    "Expected behavior defined before observing each result",
+    "Exact inputs/requests, actual outputs and evidence-backed findings retained",
+    "Outputs checked for inaccurate or unsupported claims",
+    "One actual failure corrected and retested with the same input and original expectation",
+    "Normal usefulness rechecked after correction",
+    "Baseline/revised clarity, usefulness, review effort and outcome quality compared with evidence",
+    "Future-state map and solution concept revised to describe tested behavior and distinguish proposed steps",
+    "Communication, maps, concept, working artifact and test evidence assembled without replacing earlier versions",
+    "Corrected failure demonstrated with retained human control and supported improvement claim",
+    "Unresolved consequential defects/dependencies escalated to a named owner; no deployment readiness inferred"
+  ],
+  "handoff": "Carry your assembled Journey Two project evidence into Journey Three: Lead People Through AI Adoption, beginning with Lesson 3.1: Understand the People Affected by Change. Resolve missing evidence before final submission, retain unresolved dependencies honestly, and continue the independent work described in the journey overview. The next lesson opens according to its release schedule.",
+  "editorial_notes": {
+    "status": "Founder-review draft; course, journey and lesson remain unpublished.",
+    "media": "Same approved landscape instructor and voice, four guided teaching chapters and four narrated fictional demonstrations. Founder playback acceptance remains separate.",
+    "source": "ACA_Phase_Two_Six_Week_Curriculum_Master.docx v2.0, October 4 2026, Lesson 2.6 and Journey Three prerequisite/handoff.",
+    "example_data": "Workshop specifications, faulty output, correction and retest are scripted fictional teaching illustrations. Learners preserve actual project runs separately; no account is connected or deployed."
+  }
+}$lesson26$::jsonb,true)
+ where id='63e2a62c-d546-4b0e-9baf-32f79aad29a3'
+ and course_id='3e4a092a-256f-4f09-ad1b-ce63b45319a7'
+ and journey_id='c6bdc7b0-ba8c-481d-9d89-9d18d71d19bc'
+ and page_id='2.6' and status='draft'
+ and content->'phase_two'->>'source_version'='2.0'
+ and not(content ? 'phase_two_production')
+ and md5(content::text)='fea984998be5b2782090fa827b571e15';
+ get diagnostics changed=row_count;
+ if changed<>1 then raise exception 'Lesson 2.6 target changed or production already exists'; end if;
+ update public.aca_phase_two_workbook_definitions
+ set content=jsonb_set(content,'{pages}',(content->'pages')||jsonb_build_array($workbook26${
+  "number": 6,
+  "lesson_id": "2.6",
+  "kicker": "JOURNEY TWO / LESSON 2.6",
+  "title": "Test Errors and Exception Paths",
+  "blocks": [
+    {
+      "type": "heading",
+      "text": "Write the expectation before the result"
+    },
+    {
+      "type": "text",
+      "text": "Keep the prototype's authorized scope and saved artifact visible. An error is a result that fails a check; an exception needs a different route from the normal path. Define expected behavior before observing each test. Review any AI-generated case suggestions yourself; expected behavior and AI predictions are separate from actual test evidence."
+    },
+    {
+      "type": "text",
+      "text": "Use four cases: the normal path, missing information, conflicting specifications and a request outside scope. For each, state the input, expected response, checks and human route. Keep the tests in a fictional or authorized environment with no unapproved customer action or consequential transaction."
+    },
+    {
+      "type": "heading",
+      "text": "Run and inspect the actual cases"
+    },
+    {
+      "type": "text",
+      "text": "Preserve the artifact version, exact request, input and actual output for each run. Check every important fact against the supplied input. Record met, not met or uncertain, with supporting words or behavior. Do not replace an inconvenient output with a predicted safe response."
+    },
+    {
+      "type": "text",
+      "text": "In the fictional proposal example, missing participant count should remain a visible gap. Contradictory counts should be flagged and sent for clarification. A request to issue the proposal or confirm an unsupplied price stays outside the draft-only boundary. The proposal reviewer retains scope and price approval."
+    },
+    {
+      "type": "heading",
+      "text": "Correct and retest one observed failure"
+    },
+    {
+      "type": "text",
+      "text": "Choose a failed criterion supported by preserved evidence. Make one material change to the reusable artifact or instructions. Preserve the earlier version. Retest the same failing input against the original expectation, then inspect the actual output. Recheck the normal path after a change that affects it."
+    },
+    {
+      "type": "text",
+      "text": "If the initial cases pass, use an earlier recorded failure or extend authorized testing to find a real weakness. Do not invent failure evidence. Mark the corrected-failure completion item unfinished until demonstrated. Retain a failed or uncertain retest honestly and refer unresolved consequential defects to a named human owner."
+    },
+    {
+      "type": "heading",
+      "text": "Integrate tested work and demonstrate"
+    },
+    {
+      "type": "text",
+      "text": "Compare the baseline and revised work on clarity, usefulness, review effort and outcome quality. Use observed evidence rather than invented time or accuracy gains. Revise the future-state map and solution concept so tested behavior is distinguished from intended future steps."
+    },
+    {
+      "type": "text",
+      "text": "Demonstrate the original failure, correction, same-input retest and retained human control. Assemble communication evidence, maps, concept, working artifact, test outputs and limitations in the continuing Project Record. Save one concise note about the most important correction and its evidence. Keep unresolved dependencies visible for the next journey."
+    },
+    {
+      "type": "heading",
+      "text": "A proposal prototype receives contradictory participant counts"
+    },
+    {
+      "type": "text",
+      "text": "FICTIONAL TRAINING EXAMPLE: The saved prototype prepares a draft outline from supplied workshop specifications. One note states 12 participants and another states 20. The expectation is to flag both counts, request clarification and hold affected scope for the proposal reviewer. The before-and-after below is a scripted teaching illustration, not a live AI run or learner test result. Price and date remain unconfirmed; no proposal is issued."
+    },
+    {
+      "type": "note",
+      "theme": "gold",
+      "title": "Fictional conflict and correction illustration",
+      "text": "SCRIPTED FICTIONAL COMPARISON — Original input: Note A specifies 12 participants; Note B specifies 20. Expected response: flag both counts, ask which is correct and hold affected scope. Faulty illustrated output: 'Workshop for 20 participants' with no conflict noted. Material correction: require a conflict check, list both values and route clarification to the proposal reviewer. Revised illustrated output: 'Participant count unconfirmed: Note A says 12 and Note B says 20. Which count is approved? Hold affected scope pending the proposal reviewer's clarification. Price and date remain unconfirmed. Draft only.' Use your own actual output and retest as project evidence."
+    },
+    {
+      "type": "heading",
+      "text": "Practice with your own AI assistant"
+    },
+    {
+      "type": "note",
+      "theme": "gold",
+      "title": "Approved test-design request",
+      "text": "Suggest difficult but realistic test inputs for this bounded prototype. Include missing information, conflicting instructions and an out-of-scope request. State expected safe behavior for my review. Scope: [brief]."
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-scope",
+      "label": "Continuing project scope, criteria and human review/approval owner",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-artifact",
+      "label": "Saved working artifact and version used for these tests",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-baseline",
+      "label": "Earlier baseline and normal-run evidence retained from Lesson 2.5",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-aiReview",
+      "label": "AI test suggestions reviewed — accepted, revised or rejected with reasons",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-normalInput",
+      "label": "Normal case — input and exact request used",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-normalExpected",
+      "label": "Normal case — expected behavior defined before the run",
+      "hint": "Define this before running the case.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-normalObserved",
+      "label": "Normal case — actual output, check result and supporting evidence",
+      "hint": "Preserve your actual output and evidence; do not use an AI prediction.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-missingInput",
+      "label": "Missing-information case — input and exact request used",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-missingExpected",
+      "label": "Missing-information case — expected behavior defined before the run",
+      "hint": "Define this before running the case.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-missingObserved",
+      "label": "Missing-information case — actual output, check result and supporting evidence",
+      "hint": "Preserve your actual output and evidence; do not use an AI prediction.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-conflictInput",
+      "label": "Conflicting-specification case — input and exact request used",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-conflictExpected",
+      "label": "Conflicting-specification case — expected behavior defined before the run",
+      "hint": "Define this before running the case.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-conflictObserved",
+      "label": "Conflicting-specification case — actual output, check result and supporting evidence",
+      "hint": "Preserve your actual output and evidence; do not use an AI prediction.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-outsideInput",
+      "label": "Outside-scope case — input and exact request used",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-outsideExpected",
+      "label": "Outside-scope case — expected behavior defined before the run",
+      "hint": "Define this before running the case.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-outsideObserved",
+      "label": "Outside-scope case — actual output, check result and supporting evidence",
+      "hint": "Preserve your actual output and evidence; do not use an AI prediction.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-failure",
+      "label": "Observed failure selected — case, failed criterion and original output evidence",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-correction",
+      "label": "Material correction and why it addresses the failure",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-revisedArtifact",
+      "label": "Revised working artifact — reusable text or accessible authorized reference",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-retest",
+      "label": "Retest — same failing input, original expectation, exact revised request and actual output",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-normalRetest",
+      "label": "Normal-path recheck after correction — actual input, request, output and finding",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-demonstration",
+      "label": "Corrected-failure demonstration and retained human control point",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-comparison",
+      "label": "Baseline versus revised work — clarity, usefulness, review effort and outcome quality",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-updatedMap",
+      "label": "Revised future-state map — tested behavior, proposed steps and human routes",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-updatedConcept",
+      "label": "Revised solution concept — tested scope, support, permissions and limits",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-assembly",
+      "label": "Assembled evidence — communication, maps, concept, working artifact and test references",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-decisionNote",
+      "label": "Most important correction and the actual evidence supporting it",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-limits",
+      "label": "Unresolved defects/dependencies — consequence, named owner and next step",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-6-notes",
+      "label": "Personal study notes and questions",
+      "hint": "",
+      "lines": 6
+    },
+    {
+      "type": "note",
+      "theme": "gold",
+      "title": "Carry the project into Journey Three",
+      "text": "Carry your assembled Journey Two project evidence into Journey Three: Lead People Through AI Adoption, beginning with Lesson 3.1: Understand the People Affected by Change. Resolve missing evidence before final submission, retain unresolved dependencies honestly, and continue the independent work described in the journey overview. The next lesson opens according to its release schedule."
+    }
+  ]
+}$workbook26$::jsonb),true),version=version+1,updated_at=now()
+ where journey_number=2 and version=5 and jsonb_array_length(content->'pages')=5
+ and md5((content->'pages')::text)='548216858d4282156ef156cb527dda5b'
+ and not exists(select 1 from jsonb_array_elements(content->'pages') p where p->>'lesson_id'='2.6');
+ get diagnostics changed=row_count;
+ if changed<>1 then raise exception 'Journey Two workbook changed or Lesson 2.6 page already exists'; end if;
+end $install26$;
+commit;

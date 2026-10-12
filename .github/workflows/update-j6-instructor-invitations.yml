@@ -1,0 +1,73 @@
+name: Update Journey Six instructor invitations
+on:
+  push:
+    branches: [phase-two-six-journey-owner-review]
+    paths: [.github/workflows/update-j6-instructor-invitations.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: github.event.head_commit.message == 'Update Journey Six instructor invitations and final thank you'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24, cache: npm}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install established application and media dependencies
+        run: |
+          npm ci
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1'
+      - name: Verify protected lesson source and build
+        run: npm run check
+      - name: Assemble only corrected instructor introductions
+        run: |
+          for n in 2 3 4 5 6; do
+            python "academy/phase-two-production/build-approved-j6${n}-video.py" "$RUNNER_TEMP/intro-$n"
+          done
+      - name: Replace only five introductions and protected review entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach "$RUNNER_TEMP/aca-official" origin/main
+          node academy/publish-phase-two-review.mjs "$GITHUB_WORKSPACE/learn" "$RUNNER_TEMP/aca-official"
+          cd "$RUNNER_TEMP/aca-official"
+          for n in 2 3 4 5 6; do
+            dest="assets/videos/phase-two-lesson-6-$n"
+            test -f "$dest/ACA-Phase-Two-Lesson-6-$n-Introduction-wide.mp4"
+            test -f "$dest/media-manifest.json"
+            cmp "$dest/poster-wide.webp" "$RUNNER_TEMP/intro-$n/poster-wide.webp"
+            cp "$RUNNER_TEMP/intro-$n/ACA-Phase-Two-Lesson-6-$n-Introduction-wide.mp4" "$dest/"
+            cp "$RUNNER_TEMP/intro-$n/media-manifest.json" "$dest/"
+            git add "$dest/ACA-Phase-Two-Lesson-6-$n-Introduction-wide.mp4" "$dest/media-manifest.json"
+          done
+          git add learn/index.html learn/assets/
+          git diff --cached --name-status
+          python - <<'PY'
+          import subprocess,re
+          lines=subprocess.check_output(['git','diff','--cached','--name-status'],text=True).splitlines()
+          expected={f'assets/videos/phase-two-lesson-6-{n}/{name}' for n in range(2,7) for name in [f'ACA-Phase-Two-Lesson-6-{n}-Introduction-wide.mp4','media-manifest.json']}
+          seen=set()
+          for line in lines:
+              status,path=line.split('\t')
+              if path in expected:
+                  assert status=='M',line
+                  seen.add(path)
+              elif path=='learn/index.html':
+                  assert status=='M',line
+              else:
+                  assert status=='A' and re.fullmatch(r'learn/assets/[A-Za-z0-9_.-]+\.(js|css)',path),line
+          assert seen==expected,(seen,expected)
+          assert any(line=='M\tlearn/index.html' for line in lines)
+          html=open('learn/index.html').read()
+          assert 'await import("/learn/assets/index-CADaM_JG.js");' in html
+          PY
+          git config user.name 'ACA official review builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Correct Journey Six instructor invitations and final warm thank you'
+          git push origin HEAD:main

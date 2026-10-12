@@ -78,7 +78,7 @@ describe('Dashboard', () => {
     expect(opened).toEqual(['intro-1'])
   })
 
-  it('labels unpublished material in protected owner review mode', () => {
+  it('uses learner language while offering full curriculum access', () => {
     render(
       <Dashboard
         enrollment={enrollment}
@@ -86,16 +86,17 @@ describe('Dashboard', () => {
         lessons={[{ ...lesson, status: 'draft' }]}
         progress={[]}
         introductions={[{ ...introduction, status: 'draft' }]}
-        learnerName="Owner"
+        learnerName="Terrence"
         reviewMode
         onOpenLesson={() => undefined}
         onOpenIntroduction={() => undefined}
       />,
     )
 
-    expect(screen.getByText(/protected owner review/i)).toBeTruthy()
-    expect(screen.getByText(/1 journeys · 1 lessons · 1 drafts/i)).toBeTruthy()
-    expect(screen.getAllByText(/draft/i).length).toBeGreaterThan(1)
+    expect(screen.queryByText(/protected owner review|unpublished draft|founder preview/i)).toBeNull()
+    expect(screen.getByText(/Explore each journey and its six lessons/i)).toBeTruthy()
+    expect(screen.getByRole('button', { name: /open lesson/i })).toBeTruthy()
+    expect(screen.getByRole('button', { name: /begin journey/i })).toBeTruthy()
   })
 
   it('shows a scheduled release without exposing a lesson row', () => {

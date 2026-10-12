@@ -1,0 +1,71 @@
+name: Replace approved Journey Six lesson audio with Alex Wright
+on:
+  push:
+    branches: [phase-two-six-journey-owner-review]
+    paths: [.github/workflows/replace-j6-audio-alex-wright.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: github.event.head_commit.message == 'Replace Lesson 6.1 teaching audio with Alex Wright'
+    runs-on: ubuntu-latest
+    env:
+      AUDIO_LESSONS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24, cache: npm}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install established dependencies
+        run: |
+          npm ci
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          python -m pip install 'Pillow==11.2.1'
+      - name: Check preserved curriculum and build
+        run: npm run check
+      - name: Assemble replacement audio and matching captions
+        run: |
+          for n in $AUDIO_LESSONS; do
+            python "academy/phase-two-production/build-j6${n}-guided-media.py" "$RUNNER_TEMP/audio-$n"
+          done
+      - name: Publish only completed audio lessons and player voice selection
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = 'd0a06957c4c700626c7648c027bed96cd14c0032'
+          git worktree add --detach "$RUNNER_TEMP/aca-official" origin/main
+          node academy/publish-phase-two-review.mjs "$GITHUB_WORKSPACE/learn" "$RUNNER_TEMP/aca-official" learner-cleanup
+          cd "$RUNNER_TEMP/aca-official"
+          for n in $AUDIO_LESSONS; do
+            dest="assets/videos/phase-two-lesson-6-$n"
+            cp "$RUNNER_TEMP/audio-$n/"*.m4a "$dest/"
+            cp "$RUNNER_TEMP/audio-$n/ACA-Phase-Two-Lesson-6-$n-"*.mp4 "$dest/"
+            cp "$RUNNER_TEMP/audio-$n/ACA-Phase-Two-Lesson-6-$n-"*.vtt "$dest/"
+            cp "$RUNNER_TEMP/audio-$n/guided-chapters.json" "$dest/"
+            cp "$RUNNER_TEMP/audio-$n/production-report.json" "$dest/"
+            git add "$dest"
+          done
+          git add learn/index.html learn/assets/
+          python - <<'PY'
+          import subprocess,re,os
+          lessons=os.environ['AUDIO_LESSONS'].split()
+          expected={f'assets/videos/phase-two-lesson-6-{n}/{name}' for n in lessons for name in ['guided-chapters.json','production-report.json',f'ACA-Phase-Two-Lesson-6-{n}-Guided-Instruction.m4a']}
+          seen=set()
+          for row in subprocess.check_output(['git','diff','--cached','--name-status'],text=True).splitlines():
+              status,path=row.split('\t')
+              if path=='learn/index.html':assert status=='M';continue
+              if path.startswith('learn/assets/'):assert status=='A' and re.fullmatch(r'learn/assets/[A-Za-z0-9_.-]+\.(js|css)',path);continue
+              assert status=='M' and any(path.startswith(f'assets/videos/phase-two-lesson-6-{n}/') for n in lessons),row
+              assert 'Introduction' not in path and 'poster' not in path and 'media-manifest' not in path,row
+              seen.add(path)
+          assert expected<=seen
+          assert len(seen)==11*len(lessons),(len(seen),lessons)
+          PY
+          git config user.name 'ACA audio publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Replace Lesson 6.1 guided and demonstration audio with Alex Wright'
+          git push origin HEAD:main

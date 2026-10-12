@@ -1,0 +1,60 @@
+{
+  "lesson": "2.5",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_chapters": [
+    {
+      "title": "Bound one complete working path",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=752bb65d-b698-47cd-a61e-cd671dbfbbba.wav",
+      "duration_seconds": 148.06204081632654,
+      "request_id": "NfnOYTMESuqa2FdSJXnt"
+    },
+    {
+      "title": "Baseline and use AI",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=4493d07c-e746-4a67-aa45-86f825f64427.wav",
+      "duration_seconds": 157.64897959183673,
+      "request_id": "gdrcO7buVvYCrsVSItzL"
+    },
+    {
+      "title": "Inspect and lead one material revision",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=324c9f2c-263e-4070-93fc-e10f540e9e12.wav",
+      "duration_seconds": 163.99673469387756,
+      "request_id": "jmyYNhw3sWRuQ6NMWtA9"
+    },
+    {
+      "title": "Demonstrate and save the working sample",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=b6607219-992a-4e5b-a61e-e37b5a7d31ef.wav",
+      "duration_seconds": 166.4,
+      "request_id": "wHCsoc90jYmuWa1z5HRQ"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-bound-path",
+      "title": "Define the narrow working path",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=bcbe31a3-eda9-4b04-8312-4e166dc6ef68.wav",
+      "duration_seconds": 17.31918367346939,
+      "request_id": "VIZwOydwLdCwnIB0yLCc"
+    },
+    {
+      "key": "02-use-sample",
+      "title": "Preserve the baseline and actual run",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=7762dfaf-b0b5-4304-816f-59ec4effab41.wav",
+      "duration_seconds": 16.248163265306122,
+      "request_id": "0cjhML3HpyYKwCd8LPql"
+    },
+    {
+      "key": "03-material-revision",
+      "title": "Lead a material revision",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=d67f043b-ffa3-433b-98ca-daccb3145576.wav",
+      "duration_seconds": 17.136326530612244,
+      "request_id": "cXs9OFhS7pRt3Z3UJibZ"
+    },
+    {
+      "key": "04-demonstrate-save",
+      "title": "Demonstrate and save the artifact",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=73a235e4-cccd-41e4-9458-89b2d3613200.wav",
+      "duration_seconds": 20.009795918367345,
+      "request_id": "2lmqucNpa6R3gHQmhY4Y"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_chapters": [
+    {
+      "title": "Choose the message and the action it must support",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=ada65ef1-ccca-469f-8028-a51c90c4203e.wav",
+      "duration_seconds": 143.80408163265307
+    },
+    {
+      "title": "Direct the draft with facts, limits, and your voice",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=44f27784-1d45-417a-ab82-363a38ab1743.wav",
+      "duration_seconds": 150.83102040816325
+    },
+    {
+      "title": "Adapt the communication without changing its meaning",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=bb32b685-4d23-4200-9e5b-9e80f274ffeb.wav",
+      "duration_seconds": 151.77142857142857
+    },
+    {
+      "title": "Check the recipient experience and preserve your evidence",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=abe8b403-6066-4267-bbab-91184d20fb15.wav",
+      "duration_seconds": 165.0416326530612
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "01-purpose",
+      "title": "Locate the missing next action",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=6040caad-8195-4970-a75d-efcf98f0dcc0.wav",
+      "duration_seconds": 18.416326530612245
+    },
+    {
+      "key": "02-request",
+      "title": "Give AI an accurate communication brief",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=7542ee63-4735-468f-b40d-44c6e3278f2a.wav",
+      "duration_seconds": 21.02857142857143
+    },
+    {
+      "key": "03-adapt",
+      "title": "Adapt the audience and keep the facts",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=27cbc4c5-beb4-4a22-9b81-349f12a33287.wav",
+      "duration_seconds": 19.304489795918368
+    },
+    {
+      "key": "04-check",
+      "title": "Check a summary and save the revision",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=f996e98c-9ec6-4cb8-80c8-fd5bfd0fd18d.wav",
+      "duration_seconds": 23.013877551020407
+    }
+  ]
+}

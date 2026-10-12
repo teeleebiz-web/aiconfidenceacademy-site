@@ -1,0 +1,59 @@
+.p2-walkthrough{color:#102d4f}
+.p2-walkthrough-warning{background:#fff8eb;border-left:4px solid #b48b48;padding:1rem 1.3rem;border-radius:10px;display:grid;gap:.35rem;margin-bottom:1.2rem}
+.p2-walkthrough-warning span,.p2-walkthrough-footnote{color:#516a7b;font-size:.85rem}
+.p2-walkthrough-hero{background:linear-gradient(120deg,#102d4f,#1d4b6c);color:white;padding:clamp(1.5rem,4vw,3rem);border-radius:22px}
+.p2-walkthrough-hero .eyebrow{color:#efd49b;font-size:.8rem}
+.p2-walkthrough-hero h2{font:700 clamp(2rem,4vw,3.1rem) Georgia,serif;margin:.5rem 0;max-width:780px}
+.p2-walkthrough-hero p{max-width:70ch;line-height:1.65}
+.p2-walkthrough-hero-meta{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+.p2-walkthrough-hero-meta span{border:1px solid #c5a56b;border-radius:25px;padding:.5rem .9rem;color:#f5ddae;font-size:.82rem}
+.p2-walkthrough-tabs{display:flex;gap:.7rem;margin:1.3rem 0}
+.p2-walkthrough-tabs button{padding:.8rem 1.15rem;border:1px solid #bba57e;border-radius:10px;background:#fff;color:#123b58;font-weight:750}
+.p2-walkthrough-tabs button[aria-pressed=true]{background:#123b58;color:white}
+.p2-walkthrough-journeys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin-bottom:1.4rem}
+.p2-walkthrough-journeys button{display:grid;text-align:left;gap:.4rem;align-content:start;min-height:92px;border:1px solid #ddcdb4;border-radius:12px;padding:1rem;background:white;color:#123b58}
+.p2-walkthrough-journeys button small{color:#99783f;font-weight:750}
+.p2-walkthrough-journeys button span{font-weight:750;line-height:1.4}
+.p2-walkthrough-journeys button[aria-pressed=true]{background:#183e5e;border-color:#b68d4e;color:white}
+.p2-walkthrough-journeys button[aria-pressed=true] small{color:#ead09a}
+.p2-walkthrough-journey{display:flex;gap:2rem;justify-content:space-between;border:1px solid #ddceb5;border-radius:18px;background:#fffdf8;padding:1.7rem;margin-bottom:1.4rem}
+.p2-walkthrough-journey>div:first-child{max-width:74ch}
+.p2-walkthrough-journey h3{font:700 1.8rem Georgia,serif}
+.p2-walkthrough-journey p{line-height:1.65}
+.p2-walkthrough-media-balance{display:grid;gap:.5rem;background:#f3e9d9;padding:1rem;min-width:170px;border-radius:12px}
+.p2-walkthrough-media-balance small{font-size:.77rem;color:#65717b}
+.p2-walkthrough-content{display:grid;grid-template-columns:minmax(210px,290px) minmax(0,1fr);gap:1.3rem;align-items:start}
+.p2-walkthrough-lesson-list,.p2-walkthrough-lesson,.p2-walkthrough-project{background:#fff;border:1px solid #dfd1bf;border-radius:18px;overflow:hidden}
+.p2-walkthrough-lesson-list{display:grid;gap:.5rem;padding:1rem}
+.p2-walkthrough-lesson-list h4{font:700 1.3rem Georgia,serif;margin:.3rem}
+.p2-walkthrough-lesson-list button{display:grid;gap:.3rem;text-align:left;background:#f8f4ed;border:1px solid transparent;border-radius:10px;padding:.85rem;color:#123b58}
+.p2-walkthrough-lesson-list button[aria-current=page]{background:#ecdfc9;border-color:#bd985f}
+.p2-walkthrough-lesson-list button small{font-size:.73rem;color:#967239}
+.p2-walkthrough-lesson>header{background:#102d4f;color:white;padding:clamp(1.4rem,3vw,2.5rem)}
+.p2-walkthrough-lesson>header h3{font:700 clamp(1.6rem,3vw,2.2rem) Georgia,serif}
+.p2-walkthrough-media-placeholder{margin:1.4rem;padding:1.2rem;border:1px dashed #b89558;background:#fbf5e9;border-radius:12px;display:flex;align-items:center;gap:1rem}
+.p2-walkthrough-media-placeholder>span{display:grid;place-items:center;flex:none;width:60px;height:60px;background:#173e60;border-radius:12px;color:#e7c78b;font-size:1.7rem}
+.p2-walkthrough-rhythm{margin:0 1.4rem 1rem;background:#f8f4ee;border:1px solid #eadfce;padding:1rem;border-radius:12px}
+.p2-walkthrough-rhythm h4{margin:.2rem 0 .9rem}
+.p2-walkthrough-rhythm>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem}
+.p2-walkthrough-rhythm span{display:grid;gap:.2rem;background:white;border:1px solid #e7dcc9;border-radius:8px;padding:.7rem;font-size:.8rem}
+.p2-walkthrough-rhythm strong{color:#98753e}
+.p2-walkthrough-instruction{padding:0 clamp(1.35rem,3vw,2.2rem)}
+.p2-walkthrough-instruction>section{border-top:1px solid #e9e0d3;padding:1.4rem 0}
+.p2-walkthrough-instruction>section>small{color:#a17d43;font-weight:800}
+.p2-walkthrough-instruction h4{font:700 1.35rem Georgia,serif;margin:.4rem 0 .7rem}
+.p2-walkthrough-instruction p{line-height:1.75}
+.p2-walkthrough-prompt{background:#f8f2e8;border-left:4px solid #b89053;border-radius:0 10px 10px 0;padding:1rem}
+.p2-walkthrough-prompt button,.p2-walkthrough-lesson-footer button{background:#123c5e;color:white;border:0;border-radius:8px;padding:.72rem 1rem;font-weight:750}
+.p2-walkthrough-lesson-footer{padding:1.3rem 1.6rem;background:#f6efe2;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.p2-walkthrough-lesson-footer p{font-size:.85rem;max-width:58ch}
+.p2-walkthrough-project{padding:clamp(1.4rem,3vw,2.5rem)}
+.p2-walkthrough-project h3{font:700 2rem Georgia,serif}
+.p2-walkthrough-paths,.p2-walkthrough-evidence{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.p2-walkthrough-paths div,.p2-walkthrough-evidence li{padding:1rem;border:1px solid #e4d5be;background:#faf6ef;border-radius:10px;display:grid;gap:.45rem}
+.p2-walkthrough-evidence{list-style:none;padding:0}
+.p2-walkthrough-evidence small{font-size:.8rem;color:#8b6f42}
+.p2-walkthrough button:focus-visible{outline:3px solid #aa864d;outline-offset:3px}
+@media(max-width:900px){.p2-walkthrough-content{grid-template-columns:1fr}.p2-walkthrough-lesson-list{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-walkthrough-lesson-list h4{grid-column:1/-1}}
+@media(max-width:650px){.p2-walkthrough-journeys{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-walkthrough-journey,.p2-walkthrough-lesson-footer{flex-direction:column}.p2-walkthrough-paths,.p2-walkthrough-evidence{grid-template-columns:1fr}}
+@media(max-width:460px){.p2-walkthrough-journeys,.p2-walkthrough-lesson-list{grid-template-columns:1fr}.p2-walkthrough-rhythm>div{grid-template-columns:repeat(2,minmax(0,1fr))}}

@@ -26,16 +26,9 @@ export function JourneyIntroductionView({
 
   return (
     <main className="lesson-main introduction-main">
-      {!singleVideo ? <button className="back-link" type="button" onClick={onBack}>
+      <button className="back-link" type="button" onClick={onBack}>
         ← Back to learning home
-      </button> : null}
-
-      {!singleVideo && introduction.status === 'draft' ? (
-        <aside className="lesson-review-banner" aria-label="Owner review notice">
-          <strong>Owner review · Unpublished journey welcome</strong>
-          <span>This draft is visible only through protected review access.</span>
-        </aside>
-      ) : null}
+      </button>
 
       <article className={`introduction-article${singleVideo ? ' single-video-introduction' : ''}`}>
         <header className={singleVideo ? 'lesson-hero' : 'introduction-hero'}>

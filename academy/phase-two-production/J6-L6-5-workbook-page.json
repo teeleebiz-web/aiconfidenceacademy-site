@@ -1,0 +1,168 @@
+{
+  "number": 5,
+  "lesson_id": "6.5",
+  "title": "Position the Work and Choose the Next Opportunity",
+  "blocks": [
+    {
+      "type": "note",
+      "title": "Position the same verified work",
+      "text": "Use the Truth Test: demonstrate, explain, support wording, and provide evidence. Create the four formats without changing the supported truth. Map three opportunities, choose primary and backup, and define one thirty-day evidence-building action."
+    },
+    {
+      "type": "text",
+      "text": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake prototype has retained tabletop checks for complete input, a missing date, and absent approval, plus revision and demonstration evidence. It supports describing a bounded design and review contribution. It does not establish enterprise consulting, universal automation, live customer delivery, savings, actual organizational permission, a credential, or a guaranteed opportunity. The example compares proposed current-setting, adjacent, and longer-term options; review roles and permission still need to be established."
+    },
+    {
+      "type": "text",
+      "text": "Supplied fictional 75-word introduction: I designed and reviewed a fictional intake prototype that makes missing information and human approval visible. I used AI to help draft explanations and suggest checks, then inspected the outputs, corrected unsupported claims, and retained test notes. My demonstration shows a normal request and a review exception. This work supports a bounded design example, not live business performance. My next step is to seek permitted review and build evidence for a carefully limited internal pilot."
+    },
+    {
+      "type": "text",
+      "text": "Supplied fictional 40-word profile: I design and review bounded AI assisted workflow examples. My fictional intake prototype includes visible gaps, human approval, test notes, and revision evidence. I explain AI support and personal decisions clearly. Live delivery, savings, and organizational permission remain unestablished here."
+    },
+    {
+      "type": "heading",
+      "text": "Open the verified inventory"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_projectContext",
+      "label": "Continuing project, current version, intended audience, and safe references",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_inventory",
+      "label": "Verified inventory: artifact, human decisions, AI assistance, tests, revisions, and limits",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Draft four formats and apply the Truth Test"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_introduction",
+      "label": "75-word professional introduction using only supported truth",
+      "hint": "Count exactly 75 words; keep the supported setting, contribution, and limit.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_profile",
+      "label": "40-word profile with the same contribution and relevant limit",
+      "hint": "Count exactly 40 words; preserve the same truth and your voice.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_bullets",
+      "label": "Three evidence-based bullets — one supported bullet per line",
+      "hint": "Write exactly three nonempty lines, one evidence-based bullet per line.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_spoken",
+      "label": "Short spoken introduction in your own voice and actual rehearsal observation",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_truthTest",
+      "label": "Truth Test for claims: demonstrate, explain, support wording, and provide evidence",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Compare three opportunities"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_currentRole",
+      "label": "Current-role or current-setting map: opportunity, fit, evidence, gap, people, next step",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_adjacent",
+      "label": "Adjacent-opportunity map: opportunity, fit, evidence, gap, people, next step",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_longerTerm",
+      "label": "Longer-term possibility map: opportunity, fit, evidence, gap, people, next step",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 6
+    },
+    {
+      "type": "heading",
+      "text": "Choose and define the evidence-building action"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_choice",
+      "label": "Primary opportunity, meaningful backup, and reasons for both",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_gap",
+      "label": "Gap to address before pursuing the selected opportunity",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_action",
+      "label": "Specific thirty-day action: owner, permission, boundary, evidence, and checkpoint",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_boundaries",
+      "label": "Boundaries, unknowns, and backup condition if permission or support is unavailable",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_aiReview",
+      "label": "AI wording inspected: accepted, changed, or rejected with reasons",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "heading",
+      "text": "Correct, explain, and save"
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_claimCorrection",
+      "label": "Inflated claim, evidence-based correction, and own explanation of the gap",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 6
+    },
+    {
+      "type": "field",
+      "id": "p2_j6_l5_evidenceIndex",
+      "label": "Saved language set, Opportunity Map, boundaries, next action, and evidence references",
+      "hint": "Use your actual evidence and setting. Keep proposed actions, untested capability, costs, permissions, and credentials distinct from established work.",
+      "lines": 4
+    },
+    {
+      "type": "note",
+      "title": "Applied completion check",
+      "text": "Correct an inflated professional claim using available evidence. Explain the gap you will address before pursuing the selected opportunity."
+    }
+  ]
+}

@@ -1,0 +1,1992 @@
+{
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "guided_chapters": [
+    {
+      "title": "Assemble the portfolio from retained evidence",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=66cfc5dc-c3bd-48a9-b28b-bce110b6fd37.wav",
+      "duration_seconds": 187.97714285714287,
+      "request_id": "0TCkrmUQQTTlxMPIenLK"
+    },
+    {
+      "title": "Review ownership, gaps, and the final demonstration",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=84afb0be-d6f3-47b4-a84b-f58447ceb6cd.wav",
+      "duration_seconds": 194.01142857142858,
+      "request_id": "PaBdYiZOuQWZEkr96JTQ"
+    },
+    {
+      "title": "Plan thirty, sixty, and ninety days with evidence checkpoints",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=99a5b0c7-edad-4ffd-9473-95ff4467488c.wav",
+      "duration_seconds": 201.19510204081632,
+      "request_id": "B4dSiGCCOCgipbna2sWi"
+    },
+    {
+      "title": "Submit the checked package and continue responsibly",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=27df56bc-c071-4d46-a731-8af40cc9e566.wav",
+      "duration_seconds": 197.30285714285714,
+      "request_id": "ow5WAubvyjCMpSNFQ98Z"
+    }
+  ],
+  "demonstrations": [
+    {
+      "key": "index",
+      "title": "Assemble the required portfolio evidence",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=5889faa5-7cf4-4750-b06f-cdb047e73548.wav",
+      "duration_seconds": 36.54530612244898,
+      "request_id": "33zXbObkRAwqVmaf7ysR",
+      "word_timestamps": [
+        {
+          "word": "This",
+          "start": 0,
+          "end": 0.209
+        },
+        {
+          "word": "supplied",
+          "start": 0.255,
+          "end": 0.697
+        },
+        {
+          "word": "fictional",
+          "start": 0.755,
+          "end": 1.149
+        },
+        {
+          "word": "example",
+          "start": 1.207,
+          "end": 1.66
+        },
+        {
+          "word": "uses",
+          "start": 1.73,
+          "end": 2.078
+        },
+        {
+          "word": "the",
+          "start": 2.136,
+          "end": 2.218
+        },
+        {
+          "word": "existing",
+          "start": 2.287,
+          "end": 2.798
+        },
+        {
+          "word": "intake",
+          "start": 2.868,
+          "end": 3.251
+        },
+        {
+          "word": "tabletop",
+          "start": 3.274,
+          "end": 3.82
+        },
+        {
+          "word": "and",
+          "start": 3.889,
+          "end": 3.982
+        },
+        {
+          "word": "retained",
+          "start": 4.04,
+          "end": 4.412
+        },
+        {
+          "word": "files.",
+          "start": 4.458,
+          "end": 4.934
+        },
+        {
+          "word": "The",
+          "start": 5.596,
+          "end": 5.7
+        },
+        {
+          "word": "portfolio",
+          "start": 5.747,
+          "end": 6.339
+        },
+        {
+          "word": "index",
+          "start": 6.42,
+          "end": 6.815
+        },
+        {
+          "word": "identifies",
+          "start": 6.885,
+          "end": 7.454
+        },
+        {
+          "word": "six",
+          "start": 7.512,
+          "end": 7.721
+        },
+        {
+          "word": "journey",
+          "start": 7.79,
+          "end": 8.022
+        },
+        {
+          "word": "results",
+          "start": 8.081,
+          "end": 8.522
+        },
+        {
+          "word": "and",
+          "start": 8.568,
+          "end": 8.719
+        },
+        {
+          "word": "the",
+          "start": 8.766,
+          "end": 8.835
+        },
+        {
+          "word": "final",
+          "start": 8.882,
+          "end": 9.183
+        },
+        {
+          "word": "artifact,",
+          "start": 9.23,
+          "end": 9.81
+        },
+        {
+          "word": "tests,",
+          "start": 10.275,
+          "end": 10.786
+        },
+        {
+          "word": "revision,",
+          "start": 11.041,
+          "end": 11.575
+        },
+        {
+          "word": "demonstration,",
+          "start": 11.796,
+          "end": 12.562
+        },
+        {
+          "word": "responsible",
+          "start": 12.934,
+          "end": 13.502
+        },
+        {
+          "word": "statement,",
+          "start": 13.537,
+          "end": 14.025
+        },
+        {
+          "word": "positioning",
+          "start": 14.373,
+          "end": 14.895
+        },
+        {
+          "word": "set,",
+          "start": 14.953,
+          "end": 15.244
+        },
+        {
+          "word": "and",
+          "start": 15.534,
+          "end": 15.697000000000001
+        },
+        {
+          "word": "continuation",
+          "start": 15.743,
+          "end": 16.474
+        },
+        {
+          "word": "plan.",
+          "start": 16.532,
+          "end": 16.904
+        },
+        {
+          "word": "Each",
+          "start": 17.577,
+          "end": 17.786
+        },
+        {
+          "word": "entry",
+          "start": 17.844,
+          "end": 18.111
+        },
+        {
+          "word": "points",
+          "start": 18.181,
+          "end": 18.471
+        },
+        {
+          "word": "to",
+          "start": 18.518,
+          "end": 18.611
+        },
+        {
+          "word": "a",
+          "start": 18.704,
+          "end": 18.727
+        },
+        {
+          "word": "meaningful",
+          "start": 18.796,
+          "end": 19.226
+        },
+        {
+          "word": "version",
+          "start": 19.284,
+          "end": 19.679000000000002
+        },
+        {
+          "word": "and",
+          "start": 19.772,
+          "end": 19.981
+        },
+        {
+          "word": "evidence",
+          "start": 20.05,
+          "end": 20.445
+        },
+        {
+          "word": "reference.",
+          "start": 20.48,
+          "end": 21.014
+        },
+        {
+          "word": "The",
+          "start": 21.571,
+          "end": 21.687
+        },
+        {
+          "word": "missing",
+          "start": 21.757,
+          "end": 22.059
+        },
+        {
+          "word": "pilot",
+          "start": 22.117,
+          "end": 22.454
+        },
+        {
+          "word": "permission",
+          "start": 22.5,
+          "end": 22.918
+        },
+        {
+          "word": "stays",
+          "start": 22.964,
+          "end": 23.231
+        },
+        {
+          "word": "pending.",
+          "start": 23.289,
+          "end": 23.707
+        },
+        {
+          "word": "The",
+          "start": 24.424,
+          "end": 24.587
+        },
+        {
+          "word": "author",
+          "start": 24.645,
+          "end": 24.887999999999998
+        },
+        {
+          "word": "does",
+          "start": 24.935,
+          "end": 25.086
+        },
+        {
+          "word": "not",
+          "start": 25.131999999999998,
+          "end": 25.259999999999998
+        },
+        {
+          "word": "create",
+          "start": 25.317999999999998,
+          "end": 25.655
+        },
+        {
+          "word": "extra",
+          "start": 25.701,
+          "end": 26.015
+        },
+        {
+          "word": "versions",
+          "start": 26.073,
+          "end": 26.467
+        },
+        {
+          "word": "of",
+          "start": 26.502,
+          "end": 26.572
+        },
+        {
+          "word": "completed",
+          "start": 26.63,
+          "end": 27.058999999999997
+        },
+        {
+          "word": "assignments",
+          "start": 27.094,
+          "end": 27.663
+        },
+        {
+          "word": "or",
+          "start": 27.721,
+          "end": 27.837
+        },
+        {
+          "word": "describe",
+          "start": 27.884,
+          "end": 28.279
+        },
+        {
+          "word": "fictional",
+          "start": 28.313,
+          "end": 28.673
+        },
+        {
+          "word": "tests",
+          "start": 28.72,
+          "end": 29.022
+        },
+        {
+          "word": "as",
+          "start": 29.067999999999998,
+          "end": 29.183999999999997
+        },
+        {
+          "word": "live",
+          "start": 29.265,
+          "end": 29.497999999999998
+        },
+        {
+          "word": "delivery.",
+          "start": 29.521,
+          "end": 30.043
+        },
+        {
+          "word": "Your",
+          "start": 30.762999999999998,
+          "end": 30.936999999999998
+        },
+        {
+          "word": "index",
+          "start": 31.006999999999998,
+          "end": 31.355
+        },
+        {
+          "word": "must",
+          "start": 31.413,
+          "end": 31.587
+        },
+        {
+          "word": "point",
+          "start": 31.634,
+          "end": 31.854
+        },
+        {
+          "word": "to",
+          "start": 31.889,
+          "end": 31.936
+        },
+        {
+          "word": "your",
+          "start": 31.994,
+          "end": 32.11
+        },
+        {
+          "word": "actual",
+          "start": 32.168,
+          "end": 32.47
+        },
+        {
+          "word": "retained",
+          "start": 32.539,
+          "end": 32.946
+        },
+        {
+          "word": "work.",
+          "start": 32.992,
+          "end": 33.294
+        },
+        {
+          "word": "A",
+          "start": 33.863,
+          "end": 33.933
+        },
+        {
+          "word": "polished",
+          "start": 34.013999999999996,
+          "end": 34.385
+        },
+        {
+          "word": "list",
+          "start": 34.42,
+          "end": 34.629
+        },
+        {
+          "word": "does",
+          "start": 34.676,
+          "end": 34.827
+        },
+        {
+          "word": "not",
+          "start": 34.873,
+          "end": 35.001
+        },
+        {
+          "word": "replace",
+          "start": 35.059,
+          "end": 35.43
+        },
+        {
+          "word": "missing",
+          "start": 35.477000000000004,
+          "end": 35.732
+        },
+        {
+          "word": "evidence.",
+          "start": 35.79,
+          "end": 36.301
+        }
+      ]
+    },
+    {
+      "key": "review",
+      "title": "Show growth and answer review questions",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=db65e0fe-a6fe-4e34-9c1e-9dd8834c3237.wav",
+      "duration_seconds": 37.773061224489794,
+      "request_id": "3xudByLcztv7LuDarQ8C",
+      "word_timestamps": [
+        {
+          "word": "In",
+          "start": 0,
+          "end": 0.128
+        },
+        {
+          "word": "the",
+          "start": 0.163,
+          "end": 0.232
+        },
+        {
+          "word": "supplied",
+          "start": 0.267,
+          "end": 0.731
+        },
+        {
+          "word": "fictional",
+          "start": 0.801,
+          "end": 1.173
+        },
+        {
+          "word": "intake",
+          "start": 1.231,
+          "end": 1.602
+        },
+        {
+          "word": "example,",
+          "start": 1.637,
+          "end": 2.322
+        },
+        {
+          "word": "the",
+          "start": 2.543,
+          "end": 2.659
+        },
+        {
+          "word": "original",
+          "start": 2.717,
+          "end": 3.1
+        },
+        {
+          "word": "design",
+          "start": 3.158,
+          "end": 3.564
+        },
+        {
+          "word": "treated",
+          "start": 3.599,
+          "end": 3.901
+        },
+        {
+          "word": "complete",
+          "start": 3.947,
+          "end": 4.331
+        },
+        {
+          "word": "information",
+          "start": 4.377,
+          "end": 4.934
+        },
+        {
+          "word": "as",
+          "start": 4.992,
+          "end": 5.097
+        },
+        {
+          "word": "permission",
+          "start": 5.178,
+          "end": 5.631
+        },
+        {
+          "word": "to",
+          "start": 5.689,
+          "end": 5.759
+        },
+        {
+          "word": "deliver.",
+          "start": 5.828,
+          "end": 6.258
+        },
+        {
+          "word": "The",
+          "start": 7.082,
+          "end": 7.198
+        },
+        {
+          "word": "revision",
+          "start": 7.268,
+          "end": 7.663
+        },
+        {
+          "word": "separates",
+          "start": 7.721,
+          "end": 8.22
+        },
+        {
+          "word": "the",
+          "start": 8.255,
+          "end": 8.324
+        },
+        {
+          "word": "human",
+          "start": 8.382,
+          "end": 8.649
+        },
+        {
+          "word": "approval",
+          "start": 8.673,
+          "end": 9.067
+        },
+        {
+          "word": "gate",
+          "start": 9.114,
+          "end": 9.381
+        },
+        {
+          "word": "and",
+          "start": 9.416,
+          "end": 9.543
+        },
+        {
+          "word": "shows",
+          "start": 9.613,
+          "end": 9.961
+        },
+        {
+          "word": "an",
+          "start": 10.031,
+          "end": 10.112
+        },
+        {
+          "word": "explicit",
+          "start": 10.159,
+          "end": 10.623
+        },
+        {
+          "word": "hold",
+          "start": 10.67,
+          "end": 10.89
+        },
+        {
+          "word": "state.",
+          "start": 10.937,
+          "end": 11.401
+        },
+        {
+          "word": "The",
+          "start": 11.9,
+          "end": 12.016
+        },
+        {
+          "word": "reflection",
+          "start": 12.086,
+          "end": 12.539
+        },
+        {
+          "word": "cites",
+          "start": 12.62,
+          "end": 12.945
+        },
+        {
+          "word": "that",
+          "start": 12.992,
+          "end": 13.131
+        },
+        {
+          "word": "changed",
+          "start": 13.177,
+          "end": 13.526
+        },
+        {
+          "word": "decision",
+          "start": 13.56,
+          "end": 14.094
+        },
+        {
+          "word": "and",
+          "start": 14.164,
+          "end": 14.315
+        },
+        {
+          "word": "the",
+          "start": 14.361,
+          "end": 14.431000000000001
+        },
+        {
+          "word": "retained",
+          "start": 14.489,
+          "end": 14.907
+        },
+        {
+          "word": "tabletop",
+          "start": 14.942,
+          "end": 15.511
+        },
+        {
+          "word": "retest.",
+          "start": 15.604,
+          "end": 16.219
+        },
+        {
+          "word": "It",
+          "start": 16.753,
+          "end": 16.881
+        },
+        {
+          "word": "does",
+          "start": 16.927,
+          "end": 17.078
+        },
+        {
+          "word": "not",
+          "start": 17.125,
+          "end": 17.252
+        },
+        {
+          "word": "claim",
+          "start": 17.299,
+          "end": 17.566
+        },
+        {
+          "word": "measured",
+          "start": 17.636,
+          "end": 17.948999999999998
+        },
+        {
+          "word": "savings",
+          "start": 17.984,
+          "end": 18.402
+        },
+        {
+          "word": "or",
+          "start": 18.448,
+          "end": 18.529
+        },
+        {
+          "word": "complete",
+          "start": 18.576,
+          "end": 18.936
+        },
+        {
+          "word": "prevention",
+          "start": 18.971,
+          "end": 19.435000000000002
+        },
+        {
+          "word": "of",
+          "start": 19.481,
+          "end": 19.54
+        },
+        {
+          "word": "future",
+          "start": 19.598,
+          "end": 19.945999999999998
+        },
+        {
+          "word": "errors.",
+          "start": 19.992,
+          "end": 20.41
+        },
+        {
+          "word": "The",
+          "start": 21.159,
+          "end": 21.31
+        },
+        {
+          "word": "final",
+          "start": 21.368,
+          "end": 21.647
+        },
+        {
+          "word": "demonstration",
+          "start": 21.692999999999998,
+          "end": 22.273999999999997
+        },
+        {
+          "word": "shows",
+          "start": 22.332,
+          "end": 22.575
+        },
+        {
+          "word": "an",
+          "start": 22.61,
+          "end": 22.68
+        },
+        {
+          "word": "ordinary",
+          "start": 22.761,
+          "end": 23.201999999999998
+        },
+        {
+          "word": "path",
+          "start": 23.272,
+          "end": 23.631999999999998
+        },
+        {
+          "word": "and",
+          "start": 23.701999999999998,
+          "end": 23.805999999999997
+        },
+        {
+          "word": "absent",
+          "start": 23.875999999999998,
+          "end": 24.235999999999997
+        },
+        {
+          "word": "approval,",
+          "start": 24.259,
+          "end": 24.723
+        },
+        {
+          "word": "then",
+          "start": 25.198999999999998,
+          "end": 25.362
+        },
+        {
+          "word": "explains",
+          "start": 25.407999999999998,
+          "end": 25.849
+        },
+        {
+          "word": "AI",
+          "start": 25.918999999999997,
+          "end": 26.279
+        },
+        {
+          "word": "assistance",
+          "start": 26.325,
+          "end": 26.858999999999998
+        },
+        {
+          "word": "and",
+          "start": 26.894,
+          "end": 26.999
+        },
+        {
+          "word": "human",
+          "start": 27.057,
+          "end": 27.323999999999998
+        },
+        {
+          "word": "decisions.",
+          "start": 27.369999999999997,
+          "end": 27.927999999999997
+        },
+        {
+          "word": "Rehearsal",
+          "start": 28.729,
+          "end": 29.157999999999998
+        },
+        {
+          "word": "questions",
+          "start": 29.216,
+          "end": 29.610999999999997
+        },
+        {
+          "word": "stay",
+          "start": 29.646,
+          "end": 29.854999999999997
+        },
+        {
+          "word": "labeled",
+          "start": 29.924999999999997,
+          "end": 30.284
+        },
+        {
+          "word": "as",
+          "start": 30.319,
+          "end": 30.401
+        },
+        {
+          "word": "rehearsal.",
+          "start": 30.482,
+          "end": 31.027
+        },
+        {
+          "word": "An",
+          "start": 31.653999999999996,
+          "end": 31.793999999999997
+        },
+        {
+          "word": "actual",
+          "start": 31.875,
+          "end": 32.269999999999996
+        },
+        {
+          "word": "reviewer",
+          "start": 32.351,
+          "end": 32.745999999999995
+        },
+        {
+          "word": "response",
+          "start": 32.816,
+          "end": 33.385
+        },
+        {
+          "word": "must",
+          "start": 33.454,
+          "end": 33.675
+        },
+        {
+          "word": "be",
+          "start": 33.721,
+          "end": 33.814
+        },
+        {
+          "word": "recorded",
+          "start": 33.884,
+          "end": 34.372
+        },
+        {
+          "word": "as",
+          "start": 34.43,
+          "end": 34.569
+        },
+        {
+          "word": "it",
+          "start": 34.626999999999995,
+          "end": 34.697
+        },
+        {
+          "word": "happened.",
+          "start": 34.754999999999995,
+          "end": 35.161
+        },
+        {
+          "word": "Your",
+          "start": 35.474999999999994,
+          "end": 35.625
+        },
+        {
+          "word": "human",
+          "start": 35.672,
+          "end": 35.916
+        },
+        {
+          "word": "check",
+          "start": 35.951,
+          "end": 36.147999999999996
+        },
+        {
+          "word": "does",
+          "start": 36.194,
+          "end": 36.322
+        },
+        {
+          "word": "not",
+          "start": 36.369,
+          "end": 36.495999999999995
+        },
+        {
+          "word": "award",
+          "start": 36.543,
+          "end": 36.81
+        },
+        {
+          "word": "certification.",
+          "start": 36.855999999999995,
+          "end": 37.588
+        }
+      ]
+    },
+    {
+      "key": "roadmap",
+      "title": "Build the thirty-, sixty-, and ninety-day plan",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=93f22292-eafb-43a2-87e0-d6b0cab10af4.wav",
+      "duration_seconds": 48.87510204081633,
+      "request_id": "iqXWO6QrSH9Qc5ZnhcwM",
+      "word_timestamps": [
+        {
+          "word": "This",
+          "start": 0,
+          "end": 0.209
+        },
+        {
+          "word": "supplied",
+          "start": 0.244,
+          "end": 0.627
+        },
+        {
+          "word": "continuation",
+          "start": 0.662,
+          "end": 1.428
+        },
+        {
+          "word": "is",
+          "start": 1.498,
+          "end": 1.637
+        },
+        {
+          "word": "a",
+          "start": 1.683,
+          "end": 1.707
+        },
+        {
+          "word": "proposal,",
+          "start": 1.765,
+          "end": 2.38
+        },
+        {
+          "word": "not",
+          "start": 2.752,
+          "end": 2.937
+        },
+        {
+          "word": "completed",
+          "start": 2.984,
+          "end": 3.413
+        },
+        {
+          "word": "activity.",
+          "start": 3.46,
+          "end": 4.005
+        },
+        {
+          "word": "At",
+          "start": 4.923,
+          "end": 5.097
+        },
+        {
+          "word": "thirty",
+          "start": 5.143,
+          "end": 5.41
+        },
+        {
+          "word": "days,",
+          "start": 5.468,
+          "end": 5.84
+        },
+        {
+          "word": "seek",
+          "start": 6.118,
+          "end": 6.339
+        },
+        {
+          "word": "the",
+          "start": 6.385,
+          "end": 6.455
+        },
+        {
+          "word": "responsible",
+          "start": 6.513,
+          "end": 7.105
+        },
+        {
+          "word": "person’s",
+          "start": 7.152,
+          "end": 7.535
+        },
+        {
+          "word": "permission",
+          "start": 7.581,
+          "end": 8.011
+        },
+        {
+          "word": "for",
+          "start": 8.069,
+          "end": 8.208
+        },
+        {
+          "word": "a",
+          "start": 8.243,
+          "end": 8.266
+        },
+        {
+          "word": "bounded",
+          "start": 8.324,
+          "end": 8.673
+        },
+        {
+          "word": "pilot",
+          "start": 8.719,
+          "end": 9.079
+        },
+        {
+          "word": "using",
+          "start": 9.149,
+          "end": 9.416
+        },
+        {
+          "word": "agreed",
+          "start": 9.474,
+          "end": 9.915
+        },
+        {
+          "word": "safe",
+          "start": 9.996,
+          "end": 10.321
+        },
+        {
+          "word": "inputs",
+          "start": 10.368,
+          "end": 10.879
+        },
+        {
+          "word": "and",
+          "start": 11.064,
+          "end": 11.227
+        },
+        {
+          "word": "retained",
+          "start": 11.297,
+          "end": 11.726
+        },
+        {
+          "word": "observations.",
+          "start": 11.784,
+          "end": 12.55
+        },
+        {
+          "word": "If",
+          "start": 13.119,
+          "end": 13.27
+        },
+        {
+          "word": "permission",
+          "start": 13.328,
+          "end": 13.746
+        },
+        {
+          "word": "is",
+          "start": 13.793,
+          "end": 13.874
+        },
+        {
+          "word": "unavailable,",
+          "start": 13.932,
+          "end": 14.698
+        },
+        {
+          "word": "use",
+          "start": 15.07,
+          "end": 15.347999999999999
+        },
+        {
+          "word": "the",
+          "start": 15.383,
+          "end": 15.453
+        },
+        {
+          "word": "permitted",
+          "start": 15.511,
+          "end": 15.917
+        },
+        {
+          "word": "fictional-review",
+          "start": 15.987,
+          "end": 16.765
+        },
+        {
+          "word": "backup.",
+          "start": 16.823,
+          "end": 17.264
+        },
+        {
+          "word": "At",
+          "start": 18.216,
+          "end": 18.39
+        },
+        {
+          "word": "sixty",
+          "start": 18.448,
+          "end": 18.762
+        },
+        {
+          "word": "days,",
+          "start": 18.82,
+          "end": 19.215
+        },
+        {
+          "word": "compare",
+          "start": 19.772,
+          "end": 20.119999999999997
+        },
+        {
+          "word": "the",
+          "start": 20.155,
+          "end": 20.225
+        },
+        {
+          "word": "retained",
+          "start": 20.283,
+          "end": 20.631
+        },
+        {
+          "word": "evidence",
+          "start": 20.689,
+          "end": 21.037
+        },
+        {
+          "word": "with",
+          "start": 21.061,
+          "end": 21.188
+        },
+        {
+          "word": "the",
+          "start": 21.223,
+          "end": 21.293
+        },
+        {
+          "word": "agreed",
+          "start": 21.351,
+          "end": 21.664
+        },
+        {
+          "word": "requirement",
+          "start": 21.711,
+          "end": 22.303
+        },
+        {
+          "word": "in",
+          "start": 22.349,
+          "end": 22.419
+        },
+        {
+          "word": "a",
+          "start": 22.465,
+          "end": 22.489
+        },
+        {
+          "word": "quality",
+          "start": 22.535,
+          "end": 22.907
+        },
+        {
+          "word": "review.",
+          "start": 22.976,
+          "end": 23.323999999999998
+        },
+        {
+          "word": "At",
+          "start": 24.32,
+          "end": 24.529
+        },
+        {
+          "word": "ninety",
+          "start": 24.599,
+          "end": 24.9
+        },
+        {
+          "word": "days,",
+          "start": 24.947,
+          "end": 25.353
+        },
+        {
+          "word": "decide",
+          "start": 25.702,
+          "end": 26.12
+        },
+        {
+          "word": "whether",
+          "start": 26.154,
+          "end": 26.375
+        },
+        {
+          "word": "to",
+          "start": 26.421,
+          "end": 26.491
+        },
+        {
+          "word": "continue,",
+          "start": 26.572,
+          "end": 27.153
+        },
+        {
+          "word": "revise,",
+          "start": 27.42,
+          "end": 28.128
+        },
+        {
+          "word": "stop,",
+          "start": 28.372,
+          "end": 28.778
+        },
+        {
+          "word": "or",
+          "start": 29.185000000000002,
+          "end": 29.312
+        },
+        {
+          "word": "consider",
+          "start": 29.37,
+          "end": 29.73
+        },
+        {
+          "word": "wider",
+          "start": 29.8,
+          "end": 30.102
+        },
+        {
+          "word": "use.",
+          "start": 30.171,
+          "end": 30.566000000000003
+        },
+        {
+          "word": "Expansion",
+          "start": 31.332,
+          "end": 31.983
+        },
+        {
+          "word": "requires",
+          "start": 32.168,
+          "end": 32.621
+        },
+        {
+          "word": "relevant",
+          "start": 32.679,
+          "end": 33.039
+        },
+        {
+          "word": "evidence",
+          "start": 33.097,
+          "end": 33.480000000000004
+        },
+        {
+          "word": "and",
+          "start": 33.527,
+          "end": 33.689
+        },
+        {
+          "word": "permission.",
+          "start": 33.747,
+          "end": 34.247
+        },
+        {
+          "word": "Each",
+          "start": 34.978,
+          "end": 35.187
+        },
+        {
+          "word": "stage",
+          "start": 35.222,
+          "end": 35.744
+        },
+        {
+          "word": "names",
+          "start": 35.837,
+          "end": 36.127
+        },
+        {
+          "word": "action,",
+          "start": 36.197,
+          "end": 36.65
+        },
+        {
+          "word": "owner",
+          "start": 37.219,
+          "end": 37.532
+        },
+        {
+          "word": "or",
+          "start": 37.602000000000004,
+          "end": 37.683
+        },
+        {
+          "word": "collaborator,",
+          "start": 37.741,
+          "end": 38.426
+        },
+        {
+          "word": "permission,",
+          "start": 38.948,
+          "end": 39.506
+        },
+        {
+          "word": "boundary,",
+          "start": 40.005,
+          "end": 40.562
+        },
+        {
+          "word": "evidence",
+          "start": 41.085,
+          "end": 41.491
+        },
+        {
+          "word": "checkpoint,",
+          "start": 41.525999999999996,
+          "end": 42.083
+        },
+        {
+          "word": "and",
+          "start": 42.35,
+          "end": 42.513
+        },
+        {
+          "word": "next",
+          "start": 42.582,
+          "end": 42.803
+        },
+        {
+          "word": "decision.",
+          "start": 42.849000000000004,
+          "end": 43.302
+        },
+        {
+          "word": "No",
+          "start": 44.173,
+          "end": 44.324
+        },
+        {
+          "word": "success,",
+          "start": 44.394,
+          "end": 44.962
+        },
+        {
+          "word": "client,",
+          "start": 45.462,
+          "end": 45.949
+        },
+        {
+          "word": "income,",
+          "start": 46.135,
+          "end": 46.588
+        },
+        {
+          "word": "or",
+          "start": 46.657,
+          "end": 46.797
+        },
+        {
+          "word": "certification",
+          "start": 46.855000000000004,
+          "end": 47.609
+        },
+        {
+          "word": "is",
+          "start": 47.691,
+          "end": 47.818
+        },
+        {
+          "word": "guaranteed.",
+          "start": 47.877,
+          "end": 48.55
+        }
+      ]
+    },
+    {
+      "key": "submit",
+      "title": "Check the package and retain submission evidence",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/Ufzf3hcVZVWx3QjtOPI5/id=a21c55e2-0a17-4803-940a-bf8060e78285.wav",
+      "duration_seconds": 44.82612244897959,
+      "request_id": "jhsX6aU1BhMv1zgUvDSp",
+      "word_timestamps": [
+        {
+          "word": "Before",
+          "start": 0,
+          "end": 0.348
+        },
+        {
+          "word": "submission,",
+          "start": 0.383,
+          "end": 0.882
+        },
+        {
+          "word": "inspect",
+          "start": 1.231,
+          "end": 1.602
+        },
+        {
+          "word": "the",
+          "start": 1.637,
+          "end": 1.707
+        },
+        {
+          "word": "privacy-safe",
+          "start": 1.741,
+          "end": 2.45
+        },
+        {
+          "word": "index,",
+          "start": 2.485,
+          "end": 2.914
+        },
+        {
+          "word": "sources,",
+          "start": 3.262,
+          "end": 3.785
+        },
+        {
+          "word": "version",
+          "start": 4.052,
+          "end": 4.377
+        },
+        {
+          "word": "history,",
+          "start": 4.447,
+          "end": 4.853
+        },
+        {
+          "word": "human",
+          "start": 5.201,
+          "end": 5.457
+        },
+        {
+          "word": "decisions,",
+          "start": 5.503,
+          "end": 6.072
+        },
+        {
+          "word": "and",
+          "start": 6.258,
+          "end": 6.409
+        },
+        {
+          "word": "final",
+          "start": 6.49,
+          "end": 6.792
+        },
+        {
+          "word": "files.",
+          "start": 6.85,
+          "end": 7.291
+        },
+        {
+          "word": "Include",
+          "start": 7.755,
+          "end": 8.162
+        },
+        {
+          "word": "all",
+          "start": 8.208,
+          "end": 8.394
+        },
+        {
+          "word": "six",
+          "start": 8.475,
+          "end": 8.673
+        },
+        {
+          "word": "journey",
+          "start": 8.731,
+          "end": 8.963
+        },
+        {
+          "word": "results,",
+          "start": 9.021,
+          "end": 9.462
+        },
+        {
+          "word": "the",
+          "start": 9.915,
+          "end": 10.019
+        },
+        {
+          "word": "functioning",
+          "start": 10.089,
+          "end": 10.519
+        },
+        {
+          "word": "bounded",
+          "start": 10.577,
+          "end": 10.879
+        },
+        {
+          "word": "artifact,",
+          "start": 10.937,
+          "end": 11.587
+        },
+        {
+          "word": "test",
+          "start": 11.854,
+          "end": 12.225
+        },
+        {
+          "word": "and",
+          "start": 12.272,
+          "end": 12.353
+        },
+        {
+          "word": "revision",
+          "start": 12.411,
+          "end": 12.783
+        },
+        {
+          "word": "evidence,",
+          "start": 12.841,
+          "end": 13.328
+        },
+        {
+          "word": "demonstration,",
+          "start": 13.526,
+          "end": 14.28
+        },
+        {
+          "word": "responsible",
+          "start": 14.664,
+          "end": 15.221
+        },
+        {
+          "word": "statement,",
+          "start": 15.256,
+          "end": 15.708
+        },
+        {
+          "word": "positioning",
+          "start": 16.022,
+          "end": 16.509999999999998
+        },
+        {
+          "word": "set,",
+          "start": 16.567999999999998,
+          "end": 16.777
+        },
+        {
+          "word": "and",
+          "start": 16.823,
+          "end": 16.893
+        },
+        {
+          "word": "execution",
+          "start": 16.939,
+          "end": 17.45
+        },
+        {
+          "word": "plan.",
+          "start": 17.508,
+          "end": 17.868
+        },
+        {
+          "word": "Correct",
+          "start": 18.402,
+          "end": 18.727
+        },
+        {
+          "word": "a",
+          "start": 18.774,
+          "end": 18.797
+        },
+        {
+          "word": "missing",
+          "start": 18.855,
+          "end": 19.11
+        },
+        {
+          "word": "requirement",
+          "start": 19.168,
+          "end": 19.667
+        },
+        {
+          "word": "through",
+          "start": 19.701999999999998,
+          "end": 19.923000000000002
+        },
+        {
+          "word": "focused",
+          "start": 19.993,
+          "end": 20.399
+        },
+        {
+          "word": "revision.",
+          "start": 20.445,
+          "end": 20.887
+        },
+        {
+          "word": "Submit",
+          "start": 21.577,
+          "end": 21.983
+        },
+        {
+          "word": "by",
+          "start": 22.041,
+          "end": 22.169
+        },
+        {
+          "word": "Sunday",
+          "start": 22.25,
+          "end": 22.703000000000003
+        },
+        {
+          "word": "of",
+          "start": 22.784000000000002,
+          "end": 22.877000000000002
+        },
+        {
+          "word": "Week",
+          "start": 22.947000000000003,
+          "end": 23.133000000000003
+        },
+        {
+          "word": "Six",
+          "start": 23.202,
+          "end": 23.481
+        },
+        {
+          "word": "through",
+          "start": 23.539,
+          "end": 23.76
+        },
+        {
+          "word": "the",
+          "start": 23.783,
+          "end": 23.853
+        },
+        {
+          "word": "established",
+          "start": 23.911,
+          "end": 24.421000000000003
+        },
+        {
+          "word": "Academy",
+          "start": 24.456000000000003,
+          "end": 24.863000000000003
+        },
+        {
+          "word": "route",
+          "start": 24.921000000000003,
+          "end": 25.281000000000002
+        },
+        {
+          "word": "and",
+          "start": 25.745,
+          "end": 26
+        },
+        {
+          "word": "retain",
+          "start": 26.07,
+          "end": 26.384
+        },
+        {
+          "word": "the",
+          "start": 26.43,
+          "end": 26.511000000000003
+        },
+        {
+          "word": "actual",
+          "start": 26.569000000000003,
+          "end": 26.918000000000003
+        },
+        {
+          "word": "acknowledgment",
+          "start": 26.964000000000002,
+          "end": 27.521
+        },
+        {
+          "word": "when",
+          "start": 27.556,
+          "end": 27.672
+        },
+        {
+          "word": "available.",
+          "start": 27.707,
+          "end": 28.241
+        },
+        {
+          "word": "Saving",
+          "start": 29.158,
+          "end": 29.541000000000004
+        },
+        {
+          "word": "workbook",
+          "start": 29.599000000000004,
+          "end": 30.017000000000003
+        },
+        {
+          "word": "or",
+          "start": 30.076,
+          "end": 30.157000000000004
+        },
+        {
+          "word": "practice",
+          "start": 30.226,
+          "end": 30.621000000000002
+        },
+        {
+          "word": "notes",
+          "start": 30.668,
+          "end": 30.923000000000002
+        },
+        {
+          "word": "does",
+          "start": 31.004,
+          "end": 31.19
+        },
+        {
+          "word": "not",
+          "start": 31.248,
+          "end": 31.387
+        },
+        {
+          "word": "send",
+          "start": 31.445,
+          "end": 31.643
+        },
+        {
+          "word": "files",
+          "start": 31.713,
+          "end": 32.119
+        },
+        {
+          "word": "or",
+          "start": 32.177,
+          "end": 32.258
+        },
+        {
+          "word": "confirm",
+          "start": 32.305,
+          "end": 32.676
+        },
+        {
+          "word": "receipt.",
+          "start": 32.734,
+          "end": 33.106
+        },
+        {
+          "word": "Additional",
+          "start": 33.802,
+          "end": 34.278000000000006
+        },
+        {
+          "word": "review",
+          "start": 34.336,
+          "end": 34.592
+        },
+        {
+          "word": "time",
+          "start": 34.661,
+          "end": 35.044000000000004
+        },
+        {
+          "word": "is",
+          "start": 35.114000000000004,
+          "end": 35.288000000000004
+        },
+        {
+          "word": "administrative,",
+          "start": 35.335,
+          "end": 36.159000000000006
+        },
+        {
+          "word": "not",
+          "start": 36.542,
+          "end": 36.739000000000004
+        },
+        {
+          "word": "another",
+          "start": 36.786,
+          "end": 37.053
+        },
+        {
+          "word": "teaching",
+          "start": 37.088,
+          "end": 37.39
+        },
+        {
+          "word": "week.",
+          "start": 37.448,
+          "end": 37.657
+        },
+        {
+          "word": "AI",
+          "start": 38.411,
+          "end": 38.794
+        },
+        {
+          "word": "may",
+          "start": 38.864000000000004,
+          "end": 38.992000000000004
+        },
+        {
+          "word": "identify",
+          "start": 39.038,
+          "end": 39.54900000000001
+        },
+        {
+          "word": "gaps;",
+          "start": 39.619,
+          "end": 40.048
+        },
+        {
+          "word": "the",
+          "start": 40.745000000000005,
+          "end": 40.849000000000004
+        },
+        {
+          "word": "authorized",
+          "start": 40.919,
+          "end": 41.44200000000001
+        },
+        {
+          "word": "Academy",
+          "start": 41.476,
+          "end": 41.883
+        },
+        {
+          "word": "reviewer",
+          "start": 41.964,
+          "end": 42.382000000000005
+        },
+        {
+          "word": "decides",
+          "start": 42.452,
+          "end": 42.82300000000001
+        },
+        {
+          "word": "credentials",
+          "start": 42.858000000000004,
+          "end": 43.322
+        },
+        {
+          "word": "using",
+          "start": 43.391999999999996,
+          "end": 43.601
+        },
+        {
+          "word": "the",
+          "start": 43.647000000000006,
+          "end": 43.717
+        },
+        {
+          "word": "governing",
+          "start": 43.763999999999996,
+          "end": 44.089
+        },
+        {
+          "word": "rubric.",
+          "start": 44.135000000000005,
+          "end": 44.518
+        }
+      ]
+    }
+  ],
+  "visual_plan": {
+    "chapters": [
+      {
+        "title": "Assemble the portfolio from retained evidence",
+        "transcript": "You have reached the final lesson of Phase Two. Bring forward the work from all six journeys and the reviewed capstone from this week. A portfolio is an organized collection of evidence that shows what you did, how you made decisions, and what the result can support. It is not a collection of impressive claims. Its purpose is to let another person find and inspect the work behind your explanation.\n\nUse PROGRESS Closeout: portfolio, review, ownership, gaps, roadmap, evidence, support, and sustain. Portfolio means assemble the required work. Review means inspect its accuracy, quality, and readiness. Ownership means explain your contribution and decisions. Gaps means record what is missing or unresolved. Roadmap means plan practical next actions. Evidence means identify what each action will show. Support means name the people, resources, and permissions needed. Sustain means decide how you will keep the work useful and responsible over time.\n\nStart with the existing index and files. Locate a result from each of the six journeys. Retain the approved opportunity and strategy work, bounded workflow, people and adoption decisions, value and delivery work, operating and improvement evidence, and final demonstration and execution package. Use the requirements attached to your own completed lessons. Do not replace their actual evidence with a generic summary. Give each entry a meaningful name, current version, purpose, evidence reference, and status. A reviewer should be able to locate the item without guessing.\n\nAdd the functioning bounded artifact and its charter, test and revision evidence, final demonstration, responsible statement, positioning set, and continuation plan. These are the parts you have already developed. If one file supports several requirements, point to the relevant parts instead of making unnecessary copies. Keep the version history that explains a material correction. Do not make new versions of completed assignments merely to increase the size of the portfolio. Revise only when an actual gap, error, or review question requires a correction.\n\nOur supplied fictional intake case has a retained tabletop artifact, complete-input test, missing-date test, absent-approval test, and a revision that makes the human delivery gate visible. The index can point to those records and the demonstration. It cannot claim live customer delivery, measured savings, or organizational permission that the example never established. Its labels must say fictional. Your own work may have a different permitted setting; describe that setting accurately.\n\nOpen your current index now. Check whether all six journey results and the final required components can be found. Mark an absent item as missing. Name the focused correction needed, rather than writing a polished sentence that hides the absence. This is how the portfolio becomes useful to both you and its reviewer."
+      },
+      {
+        "title": "Review ownership, gaps, and the final demonstration",
+        "transcript": "A complete-looking folder can still contain unsupported claims, private material, or unclear ownership. Review the actual final files and references. Check that sources are identifiable, the current version is clear, important tests can be found, and human decisions are explained. A link that opens the wrong draft does not establish the final result. A reference that another authorized reviewer cannot use needs an appropriate access or correction step.\n\nConfirm that the evidence is safe to share with its intended reviewer. Remove private inputs where they are not needed. Label fictional, sanitized, or recreated examples accurately. Keep any necessary permission visible. Do not upload confidential records into AI simply because you want a quick completeness check. A privacy-safe index can identify the evidence and its status without exposing the underlying material.\n\nWrite a short growth reflection with a changed decision and an improved result. Explain what you first did or believed, what evidence led you to change, what you changed, and what the retained work now shows. In our fictional case, the earlier design treated complete information as permission to deliver. The revision kept human approval separate and made the hold state visible in the tabletop. That is a specific design change. It is not proof of live savings or a claim that all future errors have been prevented. Your reflection must cite your own observation and evidence.\n\nExplain ownership honestly. Describe what AI drafted or suggested, what you inspected, and which choices you made. Do not erase AI assistance, and do not let AI assistance erase your judgment. Your ability to explain a decision in your own words is part of the evidence. An attractive output alone cannot show that you understand its purpose, limits, or review route.\n\nDeliver the final demonstration of the bounded artifact. Show the ordinary path and a meaningful exception, then point to the test, revision, and human approval boundary. Use the current artifact, not a disconnected slide that implies functionality you cannot show. Retain the demonstration reference and actual questions. If no reviewer has yet asked a question, state that honestly; prepare plausible rehearsal questions but label them as rehearsal. Do not invent an academy response or permission.\n\nUse the approved AI request to check the privacy-safe portfolio index for missing required evidence and unsupported claims. Inspect its suggestions against the actual records. AI may overlook a gap or invent a requirement. Record what you accepted, corrected, or rejected. It must not decide certification.\n\nIdentify any remaining issue and make a focused correction within the planned weekend window. Keep the before, after, and affected retest references where relevant. If evidence is still missing, record that status and the actual question for review. Your human review confirms that you inspected the package; it does not make a missing requirement complete or award a credential."
+      },
+      {
+        "title": "Plan thirty, sixty, and ninety days with evidence checkpoints",
+        "transcript": "Carry forward the primary opportunity, backup, and thirty-day evidence-building action from Lesson Six Point Five. Extend that action into a practical thirty-, sixty-, and ninety-day plan. A plan describes what you intend to do and what evidence will guide the next decision. It is not a record of completed results. For each stage, name the action, owner or collaborator, needed permission, boundary, evidence checkpoint, and the decision that follows.\n\nAt thirty days, choose a bounded step that fits your actual setting. In the supplied fictional case, the proposed author first seeks permission from the responsible person for a limited internal pilot. The pilot would use only agreed safe inputs, a visible human delivery gate, and retained observations. The thirty-day checkpoint asks whether permission was obtained and what the permitted trial actually showed. No real person has been assigned, and no pilot has occurred in this teaching example. The owner must identify the real person and agreement in an actual project.\n\nIf permission is unavailable, do not proceed with live customer inputs. Use the backup from Lesson Five: a permitted fictional review that keeps the unresolved organizational dependency visible. The checkpoint should record what happened and what remains unknown. A delayed permission is not a reason to invent approval or quietly expand the scope.\n\nAt sixty days, schedule a quality review based on the evidence retained from the first stage. Compare ordinary inputs, known exceptions, human review decisions, and corrections with the agreed requirement. Name who may review the work and how you will retain their actual questions. Check usability, privacy, and responsibility as well as whether the artifact runs. If a required condition fails, narrow or pause the next step and revise the affected part. Do not assume the earlier prototype proves reliability in a new setting.\n\nAt ninety days, make a decision about wider use, continued bounded practice, revision, or stopping. Define the evidence needed before expansion. The fictional case requires relevant tests, a usable review route, the responsible person's permission, and an explanation of any new input or audience. Wider use remains conditional. The plan should not declare success in advance or promise clients, income, employment, or certification.\n\nFor your own plan, make the actions feasible. An owner is the person accountable for carrying out the step. A collaborator is someone whose participation is needed; their availability must be confirmed rather than assumed. Record unknown costs, resources, access, and permissions as dependencies to check. Name the support you will seek and the backup if it is unavailable.\n\nRead your three stages together. Does each stage use the evidence from the previous one? Is the next decision clear? Are the permissions obtained before the affected action? Save the plan in the existing capstone package. Your next ninety days should show responsible continued practice, with decisions that change when the evidence changes."
+      },
+      {
+        "title": "Submit the checked package and continue responsibly",
+        "transcript": "Bring the index and final files together for submission. The required package contains all six journey results, a functioning bounded artifact, test and revision evidence, the demonstration, and a defensible execution plan. Include the responsible statement and positioning set you prepared. Defensible means that you can explain the plan's actions, limits, dependencies, and evidence checkpoints using the work you actually retained.\n\nDo a final file check. Confirm that the index points to the intended current versions, sources and version history are available, privacy-safe labels are correct, and your human decisions are clear. Check the final demonstration and the responses to actual questions. Record any focused correction and affected retest. Avoid creating new versions of sound completed assignments merely to make the final package look fresh.\n\nUse the applied completion check from the master: completion requires all six journey results, a functioning bounded artifact, test and revision evidence, the demonstration, and a defensible execution plan. Resolve missing evidence through focused revision. If a component remains missing, say what it is. A checkbox or AI statement is not evidence that the component exists. The Academy's authorized reviewer uses the governing rubric for the credential decision. This lesson does not add a new rubric or let an AI tool award certification.\n\nSubmit the index, finished artifact, responsible statement, positioning set, and continuation plan by Sunday of Week Six using the established Academy submission route. Saving practice notes or workbook answers preserves your work; it does not send files to a reviewer or confirm that the Academy received them. Retain the actual submission reference or acknowledgment when available. If the destination is not yet confirmed, record that dependency and use the existing Academy support route to resolve it. Do not fabricate a receipt or review outcome.\n\nAdditional Academy review time is administrative. It is not an extra teaching week and does not create a Journey Seven. Use the planned weekend window for the remaining correction. Keep questions and any later reviewer decision separate from your own explanation of learning. You may be proud of your growth while still naming a limit or pending requirement.\n\nPlan to sustain the work after the course. Keep useful evidence and current instructions where you can find them. Decide when to review quality, who owns corrections, what support you need, and when to pause use. A change in inputs, audience, or permission may require a new bounded check. The thirty-, sixty-, and ninety-day checkpoints help you decide whether to continue, revise, or stop based on evidence.\n\nFinish your reflection in your own voice. Point to one changed decision and one improved result, then state the next action you own. Complete the connected workbook and save the closeout notes to your continuing Project Record. You have practiced using AI to assist your work while retaining human judgment. Continue with the verified result, the responsibilities you can explain, and the next decision your evidence can support."
+      }
+    ],
+    "demos": [
+      {
+        "key": "index",
+        "title": "Assemble the required portfolio evidence",
+        "transcript": "This supplied fictional example uses the existing intake tabletop and retained files. The portfolio index identifies six journey results and the final artifact, tests, revision, demonstration, responsible statement, positioning set, and continuation plan. Each entry points to a meaningful version and evidence reference. The missing pilot permission stays pending. The author does not create extra versions of completed assignments or describe fictional tests as live delivery. Your index must point to your actual retained work. A polished list does not replace missing evidence.",
+        "scenes": [
+          [
+            "Use retained work",
+            "Six journey results\nFinal artifact, tests, and revision\nDemonstration, statement, positioning, plan",
+            "Point to the strongest existing files and meaningful versions."
+          ],
+          [
+            "Inspect the references",
+            "Name • purpose • current version\nEvidence reference • actual status",
+            "Fictional tabletop evidence does not establish live delivery."
+          ],
+          [
+            "Keep the gap visible",
+            "Pilot permission: pending\nNo extra assignment copies",
+            "Resolve missing evidence through focused revision."
+          ]
+        ]
+      },
+      {
+        "key": "review",
+        "title": "Show growth and answer review questions",
+        "transcript": "In the supplied fictional intake example, the original design treated complete information as permission to deliver. The revision separates the human approval gate and shows an explicit hold state. The reflection cites that changed decision and the retained tabletop retest. It does not claim measured savings or complete prevention of future errors. The final demonstration shows an ordinary path and absent approval, then explains AI assistance and human decisions. Rehearsal questions stay labeled as rehearsal. An actual reviewer response must be recorded as it happened. Your human check does not award certification.",
+        "scenes": [
+          [
+            "Explain a changed decision",
+            "Before: complete input implied delivery\nAfter: human approval is separate",
+            "Growth needs a specific change and supporting observation."
+          ],
+          [
+            "Show the current artifact",
+            "Ordinary path + meaningful exception\nRetained revision and retest",
+            "Explain your decisions and actual AI assistance."
+          ],
+          [
+            "Record questions honestly",
+            "Actual response or labeled rehearsal\nFocused correction if needed",
+            "An authorized Academy reviewer makes the credential decision."
+          ]
+        ]
+      },
+      {
+        "key": "roadmap",
+        "title": "Build the thirty-, sixty-, and ninety-day plan",
+        "transcript": "This supplied continuation is a proposal, not completed activity. At thirty days, seek the responsible person’s permission for a bounded pilot using agreed safe inputs and retained observations. If permission is unavailable, use the permitted fictional-review backup. At sixty days, compare the retained evidence with the agreed requirement in a quality review. At ninety days, decide whether to continue, revise, stop, or consider wider use. Expansion requires relevant evidence and permission. Each stage names action, owner or collaborator, permission, boundary, evidence checkpoint, and next decision. No success, client, income, or certification is guaranteed.",
+        "scenes": [
+          [
+            "Thirty days: bounded action",
+            "Seek permission before the pilot\nSafe inputs • human gate • observations",
+            "Use the permitted backup if the primary dependency is unresolved."
+          ],
+          [
+            "Sixty days: quality review",
+            "Compare tests with the agreed need\nRetain questions and corrections",
+            "Name actual owners, collaborators, and required permissions."
+          ],
+          [
+            "Ninety days: evidence-led decision",
+            "Continue • revise • stop\nWider use only if supported",
+            "Proposed actions remain distinct from completed results."
+          ]
+        ]
+      },
+      {
+        "key": "submit",
+        "title": "Check the package and retain submission evidence",
+        "transcript": "Before submission, inspect the privacy-safe index, sources, version history, human decisions, and final files. Include all six journey results, the functioning bounded artifact, test and revision evidence, demonstration, responsible statement, positioning set, and execution plan. Correct a missing requirement through focused revision. Submit by Sunday of Week Six through the established Academy route and retain the actual acknowledgment when available. Saving workbook or practice notes does not send files or confirm receipt. Additional review time is administrative, not another teaching week. AI may identify gaps; the authorized Academy reviewer decides credentials using the governing rubric.",
+        "scenes": [
+          [
+            "Inspect final evidence",
+            "Privacy-safe files • sources • versions\nHuman decisions • final demonstration",
+            "Resolve missing required evidence through focused revision."
+          ],
+          [
+            "Submit through the established route",
+            "Index • artifact • responsible statement\nPositioning set • continuation plan",
+            "Submit by Sunday of Week Six; retain the actual acknowledgment."
+          ],
+          [
+            "Keep the decision honest",
+            "Saving notes is not delivery or receipt\nReview time is administrative",
+            "AI does not decide certification. No additional teaching journey."
+          ]
+        ]
+      }
+    ]
+  }
+}

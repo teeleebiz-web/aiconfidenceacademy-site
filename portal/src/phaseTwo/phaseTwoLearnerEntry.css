@@ -1,0 +1,6 @@
+.p2-entry-page{min-height:100vh;background:#f8f3e9;color:#123756;padding:clamp(1.2rem,4vw,4rem);display:grid;place-items:start center}
+.p2-entry-panel{background:#fff;border:1px solid #d7c7ad;border-radius:22px;width:min(100%,760px);padding:clamp(1.5rem,4vw,3rem);margin:4rem auto}
+.p2-entry-panel .eyebrow{color:#9b7843;font-size:.77rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.p2-entry-panel h1{font:700 clamp(1.7rem,3vw,2.7rem) Georgia,serif;color:#123756}
+.p2-entry-panel p{max-width:62ch;line-height:1.65;color:#506579}
+.p2-entry-panel a{display:inline-block;background:#123e60;color:white;border-radius:9px;padding:.8rem 1.2rem;text-decoration:none;font-weight:750}

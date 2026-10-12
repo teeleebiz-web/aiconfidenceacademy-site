@@ -411,3 +411,21 @@ test('expired lesson keeps released workbook answers readable and editable witho
  assert.equal((await (await request('GET',null,token)).json()).answers[field],'Continued independently')
  assert.ok(db.writes.every(table=>table==='aca_workbook_responses'))
 }))
+
+
+test('authorized full curriculum access opens every workbook page within the account own answer scope',async()=>{
+ const req={headers:{'x-aca-access-token':'authorized-account'}}
+ const check=async token=>token==='authorized-account'
+ const result=await workbookIdentity(req,database(),'course',false,'journey-three',check)
+ assert.equal(result.scope,'authorized-account')
+ assert.equal(result.learnerId,'authorized-account')
+ assert.deepEqual(result.allowedPages,Array.from({length:26},(_,i)=>i+1))
+ const normal=await workbookIdentity({headers:{'x-aca-access-token':'learner-a'}},database(),'course',false,'journey-three',check)
+ assert.deepEqual(normal.allowedPages,[1,2,3,4,5,6])
+})
+test('invalid identity never reaches full access authorization and authorization errors fail closed',async()=>{
+ let checked=false
+ await assert.rejects(()=>workbookIdentity({headers:{'x-aca-access-token':'bad'}},database(),'course',false,'journey-one',async()=>{checked=true;return true}),{status:401})
+ assert.equal(checked,false)
+ await assert.rejects(()=>workbookIdentity({headers:{'x-aca-access-token':'learner-a'}},database(),'course',false,'journey-one',async()=>{throw Object.assign(Error('Authorization unavailable'),{status:503})}),{status:503})
+})

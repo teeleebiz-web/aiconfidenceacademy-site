@@ -1,0 +1,36 @@
+name: Verify and publish Phase Two curriculum strengthening
+on:
+  push:
+    branches: [phase-two-curriculum-strengthening]
+    paths: [.github/workflows/strengthen-phase-two-curriculum.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: github.event.head_commit.message == 'Strengthen Phase Two evidence clarity and workbook practice'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24, cache: npm}
+      - run: npm ci
+      - name: Verify curriculum delivery and build
+        run: npm run check
+      - name: Update existing protected review only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach "$RUNNER_TEMP/aca-official" origin/main
+          node academy/publish-phase-two-review.mjs "$GITHUB_WORKSPACE/learn" "$RUNNER_TEMP/aca-official"
+          cd "$RUNNER_TEMP/aca-official"
+          git add learn/index.html learn/assets/
+          if git diff --cached --name-status | grep -Ev '^(A[[:space:]]+learn/assets/|M[[:space:]]+learn/index.html$)'; then
+            echo 'Unexpected site change blocked.' >&2
+            exit 1
+          fi
+          git config user.name 'ACA curriculum builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git commit -m 'Install authorized Phase Two evidence and workbook strengthening in protected review'
+          git push origin HEAD:main

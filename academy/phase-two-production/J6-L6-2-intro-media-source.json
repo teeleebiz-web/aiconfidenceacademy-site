@@ -1,0 +1,16 @@
+{
+  "lipsync_id": "6a9c18071c4c452b865e0649c6cb53c0",
+  "visual_source_asset_id": "509bace71492492a85d1052e8adf9e1d",
+  "visual_source_url": "https://aiconfidenceacademy.org/assets/videos/confidence-with-ai-man-extended/film.m3u8",
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
+  "narration_source_video_id": "speech:eb6f3577d4ab465295a723cb1ce8b6e6",
+  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=3173e264-d607-418d-bac2-fe8b71a11f23.wav",
+  "narration_duration_seconds": 84.74122448979591,
+  "introduction_transcript": "Welcome to Journey Six, Lesson Two: Finish the Artifact with Evidence and Revision. You already have a purpose for your project. Today, you will turn that purpose into a finished result you can show and explain. Start with your approved charter. What did you promise to make? Who is it for? What would count as a useful result? Compare your current work with those original success criteria before you ask AI to add anything. A polished appearance does not prove that the important steps work. In our fictional intake example, a new dashboard cannot repair a missing human approval step. You will use BUILD: baseline, use AI, inspect, lead, and demonstrate. Keep the version you started with, test the ordinary path and a known exception, collect honest feedback, and make one material correction. Then test that correction again. Save the finished artifact, the before and after evidence, and a clear account of what remains outside your scope. You do not have to claim perfection. You do need to show what works, what changed, and what your evidence actually supports. The evidence trail is the record of your sources, requests, outputs, tests, feedback, and decisions. Keep meaningful version names so another person can follow the correction without guessing. Open your workbook, bring forward your charter, and let us finish the work with care. Let's begin.",
+  "source_url": "https://resource2.heygen.ai/video_translate/6a9c18071c4c452b865e0649c6cb53c0/original.mp4",
+  "lipsync_input_source_url": "https://resource2.heygen.ai/video_translate/bbe48fd747f9465283779f6f1109f43b/original.mp4?response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27ACA%2520Journey%2520Six%2520Lesson%25206.2%2520invitation%2520ending%2520correction.mp4%3B",
+  "lipsync_input_source_id": "bbe48fd747f9465283779f6f1109f43b",
+  "voice_name": "Alex Wright - Informative",
+  "narration_request_id": "eb6f3577d4ab465295a723cb1ce8b6e6",
+  "narration_last_word_end_seconds": 84.51083900226757
+}

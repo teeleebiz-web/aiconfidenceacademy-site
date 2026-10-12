@@ -1,0 +1,190 @@
+{
+  "production_version": "1.0",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "6.4",
+  "primary_media": "video",
+  "title": "Demonstrate the Project and Answer Questions",
+  "learner_promise": "Demonstrate your reviewed capstone in five to seven minutes using STORY, show a normal path and review exception, and answer questions with your own judgment, supported results, and honest limits.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Teaching",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Worked demonstration",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Project application",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Verification",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Organize a five-to-seven-minute demonstration with all five STORY parts.",
+    "Show the artifact, AI support, human decisions, normal path, and review exception.",
+    "Use a one-page cue sheet, useful visuals, timed rehearsal, and a checked revision.",
+    "Answer three likely questions using your own words, meaningful evidence, and honest limits."
+  ],
+  "teaching": [
+    {
+      "heading": "Shape a clear explanation with STORY",
+      "paragraphs": [
+        "Use STORY Presentation Path: situation, target, operations, result, and your judgment. Explain the need and intended result, show the important steps, present supported observations, and own the decisions and limits.",
+        "Start with a six-minute plan: situation 0:45, target 0:30, operations 2:15, result 1:15, judgment 1:15. Time an actual rehearsal; a plan does not establish delivery time."
+      ],
+      "think_prompt": "Which evidence reference will support the result you plan to explain?"
+    },
+    {
+      "heading": "Show the normal path and the exception",
+      "paragraphs": [
+        "Choose a small number of useful visuals or a live walkthrough. Show the normal request, human review, and an exception that pauses for clarification or approval. Identify what changed after testing.",
+        "Inspect every displayed item for sharing permission, private information, readable meaning, and the correct version. A labeled retained sequence can be a safe fallback; describe what it actually shows."
+      ],
+      "think_prompt": "Can the audience see both the normal path and the point where human review is required?"
+    },
+    {
+      "heading": "Create a cue sheet and rehearse with evidence",
+      "paragraphs": [
+        "Make a one-page cue sheet with STORY headings, time allowances, visual actions, evidence references, and a limit you must retain. Rehearse aloud once and record actual timing and difficult moments.",
+        "Ask AI for review questions using the approved request. Prepare three likely questions covering assumptions, testing, costs, affected people, and failure. Write your own answers. Revise and rehearse the weakest section."
+      ],
+      "think_prompt": "What did your rehearsal reveal, and what specific revision will you check next?"
+    },
+    {
+      "heading": "Answer questions and save the demonstration",
+      "paragraphs": [
+        "Answer directly, open supporting evidence, acknowledge the limit, and name the next check when something remains unknown. AI can ask questions; it must not answer on your behalf.",
+        "Deliver the five-to-seven-minute demonstration and save the actual time, presentation reference, and question-response notes. Keep claims aligned with the reviewed artifact and its responsible statement."
+      ],
+      "think_prompt": "Can you explain why the work matters, what was tested, what changed, and what remains limited without AI speaking for you?"
+    }
+  ],
+  "worked_case": {
+    "label": "Show the reviewed intake tabletop and answer for the evidence",
+    "setup": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake tabletop shows complete input and a missing-date or absent-approval exception. Its author demonstrates the revised written status and human delivery gate, opens retained check references, and explains what changed after testing. A first fictional rehearsal lasts 8:20; after removing prompt repetition and putting the exception reference beside the cue, a second fictional full rehearsal lasts 6:10. These supplied observations do not establish your rehearsal, live delivery, measured savings, real organizational permission, or certification.",
+    "evidence_table": [
+      {
+        "claim": "Complete input means the work can be delivered.",
+        "evidence": "The supplied normal path creates a draft for review; approval remains required.",
+        "action": "Show the human review point and keep delivery conditional."
+      },
+      {
+        "claim": "The exception can proceed like a normal request.",
+        "evidence": "The date is missing or approval is absent.",
+        "action": "Show Pending, clarification, and the blocked gate; open the retained check."
+      },
+      {
+        "claim": "The explanation fits the planned time.",
+        "evidence": "The first supplied rehearsal is 8:20; the second is 6:10 after revision.",
+        "action": "Remove repeated prompt history, improve the evidence cue, and time another real rehearsal for your own work."
+      },
+      {
+        "claim": "The result proves live value or measured savings.",
+        "evidence": "Only supplied fictional tabletop tests are available; costs and live outcomes are unmeasured.",
+        "action": "Explain the supported design result and keep wider-use checks pending."
+      }
+    ],
+    "revised_example": "The supplied six-minute STORY outline shows the reviewed version, complete input, the exception and human approval gate, and the retained correction evidence. A cue sheet points to the exact items to open. The author explains the AI drafting contribution and personal decisions and answers questions without claiming live use, savings, or permission. The fictional second rehearsal of 6:10 illustrates a check, not your delivery.",
+    "demonstration_steps": [
+      "Build the five-part timed STORY outline with evidence references.",
+      "Show the normal path, human review, and a missing-date or absent-approval exception.",
+      "Explain the before/after correction and supported result.",
+      "Inspect sharing safety, rehearse, record the difficult moment, revise, and rehearse the weakest section.",
+      "Answer three likely questions with evidence, limits, and your own judgment."
+    ],
+    "question": "How does showing a normal path and exception explain the result more credibly than reciting every prompt?"
+  },
+  "application": [
+    {
+      "minutes": 6,
+      "heading": "Build the outline and cue sheet",
+      "instruction": "Use the reviewed capstone. Draft all five STORY parts with time allowances totaling five to seven minutes. Make a one-page cue sheet and simple visual sequence with meaningful evidence references.",
+      "evidence": "Timed outline, cue sheet, current version, and visual order."
+    },
+    {
+      "minutes": 7,
+      "heading": "Check sharing and rehearse once",
+      "instruction": "Inspect all displayed material for privacy, permission, readable meaning, and correct version. Rehearse aloud with a timer and the actual visuals. Record the time and difficult moment.",
+      "evidence": "Sharing check and actual first-rehearsal observation."
+    },
+    {
+      "minutes": 6,
+      "heading": "Prepare questions and revise the weakest section",
+      "instruction": "Use the approved AI request with a privacy-safe outline. Inspect the questions and prepare three own-word answers covering assumptions, testing, costs, affected people, and failure. Revise the weakest section and rehearse it again.",
+      "evidence": "Inspected questions, own answers, correction, and new rehearsal observation."
+    },
+    {
+      "minutes": 6,
+      "heading": "Deliver and save the supported explanation",
+      "instruction": "Deliver a five-to-seven-minute demonstration in your own words, show the artifact and review exception, and answer questions. Record the actual delivery time and privacy-safe presentation reference. Save the presentation and question-response notes.",
+      "evidence": "Delivery evidence, actual timing, evidence index, and saved notes."
+    }
+  ],
+  "approved_ai_request": "Act as a professional reviewer of this STORY outline. Ask questions about evidence, human decisions, limits and next steps. Do not invent results or answer on my behalf. Outline: [draft].",
+  "responsibility_map_fields": [
+    "Situation, affected people, and bounded target",
+    "Operations, AI support, and human decisions",
+    "Verified results, sources, tests, and corrections",
+    "Sharing safety, readable alternatives, and limits",
+    "Actual rehearsal and delivery timing",
+    "Own answers, unknowns, and next checks"
+  ],
+  "verification": [
+    {
+      "minutes": 4,
+      "heading": "Deliver and answer in your own words",
+      "prompt": "Deliver a five-to-seven-minute demonstration. Answer why the project matters, what was tested, what changed and what remains limited without relying on AI to speak for you."
+    },
+    {
+      "minutes": 3,
+      "heading": "Check sharing and support",
+      "prompt": "Confirm that every displayed item is safe to share and that each result matches the current version and retained evidence. Can the audience follow the normal path and the review exception?"
+    },
+    {
+      "minutes": 3,
+      "heading": "Check timing and save the presentation",
+      "prompt": "Record actual timing, a privacy-safe presentation reference, rehearsal changes, and three question-response notes. Correct an unclear or unsupported section and retain the follow-up observation."
+    }
+  ],
+  "completion_criteria": [
+    "The timed outline includes situation, target, operations, result, and your judgment.",
+    "A one-page cue sheet and simple visual sequence support the explanation.",
+    "The demonstration identifies AI assistance, human decisions, normal behavior, and a review exception.",
+    "All displayed material has a privacy/permission and clarity check; results have meaningful evidence references.",
+    "A first rehearsal, difficult moment, revision, and weakest-section rehearsal are recorded with actual observations.",
+    "Three likely questions cover assumptions, testing, costs, affected people, and failure with own-word answers or honest unknowns.",
+    "The actual five-to-seven-minute delivery and why the work matters, tests, changes, and limits are recorded without AI speaking for you.",
+    "The presentation, cue sheet, visual order, and question-response notes are saved with the continuing project."
+  ],
+  "handoff": "Carry the supported demonstration, evidence, human decisions, and honest limits into Lesson 6.5 — Position the Work and Choose the Next Opportunity. Keep professional claims tied to what you can show and explain.",
+  "media_transcripts": {
+    "introduction": "Welcome to Journey Six, Lesson Four: Demonstrate the Project and Answer Questions. Bring forward the finished artifact, evidence, responsible practice statement, and honest limits you reviewed in Lesson Three. Today, you will prepare a five-to-seven-minute demonstration that another person can follow. Use the STORY Presentation Path: situation, target, operations, result, and your judgment. Explain the need and the intended result. Show the important steps in the artifact, identify where AI helped, and make your human decisions visible. Present only results your evidence supports, with the limits that matter to the audience. A useful demonstration shows both a normal request and an exception that needs human review. It explains what changed after testing instead of reciting every prompt you used. Choose a small number of clear visuals or a live demonstration, and keep all displayed information safe to share. You will create a timed outline, a one-page cue sheet, and a simple visual sequence. Rehearse once, record the difficult moments, and prepare three likely questions about your work. Then revise and rehearse the weakest section. AI can act as a practice reviewer and ask useful questions. It must not invent results or answer on your behalf. Your task is to explain why the project matters, what you tested, what changed, and what remains limited in your own words. Open the connected workbook and let us prepare your demonstration. Let's begin.",
+    "chapters": [
+      "Bring forward the capstone you reviewed in Lesson Six Point Three. Keep its current version, evidence, responsible practice statement, AI-role disclosure, and remaining limits together. Today you will demonstrate that work and answer questions about it. Your audience needs to understand the result and the decisions behind it. They do not need a recital of every prompt, draft, or tool you used.\n\nUse the STORY Presentation Path: situation, target, operations, result, and your judgment. Situation explains the need and the people affected. Target explains what your bounded project was meant to achieve. Operations shows the important steps in the artifact, including AI assistance and human review. Result presents what the retained evidence supports. Your judgment explains the decisions, corrections, limits, and next steps you own. These five parts help you tell a coherent account without claiming more than you established.\n\nPlan a five-to-seven-minute demonstration. A useful starting outline lasts six minutes: forty-five seconds for situation, thirty seconds for target, two minutes and fifteen seconds for operations, one minute and fifteen seconds for result, and one minute and fifteen seconds for your judgment. Those are planning allowances, not evidence that your delivery took six minutes. Time a real rehearsal and adjust the parts to suit your work. Preserve enough time to show the artifact and explain a limit.\n\nOur supplied fictional case continues the intake tabletop. The situation is an unclear request moving toward delivery. The target is a reviewable intake summary that leaves missing information visible and blocks delivery without human approval. Operations shows a complete request and an exception with a missing date or absent approval. Result refers to the retained fictional tests and the revision that stopped the draft from looking ready when approval was absent. Your judgment explains why the approval gate stayed, what AI helped draft, and why a tabletop result does not establish live performance.\n\nChoose one useful piece of evidence for each important claim. Place the relevant version or test reference beside the part of the outline where you will use it. If a claim still lacks support, remove it, qualify it, or keep it pending. An explanation becomes stronger when the audience can distinguish what you observed from what you hope to do next.\n\nPause and sketch the five parts for your own project. Write the need, intended result, two paths you will show, supported result, and one decision or limit you will explain. Use your own words. AI can ask practice questions about the outline, but you will deliver the demonstration and answer for the work yourself.",
+      "A demonstration makes the artifact visible. Choose a small number of clear visuals or a live walkthrough that helps the intended audience follow the important steps. The visual sequence should serve your explanation. A screen full of conversation history can hide the result. A simple sequence can show the problem, the current artifact, the normal path, an exception, and the evidence or limit that matters.\n\nBegin the operations section with a normal request. Show the permitted input, the relevant step, the output, and the human review point. Explain where AI supported the work and where a person made a decision. Then show an exception requiring review. An exception is a situation that cannot safely proceed in the same way as the normal request. It might involve a missing date, unclear permission, contradictory information, or a result that fails a required check. Make the pause and correction route visible.\n\nIn the supplied fictional intake tabletop, a complete request produces a draft summary for review. Complete information alone does not authorize delivery. A person must still inspect the draft and record approval. The second path has no delivery date, so the summary keeps the date pending and asks for clarification. A separate absent-approval check keeps delivery blocked. The presentation shows these conditions instead of treating a polished summary as evidence that it can be sent. It identifies the correction after testing: the approval status now appears in words and the gate remains visible beside the output.\n\nExplain the before-and-after change with a meaningful reference. Show the earlier weakness, the revised version, the affected check, and the observation your record actually contains. A fictional test is useful for explaining a design when labeled accurately. It does not establish real customer delivery, measured savings, or organizational approval. Your own demonstration must use the observations and permissions you actually have.\n\nCheck every displayed item before rehearsal. Look for private names, contact details, account information, confidential documents, hidden tabs, and material you do not have permission to share. Use permitted, fictional, or appropriately redacted material. Check that a replacement example still demonstrates the behavior you need to explain. Keep the readable labels and the important meaning available in words; do not depend only on color or a tiny screenshot.\n\nPrepare a safe fallback if your chosen live step is unreliable. Retained screenshots or a recorded sequence can explain a previously observed result when you identify what they show. Do not call that fallback a new live test. Save the visual order and the evidence reference for each item. Rehearse opening the exact version you will show so the audience sees the work your claims refer to.",
+      "Turn your STORY outline into a one-page cue sheet. A cue sheet contains short reminders you can glance at while explaining the work. It is not a full script to read word for word. Include the five section names, their planned time allowances, the visual or action to open, the evidence reference you need, and the limit or human decision you must not omit. Use a few clear lines per section so you can find your place easily.\n\nFor the supplied fictional tabletop, the operations cue reads: open the reviewed intake version; show complete input; point to the draft and human review; open missing-date input; show Pending and the clarification question; show absent approval and the blocked delivery gate. The result cue points to the retained three-check record and the before-and-after revision. The judgment cue says: explain why the author kept the gate; identify AI drafting support; state that live deployment remains unestablished. These are supplied teaching cues, not evidence that you performed those actions.\n\nRehearse once with a timer and the actual visual sequence. Speak the explanation aloud. Record the total time and the section or moment where you became unclear, lost your place, spent too long, or could not open the evidence. Write what happened, not simply that the rehearsal went well. A six-minute plan might produce an eight-minute first attempt. That is useful information: locate the repetition or difficult transition and revise it while preserving the important evidence and limit.\n\nUse the approved AI request to ask for professional review questions about your STORY outline. It asks about evidence, human decisions, limits, and next steps, and tells AI not to invent results or answer on your behalf. Supply a privacy-safe outline. Treat the questions as prompts to inspect your work. Record useful questions and reject any suggestion that assumes a result, approval, credential, or measurement you do not have.\n\nPrepare three likely questions. Make sure your preparation covers assumptions, testing, costs, affected people, and what failed. One question can connect several topics. For example: What assumption did you test, what failed, and what changed? Who might be affected and who must approve a correction? What costs or permissions would need checking before a wider use? Write your own answer with a meaningful evidence reference or a clear statement of what remains unknown. Do not turn an unmeasured cost into a promised saving.\n\nRevise the weakest section and rehearse it again. Then check the complete demonstration if the change affects overall timing or order. Retain the first observation, the revision, and the new observation. Your goal is a clear five-to-seven-minute demonstration with truthful answers, not a polished claim that hides the difficult moment.",
+      "When someone asks a question, listen for what they need to understand. Give a direct answer, point to the relevant evidence, explain the limit, and name a next step when the answer is not yet established. You can pause to inspect the record. You do not need to bluff or ask AI to speak for you. Acknowledging a limit is part of a credible explanation.\n\nConsider the supplied fictional question: Does the complete request prove the system can deliver customer work? A truthful answer says no. The retained tabletop record shows a draft summary and a human approval condition. It does not establish real delivery or authority to use customer records. Before any wider use, the relevant people would need to establish permission, suitable inputs, responsibility, and appropriate testing. The answer separates the demonstrated behavior from a proposed next step.\n\nAnother question asks what failed and what changed. The supplied author explains that an earlier draft made an unapproved result look ready. The revised artifact uses written states, retains the delivery gate, and links to the affected test record. The author can show the correction and explain the human decision to keep review visible. This is more useful than listing every prompt. It shows the connection between a weakness, a correction, and the evidence that supports the revised claim.\n\nQuestions about costs or affected people also need honest boundaries. State which costs were measured and which remain estimates or unknowns. If none were measured, say so. Identify whose information, work, or decisions could be affected and the actual review route. Do not invent another person's approval or assume that your training result establishes permission in their setting. Record an unanswered question and the evidence or conversation needed to resolve it.\n\nComplete the applied check in your own words. Deliver a five-to-seven-minute demonstration. Answer why the project matters, what was tested, what changed, and what remains limited without relying on AI to speak for you. Record the actual delivery time and the location of the safe presentation or recording, as appropriate to your setting. Keep presentation evidence separate from future plans. If you are outside the timing range or cannot support a central answer, revise the relevant section and check it again before calling the demonstration complete.\n\nSave the timed outline, one-page cue sheet, simple visual sequence, sharing check, rehearsal observations, revision, and three question-response notes with the continuing project. Complete the matching workbook section. Carry the supported explanation into Lesson Six Point Five, where you will position the same work for a realistic opportunity. The claims you use there must remain tied to the evidence and limits you have demonstrated here."
+    ],
+    "demonstrations": [
+      "This is a supplied fictional intake tabletop, not a live business result. The six-minute plan starts with forty-five seconds for the situation and thirty seconds for the target. The need is a reviewable request. The target keeps missing information visible and delivery blocked without human approval. Operations takes two minutes and fifteen seconds: show complete input, then an exception. Result takes one minute and fifteen seconds: open the retained checks and explain the correction. Your judgment uses the final one minute and fifteen seconds: explain AI support, the human approval decision, and the limit on live use. These times are planning allowances. A real rehearsal must establish your actual delivery time. Save the outline beside the current artifact and evidence references.",
+      "In this supplied fictional sequence, the normal request includes the needed intake details. Show the draft summary and the human review point. Complete input does not itself authorize delivery. Next, show a request with the delivery date missing. The date stays Pending, and the artifact asks a clarification question rather than inventing a date. Then point to the absent-approval check: delivery stays blocked until a person records approval. Explain what changed after testing. The revised version uses written status labels and keeps the gate visible beside the output. Open the retained check reference. This is a labeled tabletop explanation. It does not establish live customer delivery, measured savings, or organizational permission. Use privacy-safe material and evidence you can actually show.",
+      "This supplied fictional rehearsal uses a one-page cue sheet with STORY headings, time allowances, visual actions, and evidence references. The first attempt lasts eight minutes and twenty seconds. The operations section repeats too much prompt history, and the speaker cannot quickly find the exception record. The revision removes the prompt recital, places the correct evidence reference beside the exception cue, and keeps the human approval condition. The author rehearses that weakest section again, then checks the full order and timing. In this supplied example, the second complete rehearsal lasts six minutes and ten seconds. Those are fictional teaching observations, not your rehearsal results. Record your own actual times, difficult moment, correction, and new observation. Clear delivery must preserve supported results and honest limits.",
+      "Prepare three likely questions about the supplied fictional intake tabletop. First: what assumption was tested, what failed, and what changed? Point to the three retained checks and the revised approval state. Second: who is affected and who reviews a correction? Identify the fictional project author and the review route; real organizational roles remain unestablished. Third: what costs and permissions need checking before wider use? No live costs or savings were measured, and no customer deployment is authorized by this training example. A good answer states what the evidence supports, identifies the limit, and names the next check. AI may ask practice questions. It must not invent results or answer for you. Deliver your own explanation and save three question-response notes with the presentation."
+    ]
+  },
+  "editorial_notes": {
+    "status": "Protected founder review; existing learner publication status remains draft.",
+    "media": "Same approved website recording in 1920×1080 landscape and saved Journey Six voice; four guided audio chapters and four captioned demonstrations.",
+    "source": "ACA_Phase_Two_Six_Week_Curriculum_Master.pdf v2.0, October 4, 2026, Journey Six Lesson 6.4, page 45.",
+    "example_data": "Supplied fictional tabletop and rehearsal observations. No learner delivery, live outcome, measurement, permission, or certification is invented."
+  }
+}

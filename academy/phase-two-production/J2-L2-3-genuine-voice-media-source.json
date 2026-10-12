@@ -1,0 +1,51 @@
+{
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_chapters": [
+    {
+      "title": "Review personally under every CLEAR category",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=15384ed7-cd11-4d88-94bd-301b1d823261.wav",
+      "duration_seconds": 137.2473469387755
+    },
+    {
+      "title": "Compare AI critique with your own judgment",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=19b67ace-8245-4fd5-8b5b-5624c747fcba.wav",
+      "duration_seconds": 159.21632653061224
+    },
+    {
+      "title": "Verify a material claim against an approved source",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=1bbd1807-548d-475c-a72d-d719a3c67f32.wav",
+      "duration_seconds": 157.59673469387755
+    },
+    {
+      "title": "Revise, obtain human approval, and retain the evidence",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=f56f6069-1837-4128-b867-346365a11cd1.wav",
+      "duration_seconds": 178.8604081632653
+    }
+  ],
+  "demonstrations": [
+    {
+      "title": "Apply all five CLEAR questions",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=5621930a-b37f-4f95-9db7-9ae55454a9d8.wav",
+      "duration_seconds": 21.91673469387755,
+      "key": "01-review"
+    },
+    {
+      "title": "Compare critique without treating it as proof",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=2662d3bc-b14e-4978-83d5-1ee80e5a022a.wav",
+      "duration_seconds": 19.644081632653062,
+      "key": "02-critique"
+    },
+    {
+      "title": "Check the claim against its source",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=146b622f-e928-4242-92ea-469f3a4934ce.wav",
+      "duration_seconds": 19.461224489795917,
+      "key": "03-source"
+    },
+    {
+      "title": "Revise and preserve the approval boundary",
+      "audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/8NNnQuXc0FKua22CvviM/id=17ec4a15-8d5f-432d-809b-44174f15f506.wav",
+      "duration_seconds": 26.801632653061226,
+      "key": "04-revise"
+    }
+  ]
+}

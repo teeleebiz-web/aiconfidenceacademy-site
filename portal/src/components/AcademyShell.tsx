@@ -69,7 +69,7 @@ export function AcademyShell({
           <a href="/" onClick={closeMenu}>ACA Website</a>
         </nav>
 
-        <span className="academy-review-badge">Owner review</span>
+
       </header>
 
       <div id="academy-content" tabIndex={-1}>{children}</div>

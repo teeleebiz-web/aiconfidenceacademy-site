@@ -1,0 +1,85 @@
+.phase-two-review{min-height:100vh;background:#f8f3e9;color:#102d4f}
+.p2-site-header{background:#102d4f;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.05rem clamp(1rem,4vw,4rem)}
+.p2-site-brand{display:flex;align-items:center;gap:.85rem;color:#fff;text-decoration:none}
+.p2-site-brand img{border-radius:50%}
+.p2-site-brand span{display:grid;gap:.12rem}
+.p2-site-brand strong{font-family:Georgia,serif;font-size:1.2rem}
+.p2-site-brand small{color:#d4b36b}
+.p2-review-flag{color:#f4d69d;border:1px solid #d4b36b;border-radius:30px;padding:.55rem 1rem;font-size:.78rem;font-weight:800;letter-spacing:.02em}
+.p2-page{max-width:1240px;margin:0 auto;padding:clamp(1.2rem,3vw,3rem)}
+.p2-state{margin:3rem auto;max-width:750px;padding:3rem;background:#fff;border:1px solid #dfd1b6;border-radius:24px}
+.p2-state a{display:inline-block;margin-top:.8rem;color:#163f67;font-weight:750}
+.p2-overview{padding:clamp(1.5rem,4vw,3rem);border-radius:24px;background:linear-gradient(115deg,#102d4f,#1b4567);color:white;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2rem;align-items:center}
+.p2-overview h1{max-width:700px}
+.p2-overview .eyebrow{color:#e8c78e}
+.p2-overview>div>p{max-width:800px}
+.p2-overview .p2-review-note{font-size:.94rem;color:#e1e9ef;margin-bottom:0}
+.p2-totals{border:1px solid #c8a86b;padding:1.3rem 1.7rem;border-radius:15px;display:grid;text-align:center;gap:.3rem;min-width:172px}
+.p2-totals strong{font:700 3rem Georgia,serif;color:#f0d49b}
+.p2-totals small{color:#e9dcc6;max-width:160px}
+.p2-journey-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1.6rem 0}
+.p2-journey-choice{display:flex;flex-direction:column;align-items:flex-start;gap:.3rem;min-height:90px;border-radius:15px;text-align:left;padding:1rem 1.1rem;background:#fff;border:1px solid #d7d1c7;color:#102d4f;box-shadow:0 2px 8px rgba(16,45,79,.05);font-weight:500}
+.p2-journey-choice:hover,.p2-journey-choice.chosen{background:#173b5b;color:#fff;transform:none;border-color:#bc9448}
+.p2-journey-choice small{font-size:.76rem;color:#a47b39;font-weight:850}
+.p2-journey-choice.chosen small,.p2-journey-choice:hover small{color:#eed198}
+.p2-journey-choice span{font-weight:750;line-height:1.35}
+.p2-journey-panel{background:#fffdf7;padding:clamp(1.4rem,3vw,2.2rem);border:1px solid #ddcfb4;border-radius:22px;display:flex;justify-content:space-between;gap:2rem;margin-bottom:1.8rem}
+.p2-journey-panel h2{max-width:680px}
+.p2-journey-panel p{max-width:78ch}
+.p2-journey-evidence{padding-top:.8rem;border-top:1px solid #e3d8c4;font-size:.92rem}
+.p2-journey-evidence p{margin-bottom:.45rem}
+.p2-media-count{align-self:flex-start;min-width:180px;display:grid;gap:.5rem;padding:1rem;background:#f0e8d7;border-radius:14px;font-weight:750}
+.p2-media-count small{color:#62717c;font-size:.76rem;line-height:1.4;font-weight:500}
+.p2-content-layout{display:grid;grid-template-columns:minmax(230px,300px) minmax(0,1fr);gap:1.5rem;align-items:start}
+.p2-lesson-nav{background:#fff;border:1px solid #ddd3c5;border-radius:18px;padding:1.2rem;display:grid;gap:.5rem}
+.p2-lesson-nav h2{font-size:1.3rem;margin:.2rem 0 .65rem}
+.p2-lesson-nav button{text-align:left;border:1px solid transparent;border-radius:12px;background:#f6f2e9;color:#102d4f;display:grid;gap:.24rem;padding:.85rem .9rem;line-height:1.35}
+.p2-lesson-nav button:hover,.p2-lesson-nav button[aria-current=page]{transform:none;background:#e8ddc7;border-color:#a77b32;color:#102d4f}
+.p2-lesson-nav button small{font-size:.72rem;color:#806028}
+.p2-lesson-article{background:#fff;border:1px solid #ddd3c5;border-radius:20px;overflow:hidden}
+.p2-lesson-article>header{background:#102d4f;color:#fff;padding:clamp(1.5rem,4vw,2.7rem)}
+.p2-lesson-article>header .eyebrow{color:#ebc783}
+.p2-lesson-article>header h2{font-size:clamp(1.75rem,3.4vw,2.6rem)}
+.p2-lesson-article>header p:last-child{color:#e0e7e9;margin:0}
+.p2-media-placeholder{display:flex;align-items:center;gap:1.3rem;margin:1.4rem 1.6rem;padding:1.4rem;background:#fbf4e7;border:1px dashed #ae893e;border-radius:17px}
+.p2-media-placeholder strong{font-size:1.08rem}
+.p2-media-placeholder p{margin:.25rem 0;color:#3e576b}
+.p2-media-placeholder small{color:#7c5c24}
+.p2-media-icon{background:#102d4f;color:#f0d49b;width:72px;height:72px;border-radius:18px;display:grid;place-items:center;flex:none;font-size:1.9rem}
+.p2-teaching-sections{padding:0 clamp(1.35rem,3vw,2.3rem)}
+.p2-section{border-top:1px solid #e5e1d8;padding:1.5rem 0}
+.p2-section-number{color:#a9803b;font-weight:850;font-size:.75rem;letter-spacing:.12em;margin:0 0 .2rem}
+.p2-section h3{font-size:1.45rem;margin:.1rem 0 .6rem}
+.p2-section p{max-width:75ch}
+.p2-ai-request{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.7;border-left:4px solid #bd9451;background:#f6f2e9;padding:1rem 1.2rem;border-radius:0 10px 10px 0}
+.p2-lesson-end{background:#f6f1e7;border-top:1px solid #e1d4c0;padding:1.5rem 2rem}
+.p2-lesson-end p{font-size:.86rem;color:#4e6273}
+.p2-lesson-end button{margin-top:.4rem}
+.p2-site-footer{text-align:center;color:#e6d0a8;background:#0a223b;padding:1.8rem 1rem;font-size:.85rem;margin-top:2rem}
+@media(max-width:880px){.p2-journey-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-content-layout{grid-template-columns:1fr}.p2-lesson-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-lesson-nav h2{grid-column:1/-1}.p2-journey-panel{flex-direction:column}.p2-media-count{width:100%}}
+@media(max-width:600px){.p2-review-flag{font-size:.67rem;padding:.45rem .7rem}.p2-overview{grid-template-columns:1fr}.p2-totals{text-align:left;grid-template-columns:auto 1fr;align-items:center}.p2-totals small{grid-column:1/-1}.p2-journey-nav,.p2-lesson-nav{grid-template-columns:1fr}.p2-journey-choice{min-height:unset}.p2-media-placeholder{margin:1rem;align-items:flex-start}.p2-media-icon{width:50px;height:50px}}
+
+/* Isolated review sign-in reuses the Academy's existing authentication methods. */
+.p2-sign-in-form{display:grid;gap:.65rem;max-width:480px;margin:1.4rem 0 .8rem}
+.p2-sign-in-form label{font-weight:750;color:#173b5b}
+.p2-sign-in-form input{font:inherit;padding:.85rem 1rem;border:1px solid #a5a9ac;border-radius:9px;background:white;color:#102d4f;max-width:100%}
+.p2-sign-in-form input:focus-visible,.p2-auth-switch:focus-visible{outline:3px solid #b88b3f;outline-offset:3px}
+.p2-sign-in-form button{margin-top:.4rem}
+.p2-auth-switch{background:transparent;color:#17496c;padding:.55rem 0;border:0;text-decoration:underline;text-underline-offset:3px}
+
+/* Published curriculum pacing targets, displayed only in protected review. */
+.p2-lesson-rhythm{margin:0 1.6rem 1.6rem;padding:1.25rem 1.4rem 1.45rem;border-radius:16px;border:1px solid #ddcfb4;background:#fdfbf6}
+.p2-lesson-rhythm .eyebrow{font-size:.7rem;color:#a27b3c;font-weight:850;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .35rem}
+.p2-lesson-rhythm h3{font:700 1.25rem Georgia,serif;margin:.1rem 0 .35rem;color:#102d4f}
+.p2-lesson-rhythm p:not(.eyebrow){font-size:.84rem;color:#506678;margin:.3rem 0 1.2rem}
+.p2-lesson-rhythm ol{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;margin:0;padding:0}
+.p2-lesson-rhythm li{display:flex;flex-direction:column;gap:.45rem;border:1px solid #e4d6bd;border-radius:10px;padding:.85rem .75rem;background:#fff;line-height:1.4}
+.p2-lesson-rhythm li strong{color:#936e32;font-size:.85rem}
+.p2-lesson-rhythm li span{font-size:.84rem;color:#102d4f}
+@media(max-width:900px){.p2-lesson-rhythm ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:500px){.p2-lesson-rhythm{margin:0 1rem 1rem}.p2-lesson-rhythm ol{grid-template-columns:1fr 1fr}}
+
+.p2-review-view-toggle{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.25rem 0}
+.p2-review-view-toggle button{font:inherit;font-weight:750;color:#173d5c;background:#fff;border:1px solid #c9b58f;border-radius:9px;padding:.8rem 1.05rem}
+.p2-review-view-toggle button[aria-pressed=true]{background:#173d5c;color:#fff;border-color:#173d5c}
+.p2-review-view-toggle button:focus-visible{outline:3px solid #a9884f;outline-offset:3px}

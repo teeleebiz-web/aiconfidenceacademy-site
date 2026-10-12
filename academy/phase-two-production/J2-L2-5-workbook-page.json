@@ -1,0 +1,233 @@
+{
+  "number": 5,
+  "lesson_id": "2.5",
+  "kicker": "JOURNEY TWO / LESSON 2.5",
+  "title": "Build a Bounded Working Prototype",
+  "blocks": [
+    {
+      "type": "heading",
+      "text": "Bound one complete path"
+    },
+    {
+      "type": "text",
+      "text": "A prototype is a working sample used to learn whether a concept is useful. Continue the charter, workflow map and bounded solution concept from earlier lessons. A prompt-supported document process, approved template, small knowledge assistant using approved material or authorized sandbox can be sufficient. Choose one path you can run from input to a human-reviewed result."
+    },
+    {
+      "type": "text",
+      "text": "Define the authorized input, expected result, review owner and completion signal. Write acceptance criteria before running the sample. Keep production accounts, customer actions and consequential transactions outside an unapproved experiment."
+    },
+    {
+      "type": "heading",
+      "text": "Baseline and use AI"
+    },
+    {
+      "type": "text",
+      "text": "Use the BUILD Evidence Cycle: baseline, use AI, inspect, lead and demonstrate. Preserve a comparable current artifact using the same input and criteria. If none exists, create a small manual baseline and label it. Record observed starting results without inventing timing or performance claims."
+    },
+    {
+      "type": "text",
+      "text": "Create the working artifact: reusable request and output template, or material needed to reproduce an authorized sandbox run. Use your own AI assistant with the approved request and sanitized project context. Preserve the exact request actually used, input, tool, date and actual output. Teaching illustrations are separate from your observed run."
+    },
+    {
+      "type": "heading",
+      "text": "Inspect and lead a material revision"
+    },
+    {
+      "type": "text",
+      "text": "Check each important output claim against the input and each acceptance criterion against the actual result. Record met, not met or uncertain with supporting evidence. Missing information must remain visible, and human ownership must be clear."
+    },
+    {
+      "type": "text",
+      "text": "Choose one material change that addresses a finding. Preserve the original artifact and output, revise the request or template, and run the same normal input again. Retain the revised artifact, exact request and actual output. Compare using the same criteria; make only improvement claims supported by those results."
+    },
+    {
+      "type": "heading",
+      "text": "Demonstrate and preserve evidence"
+    },
+    {
+      "type": "text",
+      "text": "Show the working artifact, normal input, revised result and human review point. Explain what the prototype does, what it does not do and what remains uncertain. A description alone does not satisfy completion. One normal case does not establish behavior under errors or exception paths."
+    },
+    {
+      "type": "text",
+      "text": "Check usability, factual support and ownership. Save the working artifact, baseline, test evidence, before-and-after revision and demonstration notes in the continuing Project Record. Label simulated inputs and results. Keep unresolved findings visible and retain earlier project evidence."
+    },
+    {
+      "type": "heading",
+      "text": "A proposal outline from fictional workshop specifications"
+    },
+    {
+      "type": "text",
+      "text": "FICTIONAL TRAINING EXAMPLE: The supplied brief specifies twelve participants, one ninety-minute workshop and an editable handout. It supplies no approved price, delivery date or final scope confirmation. The prompt-supported prototype organizes an outline and highlights missing information. A proposal reviewer verifies scope and prices before any real proposal is issued. The before-and-after below is a scripted teaching illustration, not an observed learner or live AI run."
+    },
+    {
+      "type": "note",
+      "theme": "gold",
+      "title": "Fictional before-and-after illustration",
+      "text": "SCRIPTED FICTIONAL COMPARISON — Baseline: manual outline of the supplied workshop details. First illustrated output: 12 participants; 90-minute workshop; editable handout; fees unpriced; date unconfirmed; reviewer and draft status omitted. Material revision: require an owner/status review section. Revised illustrated output: DRAFT AWAITING REVIEW. Supplied scope: 12 participants, one 90-minute workshop, editable handout. Missing information: approved price, delivery date and final scope confirmation. Review owner: proposal reviewer, responsible for scope and price verification before issue. No real proposal is issued. Use this illustration to inspect your own actual run; it is not your test evidence."
+    },
+    {
+      "type": "heading",
+      "text": "Practice with your own AI assistant"
+    },
+    {
+      "type": "note",
+      "theme": "gold",
+      "title": "Approved prototype request",
+      "text": "Help build a minimal working sample for this authorized scope using these inputs and acceptance criteria. Flag missing information and assumptions. Keep approval with me. Project: [charter and map]."
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-workflow",
+      "label": "Existing project charter and workflow map",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-concept",
+      "label": "Bounded solution concept carried from Lesson 2.4",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-scope",
+      "label": "One narrow path — allowed actions and excluded actions",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-inputs",
+      "label": "Normal-case input — fictional or authorized material",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-criteria",
+      "label": "Acceptance criteria defined before the run",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-owner",
+      "label": "Human review owner and approval retained",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-completion",
+      "label": "Completion signal for the reviewed result",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-baseline",
+      "label": "Comparable baseline artifact and observed starting result",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-artifact",
+      "label": "First working artifact — reusable request/template text or accessible authorized reference",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-runContext",
+      "label": "Run context — tool, date and input classification",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-actualRequest",
+      "label": "Exact request actually used for the first normal run",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-firstOutput",
+      "label": "Actual first-run output",
+      "hint": "Preserve the actual output from your own run, using fictional or authorized material.",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-inspection",
+      "label": "First inspection — criterion, result and supporting evidence",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-revision",
+      "label": "One material revision and the finding it addresses",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-revisedArtifact",
+      "label": "Revised working artifact — text or accessible authorized reference",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-revisedRequest",
+      "label": "Exact request actually used for the revised normal run",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-revisedOutput",
+      "label": "Actual revised output using the same normal input",
+      "hint": "Preserve the actual output from your own run, using fictional or authorized material.",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-comparison",
+      "label": "Before-and-after comparison against the same criteria",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-demonstration",
+      "label": "Demonstration — steps actually used, reviewed result and human control point",
+      "hint": "",
+      "lines": 7
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-limits",
+      "label": "What the prototype does, does not do and what remains uncertain",
+      "hint": "",
+      "lines": 4
+    },
+    {
+      "type": "field",
+      "id": "p2-j2-5-notes",
+      "label": "Personal study notes and questions",
+      "hint": "",
+      "lines": 6
+    },
+    {
+      "type": "note",
+      "theme": "gold",
+      "title": "Carry the working artifact into Lesson 2.6",
+      "text": "Carry your working artifact, baseline, normal-run evidence and material revision into Lesson 2.6: Test Errors and Exception Paths. The next lesson opens according to its release schedule."
+    }
+  ]
+}

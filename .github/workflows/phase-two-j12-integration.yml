@@ -1,0 +1,25 @@
+name: Phase Two Lesson 1.2 integration checks
+on:
+  push:
+    branches:
+      - phase-two-six-journey-owner-review
+    paths:
+      - 'portal/src/phaseTwo/PhaseTwoNeedPractice.tsx'
+      - 'portal/src/phaseTwo/phaseTwoNeedPractice.css'
+      - 'portal/src/phaseTwo/PhaseTwoGuidedMedia.tsx'
+      - 'portal/src/phaseTwo/PhaseTwoProducedLessonReview.tsx'
+      - '.github/workflows/phase-two-j12-integration.yml'
+permissions:
+  contents: read
+jobs:
+  verify-lesson:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Type-check, test learner portal and build
+        run: npm run typecheck && npm run test && npm run build

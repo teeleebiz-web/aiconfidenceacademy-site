@@ -1,0 +1,110 @@
+{
+  "chapters": [
+    {
+      "title": "Choose the message and the action it must support",
+      "transcript": "Start with the workflow you mapped in Lesson Two Point One. Look at the place where someone needs information before work can continue. Perhaps a customer must supply a missing detail. A manager must review a draft. A colleague needs a clear handoff. Your communication belongs at that point in the work.\n\nBefore writing, identify the purpose, the audience, the channel, and the response you need. Purpose means why this message exists. Audience means the person who will read or hear it. Channel means how it reaches that person, such as email, a short phone message, a report, or an internal note. Intended response means what the person should be able to do after receiving it.\n\nThese choices affect what belongs in the message. A customer may need the next step in plain language. A manager may need the reason a request is waiting and who owns the follow-up. A colleague may need a source link and a specific review question. They do not necessarily need the same amount of detail.\n\nOur continuing fictional service business has received an estimate request. Two details are missing: the room dimensions and the preferred appointment date. The approved process says that, after complete information arrives, the team will review the request within two business days. It does not promise a completed estimate within that time. The response we need is for the customer to send the missing details.\n\nConsider a first draft: Thank you for your valued inquiry. Our dedicated team is carefully considering your requirements and will be in touch in due course. It sounds courteous, but it does not tell the customer what is missing, what to do, or what happens next. The customer may wait while the team waits for the customer.\n\nA clearer message would name the two details and distinguish review time from delivery time. Courtesy still matters. We can thank the customer, explain the need without blame, and give a direct next action. Clarity does not require a cold or abrupt tone.\n\nNow identify one communication your own project genuinely needs. Use the same project record and workflow. Write who receives it, what that person already knows, what they need to know, and what action should follow. If the need is not yet clear, use AI to organize questions or compare possible approaches before asking for a final draft. Do not ask it to fill a gap with invented information."
+    },
+    {
+      "title": "Direct the draft with facts, limits, and your voice",
+      "transcript": "In Journey One, you used the Professional Request Framework: purpose, audience, context, task, constraints, and quality. Today, apply those same six parts to a communication. You do not need a new framework. You need to give the existing one a specific job.\n\nFor the fictional estimate request, the purpose is to collect missing information. The audience is a customer who has already asked for an estimate. The context is that the room dimensions and preferred appointment date are missing. The task is to draft a short email. The constraints are to use only supplied facts, avoid prices and appointment promises, and preserve the distinction between reviewing a request and issuing an estimate. Quality means the customer can identify the next action on the first reading.\n\nGive AI a short sample of the voice you want. For example: Thank you for contacting us. Please send the details below so we can review your request. That is plain, respectful language. It provides useful direction without asking the model to imitate a private person or copy a long document you are not permitted to share.\n\nThe approved request in your workbook says: Draft format for audience to support response. Use only the supplied facts and voice sample. Ask about missing information. Keep these constraints and quality requirements: brief. Replace the placeholders with your actual choices. Share only information you are authorized to use. Fictional practice data must remain labeled fictional.\n\nA strong instruction cannot make unsupported facts true. If the expected response time is unknown, the model should ask for it or mark it for confirmation. If it invents a price, a guarantee, or a date, remove that claim and find the authorized source before using it. Do not repair an invented promise merely by making it sound less definite.\n\nKeep your first request and first draft. Then improve the request where the output reveals a missing direction. Perhaps the message omitted the action, used unfamiliar language, or buried the condition at the end. Tell the assistant exactly what needs revision and why. Ask it to preserve confirmed facts while improving the wording.\n\nYou remain the author of the direction and the owner of the decision. An attractive draft is material to examine. It is not permission to send a message or make a commitment. Read it as the recipient would, compare its claims with your source, and keep human approval in the workflow."
+    },
+    {
+      "title": "Adapt the communication without changing its meaning",
+      "transcript": "Once your first communication is useful, prepare an adaptation for another audience or channel. Adaptation means changing the presentation to fit the recipient or medium while keeping the underlying facts intact. A shorter version is not automatically a faithful version.\n\nIn our fictional customer email, we might write: Thank you for your estimate request. Please reply with the room dimensions and your preferred appointment date. After we receive complete information, our team will review your request within two business days. We will then confirm the next step. No appointment is booked by this message.\n\nNow imagine an internal note for the manager: The estimate request is waiting for room dimensions and a preferred appointment date. The intake owner has requested both. The two-business-day review period begins when complete information is received. No appointment has been confirmed. The manager needs status, ownership, and the condition that controls the review period. The customer needs the details to send and what happens afterward. The facts agree, even though the presentation differs.\n\nYou could also adapt the email into a short phone message. Brevity may require fewer explanations, but it must not remove a material condition. Saying we will complete your estimate in two days changes both the result and the timing. The source promised review of a complete request within two business days. It did not promise a completed estimate within two calendar days.\n\nThe same care applies to summaries. A summary is a shorter account of source material. Read it against the original, especially where an exception, condition, uncertainty, or responsibility affects someone's decision. A summary that omits subject to approval can create the appearance of an approved commitment. A report that says customer confirmed when the customer only asked a question changes the status of the work.\n\nAsk AI to identify the important facts that must survive an adaptation. Then check its list yourself. Keep names, amounts, dates, status, responsibilities, conditions, and limits accurate wherever they matter. Wording may change. Their factual meaning must not.\n\nFor your project, choose a second audience or channel for a real reason. Explain what this recipient needs that differs from the first. Produce the adaptation, then compare the two versions line by line where a claim matters. Mark anything that still needs a source check. Do not let a shorter or more confident sentence silently expand the promise."
+    },
+    {
+      "title": "Check the recipient experience and preserve your evidence",
+      "transcript": "Now test the communication from the recipient's point of view. After one reading, can the person tell what this is about, what they should do, what information they need, and what happens next? If the answer depends on guessing, revise the draft.\n\nRead the message aloud. Notice where a sentence delays the important action, repeats a thought, or sounds unlike the person or organization sending it. Plain language should still carry the necessary substance. Removing detail is helpful only when the remaining text preserves what the recipient needs to decide or act.\n\nFor example, a project report might say that testing is progressing satisfactorily. A useful revision could name the test completed, the failure still open, and the decision required from the reviewer. An internal handoff might say please handle this soon. A clearer version names the receiving owner, the item to review, and an approved deadline. If a deadline has not been approved, ask about it rather than inventing urgency.\n\nYou can ask AI to role-play a reader and identify unclear wording. Label that response as simulated feedback. The model cannot prove that a real customer understood the message. Where an authorized person can review it, invite them to explain the next action in their own words. Do not share private material or contact anyone without the proper permission. For this lesson, a careful source comparison and your own explanation are valid practice evidence.\n\nCheck commitments before treating the communication as usable. Is each promised date supported? Does review mean review, or has the draft changed it to delivery? Does the sender have authority to make the statement? Have you marked unresolved claims instead of hiding them in smooth language? Keep outward sending and final approval with the appropriate person.\n\nSave the original communication, your improved request, the revised draft, the second version, and a short explanation of the material changes in the same continuing Project Record. Identify one wording change that helps the recipient act. Also identify one sentence whose factual meaning must remain unchanged across versions, and name the source supporting it.\n\nUse the workbook for your exercises and personal notes. Use the Project Record for the evidence of the decisions you made. They support the same work. You do not need to create another project or copy every AI conversation.\n\nIn Lesson Two Point Three, you will apply the full CLEAR quality review to this draft. Keep any unresolved claim visible so the next review has something specific to verify, qualify, or remove. Your achievement today is a useful communication you can explain, compare with its source, and improve with care."
+    }
+  ],
+  "demos": [
+    {
+      "key": "01-purpose",
+      "title": "Locate the missing next action",
+      "transcript": "This fictional first draft thanks the customer but never names the two missing details. The reader cannot tell what to do. We identify the purpose before revising: request the room dimensions and preferred appointment date. The message belongs at the incomplete-input handoff from Lesson Two Point One.",
+      "scenes": [
+        [
+          "A polite draft that leaves the reader waiting",
+          "\u201cOur team will be in touch in due course.\u201d",
+          "Missing: required details, next action and response condition."
+        ],
+        [
+          "Name the useful purpose",
+          "Collect room dimensions and a preferred appointment date.",
+          "Audience: customer. Channel: email. Response: reply with both details."
+        ],
+        [
+          "Place it in the workflow",
+          "Incomplete request \u2192 clarification \u2192 complete inputs \u2192 review.",
+          "A human owns the clarification and checks the draft before sending."
+        ]
+      ]
+    },
+    {
+      "key": "02-request",
+      "title": "Give AI an accurate communication brief",
+      "transcript": "We give the assistant a purpose, audience, context, task, constraints, and quality standard. Only the fictional approved facts are supplied. The team reviews a complete request within two business days. It does not guarantee a finished estimate or a booked appointment. We require questions about missing facts and a plain, respectful voice.",
+      "scenes": [
+        [
+          "Supply the six request parts",
+          "Purpose \u00b7 Audience \u00b7 Context \u00b7 Task \u00b7 Constraints \u00b7 Quality",
+          "Use approved facts and a short voice sample."
+        ],
+        [
+          "Preserve the approved condition",
+          "Review within two business days AFTER complete information arrives.",
+          "No price, delivery guarantee or appointment confirmation supplied."
+        ],
+        [
+          "Ask for clarification when needed",
+          "\u201cUse only these facts. Ask about missing information.\u201d",
+          "Do not turn an unknown fact into a confident promise."
+        ]
+      ]
+    },
+    {
+      "key": "03-adapt",
+      "title": "Adapt the audience and keep the facts",
+      "transcript": "The customer email asks for missing information. The internal manager note reports the waiting status and responsible owner. Both preserve the same condition: the review period begins when complete information arrives. A shorter version saying the estimate will be completed in two days changes the promise and must be corrected.",
+      "scenes": [
+        [
+          "Customer email",
+          "Please reply with room dimensions and your preferred appointment date.",
+          "State the next action and what happens after complete inputs arrive."
+        ],
+        [
+          "Manager note",
+          "Request pending required details. Intake owner is handling clarification.",
+          "Include status, responsibility and the unchanged review condition."
+        ],
+        [
+          "Meaning must stay intact",
+          "\u201cReview in two business days\u201d \u2260 \u201ccomplete estimate in two days.\u201d",
+          "Changing the audience or channel must not change the commitment."
+        ]
+      ]
+    },
+    {
+      "key": "04-check",
+      "title": "Check a summary and save the revision",
+      "transcript": "We compare the short version with its source. It has omitted the condition that complete information must arrive first. We restore that condition, check who can approve the message, and retain the original and revised drafts. The Project Record also includes the adapted version, one useful wording change, and a claim still needing review in Lesson Two Point Three.",
+      "scenes": [
+        [
+          "Compare with the approved source",
+          "Did the summary keep the condition, timeframe, status and owner?",
+          "Check omissions as carefully as invented facts."
+        ],
+        [
+          "Test the recipient experience",
+          "Can the reader name the next action after one reading?",
+          "AI reader feedback is simulated; it is not real customer evidence."
+        ],
+        [
+          "Save evidence for Lesson 2.3",
+          "Original \u00b7 Improved request \u00b7 Revised draft \u00b7 Adaptation \u00b7 Rationale",
+          "Carry unresolved claims into the full CLEAR quality review."
+        ]
+      ]
+    }
+  ]
+}

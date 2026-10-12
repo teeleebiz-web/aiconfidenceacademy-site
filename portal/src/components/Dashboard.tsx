@@ -31,25 +31,10 @@ export function Dashboard({
     ?? progress.filter((item) => item.status === 'completed').length
   const total = accessState?.total_lessons ?? lessons.length
   const progressPercent = total ? Math.round((completed / total) * 100) : 0
-  const draftLessons = lessons.filter((lesson) => lesson.status === 'draft').length
   const workbookJourneys = [...new Map(workbooks.map(item => [Number(item.page_id.split('.')[0]), item])).entries()]
 
   return (
     <main className="portal-main">
-      {reviewMode ? (
-        <section className="owner-review-banner" aria-labelledby="owner-review-heading">
-          <div>
-            <p className="eyebrow">Protected owner review</p>
-            <h2 id="owner-review-heading">Phase One working build</h2>
-            <p>
-              You are viewing published and unpublished curriculum together. Draft lessons are
-              visible only for review and cannot change learner progress.
-            </p>
-          </div>
-          <strong>{journeys.length} journeys · {lessons.length} lessons · {draftLessons} drafts</strong>
-        </section>
-      ) : null}
-
       <section className="welcome-panel">
         <div>
           <p className="eyebrow">Your learning home</p>
@@ -57,10 +42,10 @@ export function Dashboard({
           <p>{enrollment.course.summary}</p>
         </div>
         {reviewMode ? (
-          <div className="progress-card review-summary-card" aria-label="Owner review build">
+          <div className="progress-card review-summary-card" aria-label="Your curriculum">
             <strong>{lessons.length}</strong>
-            <span>Lessons assembled</span>
-            <small>Review mode does not alter learner progress.</small>
+            <span>Lessons</span>
+            <small>Explore each journey and its six lessons.</small>
           </div>
         ) : (
           <div className="progress-card" aria-label={`${progressPercent}% complete`}>
@@ -75,7 +60,7 @@ export function Dashboard({
 
       {workbooks.length > 0 && <section id="my-workbooks" className="course-panel" aria-labelledby="workbooks-heading">
         <h2 id="workbooks-heading">My Workbooks</h2>
-        <div className="workbook-links">{workbookJourneys.map(([journey, item]) => <a className="primary-link" key={journey} href={`/learn/?workbook=journey-${['one','two','three','four','five','six'][journey-1]}&lesson=${encodeURIComponent(item.page_id)}`}>Journey {journey} Workbook</a>)}</div>
+        <div className="workbook-links">{workbookJourneys.map(([journey, item]) => <a className="primary-link" key={journey} href={`/learn/?workbook=journey-${['one','two','three','four','five','six'][journey-1]}&lesson=${encodeURIComponent(item.page_id)}`}>Workbook {journey} — Journey {journey}</a>)}</div>
       </section>}
 
       <section className="course-panel" aria-labelledby="course-heading">
@@ -119,7 +104,7 @@ export function Dashboard({
             <article className="journey-card" key={journey.id}>
               <div className="journey-number">
                 Journey {journey.journey_number}
-                {reviewMode && journey.status === 'draft' ? <small>Draft</small> : null}
+
               </div>
               <div className="journey-copy">
                 <small>Week {journey.week_number}</small>
@@ -128,7 +113,7 @@ export function Dashboard({
                 <p className="journey-session-summary">
                   <strong>{journeyLessons.length} guided sessions</strong>
                   <span>{formatLearningTime(journeyMinutes)}</span>
-                  <span>{reviewMode ? 'Owner review is read-only' : `${journeyCompleted} of ${journeyLessons.length} complete`}</span>
+                  <span>{reviewMode ? 'Six guided lessons' : `${journeyCompleted} of ${journeyLessons.length} complete`}</span>
                 </p>
                 {introduction ? (
                   <button
@@ -138,12 +123,12 @@ export function Dashboard({
                   >
                     <span>
                       <small>
-                        {reviewMode && introduction.status === 'draft' ? 'Draft welcome' : 'Journey welcome'}
+                        {'Journey welcome'}
                         {' · '}Founder video + Knowledge audio · about {Math.ceil(introduction.duration_seconds / 60)} minutes
                       </small>
                       <strong>{introduction.content.title}</strong>
                     </span>
-                    <b>{reviewMode ? 'Review welcome' : 'Begin Journey'}</b>
+                    <b>{'Begin Journey'}</b>
                   </button>
                 ) : null}
                 <div className="lesson-list">
@@ -165,10 +150,10 @@ export function Dashboard({
                           <strong>{lesson.title}</strong>
                           <small>
                             {Math.min(60, Math.max(45, lesson.estimated_minutes))} minute session
-                            {reviewMode && lesson.status === 'draft' ? ' · Draft' : ''}
+
                           </small>
                         </span>
-                        <b>{reviewMode ? 'Review lesson' : 'Open lesson'}</b>
+                        <b>{'Open lesson'}</b>
                       </button>
                     )
                   })}

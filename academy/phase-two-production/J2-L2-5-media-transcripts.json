@@ -1,0 +1,111 @@
+{
+  "lesson": "2.5",
+  "chapters": [
+    {
+      "title": "Bound one complete working path",
+      "transcript": "A prototype is a working sample that helps you learn whether a concept is useful. In Lesson Four, you compared support patterns and defined permissions and human checkpoints. Keep that choice and those boundaries visible as you build. You do not need to create a large system to learn something valuable. A prompt-supported document process can be a complete prototype when you can supply an input, produce a result, inspect it, and show what happened.\n\nBegin with the existing project charter and workflow map. Choose one narrow path. Name the input, the expected result, the review owner, and the completion signal. A completion signal might be a reviewed outline with unresolved questions clearly marked. It is not simply that an AI response appeared. The result must meet the criteria you defined for this sample.\n\nOur teaching case uses fictional project specifications. A team needs a proposal outline for a workshop. The supplied brief says twelve participants, one ninety-minute session, and an editable handout. It gives no approved price, no delivery date, and no final confirmation of the scope. The prototype may organize those supplied facts and highlight the missing information. It may not invent a fee, confirm a date, or issue a real proposal.\n\nDefine acceptance criteria before running the sample. For this case, the outline must retain the three supplied specifications accurately. It must mark price and date as unconfirmed. It must name the person who reviews scope and prices. It must identify the result as a draft awaiting review. Those checks give you something concrete to inspect. A polished page alone does not tell you whether the sample is dependable.\n\nKeep production accounts, customer actions, and consequential transactions outside an unapproved experiment. Use fictional or otherwise authorized material with your own chosen AI assistant. If a proposed setup requires new access that you do not have, choose a smaller authorized path. Written boundaries must match what you actually use.\n\nWrite the narrow scope in your practice record now. Carry the existing concept forward, specify your input and criteria, and name the review owner. Identify what the prototype will produce and how a person will recognize completion. Make the scope small enough to run today, but complete enough to demonstrate a useful result. You are building evidence about a bounded idea. You are not granting it authority to act beyond that boundary."
+    },
+    {
+      "title": "Baseline and use AI",
+      "transcript": "Use the BUILD Evidence Cycle to organize your work: baseline, use AI, inspect, lead, and demonstrate. Each step leaves evidence. Start with the baseline. Preserve the current way of doing the same narrow task. That might be a manually prepared outline, an existing approved template, or a short sample produced without AI. Use the same input and acceptance criteria so your comparison has a fair foundation.\n\nIf you do not have a previous artifact, make a small manual baseline now and label it as newly created. Do not invent elapsed time, error rates, or improvements. Record only what you actually observed. A baseline can show which information was included, how questions were marked, and what review work remained. You do not need an impressive performance number to make a useful comparison.\n\nNext, create the smallest working artifact. For a document process, this can be a reusable request together with an output template. For an authorized sandbox, preserve the configuration or other material needed to reproduce the narrow run. A paragraph describing a future system is not a working artifact. Another person should be able to see what was used and understand how the input becomes the reviewable result.\n\nIn our fictional proposal illustration, the reusable request directs the assistant to organize only supplied specifications. The template has sections for supplied scope, missing information, review owner, and draft status. The input names twelve participants, a ninety-minute workshop, and an editable handout. The proposal reviewer must verify scope and prices before a real proposal could be issued.\n\nUse the approved request in the practice studio. Add your sanitized charter and map, authorized input, acceptance criteria, owner, and completion signal. Read the assembled request before copying it to your own AI assistant. Keep the exact request you actually use. If you change it outside the studio, preserve that changed version in the record.\n\nRun the normal case and retain the actual output. Note the tool used, the run date, and whether the input is fictional or authorized real material. Do not replace an inconvenient result with a prediction of what the AI should have done. Do not describe an illustrative teaching output as your own observed run.\n\nPause after the first run. Save the working artifact text or an accessible authorized reference, the baseline, exact request, input, and actual output. These are the foundations for inspection. Completion depends on what the sample really produced and what a person verified."
+    },
+    {
+      "title": "Inspect and lead one material revision",
+      "transcript": "Now inspect the actual output against the criteria you wrote before the run. Read the result alongside the input. Check every important specification for factual support. Check that missing information remains visible. Check whether the named review owner and draft status are present. Use clear outcomes for each criterion: met, not met, or uncertain, followed by the evidence that supports your judgment.\n\nOur fictional teaching comparison shows an outline that retains the workshop details and leaves fees unpriced, but omits a named reviewer and a clear review status. Those are material omissions because a reader could mistake an organized draft for an approved proposal. This is a scripted illustration of how to inspect a result. It is not a report of your project or a measured live AI run.\n\nLead the revision yourself. Choose one change that addresses an observed weakness. For the illustrated outline, the change is to require a review section with a named scope-and-price reviewer and the words draft awaiting review. The revised template also groups unresolved price and date questions together. That change affects the review route and usability of the result. Merely changing a heading color would not address the missing control point.\n\nPreserve the earlier artifact and output. Then save the revised artifact or request, run the same normal input again, and preserve the new actual output. Holding the input steady helps you understand whether the revision improved the result. If the result changes in an unexpected way, record that too. A better-looking version does not excuse a newly unsupported fact.\n\nCompare before and after using the same acceptance criteria. You might be able to say that the reviewer is now named and the draft status is explicit, supported by the actual words in the two outputs. You cannot claim that all future proposals will be correct or that the process saves hours unless you have evidence for those separate claims. A single normal case supports a limited conclusion about that case.\n\nKeep responsibility with the authorized person. AI can help suggest a revision, but you choose the change and verify the revised result. For any real proposal, scope and prices still require human review before issue. The prototype does not create that approval.\n\nIn your practice record, identify the first-run finding, the material change, the revised working artifact, and the actual rerun. Explain precisely what improved and what remains unresolved. If the revision did not improve the result, preserve that finding honestly. It is useful evidence for the next round of work."
+    },
+    {
+      "title": "Demonstrate and save the working sample",
+      "transcript": "The final step in the BUILD Evidence Cycle is demonstrate. Show the narrow path from input to the reviewed result. Have your reusable artifact, actual request, normal input, and revised output available. Walk through the steps you really used. Identify where the person inspected the result and how the completion signal was checked. A description of what a future prototype might do does not satisfy this demonstration.\n\nFor our fictional proposal process, the demonstration shows the supplied workshop specifications entering the request and the outline coming back for review. The result retains twelve participants, a ninety-minute session, and an editable handout. Price and date remain unconfirmed. The scope-and-price reviewer is named, and the draft status is visible. The person can see both the useful output and the questions that prevent a real proposal from being issued.\n\nExplain three things clearly: what the prototype does, what it does not do, and what remains uncertain. It may organize a proposal outline and highlight missing information. It does not verify a price that was never supplied or authorize a customer commitment. You have observed one normal case. You have not yet established how it behaves under contradictory specifications or a request outside the scope.\n\nKeep the working artifact accessible to its intended reviewer. You can preserve reusable prompt and template text directly in the record, or provide an authorized reference the reviewer can actually open. Retain the exact inputs and both outputs alongside it. A filename alone, without access to the material, is weak evidence of a working sample.\n\nSave the baseline, acceptance criteria, first-run inspection, material revision, revised result, and your demonstration notes to the continuing Project Record. Label fictional inputs and simulated teaching examples clearly. Keep unresolved findings visible. Earlier workflow, communication, and support-pattern evidence should remain available alongside this new prototype entry.\n\nBefore saving, check usability, factual support, and ownership. Can the reviewer follow the process? Can each important claim be traced to the authorized input? Is it clear who can approve any consequential next step? If a criterion remains unmet, explain it and retain the evidence rather than declaring the sample ready for deployment.\n\nCarry this record into Lesson Six, Test Errors and Exception Paths. You will use the saved working sample to examine missing information, conflicting instructions, and requests outside scope. Today, demonstrate the normal path and the revision you actually made. That gives you a concrete foundation for the next lesson and a truthful account of what you have learned."
+    }
+  ],
+  "demos": [
+    {
+      "key": "01-bound-path",
+      "title": "Define the narrow working path",
+      "transcript": "Use the fictional workshop brief: twelve participants, ninety minutes, and an editable handout. Build a proposal outline that marks the missing price and date. Completion means a reviewable draft with a named scope-and-price reviewer, not a real proposal issued to a customer.",
+      "scenes": [
+        [
+          "Supply the fictional input",
+          "12 participants • 90-minute workshop • Editable handout",
+          "The brief does not supply an approved price or delivery date."
+        ],
+        [
+          "Define the output and checks",
+          "Proposal outline • Missing information • Named reviewer",
+          "Acceptance criteria are written before the normal run."
+        ],
+        [
+          "Keep the approval point",
+          "Draft awaiting scope and price review",
+          "No real proposal is issued by this prototype."
+        ]
+      ]
+    },
+    {
+      "key": "02-use-sample",
+      "title": "Preserve the baseline and actual run",
+      "transcript": "Keep a manual outline as the baseline. Use a reusable request and template with the same fictional brief. Preserve the exact request and actual output from your own run. This teaching illustration does not stand in for your observed project evidence.",
+      "scenes": [
+        [
+          "Keep a comparable baseline",
+          "Manual outline + same brief + same acceptance criteria",
+          "Label a newly made baseline. Record only observed results."
+        ],
+        [
+          "Use the working artifact",
+          "Reusable request + output template → Normal input → Draft",
+          "A future-system description alone is not a working artifact."
+        ],
+        [
+          "Preserve your actual run",
+          "Exact request • Input • Actual output • Tool and run date",
+          "Keep teaching illustrations separate from your own observed run."
+        ]
+      ]
+    },
+    {
+      "key": "03-material-revision",
+      "title": "Lead a material revision",
+      "transcript": "In this fictional comparison, the first outline leaves out the reviewer and draft status. Revise the template to require both. Run the same input again and compare the actual outputs against the same criteria. Record what improved and retain any unresolved findings.",
+      "scenes": [
+        [
+          "Inspect the first result",
+          "Supplied details retained • Reviewer and draft status absent",
+          "Scripted teaching comparison; inspect your actual result separately."
+        ],
+        [
+          "Revise the review route",
+          "Require a named reviewer and “Draft awaiting review”",
+          "This material change addresses the observed control-point omission."
+        ],
+        [
+          "Compare the same normal input",
+          "Before and after • Same criteria • Supported improvement",
+          "Preserve both outputs; do not invent time savings or success."
+        ]
+      ]
+    },
+    {
+      "key": "04-demonstrate-save",
+      "title": "Demonstrate and save the artifact",
+      "transcript": "Show the working artifact, normal input, revised result, and human review point. Explain what the prototype does, what it cannot do, and what remains uncertain. Save the baseline and before-and-after evidence. One normal case is a foundation for Lesson Six, not deployment approval.",
+      "scenes": [
+        [
+          "Show the complete narrow path",
+          "Working artifact → Normal input → Revised result → Human review",
+          "A description alone does not satisfy prototype completion."
+        ],
+        [
+          "State the practical limits",
+          "Organizes supplied facts • Flags gaps • Does not approve",
+          "Scope and prices stay with the authorized reviewer."
+        ],
+        [
+          "Save and carry forward",
+          "Artifact • Baseline • Actual test • Revision • Demonstration",
+          "Continue with Lesson 2.6: Test Errors and Exception Paths."
+        ]
+      ]
+    }
+  ]
+}

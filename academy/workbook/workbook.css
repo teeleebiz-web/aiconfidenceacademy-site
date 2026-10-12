@@ -62,3 +62,9 @@
   .wb-paper { border:0; border-radius:0; box-shadow:none; }
   .wb-answer textarea { border:1px solid #8c98a2; min-height:120px; }
 }
+
+.wb-journey-tabs { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0; }
+.wb-journey-tabs button { border:1px solid #c6b18a; border-radius:8px; padding:12px 16px; background:#fffdf8; color:#17324d; font:inherit; cursor:pointer; }
+.wb-journey-tabs button[aria-pressed="true"] { background:#17324d; color:#fffdf8; }
+.wb-journey-tabs button:disabled { opacity:.5; cursor:default; }
+@media print { .wb-journey-tabs { display:none; } }

@@ -394,7 +394,7 @@ export function App() {
     }
 
     if (reviewMode) {
-      throw new Error('Owner review mode is read-only and does not alter learner progress.')
+      throw new Error('Use your workbook to keep your practice notes.')
     }
 
     const identity = {
@@ -472,7 +472,7 @@ export function App() {
   const onboardingEnrollment = portalData.enrollment
   const needsOnboarding = onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
     && completedOnboardingId !== onboardingEnrollment.id
-    && (reviewMode ? !workbookKey : !onboardingEnrollment.onboarding_completed_at)
+    && (reviewMode ? !workbookKey && !params.get('lesson') && params.get('view') !== 'curriculum' : !onboardingEnrollment.onboarding_completed_at)
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
   usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment ? 'curriculum' : 'access')
 
@@ -548,11 +548,19 @@ export function App() {
         </button>
       </header>
 
+      {reviewMode && <nav className="curriculum-phase-links" aria-label="Academy phases">
+        <a href="/learn/?review=phase-one&view=curriculum" aria-current="page">Phase 1</a>
+        <a href="/learn/?review=phase-two&view=curriculum">Phase 2</a>
+        <a href="/learn/?review=phase-one&view=welcome">Academy welcome</a>
+      </nav>}
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
       {workbookKey && portalData.enrollment && !needsOnboarding ? (
-        <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
-          apiBase={workbookApiBase} backHref={returnLesson ? `/learn/?lesson=${encodeURIComponent(returnLesson.page_id)}` : '/learn/#my-workbooks'} backLabel={returnLesson ? `Back to Lesson ${returnLesson.page_id}` : 'My Workbooks'} />
+        <Workbook key={workbookKey} workbookKey={workbookKey} lessonId={params.get('lesson')}
+          workbookLinks={[...new Set(workbooks.map(item => Number(item.page_id.split('.')[0])))].sort().map(journey => ({
+            journey, href: '/learn/?' + (reviewMode ? 'review=phase-one&' : '') + 'workbook=journey-' + journeyWords[journey - 1] + (returnLesson ? '&lesson=' + encodeURIComponent(returnLesson.page_id) : '')
+          }))}
+          apiBase={workbookApiBase} backHref={returnLesson ? `/learn/?lesson=${encodeURIComponent(returnLesson.page_id)}` : reviewMode ? '/learn/?review=phase-one&view=curriculum#my-workbooks' : '/learn/#my-workbooks'} backLabel={returnLesson ? `Back to Lesson ${returnLesson.page_id}` : 'My Workbooks'} />
       ) : needsOnboarding ? (
         <LearnerOnboarding key={onboardingEnrollment?.id} onContinue={firstLesson ? finishOnboarding : undefined} />
       ) : selectedIntroduction ? (

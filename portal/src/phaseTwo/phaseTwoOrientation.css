@@ -1,0 +1,12 @@
+.p2-orientation{background:#fff;border:1px solid #ddd0bc;border-radius:18px;overflow:hidden;margin:1.3rem 0;color:#173b57}
+.p2-orientation>header{padding:clamp(1.2rem,3vw,2rem);background:#f3e9d8}
+.p2-orientation>header .eyebrow{color:#8c6c37;font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.p2-orientation>header h2{font:700 clamp(1.4rem,2.6vw,2rem) Georgia,serif;margin:.35rem 0 .65rem;color:#123654}
+.p2-orientation>header p{max-width:76ch;line-height:1.65}
+.p2-orientation-sections{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0}
+.p2-orientation-sections article{padding:1.4rem 1.6rem;border-top:1px solid #e7ddcf;border-right:1px solid #e7ddcf}
+.p2-orientation-sections article:nth-child(even){border-right:0}
+.p2-orientation-sections h3{font:700 1.22rem Georgia,serif;color:#123654;margin:0 0 .7rem}
+.p2-orientation-sections p{line-height:1.63;font-size:.91rem;color:#485f70;margin:.5rem 0}
+.p2-orientation-preview{font-size:.8rem;color:#596d79;padding:.8rem 1.5rem;border-top:1px solid #eee5d8}
+@media(max-width:680px){.p2-orientation-sections{grid-template-columns:1fr}.p2-orientation-sections article{border-right:0}}

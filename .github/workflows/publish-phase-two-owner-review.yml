@@ -1,0 +1,56 @@
+name: ACA protected Phase Two official-domain review
+
+on:
+  push:
+    branches:
+      - phase-two-six-journey-owner-review
+    paths:
+      - .github/workflows/publish-phase-two-owner-review.yml
+      - academy/publish-phase-two-review.mjs
+      - academy/PHASE-TWO-REVIEW-RELEASE.flag
+
+permissions:
+  contents: write
+
+jobs:
+  publish-owner-review:
+    if: github.event.head_commit.message == 'Publish reviewed Phase Two owner link via official Academy Pages'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out approved review source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run source checks, regression tests and production build
+        run: npm run check
+
+      - name: Prepare only the existing official-domain learner entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach "$RUNNER_TEMP/aca-official" origin/main
+          node academy/publish-phase-two-review.mjs "$GITHUB_WORKSPACE/learn" "$RUNNER_TEMP/aca-official"
+          cd "$RUNNER_TEMP/aca-official"
+          git add learn/index.html learn/assets/
+          git diff --cached --name-status
+          test "$(git diff --cached --name-only | grep -c '^learn/index.html$')" -eq 1
+          if git diff --cached --name-status | grep -Ev '^(A[[:space:]]+learn/assets/|M[[:space:]]+learn/index.html$)'; then
+            echo "Unexpected official-site modification blocked." >&2
+            exit 1
+          fi
+          test "$(git diff --cached --name-only | wc -l)" -ge 2
+          git config user.name "ACA official review builder"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Install protected Phase Two owner review on official Academy domain"
+          git push origin HEAD:main

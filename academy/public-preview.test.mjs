@@ -35,3 +35,29 @@ test('review preview serves public pages but refuses learner and API paths', asy
     assert.equal((await request(root, 'explore/', 'POST')).status, 405)
   } finally { await rm(root, { recursive: true, force: true }) }
 })
+
+test('curriculum cleanup publishes both phases through one current entry and preserves existing media and assets',async()=>{
+ const {readFile}=await import('node:fs/promises')
+ const {execFile}=await import('node:child_process')
+ const {promisify}=await import('node:util')
+ const root=await mkdtemp(join(tmpdir(),'aca-publish-cleanup-'))
+ try {
+  const built=join(root,'built'), official=join(root,'official')
+  await mkdir(join(built,'assets'),{recursive:true})
+  await mkdir(join(official,'learn/assets'),{recursive:true})
+  await mkdir(join(official,'assets/videos'),{recursive:true})
+  const oldHtml='<main id="root"></main><script type="module" crossorigin data-aca-phase-two-official-review-bootstrap="true">if (review) { await import("/learn/assets/review-old.js"); } else { await import("/learn/assets/learner-old.js"); }</script><link rel="stylesheet" crossorigin href="/learn/assets/learner-old.css">'
+  await writeFile(join(official,'learn/index.html'),oldHtml)
+  await writeFile(join(built,'index.html'),'<script type="module" crossorigin src="/learn/assets/current-new.js"></script><link rel="stylesheet" crossorigin href="/learn/assets/current-new.css">')
+  for(const name of ['learner-old.js','review-old.js','learner-old.css'])await writeFile(join(official,'learn/assets',name),'established '+name)
+  await writeFile(join(official,'assets/videos/existing.mp4'),'unchanged media')
+  for(const name of ['current-new.js','current-new.css'])await writeFile(join(built,'assets',name),'built '+name)
+  await promisify(execFile)(process.execPath,['academy/publish-phase-two-review.mjs',built,official,'learner-cleanup'])
+  const html=await readFile(join(official,'learn/index.html'),'utf8')
+  assert.match(html,/<script type="module" crossorigin src="\/learn\/assets\/current-new.js"><\/script>/)
+  assert.match(html,/href="\/learn\/assets\/current-new.css"/)
+  assert.doesNotMatch(html,/review-bootstrap/)
+  for(const name of ['learner-old.js','review-old.js','learner-old.css'])assert.equal(await readFile(join(official,'learn/assets',name),'utf8'),'established '+name)
+  assert.equal(await readFile(join(official,'assets/videos/existing.mp4'),'utf8'),'unchanged media')
+ } finally {await rm(root,{recursive:true,force:true})}
+})

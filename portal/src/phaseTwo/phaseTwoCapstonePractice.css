@@ -1,0 +1,13 @@
+.p2-capstone-practice{max-width:980px;margin:1.5rem auto;padding:clamp(1rem,3vw,2.2rem);background:#fbf7ee;color:#173d5c;border-radius:16px}
+.p2-capstone-practice header{border-bottom:2px solid #b48632;padding-bottom:1rem}
+.p2-capstone-practice h2,.p2-capstone-practice h3{color:#102d4f}
+.p2-capstone-practice h3{margin:1.6rem 0 .8rem}
+.p2-capstone-practice fieldset{border:1px solid #d5dfe4;border-radius:12px;margin:1rem 0;padding:1rem}
+.p2-capstone-practice legend{font-weight:750}
+.p2-capstone-practice label{display:block;margin:.9rem 0;font-weight:650}
+.p2-capstone-practice textarea,.p2-capstone-practice select{display:block;width:100%;box-sizing:border-box;padding:.75rem;margin-top:.35rem;border:1px solid #95a9b7;border-radius:8px;background:white;color:#102d4f;font:inherit}
+.p2-capstone-practice textarea{min-height:74px;resize:vertical}
+.p2-capstone-practice button{background:#102d4f;color:white;border:1px solid #102d4f;border-radius:8px;padding:.75rem 1rem;font:inherit;font-weight:700;cursor:pointer;margin:.4rem .5rem .4rem 0}
+.p2-capstone-practice button:disabled{opacity:.5;cursor:not-allowed}
+.p2-capstone-practice button:focus-visible,.p2-capstone-practice textarea:focus-visible,.p2-capstone-practice select:focus-visible{outline:3px solid #b48632;outline-offset:2px}
+.p2-capstone-actions{border-top:2px solid #b48632;padding-top:1rem;margin-top:2rem}

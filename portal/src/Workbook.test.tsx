@@ -148,3 +148,18 @@ it('lesson 3.6 opens page 23 and retains its saved prompt',async()=>{
   expect((screen.getByLabelText('Task') as HTMLTextAreaElement).value).toBe('Prepare an agenda')
   expect(screen.getByText('Page 23 of 26')).toBeTruthy()
 })
+
+it('blocks changing workbooks when pending answers cannot save and keeps earlier workbook tabs available',async()=>{
+  const record={answers:{},last_page:5,revision:0,updated_at:null,allowedPages:[5],scope:'owner-review',workbook:{key:'journey-one',version:1,title:'Released workbook',pages:[{number:5,kicker:'Practice',title:'Released lesson',blocks:[{type:'field',id:'answer',label:'My answer'}]}]}}
+  vi.spyOn(globalThis,'fetch').mockImplementation(async(_url,init)=>({ok:init?.method!=='PATCH',json:async()=>init?.method==='PATCH'?{error:'Save unavailable'}:structuredClone(record)}) as Response)
+  render(<Workbook workbookLinks={[{journey:1,href:'/learn/?workbook=journey-one'},{journey:2,href:'/learn/?workbook=journey-two'}]} />)
+  await screen.findByRole('heading',{name:'Released lesson'})
+  expect(screen.getByRole('button',{name:'Workbook 1 — Journey 1'}).getAttribute('aria-pressed')).toBe('true')
+  expect(screen.getByRole('button',{name:'Workbook 3 — Journey 3'}).hasAttribute('disabled')).toBe(true)
+  expect(screen.getAllByRole('option')).toHaveLength(6)
+  fireEvent.change(screen.getByRole('textbox',{name:'My answer'}),{target:{value:'Keep this answer'}})
+  fireEvent.click(screen.getByRole('button',{name:'Workbook 2 — Journey 2'}))
+  expect(await screen.findByText('Please save your answers before changing workbooks.')).toBeTruthy()
+  expect(screen.getByDisplayValue('Keep this answer')).toBeTruthy()
+  expect(screen.getByRole('heading',{name:'Released lesson'})).toBeTruthy()
+})

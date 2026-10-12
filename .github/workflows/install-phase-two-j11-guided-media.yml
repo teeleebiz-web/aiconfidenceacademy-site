@@ -1,0 +1,74 @@
+name: ACA Phase Two Lesson 1.1 guided media
+
+on:
+  push:
+    branches:
+      - phase-two-six-journey-owner-review
+    paths:
+      - .github/workflows/install-phase-two-j11-guided-media.yml
+      - academy/PHASE-TWO-GUIDED-MEDIA-RELEASE.flag
+
+permissions:
+  contents: write
+
+jobs:
+  install-instructional-media:
+    if: github.event.head_commit.message == 'Install approved Phase Two Lesson 1.1 instructional media'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source-controlled Phase Two media
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Python and encoder libraries
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pinned media encoding tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install 'Pillow==11.2.1' 'imageio-ffmpeg==0.6.0' 'av==15.1.0'
+          python - <<'PY'
+          import imageio_ffmpeg, pathlib, shutil
+          executable=pathlib.Path(imageio_ffmpeg.get_ffmpeg_exe())
+          target=pathlib.Path('/tmp/aca-ffmpeg')
+          shutil.copy2(executable,target)
+          target.chmod(0o755)
+          PY
+          sudo cp /tmp/aca-ffmpeg /usr/local/bin/ffmpeg
+          ffmpeg -version | head -1
+
+      - name: Produce and validate all authentic-voice guided teaching media
+        run: |
+          set -euo pipefail
+          python academy/phase-two-production/build-j11-guided-media.py "$RUNNER_TEMP/aca-lesson11-guided"
+
+      - name: Add only new verified instruction files to the official Academy domain
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git worktree add --detach "$RUNNER_TEMP/aca-site-guided-media" origin/main
+          cd "$RUNNER_TEMP/aca-site-guided-media"
+          out="assets/videos/phase-two-lesson-1-1"
+          test -f "$out/ACA-Phase-Two-Lesson-1-1-Introduction.mp4"
+          test ! -e "$out/ACA-Phase-Two-Lesson-1-1-Guided-Instruction.m4a"
+          cp "$RUNNER_TEMP/aca-lesson11-guided/"*".m4a" "$out/"
+          cp "$RUNNER_TEMP/aca-lesson11-guided/ACA-Phase-Two-Lesson-1-1-"*.mp4 "$out/"
+          cp "$RUNNER_TEMP/aca-lesson11-guided/ACA-Phase-Two-Lesson-1-1-"*.vtt "$out/"
+          cp "$RUNNER_TEMP/aca-lesson11-guided/guided-chapters.json" "$out/"
+          cp "$RUNNER_TEMP/aca-lesson11-guided/production-report.json" "$out/"
+          git add "$out/"
+          git diff --cached --name-status
+          if git diff --cached --name-status | grep -Ev '^A[[:space:]]+assets/videos/phase-two-lesson-1-1/'; then
+            echo "Non-additive or unrelated media modification rejected" >&2
+            exit 1
+          fi
+          test "$(git diff --cached --name-only | wc -l)" -eq 11
+          git config user.name "ACA instructional media builder"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Add approved instructor-voice audio and guided visual case demonstrations"
+          git push origin HEAD:main
