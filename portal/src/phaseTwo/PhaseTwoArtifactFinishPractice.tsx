@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { loadPhaseTwoProject, savePhaseTwoProjectUpdate, type PhaseTwoProjectPath } from './phaseTwoProject'
 import './phaseTwoWorkflowPractice.css'
+import type { PhaseTwoStrengthening } from './PhaseTwoEvidenceGuidance'
 
 const fields = {
   "projectContext": "Continuing project, charter, and privacy-safe artifact references",
@@ -20,12 +21,13 @@ const fields = {
 type Draft = Record<keyof typeof fields, string>
 const blank = () => Object.fromEntries(Object.keys(fields).map(k => [k, ''])) as Draft
 
-export function PhaseTwoArtifactFinishPractice({ enrollmentId, approvedAiRequest }: { enrollmentId?: string; approvedAiRequest: string }) {
+export function PhaseTwoArtifactFinishPractice({ enrollmentId, approvedAiRequest, repairCase }: { enrollmentId?: string; approvedAiRequest: string; repairCase?: PhaseTwoStrengthening['repair_case'] }) {
   const [draft, setDraft] = useState<Draft>(blank)
   const [checked, setChecked] = useState(false)
   const [project, setProject] = useState<{ path: PhaseTwoProjectPath; title: string } | null>(null)
   const [status, setStatus] = useState('')
   const [saving, setSaving] = useState(false)
+  const [repairSource,setRepairSource]=useState<'own_project'|'earlier_project_revision'|'supplied_exercise'>('own_project')
   useEffect(() => {
     setDraft(blank()); setChecked(false); setProject(null); setStatus('')
     if (!enrollmentId) return
@@ -33,8 +35,10 @@ export function PhaseTwoArtifactFinishPractice({ enrollmentId, approvedAiRequest
     void loadPhaseTwoProject(enrollmentId).then(record => {
       if (!active || !record) return
       setProject({ path: record.project_path, title: record.project_title })
-      const section = record.sections.capstone_integration_package as { artifact_finish_lesson_6_2?: { draft?: Partial<Draft> } } | undefined
+      const section = record.sections.capstone_integration_package as { artifact_finish_lesson_6_2?: { draft?: Partial<Draft>; repair_source?: string } } | undefined
       const saved = section?.artifact_finish_lesson_6_2?.draft
+      const source=section?.artifact_finish_lesson_6_2?.repair_source
+      if(source==='supplied_exercise'||source==='earlier_project_revision')setRepairSource(source)
       if (saved) setDraft(Object.fromEntries(Object.keys(fields).map(k => [k, typeof saved[k as keyof Draft] === 'string' ? saved[k as keyof Draft] : ''])) as Draft)
       else setDraft(old => ({ ...old, projectContext: record.project_title + ' — Path ' + record.project_path + '. Use privacy-safe references to the same retained course work.' }))
     }).catch(() => { if (active) setStatus('Your Project Record could not load. Your practice can still be copied.') })
@@ -43,6 +47,7 @@ export function PhaseTwoArtifactFinishPractice({ enrollmentId, approvedAiRequest
   const complete = Object.values(draft).every(v => v.trim()) && checked
   const request = approvedAiRequest.replace('[artifact and tests]', [draft.projectContext, draft.baseline, draft.criteria, draft.normalTest, draft.exceptionTest].filter(Boolean).join('\n') || '[Add privacy-safe artifact, criteria, and actual test notes]')
   const evidence = { lesson: '6.2', draft, baseline: draft.baseline, criteria_comparison: draft.criteria,
+    repair_source: repairSource, supplied_exercise_proves_project_readiness: false,
     build_plan: draft.buildPlan, ai_review_and_human_decision: draft.aiReview,
     tests: { normal: draft.normalTest, exception: draft.exceptionTest }, feedback: draft.feedback,
     material_revision: draft.revision, retest: draft.retest, scope_reconciliation: draft.scope,
@@ -75,6 +80,13 @@ export function PhaseTwoArtifactFinishPractice({ enrollmentId, approvedAiRequest
       <label>Bounded revision AI request<textarea readOnly rows={7} value={request} /></label>
       <button type="button" onClick={() => void copy(request, 'Privacy-safe revision request copied. Inspect the suggestions against your charter.')}>Copy bounded revision AI request</button></div>
     <div><h3>2. Lead the BUILD correction</h3>{(['buildPlan','aiReview','revision'] as const).map(field)}
+      {repairCase&&<>
+        <label>Source of the correction evidence<select value={repairSource} onChange={e=>{setRepairSource(e.target.value as typeof repairSource);setChecked(false)}}>
+          <option value="own_project">Current project revision</option><option value="earlier_project_revision">Earlier retained project correction and retest</option><option value="supplied_exercise">Supplied fictional repair exercise</option>
+        </select></label>
+        <p>Reuse an earlier material project correction and its actual retest when it still applies to this version. If all project criteria are already supported and no material defect is observed, use the supplied exercise for repair skill. Your own finished artifact still needs its ordinary and exception checks and charter evidence.</p>
+        {repairSource==='supplied_exercise'&&<div><p>{repairCase.setup}</p><p>{repairCase.input}</p><p>{repairCase.faulty_artifact}</p><p>{repairCase.task}</p></div>}
+      </>}
       <p>Baseline, use AI, inspect, lead, and demonstrate. Explain the human decision and preserve meaningful before and after versions.</p></div>
     <div><h3>3. Test, obtain feedback, and retest</h3>{(['normalTest','exceptionTest','feedback','retest'] as const).map(field)}
       <p>Record inputs, expected and observed behavior, results, and versions. Criteria-based feedback is not approval by a person. Retest the correction and other affected paths.</p></div>

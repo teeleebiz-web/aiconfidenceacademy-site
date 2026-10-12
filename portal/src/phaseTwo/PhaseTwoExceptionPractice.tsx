@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { loadPhaseTwoProject, savePhaseTwoProjectUpdate, type PhaseTwoProjectPath } from './phaseTwoProject'
 import './phaseTwoWorkflowPractice.css'
+import type { PhaseTwoStrengthening } from './PhaseTwoEvidenceGuidance'
 
 const fields = {
   "scope": "Continuing project scope, criteria and human review/approval owner",
@@ -44,11 +45,12 @@ const closingGroups: Array<{ heading: string; keys: Array<keyof Draft> }> = [
   { heading: '3. Correct and retest an observed failure', keys: ['failure', 'correction', 'revisedArtifact', 'retest', 'normalRetest', 'demonstration'] },
   { heading: '4. Assemble and retain Journey Two evidence', keys: ['comparison', 'updatedMap', 'updatedConcept', 'assembly', 'decisionNote', 'limits'] },
 ]
-export function PhaseTwoExceptionPractice({ enrollmentId, approvedAiRequest }: { enrollmentId?: string; approvedAiRequest: string }) {
+export function PhaseTwoExceptionPractice({ enrollmentId, approvedAiRequest, repairCase }: { enrollmentId?: string; approvedAiRequest: string; repairCase?: PhaseTwoStrengthening['repair_case'] }) {
   const [draft, setDraft] = useState<Draft>(blank)
   const [project, setProject] = useState<{ path: PhaseTwoProjectPath; title: string } | null>(null)
   const [status, setStatus] = useState('')
   const [saving, setSaving] = useState(false)
+  const [repairSource, setRepairSource] = useState<'own_project'|'supplied_exercise'>('own_project')
   useEffect(() => {
     if (!enrollmentId) return
     let active = true
@@ -56,10 +58,11 @@ export function PhaseTwoExceptionPractice({ enrollmentId, approvedAiRequest }: {
       if (!active || !record) return
       setProject({ path: record.project_path, title: record.project_title })
       const section = record.sections.ai_solution_concept as {
-        exception_tests_lesson_2_6?: { draft?: Partial<Draft> }
+        exception_tests_lesson_2_6?: { draft?: Partial<Draft>; repair_source?: string }
         prototype_lesson_2_5?: { draft?: { scope?: string; criteria?: string; owner?: string; baseline?: string; revisedOutput?: string; revisedArtifact?: string; artifact?: string; concept?: string; limits?: string } }
       } | undefined
       const prior = section?.exception_tests_lesson_2_6?.draft
+      if(section?.exception_tests_lesson_2_6?.repair_source==='supplied_exercise')setRepairSource('supplied_exercise')
       if (prior) setDraft(Object.fromEntries(Object.keys(fields).map(key => [key, typeof prior[key as keyof Draft] === 'string' ? prior[key as keyof Draft] : ''])) as Draft)
       else {
         const sample = section?.prototype_lesson_2_5?.draft
@@ -87,6 +90,7 @@ export function PhaseTwoExceptionPractice({ enrollmentId, approvedAiRequest }: {
   const request = approvedAiRequest.replace('[brief]', brief || '[brief]')
   const complete = Object.values(draft).every(text => text.trim().length > 0)
   const evidence = { lesson: '2.6', draft, test_design_request: request,
+    repair_source: repairSource, supplied_exercise_proves_project_failure: false,
     actual_run_reported_by_learner: true, expected_behavior_separate_from_observation: true,
     practice_only_not_permission_to_deploy: true }
   const recordText = JSON.stringify(evidence, null, 2)
@@ -133,7 +137,17 @@ export function PhaseTwoExceptionPractice({ enrollmentId, approvedAiRequest }: {
     </div>
     {closingGroups.map((group, i) => <div key={group.heading}>
       <h3>{group.heading}</h3>
-      {i === 0 && <p>Preserve one real failed check from this or earlier project testing. Correct it and retest the same failing input against the original expectation. Recheck the normal path. If no actual failure has been corrected, keep that completion item unfinished and extend authorized testing; do not invent evidence.</p>}
+      {i === 0 && <>
+        <p>Preserve one actual failed check and demonstrate its repair. If your required own-project tests all pass, keep those results and use the supplied fictional exercise to demonstrate repair. Keep the two evidence sources separate. Do not invent a project failure or extend the project just to make it fail.</p>
+        {repairCase && <>
+          <label>Source of the correction evidence<select value={repairSource} onChange={e=>setRepairSource(e.target.value as typeof repairSource)}>
+            <option value="own_project">My actual project test</option><option value="supplied_exercise">Supplied fictional repair exercise</option>
+          </select></label>
+          {repairSource==='supplied_exercise'&&<div><p>{repairCase.setup}</p>
+            <p><strong>Record:</strong> {repairCase.input}</p><p><strong>Faulty version:</strong> {repairCase.faulty_artifact}</p><p>{repairCase.task}</p>
+          </div>}
+        </>}
+      </>}
       {i === 1 && <p>Compare clarity, usefulness, review effort and outcome quality using observed evidence. Update the map and concept to describe tested behavior, and mark proposed steps separately. Add accessible evidence references and one concise correction note. For unresolved consequential defects, name the owner and next step.</p>}
       {group.keys.map(key => field(key))}
     </div>)}

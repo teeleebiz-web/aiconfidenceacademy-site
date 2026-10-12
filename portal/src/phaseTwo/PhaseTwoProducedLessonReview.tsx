@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PhaseTwoEvidenceGuidance, type PhaseTwoStrengthening } from './PhaseTwoEvidenceGuidance'
 import { PhaseTwoPracticeStudio } from './PhaseTwoPracticeStudio'
 import { PhaseTwoNeedPractice } from './PhaseTwoNeedPractice'
 import { PhaseTwoValuePractice } from './PhaseTwoValuePractice'
@@ -65,6 +66,7 @@ export type PhaseTwoProducedLesson = {
   verification: Array<{ minutes: number; heading: string; prompt: string }>
   completion_criteria: string[]
   handoff: string
+  strengthening?: PhaseTwoStrengthening
   media_transcripts?: { introduction: string; chapters: string[]; demonstrations: string[] }
   editorial_notes: {
     status: string
@@ -198,6 +200,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
             <h4 id="p2-produced-apply-title">Develop your continuing project</h4></div>
         </div>
         <p>Keep your work together in your Project Record. You will use it again in the lessons ahead.</p>
+        {production.strengthening && <PhaseTwoEvidenceGuidance guidance={production.strengthening} />}
         {learnerMode && production.lesson_id === '1.1' && (
           <PhaseTwoPracticeStudio approvedAiRequest={production.approved_ai_request} enrollmentId={enrollmentId} />
         )}
@@ -211,7 +214,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
         {learnerMode && production.lesson_id === '2.3' && <PhaseTwoClearPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '2.4' && <PhaseTwoSupportPatternPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '2.5' && <PhaseTwoPrototypePractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
-        {learnerMode && production.lesson_id === '2.6' && <PhaseTwoExceptionPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
+        {learnerMode && production.lesson_id === '2.6' && <PhaseTwoExceptionPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} repairCase={production.strengthening?.repair_case} />}
         {learnerMode && production.lesson_id === '3.1' && <PhaseTwoPeoplePractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '3.2' && <PhaseTwoListeningPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '3.3' && <PhaseTwoChangeMessagePractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
@@ -231,7 +234,7 @@ export function PhaseTwoProducedLessonReview({ production, learnerMode = false, 
         {learnerMode && production.lesson_id === '5.5' && <PhaseTwoAccountabilityPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '5.6' && <PhaseTwoStressTestPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '6.1' && <PhaseTwoCapabilityPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
-        {learnerMode && production.lesson_id === '6.2' && <PhaseTwoArtifactFinishPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
+        {learnerMode && production.lesson_id === '6.2' && <PhaseTwoArtifactFinishPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} repairCase={production.strengthening?.repair_case} />}
         {learnerMode && production.lesson_id === '6.3' && <PhaseTwoQualityReviewPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '6.4' && <PhaseTwoDemonstrationPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}
         {learnerMode && production.lesson_id === '6.5' && <PhaseTwoOpportunityPractice enrollmentId={enrollmentId} approvedAiRequest={production.approved_ai_request} />}

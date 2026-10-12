@@ -6,7 +6,7 @@ import { WorkbookStore, type Transport } from '../../../academy/workbook/store'
 import '../../../academy/workbook/workbook.css'
 import './phaseTwoWorkbook.css'
 
-type Block = { type: string; id?: string; text?: string; title?: string; theme?: string; label?: string; hint?: string; lines?: number }
+type Block = { type: string; id?: string; text?: string; title?: string; theme?: string; label?: string; hint?: string; lines?: number; display_group?: 'concise' | 'detail' }
 const approvedTitles: Record<number, string[]> = {
   6: ['Recognize Capability and Connect It to Value','Finish the Artifact with Evidence and Revision','Complete Quality Responsibility and Readiness Review','Demonstrate the Project and Answer Questions','Position the Work and Choose the Next Opportunity','Submit the Portfolio and Execution Plan'],
   1: ['Professional AI Judgment and Direction','Find the Need and Establish the Evidence',
@@ -129,6 +129,19 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, backLes
     setNotice('Your downloadable study copy includes only released lessons.')
   }
   const move=(lesson:number)=>store.page(lesson)
+  const renderBlock=(b:Block,i:number)=>
+    b.type==='heading'?<h2 key={i} className="wb-section-title">{b.text}</h2>
+    :b.type==='text'?<p key={i} className="wb-copy">{b.text}</p>
+    :b.type==='note'?<aside key={i} className="wb-note"><h2>{b.title}</h2><p>{b.text}</p></aside>
+    :b.type==='field'&&b.id?<div key={b.id} className={'wb-answer'+(b.display_group==='detail'&&!answers[b.id]?' p2-wb-empty-detail':'')}>
+      <label htmlFor={b.id}>{b.label}</label>
+      {b.hint&&<p className="wb-hint">{b.hint}</p>}
+      <textarea id={b.id} rows={b.lines??4} maxLength={4000}
+        value={answers[b.id]??''}
+        onChange={e=>enrollmentId ? store.change(b.id!,e.target.value) : setPreviewAnswers(a=>({...a,[b.id!]:e.target.value}))}
+        placeholder="Write your notes here…" />
+      <div className="p2-wb-print-answer">{answers[b.id]||'Notes: ___________________________________________________'}</div>
+    </div>:null
   if(state.status==='loading') return <main className="wb-shell"><p role="status">Opening your Phase Two workbook…</p></main>
   if(!state.workbook||!page) return <main className="wb-shell">
     <p role="alert">{state.message || 'This workbook is not available yet.'}</p>
@@ -173,19 +186,13 @@ export function PhaseTwoWorkbook({ enrollmentId, journey, initialLesson, backLes
           <p>Study, reflect, and keep your evidence. AI assists. Humans verify.</p>
         </header>
         <div className="wb-page-body">
-          {(page.blocks as Block[]).map((b,i)=>
-            b.type==='heading'?<h2 key={i} className="wb-section-title">{b.text}</h2>
-            :b.type==='text'?<p key={i} className="wb-copy">{b.text}</p>
-            :b.type==='note'?<aside key={i} className="wb-note"><h2>{b.title}</h2><p>{b.text}</p></aside>
-            :b.type==='field'&&b.id?<div key={b.id} className="wb-answer">
-              <label htmlFor={b.id}>{b.label}</label>
-              {b.hint&&<p className="wb-hint">{b.hint}</p>}
-              <textarea id={b.id} rows={b.lines??4} maxLength={4000}
-                value={answers[b.id]??''}
-                onChange={e=>enrollmentId ? store.change(b.id!,e.target.value) : setPreviewAnswers(a=>({...a,[b.id!]:e.target.value}))}
-                placeholder="Write your notes here…" />
-              <div className="p2-wb-print-answer">{answers[b.id]||'Notes: ___________________________________________________'}</div>
-            </div>:null)}
+          {(page.blocks as Block[]).filter(b=>b.display_group!=='detail').map(renderBlock)}
+          {(page.blocks as Block[]).some(b=>b.display_group==='detail') && <details key={journey+'.'+page.number}
+            className="p2-wb-detail" open={(page.blocks as Block[]).some(b=>b.display_group==='detail'&&b.id&&answers[b.id])}>
+            <summary>Study instructions and earlier detailed notes</summary>
+            <p>Your earlier answers are retained. Use them directly when they cover the required evidence. You do not need to rewrite them in the concise record.</p>
+            {(page.blocks as Block[]).filter(b=>b.display_group==='detail').map(renderBlock)}
+          </details>}
         </div>
         <footer className="wb-page-footer"><span>AI assists. Humans verify.</span><span>Lesson {journey}.{page.number} · Released material</span></footer>
         <div className="wb-page-actions">
