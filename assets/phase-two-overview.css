@@ -24,6 +24,7 @@ main.phase-two-overview > .phase-two-hero {
 }
 .phase-two-overview .phase-two-facts li { border-bottom: 1px solid var(--line); padding-bottom: 9px; }
 .phase-two-overview .phase-two-actions { display: flex; flex-wrap: wrap; gap: 20px 24px; align-items: center; }
+.phase-two-overview .phase-two-example-link { background: #000; color: #fff; border: 1px solid #000; }
 .phase-two-overview .phase-two-inner { max-width: 1160px; margin-inline: auto; }
 .phase-two-overview .phase-two-section { padding-block: 56px; }
 .phase-two-overview .phase-two-cream { background: var(--cream); }
