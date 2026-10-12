@@ -1,6 +1,6 @@
 import { cp, mkdir, readFile, writeFile, readdir } from 'node:fs/promises'
 import { videoCatalog } from './email/newsletter.mjs'
-const pages = ['', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'explore', 'faq', 'library', 'privacy', 'programs', 'programs/phase-two', 'reflections', 'refund-policy', 'terms', 'videos']
+const pages = ['', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'explore', 'faq', 'library', 'privacy', 'programs', 'programs/phase-one', 'programs/phase-two', 'reflections', 'refund-policy', 'terms', 'videos']
 // Only crawler instructions are public; website files stay behind the password gate.
 await mkdir('vercel-public', { recursive: true })
 await writeFile('vercel-public/robots.txt', 'User-agent: *\nDisallow: /\n')
