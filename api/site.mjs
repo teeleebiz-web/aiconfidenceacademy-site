@@ -6,6 +6,7 @@ import { createAcademyServer } from '../academy/server.mjs'
 import { lessonReleaseMessage } from '../academy/email/lesson-release-message.mjs'
 import { formatAcademyEmailFrom } from '../academy/email/sender.mjs'
 import { servePublicPreview } from '../academy/public-preview.mjs'
+import { routedRequestUrl } from '../academy/site-routing.mjs'
 
 let server
 export default function handler(request, response) {
@@ -57,7 +58,7 @@ export default function handler(request, response) {
       },
     })
   }
-  if (typeof path === 'string') request.url = '/' + path.replace(/^\/+/, '')
+  request.url = routedRequestUrl(request, path)
   return new Promise(resolve => {
     response.once('finish', resolve)
     response.once('close', resolve)

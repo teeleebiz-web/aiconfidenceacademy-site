@@ -148,3 +148,10 @@ test('walkthrough video supports protected byte ranges and captions', async () =
     assert.match(await captions.text(), /^WEBVTT/)
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); await rm(root, { recursive: true }) }
 })
+import { routedRequestUrl } from './site-routing.mjs'
+
+test('catch-all routing preserves owner selections, filters, and learner entry parameters', () => {
+  assert.equal(routedRequestUrl({url:'/api/site.mjs?__aca_path=api%2Foperations%2Fcontrol-center&enrollment=selected&scope=all',query:{__aca_path:'api/operations/control-center',enrollment:'selected',scope:'all'}}, 'api/operations/control-center'), '/api/operations/control-center?enrollment=selected&scope=all')
+  assert.equal(routedRequestUrl({url:'/api/site.mjs',query:{__aca_path:'learn/',view:'trial',history:'emails',offset:'50'}},'learn/'),'/learn/?view=trial&history=emails&offset=50')
+  assert.equal(routedRequestUrl({url:'/learn/?course=phase-two'},undefined),'/learn/?course=phase-two')
+})
