@@ -12,6 +12,17 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      if (new URLSearchParams(window.location.search).get('review') === 'phase-two') {
+        const style = document.createElement('link')
+        style.rel = 'stylesheet'
+        style.href = '/learn/assets/index-CtQ8Sk9n.css'
+        document.head.appendChild(style)
+        const phaseTwoEntry = '/learn/assets/index-B0Cnjv_U.js'
+        await import(/* @vite-ignore */ phaseTwoEntry)
+      } else {
+        await import('./src/main.tsx')
+      }
+    </script>
   </body>
 </html>

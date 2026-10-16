@@ -6,6 +6,7 @@ import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
 import { LearnerOnboarding } from './components/LearnerOnboarding'
+import { EnrollmentOperations } from './components/EnrollmentOperations'
 import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
@@ -65,6 +66,7 @@ export function App() {
   const mediaRequest = useRef(0)
   const params = new URLSearchParams(window.location.search)
   const workbookParam = params.get('workbook')
+  const operationsView = params.get('view') === 'enrollments'
   const workbookKey = journeyWords.some((word) => workbookParam === `journey-${word}`)
     ? workbookParam as WorkbookKey : null
   const workbookApiBase = `${import.meta.env.VITE_ACA_BACKEND_ORIGIN ?? 'https://checkout.aiconfidenceacademy.org'}/api/learner/workbooks/`
@@ -543,6 +545,7 @@ export function App() {
             <small>Learner Portal</small>
           </span>
         </a>
+        {reviewMode ? <a className="quiet-button" href={operationsView ? '/learn/' : '/learn/?view=enrollments'}>{operationsView ? 'Learner portal' : 'Enrollment administration'}</a> : null}
         <button className="quiet-button" type="button" onClick={signOut}>
           Sign out
         </button>
@@ -550,7 +553,7 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {workbookKey && portalData.enrollment && !needsOnboarding ? (
+      {operationsView ? (reviewMode ? <EnrollmentOperations accessToken={session.access_token} /> : <main className="access-shell"><section className="auth-card"><h1>Owner access required</h1><p>Enrollment administration is available to the Academy owner.</p><a href="/learn/">Return to your learner portal</a></section></main>) : workbookKey && portalData.enrollment && !needsOnboarding ? (
         <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
           apiBase={workbookApiBase} backHref={returnLesson ? `/learn/?lesson=${encodeURIComponent(returnLesson.page_id)}` : '/learn/#my-workbooks'} backLabel={returnLesson ? `Back to Lesson ${returnLesson.page_id}` : 'My Workbooks'} />
       ) : needsOnboarding ? (
