@@ -31,6 +31,29 @@ before reporting the integration complete.
 The browser receives only the Supabase publishable key. Service-role and Resend
 credentials remain server-side.
 
+## Enrollment administration
+
+The owner view is `/learn/?view=enrollments`. Its read-only backend is
+`/api/operations/enrollments` on the existing checkout domain. Every request
+validates the Supabase user and the existing server-controlled owner allowlist;
+ordinary learner accounts and the construction password alone cannot read it.
+The view shows enrollment and effective access status, installment totals and
+due dates, invitation/sign-in history, and up to five recent email records per
+enrollment. It loads the latest 100 Phase One enrollments. Sandbox Checkout
+records are explicitly labeled and never counted as live payment records.
+Founder and fixture accounts without a Checkout record are not labeled as debt.
+Payment-event processing success is not treated as proof of a successful charge.
+
+Operational email status is synchronized through the signed Resend webhook at
+`https://checkout.aiconfidenceacademy.org/api/webhooks/resend`.
+`RESEND_WEBHOOK_SECRET` is production-only and remains server-side. October 16
+historical delivery reconciliation retains original timestamps and records its
+evidence in email metadata. The sandbox Stripe callback uses the existing test
+branch's stable Vercel alias, preserving its original signing secret and test
+credentials. Its protection bypass stays private. The sandbox branch retains
+historical ancestry while its application tree matches the verified main tree
+at the October 16 restoration point.
+
 ## ACA visual identity
 
 Portal and curriculum surfaces must extend the established ACA website palette:

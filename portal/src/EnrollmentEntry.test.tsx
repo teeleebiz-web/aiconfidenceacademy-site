@@ -102,4 +102,14 @@ describe('signed-in learner enrollment entry', () => {
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', 'Enrollment unavailable')
     expect(screen.queryByRole('button', { name: /open lesson/i })).toBeNull()
   })
+
+  it('keeps administration unavailable to an ordinary learner even at its direct address', async () => {
+    window.history.replaceState({}, '', '/learn/?view=enrollments')
+    try {
+      render(<App />)
+      expect(await screen.findByRole('heading', { name: 'Owner access required' })).toBeTruthy()
+      expect(screen.queryByRole('link', { name: 'Enrollment administration' })).toBeNull()
+      expect(screen.queryByRole('table')).toBeNull()
+    } finally { window.history.replaceState({}, '', '/learn/') }
+  })
 })

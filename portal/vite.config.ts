@@ -5,7 +5,8 @@ export default defineConfig({
   base: '/learn/',
   build: {
     outDir: '../learn',
-    emptyOutDir: true,
+    // Preserve the existing published Phase Two entry and the assets it imports.
+    emptyOutDir: false,
     sourcemap: false,
   },
 })
