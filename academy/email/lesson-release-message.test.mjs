@@ -21,3 +21,8 @@ test('escapes learner and lesson data before placing it in the email', () => {
   })
   assert.doesNotMatch(message.html, /<unsafe>|<name>/)
 })
+
+test('Phase Two weekend notice follows the cohort window and links to the actual Phase Two learner entry',()=>{
+ const message=lessonReleaseMessage({pageId:'1.6',lessonTitle:'Build and reflect',phaseNumber:2,weekend:true},{appUrl:'https://aiconfidenceacademy.org',learnerFirstName:'Learner'})
+ assert.match(message.html,/extended cohort weekend window/);assert.doesNotMatch(message.html,/closes two hours/);assert.match(message.html,/learn\/\?course=phase-two/)
+})

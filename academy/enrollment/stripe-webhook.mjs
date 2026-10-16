@@ -65,6 +65,8 @@ async function recordEvent(config, event, details) {
     stripe_event_id: event.id, stripe_session_id: details.objectId,
     customer_email: details.email.toLowerCase(), amount_total: details.amount,
     currency: details.currency || 'usd', status: details.status || 'processing', error_message: null,
+    event_type: event.type || null, livemode: typeof event.livemode === 'boolean' ? event.livemode : null,
+    outcome: details.outcome || 'processed', course_id: config.courseId,
   }, { onConflict: 'stripe_event_id' })
   if (error) throw error
 }
@@ -88,7 +90,7 @@ async function checkoutCompleted(event, config) {
   if (!isPaidInFull && !isInstallment) return { received: true, ignored: true }
   const email = session.customer_details?.email ?? session.customer_email
   if (!email) throw new Error('Paid checkout is missing an email address')
-  await recordEvent(config, event, { objectId: session.id, email, amount: session.amount_total, currency: session.currency })
+  await recordEvent(config, event, { objectId: session.id, email, amount: session.amount_total, currency: session.currency, outcome: 'paid' })
   const access = await activateEnrollment(config, session, email)
   if (isInstallment) {
     const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id
@@ -140,7 +142,7 @@ async function invoiceSucceeded(event, config) {
   const { data: prior, error: priorLookupError } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
   if (priorLookupError) throw priorLookupError
   if (prior?.status === 'completed') return { received: true, duplicate: true }
-  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount: invoice.amount_paid, currency: invoice.currency })
+  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount: invoice.amount_paid, currency: invoice.currency, outcome: 'paid' })
   // Reconcile against Stripe's paid invoices, so a retry after a partial database
   // failure cannot count the same invoice as another installment.
   const paidInvoices = await config.stripe.invoices.list({ subscription: subscriptionId, status: 'paid', limit: 100 })
@@ -201,7 +203,7 @@ async function invoiceFailed(event, config) {
   const graceUntil = plan.grace_until && ['grace', 'paused'].includes(plan.status)
     ? new Date(plan.grace_until) : new Date(Date.now() + 48 * 60 * 60 * 1000)
   const amount = Number(invoice.amount_due || plan.next_amount || 0)
-  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency })
+  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency, outcome: 'failed' })
   const { error } = await config.db.from('aca_installment_plans').update({ status: plan.status === 'paused' ? 'paused' : 'grace', grace_until: graceUntil.toISOString() }).eq('id', plan.id)
   if (error) throw error
   await sendOperationalEmail(config, {
@@ -211,6 +213,21 @@ async function invoiceFailed(event, config) {
   })
   await completeEvent(config, event)
   return { received: true, graceUntil: graceUntil.toISOString() }
+}
+
+export async function recordStripeRefund(event, config) {
+  const object = event.data.object
+  const refunds = event.type === 'charge.refunded' ? (object.refunds?.data || []) : [object]
+  for (const refund of refunds) {
+    const values = { provider_refund_id: refund.id, charge_id: typeof refund.charge === 'string' ? refund.charge : refund.charge?.id || (event.type === 'charge.refunded' ? object.id : null),
+      amount: refund.amount, currency: refund.currency || object.currency, livemode: event.livemode === true,
+      status: refund.status || 'pending', updated_at: new Date().toISOString() }
+    const email = object.billing_details?.email || object.receipt_email
+    if (email) values.customer_email = email.toLowerCase()
+    const {error} = await config.db.rpc('aca_record_refund', {p_refund:values,p_created:Number(event.created)||Math.floor(Date.now()/1000)})
+    if (error) throw error
+  }
+  return {received:true,refundsRecorded:refunds.length}
 }
 
 export async function handleStripeEnrollment(req, res, config) {
@@ -226,6 +243,7 @@ export async function handleStripeEnrollment(req, res, config) {
     if (['checkout.session.completed', 'checkout.session.async_payment_succeeded'].includes(event.type)) result = await checkoutCompleted(event, config)
     if (event.type === 'invoice.payment_succeeded') result = await invoiceSucceeded(event, config)
     if (event.type === 'invoice.payment_failed') result = await invoiceFailed(event, config)
+    if (['charge.refunded', 'refund.created', 'refund.updated', 'refund.failed'].includes(event.type)) result = await recordStripeRefund(event, config)
     return json(res, 200, result)
   } catch (error) {
     if (event?.id) await config.db.from('aca_payment_events').update({ status: 'failed', error_message: error.message }).eq('stripe_event_id', event.id)

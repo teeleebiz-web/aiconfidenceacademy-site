@@ -38,6 +38,11 @@ export default function handler(request, response) {
           db,
           courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
           lessonReleaseMessage,
+          phaseTwoReleaseCandidates: async ({windowStart, now}) => {
+            const result = await db.rpc('aca_phase_two_release_candidates', {p_window_start: windowStart, p_now: now})
+            if (result.error) throw result.error
+            return result.data || []
+          },
         }
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
       root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation,
