@@ -1,0 +1,53 @@
+{
+  "lesson": "4.4",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-4-4-Guided-Instruction.m4a",
+    "duration_seconds": 768.95,
+    "chapters": 4,
+    "bytes": 10865487
+  },
+  "demonstrations": [
+    {
+      "key": "connect",
+      "title": "Connect the two delivery flows",
+      "duration_seconds": 58.514,
+      "file": "ACA-Phase-Two-Lesson-4-4-connect.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-4-connect.vtt",
+      "bytes": 1231128,
+      "sha256": "dd6e2ffacfd94b77ab1328533bb06091a3d2d494198cca2890fe2c40c51aa8e1",
+      "fictional_training_example": true
+    },
+    {
+      "key": "expectations",
+      "title": "Make access and expectations concrete",
+      "duration_seconds": 58.723,
+      "file": "ACA-Phase-Two-Lesson-4-4-expectations.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-4-expectations.vtt",
+      "bytes": 1232057,
+      "sha256": "d18b4750596cdf9e54596c3f7344efbbdbeab2cc1071e93d412ae58fa5627a2f",
+      "fictional_training_example": true
+    },
+    {
+      "key": "walkthrough",
+      "title": "Correct two first-use failure points",
+      "duration_seconds": 53.603,
+      "file": "ACA-Phase-Two-Lesson-4-4-walkthrough.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-4-walkthrough.vtt",
+      "bytes": 1145362,
+      "sha256": "6b617e87f9d36b8f9225618c54387eefe4c09af24a39861ff7b939ec59c638d6",
+      "fictional_training_example": true
+    },
+    {
+      "key": "verify",
+      "title": "Trace, verify and retain the map",
+      "duration_seconds": 59.219,
+      "file": "ACA-Phase-Two-Lesson-4-4-verify.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-4-verify.vtt",
+      "bytes": 1245953,
+      "sha256": "67d7ed6db984b5e660e9a84e54e4f9a39bf58bf5ac2d95558067ac1512530ab9",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

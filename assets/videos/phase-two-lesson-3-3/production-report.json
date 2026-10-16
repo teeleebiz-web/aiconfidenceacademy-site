@@ -1,0 +1,53 @@
+{
+  "lesson": "3.3",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-3-3-Guided-Instruction.m4a",
+    "duration_seconds": 712.813,
+    "chapters": 4,
+    "bytes": 10047133
+  },
+  "demonstrations": [
+    {
+      "key": "evidence",
+      "title": "Sort the four kinds of statement",
+      "duration_seconds": 52.01,
+      "file": "ACA-Phase-Two-Lesson-3-3-evidence.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-3-evidence.vtt",
+      "bytes": 1123617,
+      "sha256": "9e11bd4305f9a5fe778db290dd9796dcb81c7c1396a01ec51ba3b4749004465d",
+      "fictional_training_example": true
+    },
+    {
+      "key": "pilot",
+      "title": "Replace a guarantee with accountable action",
+      "duration_seconds": 51.879,
+      "file": "ACA-Phase-Two-Lesson-3-3-pilot.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-3-pilot.vtt",
+      "bytes": 1133201,
+      "sha256": "10130774f170766651b780b48a06a02cac8c124183458c8ec44a4a852ef8096b",
+      "fictional_training_example": true
+    },
+    {
+      "key": "audience",
+      "title": "Adapt for manager and participant",
+      "duration_seconds": 55.458,
+      "file": "ACA-Phase-Two-Lesson-3-3-audience.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-3-audience.vtt",
+      "bytes": 1193823,
+      "sha256": "75c9812907775a7fef6a80222cc1ac2b29201539d5a0f804551f42e961afdc72",
+      "fictional_training_example": true
+    },
+    {
+      "key": "clear",
+      "title": "Reuse CLEAR and retain honest approval",
+      "duration_seconds": 60.97,
+      "file": "ACA-Phase-Two-Lesson-3-3-clear.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-3-clear.vtt",
+      "bytes": 1289522,
+      "sha256": "8e102fe0e1c6ea1bc8428c93aba4c450a2d114ded2f908e664d06408bed29765",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": true
+}

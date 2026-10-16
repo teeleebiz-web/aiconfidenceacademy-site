@@ -35,9 +35,9 @@
 .hub-library-invite h2 { color: #102d4f; font: 400 clamp(34px, 4vw, 52px)/1.16 Georgia, serif; margin: 12px 0; }
 .hub-library-invite p:not(.section-kicker) { color: #536978; line-height: 1.8; }
 .hub-library-invite .button { display: inline-flex; margin-top: 16px; }
-.hub-article { max-width: 1040px; margin: auto; }
+.hub-article.section-pad { position: relative; max-width: 1240px; margin: auto; padding: 32px 32px 80px 192px; }
 .hub-article h1 { color: #102d4f; font: 400 clamp(42px, 5vw, 66px)/1.1 Georgia, serif; margin: 15px 0; }
-.hub-back { display: inline-block; margin-bottom: 45px; }
+.hub-back { position: absolute; left: 32px; top: 36px; max-width: 128px; display: inline-block; margin: 0; line-height: 1.5; }
 .hub-deck { color: #536978; max-width: 780px; font-size: 19px; line-height: 1.65; }
 .hub-prose { max-width: 730px; margin: 45px 0 65px; }
 .hub-prose section { margin-top: 40px; }
@@ -57,6 +57,7 @@
 .hub-formats dt { color: #102d4f; font-weight: 700; }
 .hub-formats dd { color: #536978; margin: 0; text-align: right; }
 .hub-book-detail .button { display: inline-flex; margin-top: 14px; }
+@media (min-width: 651px) and (max-width: 1000px) { .hub-article.section-pad { padding-left: 164px; padding-right: 24px; } .hub-back { left: 24px; max-width: 116px; } .hub-book-detail-grid { grid-template-columns: 210px minmax(0, 1fr); gap: 24px; } }
 @media (max-width: 900px) { .hub-topic-grid, .hub-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 650px) { .hub-topic-grid, .hub-grid, .hub-expression-grid, .hub-path, .hub-book, .hub-book-detail-grid { grid-template-columns: 1fr; } .hub-topic, .hub-card { padding: 24px; } .hub-book { gap: 20px; } .hub-book-detail .book-cover.large { max-width: 270px; } .hub-formats div { flex-direction: column; gap: 3px; } .hub-formats dd { text-align: left; } .hub-article h1 { font-size: 43px; } .hub-article .hub-back { margin-bottom: 30px; } }
+@media (max-width: 650px) { .hub-topic-grid, .hub-grid, .hub-expression-grid, .hub-path, .hub-book, .hub-book-detail-grid { grid-template-columns: 1fr; } .hub-topic, .hub-card { padding: 24px; } .hub-book { gap: 20px; } .hub-book-detail .book-cover.large { max-width: 270px; } .hub-formats div { flex-direction: column; gap: 3px; } .hub-formats dd { text-align: left; } .hub-article h1 { font-size: 43px; } .hub-article.section-pad { padding: 56px 22px 64px; } .hub-article .hub-back { left: 22px; top: 16px; max-width: calc(100% - 44px); margin: 0; } }
 @media (prefers-reduced-motion: reduce) { .hub-topic { transition: none; } }

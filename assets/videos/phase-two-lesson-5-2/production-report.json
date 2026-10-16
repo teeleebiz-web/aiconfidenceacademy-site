@@ -1,0 +1,57 @@
+{
+  "lesson": "5.2",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-5-2-Guided-Instruction.m4a",
+    "duration_seconds": 774.514,
+    "chapters": 4,
+    "bytes": 10926098
+  },
+  "demonstrations": [
+    {
+      "key": "claims",
+      "title": "Label the fictional output",
+      "duration_seconds": 43.337,
+      "file": "ACA-Phase-Two-Lesson-5-2-claims.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-2-claims.vtt",
+      "bytes": 937837,
+      "sha256": "def294c90a9e3d0edf7609b64bb4a09468f8c7cfeb0f1ad508b799e07072ae38",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "variations",
+      "title": "Compare two equivalent requests",
+      "duration_seconds": 41.77,
+      "file": "ACA-Phase-Two-Lesson-5-2-variations.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-2-variations.vtt",
+      "bytes": 911458,
+      "sha256": "168dd64bac5301837a110a370d3a072a74cd95bd85182d7dce756fe7baba8912",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "exception",
+      "title": "Test a conflicting deadline",
+      "duration_seconds": 40.202,
+      "file": "ACA-Phase-Two-Lesson-5-2-exception.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-2-exception.vtt",
+      "bytes": 885174,
+      "sha256": "c588cdbf070ba1a7ace3b3792fe129958f51ff43ffde9565158d3a4f733706e7",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "correction",
+      "title": "Correct the rule and name its limits",
+      "duration_seconds": 43.676,
+      "file": "ACA-Phase-Two-Lesson-5-2-correction.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-2-correction.vtt",
+      "bytes": 942451,
+      "sha256": "ac03cc8b2545f12d0fe40e61f987f86eb87ce5a22992f1d51b5fc4dd5dc0ca55",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

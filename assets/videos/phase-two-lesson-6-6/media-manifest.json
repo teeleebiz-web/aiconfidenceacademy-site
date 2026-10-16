@@ -1,0 +1,23 @@
+{
+  "approved_lipsync_id": "16f402524165487e90905dbff9540b2d",
+  "visual_source_asset_id": "509bace71492492a85d1052e8adf9e1d",
+  "visual_source_url": "https://aiconfidenceacademy.org/assets/videos/confidence-with-ai-man-extended/film.m3u8",
+  "narration_source_video_id": "speech:8c6df61e1e154060860449ee6cc76871",
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
+  "voice_name": "Alex Wright - Informative",
+  "narration_audio_url": "https://resource2.heygen.ai/text_to_speech/2a66eb7bf096465e8cfbd33e2c75dd54/0db3abd83c74452fb2460b0dd113daad/id=e74f2c8b-ae76-4938-bcc2-7bd4de2e8615.wav",
+  "narration_duration_seconds": 99.44816326530612,
+  "orientation": "landscape",
+  "source_duration_seconds": 99.44,
+  "completed_duration_seconds": 105.727,
+  "opening_seconds": 1.5,
+  "instructor_last_word_landing_seconds": 0.85,
+  "end_card_seconds": 1.9,
+  "returned_beginning_card_seconds": 2.0,
+  "start_frame_is_beginning_card": true,
+  "last_frame_is_beginning_card": true,
+  "format": "1920x1080 H.264 MP4 / AAC",
+  "bytes": 12991686,
+  "sha256": "11e88520dd4c4d99149ca6f0f5898f454007d1c0beec8c9f2fb93712c9df4e7a",
+  "max_display_width_px": 640
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "audio_url": "/assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-Guided-Instruction.m4a",
+  "duration_seconds": 755.81,
+  "chapters": [
+    {
+      "title": "1. Bring the continuing artifact into one test",
+      "start_seconds": 0.0,
+      "duration_seconds": 181.786
+    },
+    {
+      "title": "2. Record a useful observation and choose the correction",
+      "start_seconds": 182.686,
+      "duration_seconds": 174.498
+    },
+    {
+      "title": "3. Retest the changed instruction and delivery path",
+      "start_seconds": 358.084,
+      "duration_seconds": 193.384
+    },
+    {
+      "title": "4. Retain the complete artifact and honest next step",
+      "start_seconds": 552.369,
+      "duration_seconds": 203.442
+    }
+  ]
+}

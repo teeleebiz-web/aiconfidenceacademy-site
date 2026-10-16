@@ -1,0 +1,57 @@
+{
+  "lesson": "6.5",
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-6-5-Guided-Instruction.m4a",
+    "duration_seconds": 743.324,
+    "chapters": 4,
+    "bytes": 10393503
+  },
+  "demonstrations": [
+    {
+      "key": "truth",
+      "title": "Correct an inflated claim with the Truth Test",
+      "duration_seconds": 54.073,
+      "file": "ACA-Phase-Two-Lesson-6-5-truth.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-5-truth.vtt",
+      "bytes": 1205123,
+      "sha256": "c682d06b3f3a50c7cd0b4663f294b5406e5a9f4da3a45815afaf465d223fc657",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "formats",
+      "title": "Keep the same truth across four formats",
+      "duration_seconds": 51.435,
+      "file": "ACA-Phase-Two-Lesson-6-5-formats.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-5-formats.vtt",
+      "bytes": 1138543,
+      "sha256": "927df633b24d7576b169403adab35af55f7700e764f6a214452819c3b6c5755f",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "map",
+      "title": "Compare three opportunities before choosing",
+      "duration_seconds": 50.912,
+      "file": "ACA-Phase-Two-Lesson-6-5-map.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-5-map.vtt",
+      "bytes": 1141334,
+      "sha256": "c557d111aef58abc44028b0161faed1c5248cd037641bb89e6a3a1c7ebbb7074",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "action",
+      "title": "Build evidence through a bounded thirty-day action",
+      "duration_seconds": 50.938,
+      "file": "ACA-Phase-Two-Lesson-6-5-action.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-5-action.vtt",
+      "bytes": 1152509,
+      "sha256": "c16cb9e0319700d80315bc75b0552090385b207a8e1f4a1189b62b58e9b24149",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

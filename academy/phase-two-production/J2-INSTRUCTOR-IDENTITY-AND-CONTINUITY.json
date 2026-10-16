@@ -1,0 +1,25 @@
+{
+  "instructor_for": "Phase Two Journey Two (six-lesson journey)",
+  "name": "ACA White Woman - Elegant Home",
+  "source": "User-selected existing HeyGen look and Academy Videos page appearance",
+  "heygen": {
+    "group_id": "9255353907a145f58b2f34599684f817",
+    "look_id": "8158a267e94b4df184914b70dda703b7",
+    "voice_id": "8NNnQuXc0FKua22CvviM",
+    "type": "photo_avatar",
+    "preferred_orientation": "portrait",
+    "render_aspect_ratio": "16:9",
+    "existing_saved_avatar": true
+  },
+  "academy_site_reference": "https://aiconfidenceacademy.org/videos/",
+  "prior_site_video_title": "How Do I Begin Using AI in My Life?",
+  "video_preview": "Journey 2 Lesson 2.1 introduction rendered with this exact look and voice",
+  "reuse_rules": [
+    "No new avatar creation",
+    "No re-styling or identity substitution",
+    "Use same look and voice for all six Journey Two lessons",
+    "Follow ACA spoken phase, journey, lesson number and full title and Let's begin ending",
+    "Preserve Academy opening, closing, return cards, companion audio and workbook workflow"
+  ],
+  "verification_note": "Voice_id is exact default voice stored on this saved HeyGen look. Direct phonetic A/B comparison with public video is reserved for founder acceptance; do not claim such listening test occurred."
+}

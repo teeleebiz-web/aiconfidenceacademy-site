@@ -1,0 +1,57 @@
+{
+  "lesson": "2.2",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-2-2-Guided-Instruction.m4a",
+    "duration_seconds": 614.148,
+    "chapters": 4,
+    "bytes": 8579160
+  },
+  "demonstrations": [
+    {
+      "key": "01-purpose",
+      "title": "Locate the missing next action",
+      "duration_seconds": 18.416,
+      "file": "ACA-Phase-Two-Lesson-2-2-01-purpose.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-2-01-purpose.vtt",
+      "bytes": 428385,
+      "sha256": "f7f00532ccdda800246e6b091392d9eff46c4c1d6a5e878a5a9e6bc36d90068f",
+      "transcript": "This fictional first draft thanks the customer but never names the two missing details. The reader cannot tell what to do. We identify the purpose before revising: request the room dimensions and preferred appointment date. The message belongs at the incomplete-input handoff from Lesson Two Point One.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-request",
+      "title": "Give AI an accurate communication brief",
+      "duration_seconds": 21.028,
+      "file": "ACA-Phase-Two-Lesson-2-2-02-request.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-2-02-request.vtt",
+      "bytes": 482916,
+      "sha256": "ab4a8da1f1447a29d61e377e0693a38e0ad28562fbbff6d9e8d3c54e298a5225",
+      "transcript": "We give the assistant a purpose, audience, context, task, constraints, and quality standard. Only the fictional approved facts are supplied. The team reviews a complete request within two business days. It does not guarantee a finished estimate or a booked appointment. We require questions about missing facts and a plain, respectful voice.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-adapt",
+      "title": "Adapt the audience and keep the facts",
+      "duration_seconds": 19.304,
+      "file": "ACA-Phase-Two-Lesson-2-2-03-adapt.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-2-03-adapt.vtt",
+      "bytes": 445166,
+      "sha256": "20a9ed20dc967c00987c440aac6b78ef85bce3ddcb28a2af823fbc280200a594",
+      "transcript": "The customer email asks for missing information. The internal manager note reports the waiting status and responsible owner. Both preserve the same condition: the review period begins when complete information arrives. A shorter version saying the estimate will be completed in two days changes the promise and must be corrected.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-check",
+      "title": "Check a summary and save the revision",
+      "duration_seconds": 23.014,
+      "file": "ACA-Phase-Two-Lesson-2-2-04-check.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-2-04-check.vtt",
+      "bytes": 519466,
+      "sha256": "828bff8d51d9689559613f7afc7a5fdbbd4c9049283a23ff711205d7125ff7c4",
+      "transcript": "We compare the short version with its source. It has omitted the condition that complete information must arrive first. We restore that condition, check who can approve the message, and retain the original and revised drafts. The Project Record also includes the adapted version, one useful wording change, and a claim still needing review in Lesson Two Point Three.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

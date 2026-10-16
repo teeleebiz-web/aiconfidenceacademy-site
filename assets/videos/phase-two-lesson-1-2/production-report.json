@@ -1,0 +1,57 @@
+{
+  "lesson": "1.2",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-1-2-Guided-Instruction.m4a",
+    "duration_seconds": 581.991,
+    "chapters": 4,
+    "bytes": 8176327
+  },
+  "demonstrations": [
+    {
+      "key": "01-symptom",
+      "title": "See the symptom",
+      "duration_seconds": 17.711,
+      "file": "ACA-Phase-Two-Lesson-1-2-01-symptom.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-2-01-symptom.vtt",
+      "bytes": 419052,
+      "sha256": "70daa58d15ad8e0392e5164a1caee054190b40c3c7c952d644ad321feea47ee1",
+      "transcript": "The team reports repeated questions. That is a symptom, not a diagnosis. We do not yet have an approved count, a current policy audit, or a routing record. Notice what we know and what we still need. Naming a chatbot now would skip the investigation.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-causes",
+      "title": "Compare three causes",
+      "duration_seconds": 24.032,
+      "file": "ACA-Phase-Two-Lesson-1-2-02-causes.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-2-02-causes.vtt",
+      "bytes": 526566,
+      "sha256": "07bd43011fd3ad59f02fd9f024ed10be700399a8c7972feee0e147cdeac6f086",
+      "transcript": "Three explanations could lead to the same repeated question. If information is hard to find, improve the reference. If policies disagree, reconcile them. If requests go to the wrong team, review routing. We have not established which cause is correct. AI is helping us compare possibilities, not delivering a verdict.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-questions",
+      "title": "Improve the questions",
+      "duration_seconds": 22.961,
+      "file": "ACA-Phase-Two-Lesson-1-2-03-questions.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-2-03-questions.vtt",
+      "bytes": 501180,
+      "sha256": "00741b20c4e5c3526adf7ae93fadac99200dd7e1964a457383a5e11268cb4fad",
+      "transcript": "The first question sells our solution. It does not investigate the person's experience. Better questions begin with the work as it happens: where someone looks, what interrupts the task, and what they need to do next. We can ask AI to suggest neutral questions, but we must review them before using them.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-decision",
+      "title": "Save a provisional decision",
+      "duration_seconds": 22.23,
+      "file": "ACA-Phase-Two-Lesson-1-2-04-decision.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-2-04-decision.vtt",
+      "bytes": 502002,
+      "sha256": "08303d31ca277a98ac8fe26c651c166b63ce6ceb03c983b3573ce33244128ffe",
+      "transcript": "The responsible choice is provisional. Record the audience, the situation, the likely barrier and the result you hope to improve. Label unresolved evidence and say what could change your decision. A polished AI explanation does not prove the need exists. Save this reasoning in your continuing project record.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

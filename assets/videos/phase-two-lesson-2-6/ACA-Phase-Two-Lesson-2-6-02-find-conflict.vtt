@@ -1,0 +1,15 @@
+WEBVTT
+
+NOTE Narration is displayed in the caption strip below the video by default.
+
+00:00:00.000 --> 00:00:04.968
+The fictional brief contains twelve participants in one note and twenty in another.
+
+00:00:04.968 --> 00:00:07.643
+The scripted faulty output selects twenty silently.
+
+00:00:07.643 --> 00:00:14.140
+The expected response is to flag both values, ask for clarification, and keep the affected scope unconfirmed.
+
+00:00:14.140 --> 00:00:17.580
+Preserve the actual failed output from your own test.

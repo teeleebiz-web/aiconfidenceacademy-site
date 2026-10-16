@@ -1,0 +1,53 @@
+{
+  "lesson": "4.1",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-4-1-Guided-Instruction.m4a",
+    "duration_seconds": 713.544,
+    "chapters": 4,
+    "bytes": 10077944
+  },
+  "demonstrations": [
+    {
+      "key": "audience",
+      "title": "Carry the need forward without inventing demand",
+      "duration_seconds": 53.943,
+      "file": "ACA-Phase-Two-Lesson-4-1-audience.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-1-audience.vtt",
+      "bytes": 1143492,
+      "sha256": "5f3dce6c81bb212bb593445f3365c837ff52ff17b5b4cc5f49f357055bb84d6d",
+      "fictional_training_example": true
+    },
+    {
+      "key": "promise",
+      "title": "Build the seven-area offer and remove the guarantee",
+      "duration_seconds": 58.801,
+      "file": "ACA-Phase-Two-Lesson-4-1-promise.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-1-promise.vtt",
+      "bytes": 1243591,
+      "sha256": "8a75ec81aedf52de9ce34b51b3028cfdf6064d07312d63faed4e51c3a7d97dc2",
+      "fictional_training_example": true
+    },
+    {
+      "key": "format",
+      "title": "Compare two formats with a simpler alternative",
+      "duration_seconds": 58.07,
+      "file": "ACA-Phase-Two-Lesson-4-1-format.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-1-format.vtt",
+      "bytes": 1223401,
+      "sha256": "a18a3e0cbb7377b65f628bc0cbe56c310fcd40c75ac921eb5a3f878c978b2201",
+      "fictional_training_example": true
+    },
+    {
+      "key": "verify",
+      "title": "Check promises and save the offer with its assumptions",
+      "duration_seconds": 59.716,
+      "file": "ACA-Phase-Two-Lesson-4-1-verify.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-1-verify.vtt",
+      "bytes": 1249074,
+      "sha256": "da427e62abef315859972d5cb7d64c226f8328916d61edf9ee5726f814f11644",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

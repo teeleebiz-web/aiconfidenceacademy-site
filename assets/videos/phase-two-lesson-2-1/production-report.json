@@ -1,0 +1,57 @@
+{
+  "lesson": "2.1",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-2-1-Guided-Instruction.m4a",
+    "duration_seconds": 649.466,
+    "chapters": 4,
+    "bytes": 9089349
+  },
+  "demonstrations": [
+    {
+      "key": "01-trace",
+      "title": "Trace one estimate request",
+      "duration_seconds": 18.756,
+      "file": "ACA-Phase-Two-Lesson-2-1-01-trace.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-1-01-trace.vtt",
+      "bytes": 430304,
+      "sha256": "69d12495f2ef3688a0cd9ef55c494fc33b0034f2a81505aaf9b3848d8200d24c",
+      "transcript": "Begin with the actual path of the work. A request arrives, its inputs are checked, missing details are requested, and an estimate is prepared for human review. This is a workflow because we can trace the people, decisions and handoffs\u2014not merely list the tasks. We must label any invented step as a fictional example.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-delay",
+      "title": "Locate the three-day wait",
+      "duration_seconds": 19.069,
+      "file": "ACA-Phase-Two-Lesson-2-1-02-delay.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-1-02-delay.vtt",
+      "bytes": 438740,
+      "sha256": "f42774fe34ce895e9cd2fc167661293a04fa440f7b08328c5c7dcb5fc73f93fb",
+      "transcript": "The estimate waits three days because nobody owns the missing specifications. The symptom looks like a slow estimate, but the friction is at the input handoff. Automating the final email cannot remove the earlier delay. We first need to confirm the cause and assign responsibility for clarifying incomplete requests.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-handoff",
+      "title": "Improve the handoff with human authority",
+      "duration_seconds": 18.233,
+      "file": "ACA-Phase-Two-Lesson-2-1-03-handoff.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-1-03-handoff.vtt",
+      "bytes": 421960,
+      "sha256": "0292c85c6967df7e8720d7fdcc44b0f2e30260e7512608f5ca446789440ac00d",
+      "transcript": "A responsible improvement gives an incomplete request a clear owner, a status, and a safe next action. AI could organize approved notes or draft a clarification for review. It cannot approve a price or promise. The human reviewer remains accountable, and the improved step directly addresses the missing-input handoff.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-verify",
+      "title": "Save a verified Workflow View",
+      "duration_seconds": 20.323,
+      "file": "ACA-Phase-Two-Lesson-2-1-04-verify.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-1-04-verify.vtt",
+      "bytes": 461824,
+      "sha256": "cadbadb1fcc21d72f19a76b10c3bc14a3bf4d798f1f5fc673cfdfa69c9a4a9b3",
+      "transcript": "Before claiming a better workflow, verify the map against the information you actually have. Mark a reported delay differently from a hypothesized cause. Trace one request from entry to reviewed completion and explain why the chosen improvement removes a cause rather than shifting the burden. Save this work in your continuing project.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

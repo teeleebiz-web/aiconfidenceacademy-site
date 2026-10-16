@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "audio_url": "/assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-Guided-Instruction.m4a",
+  "duration_seconds": 609.185,
+  "chapters": [
+    {
+      "title": "1. Listen before proposing an answer",
+      "start_seconds": 0.0,
+      "duration_seconds": 133.616
+    },
+    {
+      "title": "2. Hear the concern and check the summary",
+      "start_seconds": 134.516,
+      "duration_seconds": 148.767
+    },
+    {
+      "title": "3. Help someone think without choosing for them",
+      "start_seconds": 284.184,
+      "duration_seconds": 172.147
+    },
+    {
+      "title": "4. Choose the response and save accountable support",
+      "start_seconds": 457.231,
+      "duration_seconds": 151.954
+    }
+  ]
+}

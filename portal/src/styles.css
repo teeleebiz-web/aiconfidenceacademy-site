@@ -1285,3 +1285,6 @@ textarea {
     transition: none !important;
   }
 }
+
+.workbook-links { display:flex; flex-wrap:wrap; gap:0.75rem; }
+#my-workbooks { scroll-margin-top:100px; }

@@ -1,0 +1,40 @@
+WEBVTT
+
+00:00:00.315 --> 00:00:02.964
+The fictional error case asks for two copies
+
+00:00:03.054 --> 00:00:05.389
+by Friday at two p.m., while another part
+
+00:00:05.435 --> 00:00:07.994
+says the meeting is Monday morning. No resolved
+
+00:00:08.084 --> 00:00:11.088
+date is supplied. Set the expected behavior before
+
+00:00:11.402 --> 00:00:14.681
+testing: flag the conflict and refer the deadline
+
+00:00:14.905 --> 00:00:18.274
+for human clarification. Do not let the assistant
+
+00:00:18.364 --> 00:00:21.283
+guess a date or invent a confirmation. Run
+
+00:00:21.328 --> 00:00:24.708
+the case and retain the actual response. Inspect
+
+00:00:24.798 --> 00:00:27.314
+the proposed action as well as the wording.
+
+00:00:27.583 --> 00:00:29.604
+If it assigns a final route using an
+
+00:00:29.648 --> 00:00:33.421
+invented deadline, record the defect, revise the fictional
+
+00:00:33.556 --> 00:00:37.328
+rule and retest. Keep the unresolved question visible
+
+00:00:37.508 --> 00:00:39.858
+until appropriate evidence resolves it.

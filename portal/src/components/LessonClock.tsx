@@ -4,6 +4,7 @@ export type LessonAccess = {
   access_status: 'active' | 'completed' | 'expired'
   active_seconds: number
   remaining_seconds: number
+  hard_expires_at?: string | null
 }
 
 export function LessonClock({
@@ -21,9 +22,8 @@ export function LessonClock({
 
   useEffect(() => {
     if (access.access_status !== 'active') return
-    const countdown = window.setInterval(() => {
-      if (document.visibilityState === 'visible') setRemaining((value) => Math.max(0, value - 1))
-    }, 1000)
+    const deadline = access.hard_expires_at ? Date.parse(access.hard_expires_at) : Date.now() + access.remaining_seconds * 1000
+    const countdown = window.setInterval(() => setRemaining(Math.max(0, Math.ceil((deadline - Date.now()) / 1000))), 1000)
     const heartbeat = window.setInterval(() => {
       if (document.visibilityState === 'visible') void onHeartbeat()
     }, 30000)
@@ -36,7 +36,7 @@ export function LessonClock({
       window.clearInterval(heartbeat)
       document.removeEventListener('visibilitychange', resume)
     }
-  }, [access.access_status, onHeartbeat, onResume])
+  }, [access, onHeartbeat, onResume])
 
   const minutes = Math.floor(remaining / 60)
   const seconds = remaining % 60
@@ -49,8 +49,8 @@ export function LessonClock({
         {access.access_status === 'completed'
           ? 'Lesson completed.'
           : access.access_status === 'expired'
-            ? 'Your two active lesson hours have been used. This lesson is now closed.'
-            : 'Your remaining lesson time is saved if you leave or pause.'}
+            ? 'Your lesson has closed.'
+            : 'Your lesson closes two hours after opening.'}
       </small>
     </aside>
   )

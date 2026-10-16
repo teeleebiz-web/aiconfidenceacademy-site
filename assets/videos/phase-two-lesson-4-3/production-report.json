@@ -1,0 +1,53 @@
+{
+  "lesson": "4.3",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-4-3-Guided-Instruction.m4a",
+    "duration_seconds": 730.262,
+    "chapters": 4,
+    "bytes": 10317083
+  },
+  "demonstrations": [
+    {
+      "key": "direct",
+      "title": "Direct a bounded content draft",
+      "duration_seconds": 60.943,
+      "file": "ACA-Phase-Two-Lesson-4-3-direct.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-3-direct.vtt",
+      "bytes": 1253638,
+      "sha256": "4fc4f0b34d1814f1a21f9aa00c755d1a111eaadebf4f13a550a2a43bf3c33733",
+      "fictional_training_example": true
+    },
+    {
+      "key": "examine",
+      "title": "Mark and independently verify the draft",
+      "duration_seconds": 56.581,
+      "file": "ACA-Phase-Two-Lesson-4-3-examine.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-3-examine.vtt",
+      "bytes": 1191474,
+      "sha256": "83d669ea9dcdc98efb7335cd330154970e51978b93cadac64e708b606d86ad49",
+      "fictional_training_example": true
+    },
+    {
+      "key": "agency",
+      "title": "Revise the voice and preserve choice",
+      "duration_seconds": 57.495,
+      "file": "ACA-Phase-Two-Lesson-4-3-agency.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-3-agency.vtt",
+      "bytes": 1199209,
+      "sha256": "1fdc14dd57b844b4e618476d92d56ed0a4cdc57ded5527b977024cc5c76c9501",
+      "fictional_training_example": true
+    },
+    {
+      "key": "verify",
+      "title": "Save the checked sample and release decision",
+      "duration_seconds": 63.425,
+      "file": "ACA-Phase-Two-Lesson-4-3-verify.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-3-verify.vtt",
+      "bytes": 1373731,
+      "sha256": "fec8acffce0572b00c8eb6c47fb51f3eab36d7e921e0bcb1aceed4bff10adff1",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

@@ -1,0 +1,24 @@
+/* Use the exact approved seal on the banner's wall, without regenerating
+   its typography or changing the surrounding bookstore illustration. */
+.bookstore-cover .bookstore-cover-image { position: relative; margin-inline: auto; }
+.bookstore-cover .bookstore-cover-image picture { display: block; }
+.bookstore-cover .bookstore-cover-image .bookstore-banner-seal {
+  position: absolute;
+  left: 50%;
+  top: 27%;
+  width: 13%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+@media (min-width: 651px) {
+  .bookstore-cover .bookstore-cover-image {
+    width: min(100%, calc((100svh - var(--aca-header-height) - 64px) * 1902 / 827));
+  }
+  .bookstore-cover .bookstore-cover-image picture img { height: auto; }
+  .bookstore-cover .bookstore-cover-image .bookstore-banner-seal {
+    left: 49.8%;
+    top: 31.6%;
+    width: 12.5%;
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "lesson": "3.5",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-3-5-Guided-Instruction.m4a",
+    "duration_seconds": 677.26,
+    "chapters": 4,
+    "bytes": 9545131
+  },
+  "demonstrations": [
+    {
+      "key": "scope",
+      "title": "Bound the pilot and name accountable humans",
+      "duration_seconds": 54.961,
+      "file": "ACA-Phase-Two-Lesson-3-5-scope.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-5-scope.vtt",
+      "bytes": 1193315,
+      "sha256": "cab9689c842972ca9e6aa08f2a526327dd6c4f59745088225f3d835e6aa6396e",
+      "fictional_training_example": true
+    },
+    {
+      "key": "measures",
+      "title": "Compare the whole task and people\u2019s experience",
+      "duration_seconds": 52.767,
+      "file": "ACA-Phase-Two-Lesson-3-5-measures.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-5-measures.vtt",
+      "bytes": 1143399,
+      "sha256": "c955ac6bdcf2025b995255b2e4f71244902bc70ca3b51dac7c212c5a60027dcb",
+      "fictional_training_example": true
+    },
+    {
+      "key": "govern",
+      "title": "Check the six GOVERN areas",
+      "duration_seconds": 63.138,
+      "file": "ACA-Phase-Two-Lesson-3-5-govern.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-5-govern.vtt",
+      "bytes": 1397505,
+      "sha256": "83e1e0ecf0daf3aec5555583b3c7e67d49d1e28fd40841f5e43d831662a467f8",
+      "fictional_training_example": true
+    },
+    {
+      "key": "stop",
+      "title": "Stop, correct and retain the next human decision",
+      "duration_seconds": 58.201,
+      "file": "ACA-Phase-Two-Lesson-3-5-stop.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-5-stop.vtt",
+      "bytes": 1254456,
+      "sha256": "e9e97d66bd85eb1d52e611d737e9db8a839df0de9e60618da62e5b20ff60a2a3",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

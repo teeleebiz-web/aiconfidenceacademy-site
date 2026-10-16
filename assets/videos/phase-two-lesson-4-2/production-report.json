@@ -1,0 +1,53 @@
+{
+  "lesson": "4.2",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-4-2-Guided-Instruction.m4a",
+    "duration_seconds": 737.42,
+    "chapters": 4,
+    "bytes": 10414671
+  },
+  "demonstrations": [
+    {
+      "key": "result",
+      "title": "Define the result and its evidence",
+      "duration_seconds": 53.681,
+      "file": "ACA-Phase-Two-Lesson-4-2-result.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-2-result.vtt",
+      "bytes": 1128141,
+      "sha256": "a243481b257135c808bf4ef20ed7a5f92ef58b95c8a9160c9eebc2ab38b2352b",
+      "fictional_training_example": true
+    },
+    {
+      "key": "sequence",
+      "title": "Give each experience step a purpose",
+      "duration_seconds": 54.047,
+      "file": "ACA-Phase-Two-Lesson-4-2-sequence.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-2-sequence.vtt",
+      "bytes": 1138910,
+      "sha256": "4a0c47310b31a71bea9ce3dc97df18ef33b83f75a9a87effcc31aae867bb4d60",
+      "fictional_training_example": true
+    },
+    {
+      "key": "sample",
+      "title": "Build and check the small estimate sample",
+      "duration_seconds": 57.13,
+      "file": "ACA-Phase-Two-Lesson-4-2-sample.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-2-sample.vtt",
+      "bytes": 1195979,
+      "sha256": "065dda79b3f9c1cc3feeb558043534a70afca3f6c9c12fc2f5af3177e37c3071",
+      "fictional_training_example": true
+    },
+    {
+      "key": "review",
+      "title": "Demonstrate use and retain the revised sample",
+      "duration_seconds": 56.032,
+      "file": "ACA-Phase-Two-Lesson-4-2-review.mp4",
+      "captions": "ACA-Phase-Two-Lesson-4-2-review.vtt",
+      "bytes": 1191257,
+      "sha256": "6dd4ad665599ad7cf20e8cab66b8301a790f0dc48e6e5ac4a99294b3d8c43cc5",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

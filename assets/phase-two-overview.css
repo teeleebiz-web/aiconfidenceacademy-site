@@ -1,0 +1,85 @@
+/* Phase Two overview uses the Academy's established navy, cream, and gold. */
+.phase-two-overview { scroll-margin-top: var(--aca-header-height, 86px); }
+.phase-two-overview [id] { scroll-margin-top: calc(var(--aca-header-height, 86px) + 24px); }
+main.phase-two-overview > .phase-two-hero {
+  min-height: 0;
+  padding-block: 52px;
+  grid-template-columns: minmax(0, 1fr) 160px;
+  gap: 40px;
+}
+.phase-two-overview .phase-two-back { margin-bottom: 24px; }
+.phase-two-overview .phase-two-hero h1 { max-width: 700px; margin: 0; font-size: clamp(32px, 3.5vw, 46px); line-height: 1.18; }
+.phase-two-overview .phase-two-hero img { width: 160px; height: 160px; }
+.phase-two-overview .phase-two-hero p:not(.eyebrow) { margin-top: 20px; font-size: 16px; line-height: 1.75; }
+.phase-two-overview .phase-two-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  list-style: none;
+  padding: 0;
+  margin: 28px 0;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 600;
+}
+.phase-two-overview .phase-two-facts li { border-bottom: 1px solid var(--line); padding-bottom: 9px; }
+.phase-two-overview .phase-two-actions { display: flex; flex-wrap: wrap; gap: 20px 24px; align-items: center; }
+.phase-two-overview .phase-two-example-link { background: #000; color: #fff; border: 1px solid #000; }
+.phase-two-overview .phase-two-inner { max-width: 1160px; margin-inline: auto; }
+.phase-two-overview .phase-two-section { padding-block: 56px; }
+.phase-two-overview .phase-two-cream { background: var(--cream); }
+.phase-two-overview .phase-two-value-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 7vw; }
+.phase-two-overview h2 { color: var(--navy); margin: 0 0 20px; font: 400 clamp(26px, 2.6vw, 34px)/1.25 Georgia, serif; }
+.phase-two-overview h3 { color: var(--navy); margin: 12px 0 14px; font: 400 23px/1.3 Georgia, serif; }
+.phase-two-overview .phase-two-prose p,
+.phase-two-overview .phase-two-section-intro,
+.phase-two-overview .phase-two-project p,
+.phase-two-overview .phase-two-example p,
+.phase-two-overview .phase-two-example-steps span,
+.phase-two-overview .phase-two-journeys p,
+.phase-two-overview .phase-two-takeaways span { color: #536575; font-size: 16px; line-height: 1.8; }
+.phase-two-overview .phase-two-prose p:first-child { margin-top: 0; }
+.phase-two-overview .phase-two-section-intro { max-width: 780px; margin: 0 0 32px; }
+.phase-two-overview .phase-two-project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.phase-two-overview .phase-two-project { background: var(--ivory); border: 1px solid var(--line); padding: 30px; }
+.phase-two-overview .phase-two-project-wide { grid-column: 1 / -1; }
+.phase-two-overview .phase-two-number { color: #916d30; font: italic 20px Georgia, serif; }
+.phase-two-overview .phase-two-project p { margin: 0 0 20px; }
+.phase-two-overview .phase-two-project .phase-two-project-value { padding-top: 20px; border-top: 1px solid var(--line); margin-bottom: 0; font-size: 14px; }
+.phase-two-overview strong { color: var(--navy); }
+.phase-two-overview .phase-two-example { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 32px 7vw; }
+.phase-two-overview .phase-two-example-steps { margin: 0; padding-left: 28px; }
+.phase-two-overview .phase-two-example-steps li { padding-left: 10px; margin-bottom: 24px; }
+.phase-two-overview .phase-two-example-steps li::marker { color: #916d30; font-weight: 600; }
+.phase-two-overview .phase-two-example-steps strong,
+.phase-two-overview .phase-two-example-steps span { display: block; }
+.phase-two-overview .phase-two-example-steps strong { margin-bottom: 5px; line-height: 1.5; }
+.phase-two-overview .phase-two-example .phase-two-example-result { grid-column: 1 / -1; background: var(--cream); border-left: 3px solid var(--gold); padding: 24px 30px; margin: 0; }
+.phase-two-overview .phase-two-journeys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 42px; list-style: none; padding: 0; margin: 0; }
+.phase-two-overview .phase-two-journeys li { display: grid; grid-template-columns: 32px 1fr; gap: 16px; padding: 24px 0; border-top: 1px solid var(--line); }
+.phase-two-overview .phase-two-journeys li > span { color: #916d30; padding-top: 3px; font: italic 19px Georgia, serif; }
+.phase-two-overview .phase-two-journeys h3 { font-size: 23px; margin: 0 0 12px; }
+.phase-two-overview .phase-two-journeys p { margin: 0; font-size: 15px; }
+.phase-two-overview .phase-two-takeaways { list-style: none; padding: 0; margin: 0; }
+.phase-two-overview .phase-two-takeaways li { border-top: 1px solid var(--line); padding: 18px 0; }
+.phase-two-overview .phase-two-takeaways strong,
+.phase-two-overview .phase-two-takeaways span { display: block; }
+.phase-two-overview .phase-two-takeaways strong { margin-bottom: 5px; line-height: 1.5; }
+.phase-two-overview .phase-two-readiness { background: var(--mist); }
+.phase-two-overview .phase-two-readiness .phase-two-actions { margin-top: 28px; }
+.phase-two-overview .phase-two-prose .phase-two-availability { margin: 18px 0 0; font-size: 13px; }
+.phase-two-overview a:focus-visible { outline: 3px solid var(--navy); outline-offset: 5px; }
+@media (max-width: 900px) {
+  .phase-two-overview .phase-two-value-grid,
+  .phase-two-overview .phase-two-example { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 650px) {
+  main.phase-two-overview > .phase-two-hero { grid-template-columns: 1fr; padding-block: 36px; gap: 28px; }
+  .phase-two-overview .phase-two-hero img { width: 130px; height: 130px; }
+  .phase-two-overview .phase-two-section { padding-block: 44px; }
+  .phase-two-overview .phase-two-project-grid,
+  .phase-two-overview .phase-two-journeys { grid-template-columns: 1fr; }
+  .phase-two-overview .phase-two-project { padding: 24px; }
+  .phase-two-overview .phase-two-actions { align-items: flex-start; flex-direction: column; gap: 20px; }
+  .phase-two-overview .phase-two-example .phase-two-example-result { padding: 22px; }
+}

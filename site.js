@@ -39,13 +39,14 @@
         </div>
         <div class="payment-options" aria-label="Phase One payment options">
           <article class="payment-card payment-card-featured">
-            <p class="payment-label">One payment</p>
+            <p class="payment-label">Founding Student Price</p>
             <h3>Pay once</h3>
-            <p class="payment-amount">$149</p>
+            <p class="payment-amount">$129</p>
+            <p class="payment-saving">Save $20 on the $149 course price.</p>
             <p class="payment-note">One payment covers your Phase One enrollment.</p>
             <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-one/paid-in-full">
               <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
-              <button class="button button-gold" type="submit">Pay $149</button>
+              <button class="button button-gold" type="submit">Pay $129 today</button>
             </form>
           </article>
           <article class="payment-card payment-card-installments">
@@ -67,13 +68,13 @@
         </div>
       </div>`;
     if (paymentStatus === 'success') {
-      section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Payment received.</span><p>Check your email for your secure Academy access.</p></div>');
+      section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Checkout submitted.</span><p>Your secure Academy access email will arrive after Stripe confirms your payment.</p></div>');
     } else if (paymentStatus === 'canceled') {
       section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
     }
     enrollmentPage.before(section);
-    if (window.location.hash === '#interest-list') {
-      window.requestAnimationFrame(() => document.getElementById('interest-list')?.scrollIntoView());
+    if (['#interest-list', '#updates-signup'].includes(window.location.hash)) {
+      window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView());
     }
   }
 
@@ -81,8 +82,8 @@
   if (!form) return;
 
   const interest = new URLSearchParams(window.location.search).get('interest');
-  const selectedInterest = { books: 'Books & Resources', updates: 'ACA updates' }[interest];
-  if (selectedInterest) form.elements.interest.value = selectedInterest;
+  const selectedInterest = { books: 'Books & Resources', videos: 'Videos', updates: 'ACA updates' }[interest];
+  if (selectedInterest) form.querySelectorAll('input[name=interest]').forEach(input=>{input.checked=input.value===selectedInterest;});
 
   const endpoint = 'https://ymmkodlifpxutynpjnxm.supabase.co/functions/v1/aca-interest-list';
   const submitButton = form.querySelector('button[type="submit"]');
@@ -96,6 +97,13 @@
     }
 
     const data = new FormData(form);
+    if (!data.getAll('interest').length) {
+      const first=form.querySelector('input[name=interest]');
+      first.setCustomValidity('Please select at least one interest.');first.reportValidity();
+      first.onchange=()=>first.setCustomValidity('');
+      form.querySelectorAll('input[name=interest]').forEach(input=>input.addEventListener('change',()=>first.setCustomValidity(''),{once:true}));
+      return;
+    }
     const originalLabel = submitButton?.textContent || 'Join the interest list';
 
     if (submitButton) {
@@ -114,6 +122,7 @@
           lastName: data.get('lastName'),
           email: data.get('email'),
           interest: data.get('interest'),
+          interests: data.getAll('interest'),
           consent: data.get('consent') === 'yes',
           website: data.get('website'),
         }),

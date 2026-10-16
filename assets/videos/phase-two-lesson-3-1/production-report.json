@@ -1,0 +1,53 @@
+{
+  "lesson": "3.1",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-3-1-Guided-Instruction.m4a",
+    "duration_seconds": 616.525,
+    "chapters": 4,
+    "bytes": 8688411
+  },
+  "demonstrations": [
+    {
+      "key": "lens",
+      "title": "Apply the five-part lens",
+      "duration_seconds": 54.23,
+      "file": "ACA-Phase-Two-Lesson-3-1-lens.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-1-lens.vtt",
+      "bytes": 1165105,
+      "sha256": "a84b50aef7ee7609f559e1eb68db61288bfced3bc228702f3e10e00ef647e52a",
+      "fictional_training_example": true
+    },
+    {
+      "key": "groups",
+      "title": "Map the people around the intake",
+      "duration_seconds": 50.364,
+      "file": "ACA-Phase-Two-Lesson-3-1-groups.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-1-groups.vtt",
+      "bytes": 1092687,
+      "sha256": "33284b6db72498b7c360fcce0220e943459d22569456c2736e8e996e4850fdf5",
+      "fictional_training_example": true
+    },
+    {
+      "key": "concerns",
+      "title": "Label evidence and route concerns",
+      "duration_seconds": 55.301,
+      "file": "ACA-Phase-Two-Lesson-3-1-concerns.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-1-concerns.vtt",
+      "bytes": 1179836,
+      "sha256": "ec8cd059138101ed3033331ee98119aad11bbfa6d287becf27f0fa3aa0aaa246",
+      "fictional_training_example": true
+    },
+    {
+      "key": "design",
+      "title": "Change one decision with accountability",
+      "duration_seconds": 52.166,
+      "file": "ACA-Phase-Two-Lesson-3-1-design.mp4",
+      "captions": "ACA-Phase-Two-Lesson-3-1-design.vtt",
+      "bytes": 1114999,
+      "sha256": "a85ea24a50bd23b7e2eb71a8e8c75ffc378b728b28a4c2c9ad61fd803c1639dc",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": true
+}

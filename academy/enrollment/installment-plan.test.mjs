@@ -34,12 +34,33 @@ test('opens the approved $129 pay-in-full checkout separately', async () => {
   const req = Object.assign(new EventEmitter(), { method: 'POST', headers: { origin: 'https://aca.example' } })
   const res = response()
   await handlePaidInFullCheckout(req, res, {
-    stripe: { checkout: { sessions: { create: async value => { payload = value; return { url: 'https://checkout.stripe.test/full' } } } } },
-    phaseOnePriceId: 'price_129', courseId: 'course', appUrl: 'https://aca.example',
+    phaseOneFoundingPriceId: 'price_129',
+    stripe: { prices: { retrieve: async () => ({ active: true, currency: 'usd', unit_amount: 12900, type: 'one_time' }) }, checkout: { sessions: { create: async value => { payload = value; return { url: 'https://checkout.stripe.test/full' } } } } },
+    phaseOnePriceId: 'price_149_legacy', courseId: 'course', appUrl: 'https://aca.example',
   })
   assert.equal(res.status, 303)
   assert.equal(payload.mode, 'payment')
   assert.deepEqual(payload.line_items, [{ price: 'price_129', quantity: 1 }])
+  assert.equal(payload.metadata.aca_total_cents, '12900')
+})
+
+test('never sends a learner to a mismatched founding price', async () => {
+  for (const price of [
+    { active: true, currency: 'usd', unit_amount: 14900, type: 'one_time' },
+    { active: false, currency: 'usd', unit_amount: 12900, type: 'one_time' },
+    { active: true, currency: 'usd', unit_amount: 12900, type: 'recurring' },
+    { active: true, currency: 'eur', unit_amount: 12900, type: 'one_time' },
+  ]) {
+    const req = { method: 'POST', headers: { origin: 'https://aca.example' } }
+    const res = response()
+    let sessionsCreated = 0
+    await handlePaidInFullCheckout(req, res, {
+      phaseOneFoundingPriceId: 'wrong_price', appUrl: 'https://aca.example',
+      stripe: { prices: { retrieve: async () => price }, checkout: { sessions: { create: async () => { sessionsCreated++ } } } },
+    })
+    assert.equal(res.status, 502)
+    assert.equal(sessionsCreated, 0)
+  }
 })
 
 test('sets exactly three weekly phases and cancels after $50, $50, $49', async () => {

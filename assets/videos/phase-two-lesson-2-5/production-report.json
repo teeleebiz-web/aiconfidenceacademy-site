@@ -1,0 +1,57 @@
+{
+  "lesson": "2.5",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-2-5-Guided-Instruction.m4a",
+    "duration_seconds": 638.808,
+    "chapters": 4,
+    "bytes": 8935990
+  },
+  "demonstrations": [
+    {
+      "key": "01-bound-path",
+      "title": "Define the narrow working path",
+      "duration_seconds": 17.319,
+      "file": "ACA-Phase-Two-Lesson-2-5-01-bound-path.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-5-01-bound-path.vtt",
+      "bytes": 402045,
+      "sha256": "9771b562843adcc31c41805525b8b243d635ba3e9d031bfd10a346ff0885c9ad",
+      "transcript": "Use the fictional workshop brief: twelve participants, ninety minutes, and an editable handout. Build a proposal outline that marks the missing price and date. Completion means a reviewable draft with a named scope-and-price reviewer, not a real proposal issued to a customer.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-use-sample",
+      "title": "Preserve the baseline and actual run",
+      "duration_seconds": 16.248,
+      "file": "ACA-Phase-Two-Lesson-2-5-02-use-sample.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-5-02-use-sample.vtt",
+      "bytes": 382084,
+      "sha256": "30b323fcac4089d2868b0d7bcb3cfb33956c39149c06ee41db955d0879d7fa20",
+      "transcript": "Keep a manual outline as the baseline. Use a reusable request and template with the same fictional brief. Preserve the exact request and actual output from your own run. This teaching illustration does not stand in for your observed project evidence.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-material-revision",
+      "title": "Lead a material revision",
+      "duration_seconds": 17.136,
+      "file": "ACA-Phase-Two-Lesson-2-5-03-material-revision.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-5-03-material-revision.vtt",
+      "bytes": 402425,
+      "sha256": "788700cc1949b465227723adf21dcea29fccd281d05942e452eb18c5a5f62f47",
+      "transcript": "In this fictional comparison, the first outline leaves out the reviewer and draft status. Revise the template to require both. Run the same input again and compare the actual outputs against the same criteria. Record what improved and retain any unresolved findings.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-demonstrate-save",
+      "title": "Demonstrate and save the artifact",
+      "duration_seconds": 20.01,
+      "file": "ACA-Phase-Two-Lesson-2-5-04-demonstrate-save.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-5-04-demonstrate-save.vtt",
+      "bytes": 459486,
+      "sha256": "354b031f2cfcb6c9cf18e6b71ee3cd41cb8eba3161e4dceb0846a83330c32c67",
+      "transcript": "Show the working artifact, normal input, revised result, and human review point. Explain what the prototype does, what it cannot do, and what remains uncertain. Save the baseline and before-and-after evidence. One normal case is a foundation for Lesson Six, not deployment approval.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

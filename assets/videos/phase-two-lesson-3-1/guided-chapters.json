@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "audio_url": "/assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-Guided-Instruction.m4a",
+  "duration_seconds": 616.525,
+  "chapters": [
+    {
+      "title": "1. Use the People-First Leadership Lens",
+      "start_seconds": 0.0,
+      "duration_seconds": 150.883
+    },
+    {
+      "title": "2. Map benefits, effort and influence",
+      "start_seconds": 151.783,
+      "duration_seconds": 147.984
+    },
+    {
+      "title": "3. Separate feedback from possible concerns",
+      "start_seconds": 300.667,
+      "duration_seconds": 157.257
+    },
+    {
+      "title": "4. Revise the design and name human owners",
+      "start_seconds": 458.824,
+      "duration_seconds": 157.701
+    }
+  ]
+}

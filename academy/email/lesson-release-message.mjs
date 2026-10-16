@@ -15,7 +15,7 @@ export function lessonReleaseMessage(candidate, { appUrl, learnerFirstName }) {
       <p>${greeting}</p>
       <p>Your next AI Confidence Academy lesson is now available:</p>
       <p><strong>${lesson}</strong></p>
-      <p>Open your learner portal when you are ready to begin. Your two-hour lesson timer starts when you open the lesson, pauses when you leave, and resumes with your remaining time when you return.</p>
+      <p>Open your learner portal when you are ready to begin. Your lesson closes two hours after you first open it. Your released workbook pages and saved answers remain available afterward.</p>
       <p>Your released workbook pages remain available for your continued study.</p>
       <p><a href="${escapeHtml(portalUrl)}" style="background:#173d62;color:#fff;padding:12px 18px;text-decoration:none">Open Your Learner Portal</a></p>
       <p>AI Confidence Academy<br>People come first. AI is the tool. Confidence is the product.</p>

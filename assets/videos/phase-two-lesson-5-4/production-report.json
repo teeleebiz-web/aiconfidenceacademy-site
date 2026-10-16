@@ -1,0 +1,57 @@
+{
+  "lesson": "5.4",
+  "voice_id": "beda795369e7487b863b0e7b82a82bd3",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-5-4-Guided-Instruction.m4a",
+    "duration_seconds": 681.335,
+    "chapters": 4,
+    "bytes": 9604224
+  },
+  "demonstrations": [
+    {
+      "key": "flow",
+      "title": "Map the dispute and wait state",
+      "duration_seconds": 32.627,
+      "file": "ACA-Phase-Two-Lesson-5-4-flow.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-4-flow.vtt",
+      "bytes": 734072,
+      "sha256": "0dc1a773b2721770e9f152f13f441d1b994aa74ee1e0d3164f22bffdfbfd803a",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "ready",
+      "title": "Screen three workflow steps",
+      "duration_seconds": 37.956,
+      "file": "ACA-Phase-Two-Lesson-5-4-ready.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-4-ready.vtt",
+      "bytes": 825768,
+      "sha256": "9ecbea5c151188f76833e361083fafecd86322ae05e6dbdc5bb3c051158612c1",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "backup",
+      "title": "Test the failure and backup",
+      "duration_seconds": 35.84,
+      "file": "ACA-Phase-Two-Lesson-5-4-backup.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-4-backup.vtt",
+      "bytes": 783489,
+      "sha256": "281647409bbc9cad640749570979b1d72cce8e583bf20b17f1d66f6b6b7f94bd",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "evidence",
+      "title": "Compare effort and retain responsibility",
+      "duration_seconds": 37.172,
+      "file": "ACA-Phase-Two-Lesson-5-4-evidence.mp4",
+      "captions": "ACA-Phase-Two-Lesson-5-4-evidence.vtt",
+      "bytes": 819054,
+      "sha256": "49de49ff603d2ad93236dfe7963734b576e320f32eb28d107a09f4084a5f2ba3",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

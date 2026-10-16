@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "audio_url": "/assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-Guided-Instruction.m4a",
+  "duration_seconds": 713.544,
+  "chapters": [
+    {
+      "title": "1. Continue from the audience evidence",
+      "start_seconds": 0.0,
+      "duration_seconds": 169.796
+    },
+    {
+      "title": "2. Define a promise you can provide",
+      "start_seconds": 170.696,
+      "duration_seconds": 177.998
+    },
+    {
+      "title": "3. Compare formats and define the scope",
+      "start_seconds": 349.594,
+      "duration_seconds": 180.454
+    },
+    {
+      "title": "4. Correct unsupported claims and retain the offer",
+      "start_seconds": 530.948,
+      "duration_seconds": 182.596
+    }
+  ]
+}

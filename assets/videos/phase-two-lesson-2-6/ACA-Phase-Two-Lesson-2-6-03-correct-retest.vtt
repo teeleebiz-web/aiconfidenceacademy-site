@@ -1,0 +1,15 @@
+WEBVTT
+
+NOTE Narration is displayed in the caption strip below the video by default.
+
+00:00:00.000 --> 00:00:06.166
+Revise the reusable instructions to require a conflict check and a human clarification route.
+
+00:00:06.166 --> 00:00:10.130
+Retest the same conflicting input against the same expectation.
+
+00:00:10.130 --> 00:00:15.415
+Preserve the actual revised output, then check the normal path still works.
+
+00:00:15.415 --> 00:00:18.938
+Claim only the improvement supported by that evidence.

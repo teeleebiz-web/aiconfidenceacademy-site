@@ -26,9 +26,11 @@ export default function handler(request, response) {
           stripe: process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null,
           webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
           phaseOnePriceId: process.env.ACA_PHASE_ONE_PRICE_ID,
+          phaseOneFoundingPriceId: process.env.ACA_PHASE_ONE_FOUNDING_PRICE_ID,
           installment50PriceId: process.env.ACA_INSTALLMENT_50_PRICE_ID,
           installment49PriceId: process.env.ACA_INSTALLMENT_49_PRICE_ID,
           resend: process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null,
+          newsletterResend: process.env.ACA_NEWSLETTER_RESEND_KEY ? new Resend(process.env.ACA_NEWSLETTER_RESEND_KEY) : null,
           resendWebhookSecret: process.env.RESEND_WEBHOOK_SECRET,
           emailFrom: formatAcademyEmailFrom(process.env.ACA_EMAIL_FROM),
           appUrl: process.env.ACA_APP_URL,
@@ -38,7 +40,17 @@ export default function handler(request, response) {
           lessonReleaseMessage,
         }
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
-      root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation })
+      root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation,
+      workbookReviewerCheck: async token => {
+        const scoped = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+          auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+          global: { headers: { Authorization: `Bearer ${token}` } },
+        })
+        const { data, error } = await scoped.rpc('is_aca_curriculum_owner')
+        if (error) throw Object.assign(new Error('Your workbook access could not be checked. Please try again.'), { status: 503 })
+        return data === true
+      },
+    })
   }
   if (typeof path === 'string') request.url = '/' + path.replace(/^\/+/, '')
   return new Promise(resolve => {

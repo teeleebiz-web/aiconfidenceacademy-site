@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "50ab8f40f8a34d66aa4338729900c1b0",
+  "audio_url": "/assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-Guided-Instruction.m4a",
+  "duration_seconds": 712.813,
+  "chapters": [
+    {
+      "title": "1. Separate what you know from what you expect",
+      "start_seconds": 0.0,
+      "duration_seconds": 167.288
+    },
+    {
+      "title": "2. Explain the pilot, participation and human control",
+      "start_seconds": 168.188,
+      "duration_seconds": 174.55
+    },
+    {
+      "title": "3. Adapt the message while preserving facts and voice",
+      "start_seconds": 343.638,
+      "duration_seconds": 178.338
+    },
+    {
+      "title": "4. Apply CLEAR, verify commitments and save honestly",
+      "start_seconds": 522.876,
+      "duration_seconds": 189.936
+    }
+  ]
+}

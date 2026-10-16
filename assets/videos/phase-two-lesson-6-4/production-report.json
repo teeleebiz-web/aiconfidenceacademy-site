@@ -1,0 +1,57 @@
+{
+  "lesson": "6.4",
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-6-4-Guided-Instruction.m4a",
+    "duration_seconds": 712.865,
+    "chapters": 4,
+    "bytes": 9934756
+  },
+  "demonstrations": [
+    {
+      "key": "story",
+      "title": "Build a six-minute STORY outline",
+      "duration_seconds": 51.827,
+      "file": "ACA-Phase-Two-Lesson-6-4-story.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-4-story.vtt",
+      "bytes": 1177357,
+      "sha256": "962193d44ffe8358ecc1dca38d06ca620e61940c72477599ac05487a598f56a8",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "paths",
+      "title": "Demonstrate a normal path and review exception",
+      "duration_seconds": 52.95,
+      "file": "ACA-Phase-Two-Lesson-6-4-paths.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-4-paths.vtt",
+      "bytes": 1172192,
+      "sha256": "adce8b2361256b1f20ef937d341b07844d1cc083e24850a8568fbe41c076def9",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "rehearse",
+      "title": "Revise the weakest section after rehearsal",
+      "duration_seconds": 49.032,
+      "file": "ACA-Phase-Two-Lesson-6-4-rehearse.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-4-rehearse.vtt",
+      "bytes": 1088020,
+      "sha256": "6284183136232c7a25470b8184a4d1adf20e326a2fc386847db75ac14100f2ee",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "questions",
+      "title": "Answer with evidence and honest limits",
+      "duration_seconds": 53.107,
+      "file": "ACA-Phase-Two-Lesson-6-4-questions.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-4-questions.vtt",
+      "bytes": 1203225,
+      "sha256": "4d8230788b59038543fe1f2456db3432e02c37f2226c56607f8975d7d2d2d206",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

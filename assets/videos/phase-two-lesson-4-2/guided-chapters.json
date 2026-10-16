@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "audio_url": "/assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-Guided-Instruction.m4a",
+  "duration_seconds": 737.42,
+  "chapters": [
+    {
+      "title": "1. Design around the person and the result",
+      "start_seconds": 0.0,
+      "duration_seconds": 174.838
+    },
+    {
+      "title": "2. Arrange the experience so each step has a purpose",
+      "start_seconds": 175.738,
+      "duration_seconds": 185.469
+    },
+    {
+      "title": "3. Build one complete sample and check its use",
+      "start_seconds": 362.107,
+      "duration_seconds": 179.148
+    },
+    {
+      "title": "4. Verify the result and retain the sample",
+      "start_seconds": 542.155,
+      "duration_seconds": 195.265
+    }
+  ]
+}

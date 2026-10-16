@@ -5,22 +5,24 @@ import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import { handleWorkbook } from './workbook/api.mjs'
+import { handleLearnerMedia } from './learner-media.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollment/installment-plan.mjs'
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
 import { handleResendWebhook } from './email/resend-webhook.mjs'
 import { handleLessonReleaseMaintenance } from './email/lesson-release-maintenance.mjs'
 import { handleLessonReleaseTest } from './email/lesson-release-test.mjs'
+import { handleNewsletterMaintenance, handleNewsletterUnsubscribe } from './email/newsletter.mjs'
 
 const digest = value => createHash('sha256').update(value).digest()
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.vtt': 'text/vtt; charset=utf-8' }
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.pdf': 'application/pdf', '.mp4': 'video/mp4', '.m4s': 'video/iso.segment', '.m3u8': 'application/vnd.apple.mpegurl', '.vtt': 'text/vtt; charset=utf-8' }
 const exploreVideos = new Map([
   ['01', 'explore-chatgpt/ACA-Explore-ChatGPT-01.mp4'],
   ['02', 'explore-chatgpt/ACA-Explore-ChatGPT-02.mp4'],
   ['03', 'explore-chatgpt/ACA-Explore-ChatGPT-03.mp4'],
 ])
 const academyWelcomeVideo = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
-export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null, learnerOrigins = ['https://aiconfidenceacademy.org'] }) {
+export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null, learnerOrigins = ['https://aiconfidenceacademy.org'], workbookReviewerCheck }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
@@ -45,7 +47,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
-    if (requestPath.startsWith('/api/learner/workbooks/')) {
+    if (requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
         res.writeHead(403, { 'Content-Type': 'application/json' })
@@ -58,8 +60,11 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token')
       }
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
+      if (requestPath.startsWith('/api/learner/lesson-media/')) {
+        await handleLearnerMedia(req, res, { db, courseId, lessonId: requestPath.slice('/api/learner/lesson-media/'.length) }); return
+      }
       const workbookKey = requestPath.slice('/api/learner/workbooks/'.length)
-      await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: false, workbookKey }); return
+      await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: false, workbookKey, reviewerCheck: workbookReviewerCheck }); return
     }
     if (requestPath === '/api/webhooks/stripe') {
       await handleStripeEnrollment(req, res, enrollmentAutomation); return
@@ -78,6 +83,12 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     }
     if (requestPath === '/api/email/lesson-release-maintenance') {
       await handleLessonReleaseMaintenance(req, res, enrollmentAutomation); return
+    }
+    if (requestPath === '/api/email/newsletter-maintenance') {
+      await handleNewsletterMaintenance(req, res, enrollmentAutomation, publicRoot); return
+    }
+    if (requestPath === '/api/email/unsubscribe') {
+      await handleNewsletterUnsubscribe(req, res, enrollmentAutomation); return
     }
     if (requestPath === '/api/email/lesson-release-test') {
       await handleLessonReleaseTest(req, res, enrollmentAutomation); return

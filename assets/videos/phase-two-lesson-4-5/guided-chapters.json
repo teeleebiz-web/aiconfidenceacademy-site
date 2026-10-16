@@ -1,0 +1,28 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "00e3d285aba44b27a83c47c02c9c2d9c",
+  "audio_url": "/assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-Guided-Instruction.m4a",
+  "duration_seconds": 738.021,
+  "chapters": [
+    {
+      "title": "1. Apply the Responsible Business Review",
+      "start_seconds": 0.0,
+      "duration_seconds": 179.879
+    },
+    {
+      "title": "2. Prepare one small prototype test",
+      "start_seconds": 180.779,
+      "duration_seconds": 182.727
+    },
+    {
+      "title": "3. Count the work and check the calculation",
+      "start_seconds": 364.406,
+      "duration_seconds": 186.671
+    },
+    {
+      "title": "4. Stress the assumptions and retain a human decision",
+      "start_seconds": 551.977,
+      "duration_seconds": 186.044
+    }
+  ]
+}

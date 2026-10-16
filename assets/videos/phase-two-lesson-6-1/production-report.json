@@ -1,0 +1,57 @@
+{
+  "lesson": "6.1",
+  "voice_id": "0db3abd83c74452fb2460b0dd113daad",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a",
+    "duration_seconds": 820.777,
+    "chapters": 4,
+    "bytes": 11542048
+  },
+  "demonstrations": [
+    {
+      "key": "capability",
+      "title": "Turn activity into a supported capability",
+      "duration_seconds": 48.509,
+      "file": "ACA-Phase-Two-Lesson-6-1-capability.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-1-capability.vtt",
+      "bytes": 1055008,
+      "sha256": "7f76c4167df9da6a3f19b7761215dbdeeb302c76ac5a9828b1126e5731d731a1",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "inventory",
+      "title": "Check the inventory against the evidence",
+      "duration_seconds": 48.979,
+      "file": "ACA-Phase-Two-Lesson-6-1-inventory.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-1-inventory.vtt",
+      "bytes": 1086055,
+      "sha256": "d585928d6f47f88bcbdf63633661363457005a17d63a8c9cb913281263fc547b",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "value",
+      "title": "Select the strongest Value Connections",
+      "duration_seconds": 48.535,
+      "file": "ACA-Phase-Two-Lesson-6-1-value.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-1-value.vtt",
+      "bytes": 1085022,
+      "sha256": "23b86bd81662fc4822bfbfe31f5e1462f852054f5ea77c4daf1e2a418e9ccfd5",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "story",
+      "title": "Tell the Evidence Story and show the work",
+      "duration_seconds": 53.237,
+      "file": "ACA-Phase-Two-Lesson-6-1-story.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-1-story.vtt",
+      "bytes": 1183598,
+      "sha256": "e18aaa476214aafff8df5ddabdc6308608376469c236b7297df242202c08cec9",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

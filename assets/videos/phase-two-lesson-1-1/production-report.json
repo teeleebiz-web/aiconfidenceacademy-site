@@ -1,0 +1,60 @@
+{
+  "lesson": "1.1",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "voice_name": "Rika - IA",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-1-1-Guided-Instruction.m4a",
+    "bytes": 9070566,
+    "duration_seconds": 646.435,
+    "sha256": "9ee2ccd9cfc126d88241078e2321e8740a8996902615bd7436c18bac26c51e69",
+    "chapters": 4
+  },
+  "demonstrations": [
+    {
+      "key": "01-source",
+      "title": "Start with the source",
+      "duration_seconds": 21.786,
+      "file": "ACA-Phase-Two-Lesson-1-1-01-source.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-1-01-source.vtt",
+      "bytes": 605470,
+      "sha256": "65537c911d16b74eec4c9149f54ab053281f62a952eeaa949269f9e13e65fbef",
+      "transcript": "This is a fictional weekly service record. Forty-two requests arrived. Thirty-six were marked resolved. Before you ask AI to draft a report, notice exactly what the record does and does not say. It gives us counts. It does not give us completion times or last week's results. Keep those gaps in view.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-draft",
+      "title": "Read the AI draft",
+      "duration_seconds": 22.622,
+      "file": "ACA-Phase-Two-Lesson-1-1-02-draft.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-1-02-draft.vtt",
+      "bytes": 638034,
+      "sha256": "807b8fa0785d3b184398e5edda36ced6fdac5ff78c4ee5d7d2e8ae9411135530",
+      "transcript": "Now look at the AI-assisted draft. The report sounds confident. It says ninety-five percent of requests were resolved on time, and it claims that performance improved. But those are new conclusions. They do not appear in our fictional source notes. Do not confuse a smooth explanation with a verified business fact.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-review",
+      "title": "Trace and challenge",
+      "duration_seconds": 23.85,
+      "file": "ACA-Phase-Two-Lesson-1-1-03-review.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-1-03-review.vtt",
+      "bytes": 654285,
+      "sha256": "ff16ffe0d1b5fc9b03b9009466835767cdc84200b27399388b109172946c15ad",
+      "transcript": "Here is where human judgment changes the result. Highlight the ninety-five percent claim. Which approved timing record supports it? We have none. Now highlight the claim that performance improved. Where is the verified comparison with a previous period? That is also missing. Keep the recorded counts. Withhold the unsupported conclusions.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-correct",
+      "title": "Correct and save",
+      "duration_seconds": 24.007,
+      "file": "ACA-Phase-Two-Lesson-1-1-04-correct.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-1-04-correct.vtt",
+      "bytes": 675883,
+      "sha256": "a4f2469d3c2f0f25bd1d18c7fb6e1aae8e9ff7739ee3aa54dce7df9b73e7bc06",
+      "transcript": "Compare the corrected summary. It reports forty-two requests received and thirty-six marked resolved, then clearly says that on-time performance and improvement cannot be established from the available notes. This version is less dramatic and more dependable. Now choose one claim in your own project to check, correct it if necessary, and save a short decision note.",
+      "fictional_training_example": true
+    }
+  ],
+  "source_has_original_curriculum_example": true,
+  "ready_for_media_attachment": true
+}

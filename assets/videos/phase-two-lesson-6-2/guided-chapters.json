@@ -1,0 +1,32 @@
+{
+  "title": "Guided instruction",
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "audio_url": "/assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-Guided-Instruction.m4a",
+  "duration_seconds": 750.115,
+  "chapters": [
+    {
+      "title": "Return to the charter and preserve the baseline",
+      "start_seconds": 0.0,
+      "duration_seconds": 178.416,
+      "transcript": ""
+    },
+    {
+      "title": "Use BUILD to lead a bounded revision",
+      "start_seconds": 179.316,
+      "duration_seconds": 193.332,
+      "transcript": ""
+    },
+    {
+      "title": "Test ordinary use, exceptions, and the correction",
+      "start_seconds": 373.549,
+      "duration_seconds": 186.671,
+      "transcript": ""
+    },
+    {
+      "title": "Reconcile the scope and save the finished result",
+      "start_seconds": 561.12,
+      "duration_seconds": 188.996,
+      "transcript": ""
+    }
+  ]
+}

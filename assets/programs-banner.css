@@ -1,0 +1,24 @@
+/* Match the established cream-framed campus and bookstore openings. */
+.programs-campus-banner {
+  box-sizing: border-box;
+  min-height: calc(100svh - var(--aca-header-height));
+  background: var(--cream, #f8f4e8);
+}
+.programs-campus-banner img {
+  display: block;
+  width: min(100%, calc((100svh - var(--aca-header-height) - 64px) * 1902 / 827));
+  height: auto;
+  margin-inline: auto;
+}
+.programs-campus-banner + .page-hero {
+  box-sizing: border-box;
+  min-height: calc(100svh - var(--aca-header-height));
+}
+@media (max-width: 650px) {
+  /* Follow the existing phone layout: panorama and introduction together. */
+  .programs-campus-banner { min-height: 0; }
+  .programs-campus-banner img { width: 100%; }
+  .programs-campus-banner + .page-hero {
+    min-height: calc(100svh - var(--aca-header-height) - 43.4806vw);
+  }
+}

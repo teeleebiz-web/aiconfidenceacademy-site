@@ -224,7 +224,7 @@ export function LessonView({
         </section>
 
         <section className="practice-panel" id="lesson-practice">
-          {workbookHref && <a className="workbook-entry-link" href={workbookHref} target="_blank" rel="noopener noreferrer">Open Workbook</a>}
+          {workbookHref && <a className="workbook-entry-link" href={workbookHref}>Open Workbook</a>}
           <p className="eyebrow">Guided practice</p>
           <h2>Begin with one purposeful conversation.</h2>
           {lesson.content.practice_material ? (

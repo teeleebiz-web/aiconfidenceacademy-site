@@ -1,0 +1,57 @@
+{
+  "lesson": "1.5",
+  "voice_id": "ac277b338cf64d8b9686784c43c563da",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-1-5-Guided-Instruction.m4a",
+    "duration_seconds": 695.128,
+    "chapters": 4,
+    "bytes": 9758220
+  },
+  "demonstrations": [
+    {
+      "key": "01-concept",
+      "title": "Turn an idea into a solution concept",
+      "duration_seconds": 23.562,
+      "file": "ACA-Phase-Two-Lesson-1-5-01-concept.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-5-01-concept.vtt",
+      "bytes": 522325,
+      "sha256": "4ec9e1874508d39113293db0984b7886ec26388dd26977057ab5a6e49869f00a",
+      "transcript": "This idea sounds ambitious, but a solution concept must explain the people, problem, result, information and owner. We can begin with one fictional service estimate based on approved sample descriptions. A human checks the promises. We are not authorizing contracts, payments or live customer messages.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-focus",
+      "title": "Apply the FOCUS Capstone Frame",
+      "duration_seconds": 19.748,
+      "file": "ACA-Phase-Two-Lesson-1-5-02-focus.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-5-02-focus.vtt",
+      "bytes": 449954,
+      "sha256": "c70f4d03ef595e6dc5bda33ba7e82d86c7a3db1228e03d651156048450eec664",
+      "transcript": "FOCUS means Function, Owner, Customer, Use Case and Scope. Here the function is a sample estimate draft. A person owns review. The customer is fictional. The use case uses approved sample details, and the scope excludes live integrations. These boundaries make the work testable.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-options",
+      "title": "Compare three possible artifacts",
+      "duration_seconds": 22.883,
+      "file": "ACA-Phase-Two-Lesson-1-5-03-options.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-5-03-options.vtt",
+      "bytes": 514763,
+      "sha256": "06ca6e1ff2b5cd1e0758e93a2ad5acc103755711d8dddfc40101f884b805bf18",
+      "transcript": "Compare three artifacts by feasibility, value and consequence. An approved guide may be simple. A narrow estimate demonstration could show a useful AI role with human review. A complete live system demands permissions and integrations not established here. The best capstone is one we can actually finish and verify.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-charter",
+      "title": "Record the charter and test",
+      "duration_seconds": 22.047,
+      "file": "ACA-Phase-Two-Lesson-1-5-04-charter.mp4",
+      "captions": "ACA-Phase-Two-Lesson-1-5-04-charter.vtt",
+      "bytes": 495553,
+      "sha256": "98ac4a59e1e09c522c715a9517ab1c4d77cf21c60a1fc724f3cfa36b1e56a3bb",
+      "transcript": "A useful charter says what will be delivered, who owns the review, how to test it and what remains outside scope. Our fictional estimate demonstration cannot approve pricing, send customer messages or collect payments. Save the charter and one realistic test in the continuing Project Record before building.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

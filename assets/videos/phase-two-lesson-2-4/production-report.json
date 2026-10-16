@@ -1,0 +1,57 @@
+{
+  "lesson": "2.4",
+  "voice_id": "8NNnQuXc0FKua22CvviM",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-2-4-Guided-Instruction.m4a",
+    "duration_seconds": 618.719,
+    "chapters": 4,
+    "bytes": 8643759
+  },
+  "demonstrations": [
+    {
+      "key": "01-compare",
+      "title": "Compare the same task under four patterns",
+      "duration_seconds": 20.61,
+      "file": "ACA-Phase-Two-Lesson-2-4-01-compare.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-4-01-compare.vtt",
+      "bytes": 477674,
+      "sha256": "5425c1a23bb374acd7d553e90768ed2efbecc4188106af5d62ece8f5b3e4d47a",
+      "transcript": "For this fictional invoice task, we compare four choices. A person can use a checklist. An assistant can prepare a draft. Fixed automation can apply confirmed rules. An agent may choose several permitted steps. We compare the same input and result, then choose the simplest suitable pattern. More autonomy is not evidence of a better fit.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "02-exception",
+      "title": "Stop the reminder when the record conflicts",
+      "duration_seconds": 18.39,
+      "file": "ACA-Phase-Two-Lesson-2-4-02-exception.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-4-02-exception.vtt",
+      "bytes": 438073,
+      "sha256": "61e48f9061da2279012da6277581327cf7006e954d1aa9d2af905a9cd5eae396",
+      "transcript": "The fictional customer reports payment, but the record still shows an unpaid balance. We stop the ordinary reminder path and preserve both pieces of information. The accounts coordinator investigates. The system may recommend a review. It may not decide that the customer is wrong, change the balance, or approve a refund.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "03-boundary",
+      "title": "Make permissions and fallback specific",
+      "duration_seconds": 18.886,
+      "file": "ACA-Phase-Two-Lesson-2-4-03-boundary.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-4-03-boundary.vtt",
+      "bytes": 448251,
+      "sha256": "5242e37d3b6afca8e41463883f47a4f3cfa6fc1b016fa3f64c6442bc0185f819",
+      "transcript": "Our fictional assistant may read supplied notes, draft a reply, and flag missing details. It may not send, book, change balances, or refund. The accounts coordinator checks every draft. Missing or contradictory information stops the path and returns it to that person. Actual tool access must match the written limits before any adoption.",
+      "fictional_training_example": true
+    },
+    {
+      "key": "04-save",
+      "title": "Save the comparison and updated concept",
+      "duration_seconds": 24.241,
+      "file": "ACA-Phase-Two-Lesson-2-4-04-save.mp4",
+      "captions": "ACA-Phase-Two-Lesson-2-4-04-save.vtt",
+      "bytes": 556405,
+      "sha256": "ed899a3992b2896960184f94ce8c8645d07ce081face51ff79e246d5b7d574d4",
+      "transcript": "We keep the four-way comparison and explain why the chosen pattern is sufficient. We record the official documentation check, or clearly mark the platform unselected and its capabilities unverified. The updated concept retains permissions, checkpoints, monitoring, and fallback. This is planning evidence for the next working sample. Saving does not deploy a system or grant authority.",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}

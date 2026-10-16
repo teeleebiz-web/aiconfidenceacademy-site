@@ -1,0 +1,57 @@
+{
+  "lesson": "6.3",
+  "voice_id": "Ufzf3hcVZVWx3QjtOPI5",
+  "guided_audio": {
+    "file": "ACA-Phase-Two-Lesson-6-3-Guided-Instruction.m4a",
+    "duration_seconds": 742.461,
+    "chapters": 4,
+    "bytes": 10370365
+  },
+  "demonstrations": [
+    {
+      "key": "ready",
+      "title": "Review the claim against the five READY checks",
+      "duration_seconds": 53.133,
+      "file": "ACA-Phase-Two-Lesson-6-3-ready.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-3-ready.vtt",
+      "bytes": 1170533,
+      "sha256": "239ca3889a162fc0e36147a7e2bdd9b0f6ffb6cba7843d4464357118ee47b695",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "ownership",
+      "title": "Make the review route and access correction usable",
+      "duration_seconds": 51.513,
+      "file": "ACA-Phase-Two-Lesson-6-3-ownership.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-3-ownership.vtt",
+      "bytes": 1129408,
+      "sha256": "848879f0adcce3da56c9ad8870f80101307ff01fb16039dd55e5e57024c9f85e",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "statement",
+      "title": "Align the responsible statement and AI disclosure",
+      "duration_seconds": 51.435,
+      "file": "ACA-Phase-Two-Lesson-6-3-statement.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-3-statement.vtt",
+      "bytes": 1156595,
+      "sha256": "ff22ecef1f3ce7426d28d5590ebc1483a3b4b5f8fca4bd6c95fd985ec08c31bc",
+      "transcript": "",
+      "fictional_training_example": true
+    },
+    {
+      "key": "limits",
+      "title": "Explain the limit and the appropriate next use",
+      "duration_seconds": 53.237,
+      "file": "ACA-Phase-Two-Lesson-6-3-limits.mp4",
+      "captions": "ACA-Phase-Two-Lesson-6-3-limits.vtt",
+      "bytes": 1176398,
+      "sha256": "80a5d007e26c96d23247a691c40d99fe2b3e6c106b69ea26959212ef917897d4",
+      "transcript": "",
+      "fictional_training_example": true
+    }
+  ],
+  "media_hosted": false
+}
