@@ -37,6 +37,7 @@ declare owner_id uuid:=gen_random_uuid();learner uuid:=gen_random_uuid();c1 uuid
  perform public.aca_record_refund(jsonb_build_object('provider_refund_id','re_acceptance_'||request_id,'charge_id','ch_acceptance','amount',100,'currency','usd','livemode',false,'status','pending','customer_email',email),100);
  perform public.aca_record_refund(jsonb_build_object('provider_refund_id','re_acceptance_'||request_id,'charge_id','ch_acceptance','amount',100,'currency','usd','livemode',false,'status','succeeded'),200);
  perform public.aca_record_refund(jsonb_build_object('provider_refund_id','re_acceptance_'||request_id,'charge_id','ch_acceptance','amount',100,'currency','usd','livemode',false,'status','pending'),50);
+ perform public.aca_record_refund(jsonb_build_object('provider_refund_id','re_acceptance_'||request_id,'charge_id','ch_acceptance','amount',100,'currency','usd','livemode',false,'status','pending'),200);
  assert (select status='succeeded' and customer_email=email from public.aca_refunds where provider_refund_id='re_acceptance_'||request_id),'Out-of-order refund events do not regress status or lose recipient';
  assert not has_function_privilege('authenticated','public.aca_control_snapshot(integer,text,integer,text)','execute'),'Learner cannot read the owner snapshot directly';
  assert not has_function_privilege('anon','public.aca_control_action(uuid,uuid,text,jsonb)','execute'),'Anonymous cannot invoke owner mutation';
