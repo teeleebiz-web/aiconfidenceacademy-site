@@ -12,7 +12,7 @@
     "start:academy": "node academy/server.mjs",
     "test:academy": "node --test academy/learner-media.test.mjs academy/server.test.mjs academy/public-preview.test.mjs academy/workbook/*.test.mjs academy/enrollment/*.test.mjs academy/email/*.test.mjs",
     "dev": "vite --config portal/vite.config.ts",
-    "build": "vite build --config portal/vite.config.ts",
+    "build": "vite build --config portal/vite.config.ts && node portal/build-control-center.mjs",
     "typecheck": "tsc --project portal/tsconfig.json --noEmit",
     "test": "vitest run --config portal/vitest.config.ts",
     "check": "npm run typecheck && npm run test && npm run test:academy && npm run build"

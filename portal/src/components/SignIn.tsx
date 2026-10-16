@@ -1,11 +1,13 @@
 import { FormEvent, useState } from 'react'
 
 type SignInProps = {
+  purpose?: 'learner' | 'control-center'
   onRequestLink: (email: string) => Promise<void>
   onPasswordSignIn: (email: string, password: string) => Promise<void>
 }
 
-export function SignIn({ onRequestLink, onPasswordSignIn }: SignInProps) {
+export function SignIn({ onRequestLink, onPasswordSignIn, purpose = 'learner' }: SignInProps) {
+  const controlCenter = purpose === 'control-center'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [method, setMethod] = useState<'link' | 'password'>('link')
@@ -23,7 +25,7 @@ export function SignIn({ onRequestLink, onPasswordSignIn }: SignInProps) {
       } else {
         await onRequestLink(email.trim())
         setStatus('sent')
-        setMessage('Check your email for your secure ACA sign-in link.')
+        setMessage(controlCenter ? 'Check your email. Open the secure sign-in link in this browser to return to your Academy control center.' : 'Check your email for your secure ACA sign-in link.')
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : ''
@@ -50,15 +52,17 @@ export function SignIn({ onRequestLink, onPasswordSignIn }: SignInProps) {
   return (
     <main className="auth-shell">
       <section className="auth-card" aria-labelledby="sign-in-heading">
-        <p className="eyebrow">ACA learner portal</p>
-        <h1 id="sign-in-heading">Welcome back to your learning journey.</h1>
+        <p className="eyebrow">{controlCenter ? 'AI Confidence Academy · Owner access' : 'ACA learner portal'}</p>
+        <h1 id="sign-in-heading">{controlCenter ? 'Academy control center' : 'Welcome back to your learning journey.'}</h1>
         <p className="lede">
-          {method === 'link'
+          {controlCenter ? (method === 'link'
+            ? 'Sign in with your Academy owner email to manage learners, access, payments, and operations.'
+            : 'Enter your Academy owner email and password to open the control center.') : method === 'link'
             ? 'Enter the email connected to your ACA enrollment. We will send a secure, one-time sign-in link.'
             : 'Enter the email and password connected to your ACA enrollment.'}
         </p>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Enrollment email</label>
+          <label htmlFor="email">{controlCenter ? 'Owner email' : 'Enrollment email'}</label>
           <input
             id="email"
             name="email"
@@ -105,7 +109,7 @@ export function SignIn({ onRequestLink, onPasswordSignIn }: SignInProps) {
           </button>
         </div>
         <p className="privacy-note">
-          ACA will never ask you to share private information inside a lesson prompt.
+          {controlCenter ? 'Protected owner workspace. Signing in returns you to the control center.' : 'ACA will never ask you to share private information inside a lesson prompt.'}
         </p>
       </section>
     </main>

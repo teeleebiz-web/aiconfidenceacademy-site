@@ -33,7 +33,16 @@ credentials remain server-side.
 
 ## Enrollment administration
 
-The owner view is `/learn/?view=enrollments`. Its read-only backend is
+The owner control center is `/control-center/`, with its own owner sign-in screen.
+Its entry checks the session and server-controlled owner authorization without
+loading learner enrollment, orientation, or curriculum. Legacy operations links
+open this same dedicated entry. Owner email sign-in uses the existing approved
+`/learn/` Auth callback and a one-hour, same-browser navigation hint to return
+directly to `/control-center/` before the learner application loads. The hint
+contains no credentials and never grants access; the server still verifies every
+owner request. Password sign-in stays at `/control-center/` throughout.
+
+The earlier read-only enrollment backend is
 `/api/operations/enrollments` on the existing checkout domain. Every request
 validates the Supabase user and the existing server-controlled owner allowlist;
 ordinary learner accounts and the construction password alone cannot read it.
