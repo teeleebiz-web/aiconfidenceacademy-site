@@ -1,4 +1,4 @@
-import { attachApprovedInstallmentSchedule, failedInstallmentHtml, installmentConfirmationHtml } from './installment-plan.mjs'
+import { attachApprovedInstallmentSchedule, failedInstallmentHtml, installmentConfirmationHtml, recoveredInstallmentHtml } from './installment-plan.mjs'
 import { sendOperationalEmail } from '../email/operational-email.mjs'
 
 const json = (res, status, payload) => {
@@ -16,12 +16,22 @@ const names = fullName => {
   return { first_name: parts[0] || null, last_name: parts.slice(1).join(' ') || null }
 }
 async function activateEnrollment(config, session, email) {
+  const { data: accessEmail, error: accessEmailError } = await config.db.from('aca_email_events')
+    .select('status,learner_id,enrollment_id').eq('event_key', `enrollment-access:${session.id}`).maybeSingle()
+  if (accessEmailError) throw accessEmailError
+  if (accessEmail?.learner_id && accessEmail?.enrollment_id && ['sent', 'delivered'].includes(accessEmail.status)) {
+    return { learnerId: accessEmail.learner_id, enrollmentId: accessEmail.enrollment_id }
+  }
   const { data: course, error: courseError } = await config.db.from('courses')
     .select('id,status,default_access_days').eq('id', config.courseId).single()
   if (courseError || course?.status !== 'published') throw new Error('Phase One is not open for enrollment')
-  const { data: link, error: linkError } = await config.db.auth.admin.generateLink({
-    type: 'invite', email, options: { redirectTo: `${config.appUrl.replace(/\/$/, '')}/learn/` },
+  const options = { redirectTo: `${config.appUrl.replace(/\/$/, '')}/learn/` }
+  let { data: link, error: linkError } = await config.db.auth.admin.generateLink({
+    type: 'invite', email, options,
   })
+  if (['email_exists', 'user_already_exists'].includes(linkError?.code)) {
+    ;({ data: link, error: linkError } = await config.db.auth.admin.generateLink({ type: 'magiclink', email, options }))
+  }
   if (linkError || !link?.user?.id || !link?.properties?.action_link) throw new Error('Learner invitation could not be created')
   const learnerNames = names(session.customer_details?.name)
   const { error: profileError } = await config.db.from('profiles').upsert({
@@ -30,12 +40,15 @@ async function activateEnrollment(config, session, email) {
     account_status: 'active',
   }, { onConflict: 'id' })
   if (profileError) throw profileError
+  const { data: existingEnrollment, error: lookupError } = await config.db.from('enrollments')
+    .select('id,enrolled_at,starts_at,access_expires_at,completed_at,status').eq('learner_id', link.user.id).eq('course_id', config.courseId).maybeSingle()
+  if (lookupError) throw lookupError
   const startedAt = new Date()
   const expiresAt = course.default_access_days ? new Date(startedAt.getTime() + course.default_access_days * 86400000).toISOString() : null
   const { data: enrollment, error: enrollmentError } = await config.db.from('enrollments').upsert({
-    learner_id: link.user.id, course_id: config.courseId, status: 'active',
-    enrolled_at: startedAt.toISOString(), starts_at: startedAt.toISOString(),
-    access_expires_at: expiresAt, completed_at: null,
+    learner_id: link.user.id, course_id: config.courseId, status: existingEnrollment?.status === 'completed' ? 'completed' : 'active',
+    enrolled_at: existingEnrollment?.enrolled_at ?? startedAt.toISOString(), starts_at: existingEnrollment?.starts_at ?? startedAt.toISOString(),
+    access_expires_at: existingEnrollment ? existingEnrollment.access_expires_at : expiresAt, completed_at: existingEnrollment?.completed_at ?? null,
   }, { onConflict: 'learner_id,course_id' }).select('id').single()
   if (enrollmentError) throw enrollmentError
   await sendOperationalEmail(config, {
@@ -58,11 +71,13 @@ async function recordEvent(config, event, details) {
 async function checkoutCompleted(event, config) {
   const session = event.data.object
   if (session.payment_status !== 'paid') return { received: true }
-  const { data: prior } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
-  if (prior?.status === 'completed') return { received: true, duplicate: true }
+  const { data: prior, error: priorError } = await config.db.from('aca_payment_events').select('status')
+    .eq('stripe_session_id', session.id).eq('status', 'completed').limit(1).maybeSingle()
+  if (priorError) throw priorError
+  if (prior) return { received: true, duplicate: true }
   const lineItems = await config.stripe.checkout.sessions.listLineItems(session.id, { limit: 100 })
   const priceIds = new Set(lineItems.data.map(item => item.price?.id).filter(Boolean))
-  const isPaidInFull = priceIds.has(config.phaseOnePriceId)
+  const isPaidInFull = priceIds.has(config.phaseOnePriceId) || (config.phaseOneFoundingPriceId && priceIds.has(config.phaseOneFoundingPriceId))
   const isInstallment = priceIds.has(config.installment50PriceId) && session.metadata?.aca_plan === 'phase_one_installments'
   if (!isPaidInFull && !isInstallment) return { received: true, ignored: true }
   const email = session.customer_details?.email ?? session.customer_email
@@ -72,18 +87,26 @@ async function checkoutCompleted(event, config) {
   if (isInstallment) {
     const subscriptionId = typeof session.subscription === 'string' ? session.subscription : session.subscription?.id
     if (!subscriptionId) throw new Error('Installment checkout is missing its Stripe subscription')
-    const schedule = await attachApprovedInstallmentSchedule(config.stripe, subscriptionId, config)
-    const { error: planError } = await config.db.from('aca_installment_plans').upsert({
-      learner_id: access.learnerId, enrollment_id: access.enrollmentId, course_id: config.courseId,
-      customer_email: email.toLowerCase(),
-      stripe_customer_id: typeof session.customer === 'string' ? session.customer : session.customer?.id,
-      stripe_subscription_id: subscriptionId, stripe_schedule_id: schedule.scheduleId,
-      stripe_first_invoice_id: typeof session.invoice === 'string' ? session.invoice : session.invoice?.id,
-      status: 'active', total_amount: 14900, paid_amount: 5000, payments_completed: 1,
-      second_due_at: schedule.secondDueAt.toISOString(), third_due_at: schedule.thirdDueAt.toISOString(),
-      next_due_at: schedule.secondDueAt.toISOString(), next_amount: 5000, grace_until: null,
-    }, { onConflict: 'stripe_subscription_id' })
-    if (planError) throw planError
+    const { data: existingPlan, error: existingPlanError } = await config.db.from('aca_installment_plans')
+      .select('stripe_schedule_id,second_due_at,third_due_at').eq('stripe_subscription_id', subscriptionId).maybeSingle()
+    if (existingPlanError) throw existingPlanError
+    const schedule = existingPlan ? {
+      scheduleId: existingPlan.stripe_schedule_id,
+      secondDueAt: new Date(existingPlan.second_due_at), thirdDueAt: new Date(existingPlan.third_due_at),
+    } : await attachApprovedInstallmentSchedule(config.stripe, subscriptionId, config)
+    if (!existingPlan) {
+      const { error: planError } = await config.db.from('aca_installment_plans').upsert({
+        learner_id: access.learnerId, enrollment_id: access.enrollmentId, course_id: config.courseId,
+        customer_email: email.toLowerCase(),
+        stripe_customer_id: typeof session.customer === 'string' ? session.customer : session.customer?.id,
+        stripe_subscription_id: subscriptionId, stripe_schedule_id: schedule.scheduleId,
+        stripe_first_invoice_id: typeof session.invoice === 'string' ? session.invoice : session.invoice?.id,
+        status: 'active', total_amount: 14900, paid_amount: 5000, payments_completed: 1,
+        second_due_at: schedule.secondDueAt.toISOString(), third_due_at: schedule.thirdDueAt.toISOString(),
+        next_due_at: schedule.secondDueAt.toISOString(), next_amount: 5000, grace_until: null,
+      }, { onConflict: 'stripe_subscription_id' })
+      if (planError) throw planError
+    }
     await sendOperationalEmail(config, {
       eventKey: `installment-confirmed:${subscriptionId}`, templateKey: 'installment_confirmation',
       enrollmentId: access.enrollmentId, learnerId: access.learnerId,
@@ -114,9 +137,18 @@ async function invoiceSucceeded(event, config) {
   const values = completed >= 3
     ? { status: 'completed', payments_completed: 3, paid_amount: paidAmount, next_due_at: null, next_amount: null, grace_until: null }
     : { status: 'active', payments_completed: completed, paid_amount: paidAmount, next_due_at: plan.third_due_at, next_amount: 4900, grace_until: null, reminder_sent_for_due_at: null }
+  if (plan.status === 'grace' || plan.status === 'paused') {
+    await sendOperationalEmail(config, {
+      eventKey: `installment-recovered:${invoice.id}`, templateKey: 'installment_recovered',
+      enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
+      to: plan.customer_email, subject: 'Your ACA payment was received — access is active',
+      html: recoveredInstallmentHtml({ nextAmount: values.next_amount, nextDueAt: values.next_due_at, appUrl: config.appUrl }),
+    })
+  }
   const { error } = await config.db.from('aca_installment_plans').update(values).eq('id', plan.id)
   if (error) throw error
-  await config.db.from('enrollments').update({ status: 'active' }).eq('id', plan.enrollment_id)
+  const { error: accessError } = await config.db.from('enrollments').update({ status: 'active' }).eq('id', plan.enrollment_id)
+  if (accessError) throw accessError
   await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
   return { received: true, installmentRecorded: completed }
 }
@@ -127,16 +159,27 @@ async function invoiceFailed(event, config) {
   if (!subscriptionId) return { received: true, ignored: true }
   const { data: plan } = await config.db.from('aca_installment_plans').select('*').eq('stripe_subscription_id', subscriptionId).maybeSingle()
   if (!plan) return { received: true, ignored: true }
-  const graceUntil = new Date(Date.now() + 48 * 60 * 60 * 1000)
+  if (plan.status === 'completed') return { received: true, ignored: true }
+  const { data: prior } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
+  if (prior?.status === 'completed') return { received: true, duplicate: true }
+  const currentInvoice = await config.stripe.invoices.retrieve(invoice.id)
+  if (currentInvoice.status === 'paid') return { received: true, ignored: true }
+  const paymentUrl = currentInvoice.hosted_invoice_url
+  if (!paymentUrl || new URL(paymentUrl).protocol !== 'https:' || new URL(paymentUrl).hostname !== 'invoice.stripe.com') {
+    throw new Error('Stripe payment-correction link is unavailable')
+  }
+  const graceUntil = plan.grace_until && ['grace', 'paused'].includes(plan.status)
+    ? new Date(plan.grace_until) : new Date(Date.now() + 48 * 60 * 60 * 1000)
   const amount = Number(invoice.amount_due || plan.next_amount || 0)
-  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency, status: 'completed' })
-  const { error } = await config.db.from('aca_installment_plans').update({ status: 'grace', grace_until: graceUntil.toISOString() }).eq('id', plan.id)
+  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency })
+  const { error } = await config.db.from('aca_installment_plans').update({ status: plan.status === 'paused' ? 'paused' : 'grace', grace_until: graceUntil.toISOString() }).eq('id', plan.id)
   if (error) throw error
   await sendOperationalEmail(config, {
     eventKey: `installment-failed:${invoice.id}`, templateKey: 'installment_failed',
     enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
-    to: plan.customer_email, subject: 'Action needed for your ACA installment', html: failedInstallmentHtml({ amount, graceUntil }),
+    to: plan.customer_email, subject: 'Action needed for your ACA installment', html: failedInstallmentHtml({ amount, graceUntil, paymentUrl }),
   })
+  await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
   return { received: true, graceUntil: graceUntil.toISOString() }
 }
 
@@ -150,7 +193,7 @@ export async function handleStripeEnrollment(req, res, config) {
   catch { return json(res, 400, { error: 'Invalid webhook signature' }) }
   try {
     let result = { received: true }
-    if (event.type === 'checkout.session.completed') result = await checkoutCompleted(event, config)
+    if (['checkout.session.completed', 'checkout.session.async_payment_succeeded'].includes(event.type)) result = await checkoutCompleted(event, config)
     if (event.type === 'invoice.payment_succeeded') result = await invoiceSucceeded(event, config)
     if (event.type === 'invoice.payment_failed') result = await invoiceFailed(event, config)
     return json(res, 200, result)

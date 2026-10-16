@@ -26,6 +26,7 @@ export default function handler(request, response) {
           stripe: process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null,
           webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
           phaseOnePriceId: process.env.ACA_PHASE_ONE_PRICE_ID,
+          phaseOneFoundingPriceId: process.env.ACA_PHASE_ONE_FOUNDING_PRICE_ID,
           installment50PriceId: process.env.ACA_INSTALLMENT_50_PRICE_ID,
           installment49PriceId: process.env.ACA_INSTALLMENT_49_PRICE_ID,
           resend: process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null,

@@ -39,13 +39,14 @@
         </div>
         <div class="payment-options" aria-label="Phase One payment options">
           <article class="payment-card payment-card-featured">
-            <p class="payment-label">One payment</p>
+            <p class="payment-label">Founding Student Price</p>
             <h3>Pay once</h3>
-            <p class="payment-amount">$149</p>
+            <p class="payment-amount">$129</p>
+            <p class="payment-saving">Save $20 on the $149 course price.</p>
             <p class="payment-note">One payment covers your Phase One enrollment.</p>
             <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-one/paid-in-full">
               <label class="consent"><input type="checkbox" required><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
-              <button class="button button-gold" type="submit">Pay $149</button>
+              <button class="button button-gold" type="submit">Pay $129 today</button>
             </form>
           </article>
           <article class="payment-card payment-card-installments">
@@ -67,7 +68,7 @@
         </div>
       </div>`;
     if (paymentStatus === 'success') {
-      section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Payment received.</span><p>Check your email for your secure Academy access.</p></div>');
+      section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Checkout submitted.</span><p>Your secure Academy access email will arrive after Stripe confirms your payment.</p></div>');
     } else if (paymentStatus === 'canceled') {
       section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
     }
