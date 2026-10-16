@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, lazy, Suspense } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import sealUrl from '../../aca-official-seal.png'
 import { Dashboard } from './components/Dashboard'
@@ -6,6 +6,8 @@ import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
 import { SignIn } from './components/SignIn'
 import { LearnerOnboarding } from './components/LearnerOnboarding'
+const AcademyControlCenter = lazy(() => import('./components/AcademyControlCenter').then(module => ({ default: module.AcademyControlCenter })))
+import { TrialEntry } from './components/TrialEntry'
 import type { LessonAccess } from './components/LessonClock'
 import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
@@ -65,6 +67,7 @@ export function App() {
   const mediaRequest = useRef(0)
   const params = new URLSearchParams(window.location.search)
   const workbookParam = params.get('workbook')
+  const operationsView = ['enrollments', 'operations'].includes(params.get('view') || '')
   const workbookKey = journeyWords.some((word) => workbookParam === `journey-${word}`)
     ? workbookParam as WorkbookKey : null
   const workbookApiBase = `${import.meta.env.VITE_ACA_BACKEND_ORIGIN ?? 'https://checkout.aiconfidenceacademy.org'}/api/learner/workbooks/`
@@ -101,8 +104,9 @@ export function App() {
       supabase.from('profiles').select('first_name, display_name').eq('id', userId).maybeSingle(),
       supabase
         .from('enrollments')
-        .select('id, learner_id, course_id, status, starts_at, access_expires_at, onboarding_completed_at, course:courses(id, code, title, summary)')
+        .select('id, learner_id, course_id, status, starts_at, access_expires_at, onboarding_completed_at, course:courses!inner(id, code, title, summary)')
         .eq('learner_id', userId)
+        .eq('course.code', 'phase-one-chatgpt-foundations')
         .in('status', ['active', 'completed'])
         .maybeSingle(),
       supabase.rpc('is_aca_curriculum_owner', undefined, { get: true }),
@@ -124,6 +128,12 @@ export function App() {
     setReviewMode(isOwner)
 
     const enrollment = enrollmentResult.data as unknown as Enrollment | null
+
+    if (isOwner && operationsView) {
+      setPortalData({ ...emptyPortalData, enrollment, learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '' })
+      setLoading(false)
+      return
+    }
 
     if (!enrollment) {
       setWorkbooks([])
@@ -524,6 +534,8 @@ export function App() {
     return <div className="loading-screen">Preparing your ACA learning space…</div>
   }
 
+  if (params.get('view') === 'trial') return <TrialEntry />
+
   if (!session) {
     return (
       <SignIn
@@ -532,6 +544,8 @@ export function App() {
       />
     )
   }
+
+  if (operationsView && reviewMode) return <Suspense fallback={<div className="loading-screen">Opening Academy operations…</div>}><AcademyControlCenter accessToken={session.access_token} onSignOut={signOut} /></Suspense>
 
   return (
     <div className="portal-shell">
@@ -543,6 +557,7 @@ export function App() {
             <small>Learner Portal</small>
           </span>
         </a>
+        {reviewMode ? <a className="quiet-button" href={operationsView ? '/learn/' : '/learn/?view=enrollments'}>{operationsView ? 'Learner portal' : 'Enrollment administration'}</a> : null}
         <button className="quiet-button" type="button" onClick={signOut}>
           Sign out
         </button>
@@ -550,7 +565,7 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {workbookKey && portalData.enrollment && !needsOnboarding ? (
+      {operationsView ? (reviewMode ? <Suspense fallback={<div className="loading-screen">Opening Academy operations…</div>}><AcademyControlCenter accessToken={session.access_token} onSignOut={signOut} /></Suspense> : <main className="access-shell"><section className="auth-card"><h1>Owner access required</h1><p>Enrollment administration is available to the Academy owner.</p><a href="/learn/">Return to your learner portal</a></section></main>) : workbookKey && portalData.enrollment && !needsOnboarding ? (
         <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
           apiBase={workbookApiBase} backHref={returnLesson ? `/learn/?lesson=${encodeURIComponent(returnLesson.page_id)}` : '/learn/#my-workbooks'} backLabel={returnLesson ? `Back to Lesson ${returnLesson.page_id}` : 'My Workbooks'} />
       ) : needsOnboarding ? (

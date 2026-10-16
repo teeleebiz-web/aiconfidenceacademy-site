@@ -6,6 +6,7 @@ import { createAcademyServer } from '../academy/server.mjs'
 import { lessonReleaseMessage } from '../academy/email/lesson-release-message.mjs'
 import { formatAcademyEmailFrom } from '../academy/email/sender.mjs'
 import { servePublicPreview } from '../academy/public-preview.mjs'
+import { routedRequestUrl } from '../academy/site-routing.mjs'
 
 let server
 export default function handler(request, response) {
@@ -38,6 +39,11 @@ export default function handler(request, response) {
           db,
           courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
           lessonReleaseMessage,
+          phaseTwoReleaseCandidates: async ({windowStart, now}) => {
+            const result = await db.rpc('aca_phase_two_release_candidates', {p_window_start: windowStart, p_now: now})
+            if (result.error) throw result.error
+            return result.data || []
+          },
         }
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
       root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation,
@@ -52,7 +58,7 @@ export default function handler(request, response) {
       },
     })
   }
-  if (typeof path === 'string') request.url = '/' + path.replace(/^\/+/, '')
+  request.url = routedRequestUrl(request, path)
   return new Promise(resolve => {
     response.once('finish', resolve)
     response.once('close', resolve)

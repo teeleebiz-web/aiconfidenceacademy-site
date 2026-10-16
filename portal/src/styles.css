@@ -6,6 +6,43 @@
   text-rendering: optimizeLegibility;
 }
 
+.operations-shell { width: min(1500px, 100%); margin: 0 auto; padding: clamp(1rem, 3vw, 2.5rem); }
+.operations-heading { display: flex; align-items: start; justify-content: space-between; gap: 1.5rem; }
+.operations-heading h1 { font-size: clamp(2rem, 3vw, 3rem); margin-bottom: .7rem; }
+.operations-heading .quiet-button { flex-shrink: 0; }
+.operations-note { max-width: 95ch; color: #536879; }
+.operations-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.operations-summary div { padding: 1.2rem; background: #fffdf9; border: 1px solid #d8d8d1; border-radius: 14px; }
+.operations-summary dt { font-size: .88rem; }
+.operations-summary dd { margin: .3rem 0 0; font-size: 1.8rem; font-weight: 750; }
+.operations-filters { display: flex; flex-wrap: wrap; gap: 1rem; }
+.operations-filters label { display: grid; gap: .4rem; flex: 1; min-width: 220px; font-weight: 650; }
+.operations-filters input, .operations-filters select { padding: .75rem; border: 1px solid #aab5bd; border-radius: 8px; background: #fffdf9; color: #102d4f; font: inherit; }
+.operations-filters select:focus-visible { outline: 3px solid #d4b36b; outline-offset: 3px; }
+.operations-updated { font-size: .85rem; color: #536879; margin: 1rem 0; }
+.operations-table-wrap { overflow-x: auto; border: 1px solid #d8d8d1; border-radius: 12px; background: #fffdf9; }
+.operations-table { border-collapse: collapse; width: 100%; min-width: 960px; font-size: .9rem; }
+.operations-table caption { text-align: left; padding: 1rem; font-weight: 750; }
+.operations-table thead { background: #102d4f; color: #fffdf9; }
+.operations-table th, .operations-table td { padding: 1rem; border-bottom: 1px solid #d8d8d1; text-align: left; vertical-align: top; line-height: 1.5; }
+.operations-table th[scope="row"] { width: 21%; font-weight: 400; overflow-wrap: anywhere; }
+.operations-table td { width: 25%; }
+.operations-table td:last-child { width: 29%; }
+.operations-table tbody tr:nth-child(even) { background: #f1f4f6; }
+.operations-table strong, .operations-table span { display: block; }
+.operations-table strong { margin-bottom: .3rem; }
+.operations-status { text-transform: capitalize; }
+.operations-badge { display: inline-block !important; border: 1px solid #b48632; border-radius: 30px; padding: .15rem .6rem; margin-top: .55rem; font-size: .78rem; font-weight: 750; }
+.operations-table details { margin-top: .65rem; }
+.operations-table summary { cursor: pointer; font-weight: 650; }
+.operations-table details p { font-size: .85rem; margin-top: .5rem; }
+.operations-messages { list-style: none; padding: 0; margin: 0; }
+.operations-messages li + li { margin-top: .85rem; border-top: 1px solid #d8d8d1; padding-top: .85rem; }
+@media (max-width: 700px) {
+  .operations-heading { display: block; }
+  .operations-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 * {
   box-sizing: border-box;
 }

@@ -9,22 +9,10 @@
       content="The secure AI Confidence Academy learner portal."
     />
     <title>ACA Learner Portal</title>
-    <!-- ACA official-domain review: owner authorization enforced by existing Supabase RLS. -->
-    <script type="module" crossorigin data-aca-phase-two-official-review-bootstrap="true">
-const review = new URLSearchParams(window.location.search).get('review') === 'phase-two';
-if (review) {
-  const style=document.createElement("link");
-  style.rel="stylesheet";
-  style.href="/learn/assets/index-CtQ8Sk9n.css";
-  document.head.appendChild(style);
-  await import("/learn/assets/index-B0Cnjv_U.js");
-} else {
-  await import("/learn/assets/index-CLpzCrAs.js");
-}
-</script>
-    <link rel="stylesheet" crossorigin href="/learn/assets/index-BfYhuBWx.css">
+    <script type="module" crossorigin src="/learn/assets/index-Cb308NV9.js"></script>
+    <link rel="modulepreload" crossorigin href="/learn/assets/preload-helper-OpGwMzNl.js">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>

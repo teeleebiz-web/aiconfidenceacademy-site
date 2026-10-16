@@ -12,6 +12,7 @@ export async function dispatchLessonReleaseNotifications(config, window) {
   const load = config.loadLessonReleaseCandidates || loadLessonReleaseCandidates
   const send = config.sendOperationalEmail || sendOperationalEmail
   const candidates = await load(config, window)
+  if (typeof config.phaseTwoReleaseCandidates === 'function') candidates.push(...await config.phaseTwoReleaseCandidates(window))
   const result = { eligible: candidates.length, sent: 0, skipped: 0, failed: 0 }
 
   for (const candidate of candidates) {
