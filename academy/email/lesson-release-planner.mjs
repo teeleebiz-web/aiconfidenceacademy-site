@@ -58,8 +58,9 @@ export function planLessonReleaseNotifications({
 export async function loadLessonReleaseCandidates(config, { windowStart, now }) {
   if (!config?.db) throw new Error('Lesson release planning requires the Academy database')
 
-  const { data: enrollments, error: enrollmentError } = await config.db.from('enrollments')
-    .select('id,learner_id,course_id,status,starts_at,enrolled_at,access_expires_at').eq('status', 'active')
+  let query = config.db.from('enrollments').select('id,learner_id,course_id,status,starts_at,enrolled_at,access_expires_at').eq('status', 'active')
+  if (config.courseId) query = query.eq('course_id', config.courseId)
+  const { data: enrollments, error: enrollmentError } = await query
   if (enrollmentError) throw enrollmentError
   if (!enrollments?.length) return []
 

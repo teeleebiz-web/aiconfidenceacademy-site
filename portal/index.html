@@ -13,7 +13,8 @@
   <body>
     <div id="root"></div>
     <script type="module">
-      if (new URLSearchParams(window.location.search).get('review') === 'phase-two') {
+      const params = new URLSearchParams(window.location.search)
+      if (params.get('review') === 'phase-two' || params.get('course') === 'phase-two') {
         const style = document.createElement('link')
         style.rel = 'stylesheet'
         style.href = '/learn/assets/index-CtQ8Sk9n.css'
@@ -23,6 +24,7 @@
       } else {
         await import('./src/main.tsx')
       }
+      await import('./src/support.tsx')
     </script>
   </body>
 </html>

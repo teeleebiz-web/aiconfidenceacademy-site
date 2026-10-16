@@ -72,3 +72,9 @@ test('isolates a provider failure so one message does not stop the remaining bat
   assert.deepEqual(result, { eligible: 2, sent: 1, skipped: 0, failed: 1 })
   assert.equal(attempts, 2)
 })
+
+test('dispatch combines independent Phase One and actual cohort Phase Two candidates',async()=>{
+ const options=config({phaseTwoReleaseCandidates:async()=>[{...candidate,eventKey:'phase-two-unique',phaseNumber:2,weekend:true}]})
+ const result=await dispatchLessonReleaseNotifications(options,{windowStart:'2026-10-16T00:00:00Z',now:'2026-10-16T01:00:00Z'})
+ assert.equal(result.sent,2);assert.deepEqual(options.sent.map(x=>x.eventKey),[candidate.eventKey,'phase-two-unique'])
+})
