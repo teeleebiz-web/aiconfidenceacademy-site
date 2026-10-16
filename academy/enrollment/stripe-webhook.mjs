@@ -61,11 +61,17 @@ async function activateEnrollment(config, session, email) {
 }
 
 async function recordEvent(config, event, details) {
-  return config.db.from('aca_payment_events').upsert({
+  const { error } = await config.db.from('aca_payment_events').upsert({
     stripe_event_id: event.id, stripe_session_id: details.objectId,
     customer_email: details.email.toLowerCase(), amount_total: details.amount,
     currency: details.currency || 'usd', status: details.status || 'processing', error_message: null,
   }, { onConflict: 'stripe_event_id' })
+  if (error) throw error
+}
+
+async function completeEvent(config, event) {
+  const { error } = await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
+  if (error) throw error
 }
 
 async function checkoutCompleted(event, config) {
@@ -113,7 +119,7 @@ async function checkoutCompleted(event, config) {
       to: email, subject: 'Your ACA installment schedule is confirmed', html: installmentConfirmationHtml(schedule),
     })
   }
-  await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
+  await completeEvent(config, event)
   return { received: true, enrolled: true, plan: isInstallment ? 'installments' : 'paid_in_full' }
 }
 
@@ -126,18 +132,44 @@ async function invoiceSucceeded(event, config) {
   const invoice = event.data.object
   const subscriptionId = subscriptionIdFromInvoice(invoice)
   if (!subscriptionId) return { received: true, ignored: true }
-  const { data: plan } = await config.db.from('aca_installment_plans').select('*').eq('stripe_subscription_id', subscriptionId).maybeSingle()
+  const { data: plan, error: planLookupError } = await config.db.from('aca_installment_plans').select('*').eq('stripe_subscription_id', subscriptionId).maybeSingle()
+  if (planLookupError) throw planLookupError
   if (!plan) return { received: true, ignored: true }
+  if (plan.status === 'canceled') return { received: true, ignored: true }
   if (plan.stripe_first_invoice_id && invoice.id === plan.stripe_first_invoice_id) return { received: true, duplicate: true }
-  const { data: prior } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
+  const { data: prior, error: priorLookupError } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
+  if (priorLookupError) throw priorLookupError
   if (prior?.status === 'completed') return { received: true, duplicate: true }
   await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount: invoice.amount_paid, currency: invoice.currency })
-  const completed = Math.min(3, Number(plan.payments_completed || 1) + 1)
-  const paidAmount = Number(plan.paid_amount || 5000) + Number(invoice.amount_paid || 0)
+  // Reconcile against Stripe's paid invoices, so a retry after a partial database
+  // failure cannot count the same invoice as another installment.
+  const paidInvoices = await config.stripe.invoices.list({ subscription: subscriptionId, status: 'paid', limit: 100 })
+  const payments = paidInvoices.data.filter(item => item.amount_paid > 0)
+  if (paidInvoices.has_more || !payments.some(item => item.id === invoice.id)
+    || payments.some(item => item.currency !== 'usd' || ![4900, 5000].includes(item.amount_paid))) {
+    throw new Error('The paid installment invoices could not be reconciled')
+  }
+  const completed = payments.length
+  const paidAmount = payments.reduce((total, item) => total + item.amount_paid, 0)
+  if (completed < 1 || completed > 3 || (completed === 1 && paidAmount !== 5000)
+    || (completed === 2 && ![9900, 10000].includes(paidAmount)) || (completed === 3 && paidAmount !== 14900)) {
+    throw new Error('The paid installment total does not match the approved schedule')
+  }
+  const finalInstallmentPaid = payments.some(item => item.amount_paid === 4900)
   const values = completed >= 3
     ? { status: 'completed', payments_completed: 3, paid_amount: paidAmount, next_due_at: null, next_amount: null, grace_until: null }
-    : { status: 'active', payments_completed: completed, paid_amount: paidAmount, next_due_at: plan.third_due_at, next_amount: 4900, grace_until: null, reminder_sent_for_due_at: null }
-  if (plan.status === 'grace' || plan.status === 'paused') {
+    : { status: 'active', payments_completed: completed, paid_amount: paidAmount,
+      next_due_at: completed === 1 || finalInstallmentPaid ? plan.second_due_at : plan.third_due_at,
+      next_amount: completed === 1 || finalInstallmentPaid ? 5000 : 4900,
+      grace_until: null, reminder_sent_for_due_at: null }
+  const { error } = await config.db.from('aca_installment_plans').update(values).eq('id', plan.id).lte('payments_completed', completed)
+  if (error) throw error
+  const { error: accessError } = await config.db.from('enrollments').update({ status: 'active' }).eq('id', plan.enrollment_id).eq('status', 'paused')
+  if (accessError) throw accessError
+  const { data: failedEmail, error: emailLookupError } = await config.db.from('aca_email_events')
+    .select('id').eq('event_key', `installment-failed:${invoice.id}`).maybeSingle()
+  if (emailLookupError) throw emailLookupError
+  if (plan.status === 'grace' || plan.status === 'paused' || failedEmail) {
     await sendOperationalEmail(config, {
       eventKey: `installment-recovered:${invoice.id}`, templateKey: 'installment_recovered',
       enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
@@ -145,11 +177,7 @@ async function invoiceSucceeded(event, config) {
       html: recoveredInstallmentHtml({ nextAmount: values.next_amount, nextDueAt: values.next_due_at, appUrl: config.appUrl }),
     })
   }
-  const { error } = await config.db.from('aca_installment_plans').update(values).eq('id', plan.id)
-  if (error) throw error
-  const { error: accessError } = await config.db.from('enrollments').update({ status: 'active' }).eq('id', plan.enrollment_id)
-  if (accessError) throw accessError
-  await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
+  await completeEvent(config, event)
   return { received: true, installmentRecorded: completed }
 }
 
@@ -157,10 +185,12 @@ async function invoiceFailed(event, config) {
   const invoice = event.data.object
   const subscriptionId = subscriptionIdFromInvoice(invoice)
   if (!subscriptionId) return { received: true, ignored: true }
-  const { data: plan } = await config.db.from('aca_installment_plans').select('*').eq('stripe_subscription_id', subscriptionId).maybeSingle()
+  const { data: plan, error: planLookupError } = await config.db.from('aca_installment_plans').select('*').eq('stripe_subscription_id', subscriptionId).maybeSingle()
+  if (planLookupError) throw planLookupError
   if (!plan) return { received: true, ignored: true }
   if (plan.status === 'completed') return { received: true, ignored: true }
-  const { data: prior } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
+  const { data: prior, error: priorLookupError } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
+  if (priorLookupError) throw priorLookupError
   if (prior?.status === 'completed') return { received: true, duplicate: true }
   const currentInvoice = await config.stripe.invoices.retrieve(invoice.id)
   if (currentInvoice.status === 'paid') return { received: true, ignored: true }
@@ -179,7 +209,7 @@ async function invoiceFailed(event, config) {
     enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
     to: plan.customer_email, subject: 'Action needed for your ACA installment', html: failedInstallmentHtml({ amount, graceUntil, paymentUrl }),
   })
-  await config.db.from('aca_payment_events').update({ status: 'completed', processed_at: new Date().toISOString() }).eq('stripe_event_id', event.id)
+  await completeEvent(config, event)
   return { received: true, graceUntil: graceUntil.toISOString() }
 }
 
