@@ -20,3 +20,11 @@ Research consulted October 17:
 - FTC, .com Disclosures: https://www.ftc.gov/system/files/documents/plain-language/bus41-dot-com-disclosures-information-about-online-advertising.pdf
 
 Verify with the support tests, checkout consent tests, shared server/origin checks, owner UI checks, production build, and actual public contact/case behavior. Do not change curriculum publication or repeat historical payment tests as part of this work.
+
+## October 17 verified release continuation
+
+PR 59 merged as 69bb2f8142b18cada9a4d20991bd303950472f6d. Production backend deployment dpl_EXpCwmLUVgrcC33bVMsrVqAXbQxZ is READY. PR CI passed. Browser verification on the official Contact page matched the refund answer, created the controlled operational case 3c892ff7, and displayed its saved case and private link. Signed provider events record both the support confirmation and the trusted-owner alert as delivered. No enrollment, payment, publication, or curriculum record was altered for this verification. The supplied support email remains unverified identity and cannot authorize account disclosure.
+
+A small public interface follow-up handles private links clicked within the already-open Contact page as well as initial navigation, removes the credential fragment, strengthens heading hierarchy, and versions the public assets. It does not change the backend or support authority. Verify private-link reopening and requester follow-up on the official site after that update. Keep the controlled test case distinct from a customer request.
+
+Remaining backend work is not relabeled complete: generative AI support, administrative role delegation and MFA, restoration proof, broader operational alert/retry coverage, qualified legal review, and the final launch acceptance evidence. Do not restart completed enrollment tests or inspect approved curriculum while continuing these operations.
