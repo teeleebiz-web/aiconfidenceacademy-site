@@ -106,6 +106,16 @@ test('uncertain provider submissions older than 23 hours are held for review wit
   assert.equal((await dispatchOperationalAlerts(c.config, c.now)).review, 1)
   assert.equal(c.sends.length, 1)
 })
+test('a later rejection cannot make an earlier lost response safe to resend after key expiry', async () => {
+  const c = fixture(); await queueOperationalAlert(c.config, issue); c.uncertain = true
+  await dispatchOperationalAlerts(c.config, c.now)
+  c.uncertain = false; c.reject = true; c.now = +c.now + 16 * 60000
+  await dispatchOperationalAlerts(c.config, c.now)
+  assert.equal(c.tables.aca_email_events[0].status, 'failed')
+  c.reject = false; c.now = +c.now + 24 * 3600000
+  assert.equal((await dispatchOperationalAlerts(c.config, c.now)).review, 1)
+  assert.equal(c.sends.length, 2)
+})
 test('a malformed provider success is uncertain and a removed owner never receives a queued alert', async () => {
   const c = fixture(); await queueOperationalAlert(c.config, issue)
   c.config.resend.emails.send = async () => ({ data: {} })

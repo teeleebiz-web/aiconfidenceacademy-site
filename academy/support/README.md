@@ -74,9 +74,11 @@ The service-only queue uses five-minute exclusive leases and conditional claim
 tokens. Definite send failures retry after fifteen minutes on a later scheduled
 invocation, up to three attempts. An uncertain submission uses the same immutable
 message and provider key only within 23 hours of its first attempt, inside
-Resend's documented 24-hour retention. Older uncertain sends and delivery failures
+Resend's documented 24-hour retention. Older unconfirmed sends and delivery failures
 remain for review. A provider reference prevents another send even if delivery
 later fails. Submission is distinct from delivered provider callbacks.
+The age guard applies even when a later attempt was rejected: that rejection
+does not disprove acceptance of an earlier attempt whose response was lost.
 
 System activity includes the monitor's result and alert dispatch counts in task
 results. Email center's all-records collection includes owner notification email
