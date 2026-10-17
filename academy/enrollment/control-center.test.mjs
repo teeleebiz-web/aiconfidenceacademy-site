@@ -1,13 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { Readable } from 'node:stream'
-import {handleControlCenter,handleTrialEntry,handleLearnerFeedback,diagnoseLessons,recordAutomationRun} from './control-center.mjs'
+import {handleControlCenter,handleTrialAccept,handleTrialEntry,handleLearnerFeedback,diagnoseLessons,recordAutomationRun} from './control-center.mjs'
 const actor='00000000-0000-4000-8000-000000000001'
 const requestId='00000000-0000-4000-8000-000000000002'
 function fixture({owner=true,invalid=false,failure=false}={}) {
  const calls=[],sends=[],tables={aca_trial_grants:[{id:requestId,code_hash:'b'.repeat(64),allowed_email:'learner@example.com',course_id:actor,starts_at:'2090-01-01T00:00:00Z',expires_at:'2090-03-01T00:00:00Z',status:'ready'}],courses:[{id:actor,title:'ACA',phase_number:1,status:'published'}],aca_email_events:[]}
  let links=0,providerFailure=false,transportFailure=false
- const db={auth:{getUser:async()=>({data:{user:invalid?null:{id:actor,user_metadata:{is_owner:true}}},error:invalid?Error():null}),admin:{generateLink:async()=>{links++;return {data:{user:{id:actor},properties:{action_link:`https://auth.example/verify?token=private-${links}`}}}}}},rpc:async(name,args)=>{calls.push({name,args});return failure?{error:{message:'whsec_secret-private',code:'DB_FAILURE'}}:{data:name==='aca_control_snapshot'?{enrollments:[],summary:{},courses:[],lessons:[]}:name==='aca_redeem_trial'?{enrollment_id:requestId}:{ok:true,id:requestId}}},from(table){
+ const db={auth:{getUser:async()=>({data:{user:invalid?null:{id:actor,user_metadata:{is_owner:true}}},error:invalid?Error():null}),admin:{generateLink:async()=>{links++;return {data:{user:{id:actor},properties:{action_link:`https://auth.example/verify?token=private-${links}`,hashed_token:`private-${links}`,verification_type:'invite'}}}}}},rpc:async(name,args)=>{calls.push({name,args});return failure?{error:{message:'whsec_secret-private',code:'DB_FAILURE'}}:{data:name==='aca_control_snapshot'?{enrollments:[],summary:{},courses:[],lessons:[]}:name==='aca_trial_rate_limit'?true:name==='aca_redeem_trial'?{enrollment_id:requestId}:{ok:true,id:requestId}}},from(table){
   let filters=[],write=null,rows=()=>tables[table].filter(r=>filters.every(f=>f(r)))
   const execute=()=>{if(write){if(write.kind==='upsert'){let r=tables[table].find(r=>r.event_key===write.value.event_key);if(!r){r={id:requestId,attempts:0,...write.value};tables[table].push(r)}else if(!write.ignore)Object.assign(r,write.value);return [r]}const found=rows();for(const r of found)Object.assign(r,write.value);return found}return rows()}
   const q={select(){return q},eq(k,v){filters.push(r=>r[k]===v);return q},in(k,v){filters.push(r=>v.includes(r[k]));return q},upsert(value,options){write={kind:'upsert',value,ignore:options?.ignoreDuplicates};return q},update(value){write={kind:'update',value};return q},maybeSingle:async()=>({data:execute()[0]||null}),single:async()=>({data:execute()[0]||null}),then(resolve,reject){return Promise.resolve({data:execute()}).then(resolve,reject)}}
@@ -86,11 +86,11 @@ test('authorized automation preserves the original response and records warning 
 test('owner can email the existing unsent grant using only its ID; recipient and dates come from the saved grant',async()=>{
  const c=fixture(),r=await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId,email:'attacker@example.com',starts_at:'2000-01-01'}}})
  assert.equal(r.status,200);assert.equal(r.body.recipient,'learner@example.com');assert.equal(r.body.starts_at,c.tables.aca_trial_grants[0].starts_at)
- assert.equal(c.calls.some(x=>x.name==='aca_control_action'),false);assert.equal(c.calls[0].name,'aca_redeem_trial');assert.equal(c.calls[0].args.p_hash,'b'.repeat(64))
- assert.match(c.sends[0][0].html,/Accept invitation and sign in/);assert.match(c.sends[0][0].html,/2090/);assert.doesNotMatch(JSON.stringify(c.tables.aca_email_events),/private-1/)
+ assert.equal(c.calls.some(x=>x.name==='aca_control_action'),false);assert.equal(c.calls.length,0);assert.notEqual(c.tables.aca_trial_grants[0].code_hash,'b'.repeat(64))
+ assert.match(c.sends[0][0].html,/Open my trial/);assert.match(c.sends[0][0].html,/2090/);assert.doesNotMatch(JSON.stringify(c.tables.aca_email_events),/private-1/)
  assert.equal(c.tables.aca_email_events[0].status,'sent');assert.equal(c.tables.aca_email_events[0].metadata.invited_by,actor)
  const again=await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}})
- assert.equal(again.body.duplicate,true);assert.equal(c.sends.length,1);assert.equal(c.links,1)
+ assert.equal(again.body.duplicate,true);assert.equal(c.sends.length,1);assert.equal(c.links,0)
 })
 test('email configuration must be present before a new grant is saved',async()=>{
  const c=fixture();c.automation.resend=null
@@ -112,27 +112,57 @@ test('an explicit email failure retains the grant and can be retried without cre
  assert.equal(retry.status,200);assert.equal(c.calls.filter(x=>x.name==='aca_control_action').length,1);assert.equal(c.tables.aca_email_events.length,1)
  assert.notEqual(c.sends[0][1].idempotencyKey,c.sends[1][1].idempotencyKey)
 })
-test('concurrent sends claim one email before generating Auth links',async()=>{
+test('concurrent sends claim one email before rotating the invitation token',async()=>{
  const c=fixture(),options={method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}}
  const results=await Promise.all([run(handleControlCenter,c,options),run(handleControlCenter,c,options)])
- assert.equal(results.filter(r=>r.status===200).length,1);assert.equal(c.links,1);assert.equal(c.sends.length,1)
+ assert.equal(results.filter(r=>r.status===200).length,1);assert.equal(c.links,0);assert.equal(c.sends.length,1)
 })
 test('an uncertain provider submission is not retried by generating a competing Auth link',async()=>{
  const c=fixture();c.transportFailure=true;const options={method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}}
  assert.equal((await run(handleControlCenter,c,options)).status,503);assert.equal(c.tables.aca_email_events[0].status,'sending')
- const retry=await run(handleControlCenter,c,options);assert.equal(retry.status,409);assert.equal(c.links,1);assert.equal(c.sends.length,1)
+ const retry=await run(handleControlCenter,c,options);assert.equal(retry.status,409);assert.equal(c.links,0);assert.equal(c.sends.length,1)
 })
 test('the owner email action accepts Vercel parsed JSON bodies without reading a consumed stream',async()=>{
  const c=fixture(),req={method:'POST',url:'/api/operations/control-center',headers:{'x-aca-access-token':'owner'},body:{requestId,action:'trial_send',payload:{id:requestId}}},res={writeHead(s){this.status=s},end(v){this.body=JSON.parse(v)}}
  await handleControlCenter(req,res,c);assert.equal(res.status,200);assert.equal(c.sends.length,1)
 })
-test('owner dispatch preserves redemption restrictions before any email can be submitted',async()=>{
+test('trial acceptance preserves existing enrollment restrictions before returning a verification token',async()=>{
  const c=fixture(),rpc=c.db.rpc
  c.db.rpc=async(name,args)=>name==='aca_redeem_trial'?{error:{code:'P0001',message:'An existing enrollment requires owner review'}}:rpc(name,args)
- const r=await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}})
- assert.equal(r.status,409);assert.equal(c.sends.length,0);assert.equal(c.tables.aca_email_events[0].status,'failed')
+ const code='ACA_'+'a'.repeat(64);
+ // Use the same SHA-256 derivation as the invitation database contract.
+ const {createHash}=await import('node:crypto');c.tables.aca_trial_grants[0].code_hash=createHash('sha256').update(code).digest('hex')
+ const r=await run(handleTrialAccept,c.automation,{method:'POST',body:{code}})
+ assert.equal(r.status,409);assert.equal(r.body.token_hash,undefined);assert.equal(c.sends.length,0)
 })
 test('non-owners cannot use the direct invitation email action',async()=>{
  const c=fixture({owner:false}),r=await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}})
  assert.equal(r.status,403);assert.equal(c.links,0);assert.equal(c.sends.length,0);assert.equal(c.calls.length,0)
+})
+
+test('the emailed trial button carries one private grant token and no generic sign-in or password instructions',async()=>{
+ const c=fixture();await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}})
+ const html=c.sends[0][0].html,links=[...html.matchAll(/href="([^"]+)"/g)]
+ assert.equal(links.length,1);assert.match(links[0][1],/\/learn\/\?view=trial-access#invite=ACA_[a-f0-9]{64}/);assert.doesNotMatch(html,/password|sign.in|another email|secure.*expired/i)
+ const code=links[0][1].split('#invite=')[1],{createHash}=await import('node:crypto')
+ assert.equal(c.tables.aca_trial_grants[0].code_hash,createHash('sha256').update(code).digest('hex'));assert.doesNotMatch(JSON.stringify(c.tables),new RegExp(code));assert.equal(c.links,0)
+})
+test('the same invitation opens direct access repeatedly without another email or client-selected identity',async()=>{
+ const c=fixture();await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}})
+ const code=c.sends[0][0].html.match(/#invite=(ACA_[a-f0-9]{64})/)[1]
+ for(let i=0;i<2;i++){
+  const r=await run(handleTrialAccept,c.automation,{method:'POST',body:{code,email:'attacker@example.com'}})
+  assert.equal(r.status,200);assert.equal(r.body.phase,1);assert.equal(r.body.learner_id,actor);assert.ok(r.body.token_hash);assert.match(r.headers['Cache-Control'],/no-store/)
+  assert.equal(c.calls.filter(x=>x.name==='aca_redeem_trial').at(-1).args.p_email,'learner@example.com')
+ }
+ assert.equal(c.sends.length,1);assert.equal(c.links,2)
+})
+test('invalid, revoked, converted and expired trial tokens never yield Auth verification',async()=>{
+ const {createHash}=await import('node:crypto'),code='ACA_'+'a'.repeat(64)
+ for(const state of ['missing','revoked','converted','expired']){
+  const c=fixture();c.tables.aca_trial_grants[0].code_hash=createHash('sha256').update(code).digest('hex')
+  if(state==='missing')c.tables.aca_trial_grants=[];else if(state==='expired')c.tables.aca_trial_grants[0].expires_at='2000-01-01';else c.tables.aca_trial_grants[0].status=state
+  const r=await run(handleTrialAccept,c.automation,{method:'POST',body:{code}});assert.equal(r.status,410);assert.equal(c.links,0);assert.equal(c.sends.length,0)
+ }
+ const c=fixture();assert.equal((await run(handleTrialAccept,c.automation,{method:'POST',body:{code:'bad'}})).status,400);assert.equal((await run(handleTrialAccept,c.automation)).status,405)
 })

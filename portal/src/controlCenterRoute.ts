@@ -6,6 +6,7 @@ export const controlCenterReturnKey = 'aca.control-center-return.v1'
 export function isControlCenterEntry(url: URL, storage: Pick<Storage, 'getItem'>, now = Date.now()) {
   if (/^\/control-center\/?$/.test(url.pathname)) return true
   if (!/^\/learn\/?$/.test(url.pathname)) return false
+  if (url.searchParams.get('view')==='trial-access') return false
   if (['enrollments', 'operations'].includes(url.searchParams.get('view') || '')) return true
   const callback = url.searchParams.has('code') || /(?:^#|&)(?:access_token|error|error_code)=/.test(url.hash)
   if (!callback) return false

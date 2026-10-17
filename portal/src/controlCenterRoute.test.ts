@@ -16,7 +16,7 @@ it('returns owner email callbacks to the control center in the same browser', ()
   expect(storage.getItem).toHaveBeenCalledWith(controlCenterReturnKey)
 })
 it('does not reroute ordinary learner visits, workbooks, trials, or other pages', () => {
-  for (const path of ['/learn/', '/learn/?workbook=journey-one', '/learn/?view=trial#code=synthetic', '/academy/phase-one/']) {
+  for (const path of ['/learn/', '/learn/?workbook=journey-one', '/learn/?view=trial#code=synthetic', '/learn/?view=trial-access#invite=ACA_synthetic', '/academy/phase-one/']) {
     expect(isControlCenterEntry(new URL(path, 'https://academy.example'), storage, now)).toBe(false)
   }
 })
