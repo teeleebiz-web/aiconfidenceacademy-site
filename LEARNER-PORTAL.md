@@ -84,8 +84,25 @@ records are preserved. `redeemed` means the trial enrollment was allocated, not
 proof of video playback.
 
 Implementation: `academy/enrollment/control-center.mjs`, `academy/server.mjs`,
-`portal/src/TrialAccessEntry.tsx`, and the existing control-center interface. No database
-migration is required. The owner-reported October 17 record was found saved and
+`portal/src/TrialAccessEntry.tsx`, and the existing control-center interface.
+The direct-entry release was followed by the applied
+`20261017074310_aca_existing_trial_entry.sql` correction: a second invitation for
+the same email and course resumes its existing active trial instead of rejecting
+the enrollment as a duplicate. The original grant remains the authority for its
+dates and revocation. The additional invitation stays `ready`, without allocating
+another enrollment or changing onboarding, completion, or saved work. Its own
+expiry and revocation still apply. It cannot restore expired, refunded, paused,
+cancelled, suspended, revoked, paid, or installment-restricted access. Existing
+paid access continues through its ordinary enrollment invitation.
+The newest direct-entry email can be reopened after this database correction;
+there is no need to create or send another invitation. Reopen its email button,
+because the entry page removes the private token before showing a result.
+The focused rollback-only regression is
+`academy/enrollment/repeat-trial-acceptance.sql`. An opt-in live component check
+is `portal/integration/TrialAccessEntry.live.test.tsx`; it requires a disposable
+fixture through `ACA_TRIAL_FIXTURE_FILE` and a private evidence path through
+`ACA_TRIAL_EVIDENCE_FILE`, never an actual learner's invitation.
+The owner-reported October 17 record was found saved and
 unredeemed, with no `trial_access` email for it. The founder subsequently sent a separate invitation; its provider delivery was
 confirmed before the direct-entry correction. No corrected invitation was sent
 to an existing recipient during implementation; its dispatch remains an explicit
