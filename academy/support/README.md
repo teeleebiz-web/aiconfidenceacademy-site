@@ -28,3 +28,28 @@ PR 59 merged as 69bb2f8142b18cada9a4d20991bd303950472f6d. Production backend dep
 A small public interface follow-up handles private links clicked within the already-open Contact page as well as initial navigation, removes the credential fragment, strengthens heading hierarchy, and versions the public assets. It does not change the backend or support authority. Verify private-link reopening and requester follow-up on the official site after that update. Keep the controlled test case distinct from a customer request.
 
 Remaining backend work is not relabeled complete: generative AI support, administrative role delegation and MFA, restoration proof, broader operational alert/retry coverage, qualified legal review, and the final launch acceptance evidence. Do not restart completed enrollment tests or inspect approved curriculum while continuing these operations.
+
+## Backend reliability continuation October 17
+
+Delivery callbacks now apply allowed status transitions in the database UPDATE,
+including the current provider message reference. A concurrent or late `sent`
+callback cannot overwrite `delivered` or a failure; repeated delivery preserves
+the recorded delivery timestamp. Failure evidence remains visible for review.
+The focused rollback-only check is `academy/email/delivery-status-acceptance.sql`.
+
+Installment maintenance distinguishes newly submitted reminders from recorded
+reminder markers. A failed marker write leaves the reminder eligible for retry;
+the existing email event prevents another send when that retry records the
+marker. Provider and database failures are counted in its result, including
+partial pause writes, so System activity records a warning instead of a false
+success. Payment amounts, due dates, correction period, and access rules are
+unchanged. Nested newsletter failures and uncertain provider outcomes likewise
+produce warnings; intentional disabled or empty-edition holds remain normal.
+
+The existing CI workflow now checks backend, API entry, database migrations,
+and deployment configuration changes in addition to portal changes. This work
+improves recorded failure visibility and retry accounting. It does not complete
+proactive incident notifications, generic automatic email replay, generative AI
+support, role delegation/MFA, restoration proof, legal review, or final launch
+acceptance. Continue with those existing plan items; do not recreate the policies
+or reopen the approved curriculum.

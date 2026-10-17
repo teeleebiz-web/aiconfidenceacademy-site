@@ -83,6 +83,24 @@ test('authorized automation preserves the original response and records warning 
  assert.equal(res.status,200);assert.deepEqual(res.body,{sent:1,failed:1});assert.equal(updates[0].status,'warning');assert.ok(updates[0].finished_at)
 })
 
+test('automation records nested provider failures and uncertain sends as warnings, with normal holds completed',async()=>{
+ const outcomes=[
+  [{delivery:{categories:[{result:{held:'provider_reconciliation_required'}}]}},'warning'],
+  [{delivery:{categories:[{result:{held:'needs_review'}}]}},'warning'],
+  [{delivery:{failed:1}},'warning'],
+  [{delivery:{error:'A provider operation failed'}},'warning'],
+  [{remindersSent:1,remindersRecorded:0,reminderFailures:1,failed:1},'warning'],
+  [{delivery:{held:'empty_edition'},mode:'prepare_only',failed:0},'completed'],
+  [{delivery:{held:'delivery_not_enabled'},failed:0},'completed'],
+ ]
+ for(const [result,expected] of outcomes){
+  const updates=[],db={from(){return {insert(){return this},select(){return this},single:async()=>({data:{id:requestId}}),update(value){updates.push(value);return this},eq:async()=>({error:null})}}}
+  const res={writeHead(){},end(value){assert.deepEqual(JSON.parse(value),result)}}
+  await recordAutomationRun({method:'GET',headers:{authorization:'Bearer secret'}},res,{db,cronSecret:'secret'},'newsletter-maintenance',async(_req,response)=>{response.writeHead(200);response.end(JSON.stringify(result))})
+  assert.equal(updates[0].status,expected)
+ }
+})
+
 test('owner can email the existing unsent grant using only its ID; recipient and dates come from the saved grant',async()=>{
  const c=fixture(),r=await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId,email:'attacker@example.com',starts_at:'2000-01-01'}}})
  assert.equal(r.status,200);assert.equal(r.body.recipient,'learner@example.com');assert.equal(r.body.starts_at,c.tables.aca_trial_grants[0].starts_at)
