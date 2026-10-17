@@ -54,26 +54,42 @@ manually emailing a link is no longer part of the owner workflow.
 Previously saved invitations have **Send invitation** in their row. Review the
 saved recipient and dates before sending. The server loads those values from
 the saved grant rather than accepting a replacement email from the browser.
-Sending provisions the named trial enrollment through the existing guarded
-redemption function. A future start remains future; no access dates, lesson
-rules, publication states, prices, or paid enrollment protections are changed.
-The grant's `redeemed` status records that allocation, not proof that the
-recipient read the message or signed in.
+The trial email has one **Open my trial** button, the course name, and the
+access dates. Its private link opens `/learn/?view=trial-access` and automatically
+verifies access for the grant's stored recipient. There is no email field,
+password choice, or second message. First-time Phase One recipients continue
+into the existing founder welcome and Learning ChatGPT orientation. Those
+materials and their sequence are unchanged.
 
-A failed send retains the saved grant and offers **Retry sending invitation**.
-After closing or reloading, use its row action instead of recreating the grant.
-Successful repeated clicks do not generate another Auth link or email. A
-conditional email claim prevents concurrent submissions; an uncertain provider
-submission stays visible in Email center for verification before another try.
-Expired, revoked, converted, or otherwise restricted access is still rejected.
-Legacy code-entry links remain supported. A recipient whose secure sign-in link
-expires can request a fresh sign-in email at the normal Academy sign-in page.
+The mailed token is random; only its SHA-256 hash is stored in the grant. It
+remains usable through the grant's end date and can be reopened without another
+email. On each use, the server validates the grant and runs the existing guarded
+redemption function, then issues a short-lived Auth verification token. The
+browser verifies it, persists the session, removes the invitation fragment, and
+opens the assigned phase. The recipient cannot choose another email. Expired,
+revoked, converted, or restricted grants cannot issue access. A future start and
+all existing learner and paid-access rules remain in force.
 
-Implementation: `academy/enrollment/control-center.mjs`, the shared operational
-email sender, and `portal/src/components/AcademyControlCenter.tsx`. No database
+The direct-entry email uses `trial-access:<grant-id>:v2`. Selecting Send invitation
+for a record that previously received the old email sends its corrected version
+once; already-delivered messages retain their old text. Successful repeat sends
+of the corrected version are deduplicated. Sending rotates that grant's private
+invitation code; older manual code links for the same grant are superseded.
+A failed send retains the grant and offers **Retry sending invitation**. After
+closing or reloading, use its row action. A conditional email claim prevents
+concurrent code rotations. An uncertain provider submission stays visible in
+Email center for verification before another try. Sending the email no longer
+allocates a new trial enrollment before the recipient opens it; prior allocated
+records are preserved. `redeemed` means the trial enrollment was allocated, not
+proof of video playback.
+
+Implementation: `academy/enrollment/control-center.mjs`, `academy/server.mjs`,
+`portal/src/TrialAccessEntry.tsx`, and the existing control-center interface. No database
 migration is required. The owner-reported October 17 record was found saved and
-unredeemed, with no `trial_access` email for it. No invitation to that recipient
-was sent during implementation; its dispatch remains an explicit owner action.
+unredeemed, with no `trial_access` email for it. The founder subsequently sent a separate invitation; its provider delivery was
+confirmed before the direct-entry correction. No corrected invitation was sent
+to an existing recipient during implementation; its dispatch remains an explicit
+owner action.
 Release evidence is recorded in the associated pull request and deployment.
 
 The earlier read-only enrollment backend is

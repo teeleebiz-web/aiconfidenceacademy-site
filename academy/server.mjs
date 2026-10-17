@@ -11,7 +11,7 @@ import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollment/installment-plan.mjs'
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
 import { handleEnrollmentOperations } from './enrollment/operations.mjs'
-import { handleControlCenter, handleTrialEntry, handleLearnerFeedback, recordAutomationRun } from './enrollment/control-center.mjs'
+import { handleControlCenter, handleTrialAccept, handleTrialEntry, handleLearnerFeedback, recordAutomationRun } from './enrollment/control-center.mjs'
 import { handleResendWebhook } from './email/resend-webhook.mjs'
 import { handleLessonReleaseMaintenance } from './email/lesson-release-maintenance.mjs'
 import { handleLessonReleaseTest } from './email/lesson-release-test.mjs'
@@ -50,7 +50,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
-    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
+    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
         res.writeHead(403, { 'Content-Type': 'application/json' })
@@ -67,6 +67,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
       if (requestPath === '/api/operations/control-center') {
         await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return
       }
+      if (requestPath === '/api/trials/accept') { await handleTrialAccept(req, res, enrollmentAutomation); return }
       if (requestPath === '/api/trials/request-access') { await handleTrialEntry(req, res, enrollmentAutomation); return }
       if (requestPath === '/api/learner/feedback') { await handleLearnerFeedback(req, res, { db }); return }
       if (requestPath === '/api/operations/enrollments') {

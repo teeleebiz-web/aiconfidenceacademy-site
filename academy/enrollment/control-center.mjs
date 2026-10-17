@@ -1,4 +1,4 @@
-import { createHash, randomUUID } from 'node:crypto'
+import { createHash, randomUUID, randomBytes } from 'node:crypto'
 import { readFile, stat } from 'node:fs/promises'
 import { join, basename } from 'node:path'
 import { sendOperationalEmail } from '../email/operational-email.mjs'
@@ -46,39 +46,34 @@ function actionPayload(action, payload) {
   return result
 }
 
-// Both owner dispatch and legacy code entry use the established redemption guards.
-// Sending allocates the named learner's trial; the original access dates still apply.
+// Email one private trial capability; allocate access only when its recipient opens it.
 async function sendTrialInvitation(config, grant, actor) {
   if (!grant || !['ready','redeemed'].includes(grant.status) || Date.parse(grant.expires_at)<=Date.now()) throw Object.assign(new Error('This invitation is expired, revoked, or converted to paid access.'), {status:409})
-  const email=grant.allowed_email, eventKey=`trial-access:${grant.id}`
+  const email=grant.allowed_email, eventKey=`trial-access:${grant.id}:v2`
   const existing=checked(await config.db.from('aca_email_events').select('id,status').eq('event_key',eventKey).maybeSingle())
-  // Do this before generating a new Auth link: a duplicate must not invalidate the emailed link.
+  // A repeated send must not rotate the token in an already delivered invitation.
   if (existing && ['sent','delivered'].includes(existing.status)) return {emailSent:true,duplicate:true,recipient:email,starts_at:grant.starts_at,expires_at:grant.expires_at}
   if (existing?.status==='sending') throw Object.assign(new Error('Email submission is still being verified. Check Email center before trying again.'), {status:409})
   const course=checked(await config.db.from('courses').select('id,title,phase_number,status').eq('id',grant.course_id).single())
   if (course.status!=='published') throw Object.assign(new Error('This phase is awaiting release by the Academy owner.'), {status:409})
-  // Claim the email before generating an Auth link. Concurrent clicks must not
-  // generate competing links or send duplicate messages across server instances.
+  // Claim the email before rotating its token to prevent competing invitations.
   checked(await config.db.from('aca_email_events').upsert({event_key:eventKey,template_key:'trial_access',recipient:email,subject:'Your AI Confidence Academy trial access',status:'queued'}, {onConflict:'event_key',ignoreDuplicates:true}))
   const claim=checked(await config.db.from('aca_email_events').update({status:'sending',last_error:null}).eq('event_key',eventKey).in('status',['queued','failed']).select('id').maybeSingle())
   if (!claim) throw Object.assign(new Error('This invitation already has a delivery record. Check Email center for its current status.'), {status:409})
   let submissionStarted=false
   try {
-    const redirect=`${config.appUrl.replace(/\/$/,'')}/learn/${course.phase_number===2?'?course=phase-two':''}`
-    let link=await config.db.auth.admin.generateLink({type:'invite',email,options:{redirectTo:redirect}})
-    if (['email_exists','user_already_exists'].includes(link.error?.code)) link=await config.db.auth.admin.generateLink({type:'magiclink',email,options:{redirectTo:redirect}})
-    if (link.error || !link.data?.user?.id || !link.data.properties?.action_link) throw Error('Invitation link unavailable')
-    const result=checked(await config.db.rpc('aca_redeem_trial',{p_hash:grant.code_hash,p_email:email,p_user:link.data.user.id}))
-    const signInUrl=link.data.properties.action_link
+    const code=`ACA_${randomBytes(32).toString('hex')}`
+    const updated=checked(await config.db.from('aca_trial_grants').update({code_hash:hash(code),updated_at:new Date().toISOString()}).eq('id',grant.id).eq('code_hash',grant.code_hash).in('status',['ready','redeemed']).select('id').maybeSingle())
+    if (!updated) throw Object.assign(new Error('This invitation changed. Refresh its record before sending.'),{status:409})
+    const signInUrl=`${config.appUrl.replace(/\/$/,'')}/learn/?view=trial-access#invite=${code}`
     submissionStarted=true
     await sendOperationalEmail(config,{
-      eventKey,templateKey:'trial_access',enrollmentId:result.enrollment_id,learnerId:link.data.user.id,to:email,
-      // An explicitly failed attempt may generate a fresh Auth link. Resend must not
-      // reject that retry because the previous attempt contained a different link.
+      eventKey,templateKey:'trial_access',templateVersion:2,enrollmentId:grant.enrollment_id||null,to:email,
+      // A known failed send can rotate its invitation token without a provider-key conflict.
       providerIdempotencyKey:`${eventKey}:${hash(signInUrl)}`,
-      metadata:{trial_grant_id:grant.id,...(actor?{invited_by:actor}:{}),starts_at:grant.starts_at,expires_at:grant.expires_at},
+      metadata:{trial_grant_id:grant.id,entry_version:2,...(actor?{invited_by:actor}:{}),starts_at:grant.starts_at,expires_at:grant.expires_at},
       subject:'Your AI Confidence Academy trial access',
-      html:`<div style="font-family:Arial,sans-serif;color:#102d4f;line-height:1.6"><h1>Your Academy invitation</h1><p>You have been invited to ${escape(course.title)} with free access. No payment is required.</p><p>This invitation is assigned to ${escape(email)}.</p><p>Your access begins ${escape(new Date(grant.starts_at).toUTCString())} and ends ${escape(new Date(grant.expires_at).toUTCString())}.</p><p><a href="${escape(signInUrl)}">Accept invitation and sign in</a></p><p>You can sign in before your access begins; learning access follows the dates above. If this secure sign-in link has expired, request a fresh sign-in email at <a href="${escape(config.appUrl.replace(/\/$/,'')+'/learn/')}">Academy sign-in</a> using your assigned email. This does not change your access dates.</p><p>The Academy lesson schedule and access windows apply. Use Help &amp; feedback in your learning space to report a difficulty.</p><p>AI Confidence Academy · AI assists, humans verify.</p></div>`,
+      html:`<div style="font-family:Arial,sans-serif;color:#102d4f;line-height:1.6"><h1>Your Academy trial is ready</h1><p>You’re invited to ${escape(course.title)}.</p><p><a style="display:inline-block;background:#102d4f;color:#fffdf9;padding:12px 22px;text-decoration:none;border-radius:6px" href="${escape(signInUrl)}">Open my trial</a></p><p>Access: ${escape(new Date(grant.starts_at).toUTCString())} – ${escape(new Date(grant.expires_at).toUTCString())}.</p><p>AI Confidence Academy</p></div>`,
     })
     return {emailSent:true,duplicate:false,recipient:email,starts_at:grant.starts_at,expires_at:grant.expires_at}
   } catch (error) {
@@ -132,13 +127,13 @@ export async function handleControlCenter(req, res, config) {
       if (body.action==='trial_create' || body.action==='trial_send') requireInvitationEmail(automation)
       if (body.action==='trial_send' && !uuid.test(payload.id || '')) return reply(res,400,{error:'Choose a valid invitation.'})
       if (body.action==='trial_send') {
-        const grant=checked(await db.from('aca_trial_grants').select('id,code_hash,allowed_email,course_id,starts_at,expires_at,status').eq('id',payload.id).maybeSingle())
+        const grant=checked(await db.from('aca_trial_grants').select('id,code_hash,allowed_email,course_id,starts_at,expires_at,status,enrollment_id').eq('id',payload.id).maybeSingle())
         return reply(res,200,{ok:true,id:payload.id,...await sendTrialInvitation({...automation,db},grant,actor)})
       }
       const result = checked(await db.rpc('aca_control_action',{p_actor:actor,p_request:body.requestId,p_action:body.action,p_payload:payload}))
       if (body.action==='trial_create') {
         try {
-          const grant=checked(await db.from('aca_trial_grants').select('id,code_hash,allowed_email,course_id,starts_at,expires_at,status').eq('id',result.id).maybeSingle())
+          const grant=checked(await db.from('aca_trial_grants').select('id,code_hash,allowed_email,course_id,starts_at,expires_at,status,enrollment_id').eq('id',result.id).maybeSingle())
           return reply(res,200,{...result,...await sendTrialInvitation({...automation,db},grant,actor)})
         } catch (error) {
           return reply(res,error.status || 502,{invitationSaved:true,id:result.id,error:error.status?error.message:'Invitation saved, but its email could not be sent. Retry sending this invitation.'})
@@ -202,6 +197,35 @@ export async function handleControlCenter(req, res, config) {
   }
 }
 
+// The emailed trial token is the recipient's proof of invitation. It is bound
+// to one stored email, never accepted as permission to choose another identity.
+export async function handleTrialAccept(req,res,config) {
+  if (req.method!=='POST') return reply(res,405,{error:'Method not allowed.'})
+  try {
+    if (!config?.db || !config.appUrl) return reply(res,503,{error:'Trial access is temporarily unavailable.'})
+    const body=await readJson(req),code=String(body.code||'').trim()
+    if (!/^ACA_[a-f0-9]{64}$/i.test(code)) return reply(res,400,{error:'This trial invitation is not valid.'})
+    const ip=String(req.headers['x-forwarded-for']||req.socket?.remoteAddress||'').split(',')[0].trim()
+    if (!checked(await config.db.rpc('aca_trial_rate_limit',{p_key:hash(`trial-accept:${ip}:${Math.floor(Date.now()/900000)}`)}))) return reply(res,429,{error:'Please wait a few minutes, then open your invitation again.'})
+    const grant=checked(await config.db.from('aca_trial_grants').select('id,code_hash,allowed_email,course_id,starts_at,expires_at,status').eq('code_hash',hash(code)).maybeSingle())
+    if (!grant || !['ready','redeemed'].includes(grant.status) || Date.parse(grant.expires_at)<=Date.now()) return reply(res,410,{error:'This trial invitation is no longer available.'})
+    const course=checked(await config.db.from('courses').select('id,phase_number,status').eq('id',grant.course_id).single())
+    if (course.status!=='published') return reply(res,409,{error:'This trial is not available yet.'})
+    const redirect=`${config.appUrl.replace(/\/$/,'')}/learn/${course.phase_number===2?'?course=phase-two':''}`
+    let link=await config.db.auth.admin.generateLink({type:'invite',email:grant.allowed_email,options:{redirectTo:redirect}})
+    if (['email_exists','user_already_exists'].includes(link.error?.code)) link=await config.db.auth.admin.generateLink({type:'magiclink',email:grant.allowed_email,options:{redirectTo:redirect}})
+    const properties=link.data?.properties
+    if (link.error || !link.data?.user?.id || !properties?.hashed_token || !['invite','magiclink'].includes(properties.verification_type)) throw Error('Trial verification unavailable')
+    const allocation=checked(await config.db.rpc('aca_redeem_trial',{p_hash:grant.code_hash,p_email:grant.allowed_email,p_user:link.data.user.id}))
+    checked(await config.db.from('aca_email_events').update({enrollment_id:allocation.enrollment_id,learner_id:link.data.user.id}).eq('event_key',`trial-access:${grant.id}:v2`))
+    return reply(res,200,{token_hash:properties.hashed_token,type:properties.verification_type,learner_id:link.data.user.id,phase:course.phase_number})
+  } catch (error) {
+    if (error.status) return reply(res,error.status,{error:error.message})
+    if (error.code==='P0001') return reply(res,409,{error:'This trial invitation needs Academy owner review.'})
+    return reply(res,503,{error:'Your trial could not be opened. Please try your invitation again.'})
+  }
+}
+
 export async function handleTrialEntry(req,res,config) {
   if (req.method !== 'POST') return reply(res,405,{error:'Method not allowed.'})
   try {
@@ -213,7 +237,7 @@ export async function handleTrialEntry(req,res,config) {
     const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || '').split(',')[0].trim()
     const key = hash(`${ip}:${Math.floor(Date.now()/900000)}`)
     if (!checked(await config.db.rpc('aca_trial_rate_limit',{p_key:key}))) return reply(res,429,{error:'Please wait before requesting another invitation email.'})
-    const grant = checked(await config.db.from('aca_trial_grants').select('id,code_hash,allowed_email,course_id,starts_at,expires_at,status').eq('code_hash',hash(code)).maybeSingle())
+    const grant = checked(await config.db.from('aca_trial_grants').select('id,code_hash,allowed_email,course_id,starts_at,expires_at,status,enrollment_id').eq('code_hash',hash(code)).maybeSingle())
     if (!grant || grant.allowed_email!==email || !['ready','redeemed'].includes(grant.status) || Date.parse(grant.expires_at)<=Date.now()) return reply(res,400,{error:'Check your invitation code and the email it was assigned to.'})
     await sendTrialInvitation(config,grant)
     return reply(res,200,{ok:true,message:'Check your assigned email for your secure Academy sign-in link.'})
