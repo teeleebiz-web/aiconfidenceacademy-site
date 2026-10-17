@@ -75,7 +75,8 @@ export async function dispatchOperationalAlerts(config, now = new Date()) {
       }
       // Resend retains keys for 24 hours. Leave uncertain older attempts for review.
       // first_attempt_at is set before sending and survives process interruption.
-      if (email?.status === 'sending' && now.getTime() - Date.parse(alert.first_attempt_at) >= 23 * hour) {
+      // A later rejection cannot disprove acceptance of an earlier lost response.
+      if (email && now.getTime() - Date.parse(alert.first_attempt_at) >= 23 * hour) {
         await settle(config, alert, { status: 'review', last_error: 'Earlier email submission could not be confirmed safely.' })
         result.review++
         continue
