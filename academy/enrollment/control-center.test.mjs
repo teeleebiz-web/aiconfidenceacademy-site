@@ -135,6 +135,18 @@ test('trial acceptance preserves existing enrollment restrictions before returni
  const r=await run(handleTrialAccept,c.automation,{method:'POST',body:{code}})
  assert.equal(r.status,409);assert.equal(r.body.token_hash,undefined);assert.equal(c.sends.length,0)
 })
+test('a subsequent invitation can verify the existing active trial without another enrollment or email',async()=>{
+ const c=fixture(),rpc=c.db.rpc,existingEnrollment='77777777-7777-4777-8777-777777777777'
+ c.db.rpc=async(name,args)=>name==='aca_redeem_trial'?{data:{enrollment_id:existingEnrollment,duplicate:true,existing_trial:true}}:rpc(name,args)
+ await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}})
+ const code=c.sends[0][0].html.match(/#invite=(ACA_[a-f0-9]{64})/)[1]
+ for(let i=0;i<2;i++){
+  const r=await run(handleTrialAccept,c.automation,{method:'POST',body:{code}})
+  assert.equal(r.status,200);assert.equal(r.body.learner_id,actor);assert.ok(r.body.token_hash)
+  assert.equal(c.tables.aca_email_events[0].enrollment_id,existingEnrollment)
+ }
+ assert.equal(c.sends.length,1);assert.equal(c.calls.some(x=>x.name==='aca_control_action'),false)
+})
 test('non-owners cannot use the direct invitation email action',async()=>{
  const c=fixture({owner:false}),r=await run(handleControlCenter,c,{method:'POST',body:{requestId,action:'trial_send',payload:{id:requestId}}})
  assert.equal(r.status,403);assert.equal(c.links,0);assert.equal(c.sends.length,0);assert.equal(c.calls.length,0)
