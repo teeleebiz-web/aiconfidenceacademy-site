@@ -1,0 +1,19 @@
+name: Phase Two Lesson 1.2 content checks
+on:
+  push:
+    branches:
+      - phase-two-lesson-1-2-instructional-production
+  pull_request:
+    paths:
+      - 'academy/phase-two-production/J1-L1-2-*'
+      - 'academy/phase-two-lesson-1-2-content.test.mjs'
+      - '.github/workflows/phase-two-lesson-1-2-content.yml'
+jobs:
+  curriculum-and-content:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test academy/phase-two-lesson-1-2-content.test.mjs
