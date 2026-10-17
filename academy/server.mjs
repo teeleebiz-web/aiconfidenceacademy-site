@@ -12,6 +12,7 @@ import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollmen
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
 import { handleEnrollmentOperations } from './enrollment/operations.mjs'
 import { handleControlCenter, handleTrialAccept, handleTrialEntry, handleLearnerFeedback, recordAutomationRun } from './enrollment/control-center.mjs'
+import { handleOperationalMaintenance } from './email/operational-alerts.mjs'
 import { handleResendWebhook } from './email/resend-webhook.mjs'
 import { handleLessonReleaseMaintenance } from './email/lesson-release-maintenance.mjs'
 import { handleLessonReleaseTest } from './email/lesson-release-test.mjs'
@@ -63,6 +64,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token, X-ACA-Support-Key')
       }
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
+      if (requestPath === '/api/operations/maintenance') { await recordAutomationRun(req, res, enrollmentAutomation, 'operations-monitor', handleOperationalMaintenance); return }
       if (requestPath.startsWith('/api/support/') || requestPath === '/api/operations/support') { await handleSupport(req, res, enrollmentAutomation || {db}, {reviewerCheck:workbookReviewerCheck}); return }
       if (requestPath === '/api/operations/control-center') {
         await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return

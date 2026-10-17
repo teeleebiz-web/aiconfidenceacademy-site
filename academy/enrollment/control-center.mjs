@@ -2,6 +2,7 @@ import { createHash, randomUUID, randomBytes } from 'node:crypto'
 import { readFile, stat } from 'node:fs/promises'
 import { join, basename } from 'node:path'
 import { sendOperationalEmail } from '../email/operational-email.mjs'
+import { queueOperationalAlert, dispatchOperationalAlerts } from '../email/operational-alerts.mjs'
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 const hash = value => createHash('sha256').update(String(value)).digest('hex')
@@ -280,15 +281,24 @@ function needsOperationalReview(value) {
 }
 export async function recordAutomationRun(req,res,config,job,handler) {
   if (!config?.db || !config.cronSecret || req.headers.authorization!==`Bearer ${config.cronSecret}` || req.method!=='GET') return handler(req,res,config)
-  let runId
-  try { const row=await config.db.from('aca_automation_runs').insert({job}).select('id').single();runId=row.data?.id } catch { /* Keep the established job operational if diagnostics fail. */ }
+  let runId,historyFailed=false
+  const startedAt=new Date().toISOString()
+  try { runId=checked(await config.db.from('aca_automation_runs').insert({job}).select('id').single())?.id;if(!runId)historyFailed=true } catch { historyFailed=true }
   let status=200,headers={},payload=''
   const captured={writeHead(code,value){status=code;headers=value||{}},end(body){payload=body||''}}
   try { await handler(req,captured,config) }
   catch {status=500;payload=JSON.stringify({error:'Automation failed.'});headers={'Content-Type':'application/json'}}
-  if(runId) {
-    let result;try{result=clean(JSON.parse(payload))}catch{result={summary:'No structured result'}}
-    try {await config.db.from('aca_automation_runs').update({finished_at:new Date().toISOString(),status:status>=400?'failed':needsOperationalReview(result)?'warning':'completed',result}).eq('id',runId)}catch{ /* The job result still reaches its caller. */ }
+  let result;try{result=clean(JSON.parse(payload))}catch{result={error:'No structured result'}}
+  const outcome=status>=400?'failed':needsOperationalReview(result)?'warning':'completed'
+  if(runId) try {checked(await config.db.from('aca_automation_runs').update({finished_at:new Date().toISOString(),status:outcome,result}).eq('id',runId))}catch{historyFailed=true}
+  // Alert failures never replace the original job response or rerun its work.
+  if(config.resend && job!=='operations-monitor') try {
+    if(outcome!=='completed'||historyFailed)await queueOperationalAlert(config,{job,runId,reason:outcome!=='completed'?`job_${outcome}`:'history_failed',occurredAt:startedAt})
+    const alerts=await dispatchOperationalAlerts(config)
+    if(runId)checked(await config.db.from('aca_automation_runs').update({result:{...result,operational_alerts:alerts},status:outcome==='completed'&&(alerts.retry||alerts.review)?'warning':outcome}).eq('id',runId))
+  }catch{
+    console.error('ACA operational alert processing needs review.')
+    if(runId)try{checked(await config.db.from('aca_automation_runs').update({status:outcome==='failed'?'failed':'warning',result:{...result,operational_alerts:{error:'Alert processing needs review.'}}}).eq('id',runId))}catch{ /* Keep the established job response intact. */ }
   }
   res.writeHead(status,headers);res.end(payload)
 }

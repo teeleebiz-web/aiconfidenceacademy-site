@@ -14,7 +14,9 @@ it('opens each working section and keeps the default view focused on Academy ope
  const nav=screen.getByRole('navigation',{name:'Academy administration'})
  for(const title of ['Learners','Curriculum & releases','Access & trials','Payments','Email center','Support & feedback','System activity']){await user.click(within(nav).getByRole('button',{name:title}));expect(screen.getByRole('heading',{level:1,name:title})).toBeTruthy()}
  expect(screen.getByText('Configuration confirms that a connection is set up. The run history below shows what actually executed.')).toBeTruthy()
- expect(screen.getAllByText('No run recorded since instrumentation began')).toHaveLength(3)
+ expect(screen.getAllByText('No run recorded since instrumentation began')).toHaveLength(4)
+ expect(screen.getByText('operations monitor')).toBeTruthy()
+ expect(screen.getByText('21:00')).toBeTruthy()
 })
 it('reviews the recipient and dates before sending the invitation directly by email',async()=>{
  const user=userEvent.setup();const fetcher=vi.fn(async(_url:string,options:RequestInit)=>options.method==='POST'?response({ok:true,id,emailSent:true,recipient:'invited@example.com',starts_at:'2090-01-01T09:00:00Z',expires_at:'2090-02-01T09:00:00Z'}):response(snapshot));vi.stubGlobal('fetch',fetcher)
