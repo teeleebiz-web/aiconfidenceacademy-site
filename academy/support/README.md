@@ -53,3 +53,41 @@ proactive incident notifications, generic automatic email replay, generative AI
 support, role delegation/MFA, restoration proof, legal review, or final launch
 acceptance. Continue with those existing plan items; do not recreate the policies
 or reopen the approved curriculum.
+
+## Proactive operational alerts October 17
+
+`academy/email/operational-alerts.mjs` connects failed or partial daily automation
+runs to trusted-owner notification emails. It uses the same service-only owner
+recipient lookup as support; recipients are checked again at dispatch. Alerts
+include only a task label, time, reference, and the existing control-center link.
+They never include raw job results, provider errors, learner details, or private
+access links. A daily task/reason/recipient key groups repeated reports.
+
+`/api/operations/maintenance` runs daily at 21:00 UTC (05:00 the next day in
+Manila). It checks the existing 09:00, 16:00, and 18:00 UTC jobs, allowing two
+hours for invocation and flagging unfinished recorded runs after fifteen minutes.
+It does not run those tasks or change their schedules. The activation baseline
+prevents old missing-run alerts. It also dispatches pending notifications;
+ordinary task completions can retry those notifications too.
+
+The service-only queue uses five-minute exclusive leases and conditional claim
+tokens. Definite send failures retry after fifteen minutes on a later scheduled
+invocation, up to three attempts. An uncertain submission uses the same immutable
+message and provider key only within 23 hours of its first attempt, inside
+Resend's documented 24-hour retention. Older uncertain sends and delivery failures
+remain for review. A provider reference prevents another send even if delivery
+later fails. Submission is distinct from delivered provider callbacks.
+
+System activity includes the monitor's result and alert dispatch counts in task
+results. Email center's all-records collection includes owner notification email
+events. Use those records to investigate; do not rerun financial jobs or change
+access merely because an alert arrived. The queue is not a generic retry engine
+for customer emails, and a resolved underlying task does not erase prior failures.
+
+Verification uses the focused unit/route tests and rollback-only
+`academy/email/operational-alerts-acceptance.sql`. The latter checks service-only
+permissions, RLS, logical dedupe, exclusive claims, lease recovery, and stale
+claim rejection without retained fixtures or email. This monitor shares Vercel,
+Supabase, and Resend with the application: it cannot independently detect its own
+failure or guarantee delivery during an outage of those services. Independent
+outage monitoring and actual isolated backup restoration remain separate work.
