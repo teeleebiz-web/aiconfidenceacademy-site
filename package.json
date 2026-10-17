@@ -10,9 +10,9 @@
     "build:academy": "vite build --config academy/vite.config.ts && node content/build-public-hub.mjs && node academy/prepare-site.mjs",
     "build:site": "npm run build && npm run build:academy",
     "start:academy": "node academy/server.mjs",
-    "test:academy": "node --test academy/learner-media.test.mjs academy/server.test.mjs academy/public-preview.test.mjs academy/workbook/*.test.mjs academy/enrollment/*.test.mjs academy/email/*.test.mjs",
+    "test:academy": "node --test academy/learner-media.test.mjs academy/server.test.mjs academy/public-preview.test.mjs academy/workbook/*.test.mjs academy/enrollment/*.test.mjs academy/email/*.test.mjs academy/support/*.test.mjs",
     "dev": "vite --config portal/vite.config.ts",
-    "build": "vite build --config portal/vite.config.ts && node portal/build-control-center.mjs",
+    "build": "node academy/support/build.mjs && vite build --config portal/vite.config.ts && node portal/build-control-center.mjs",
     "typecheck": "tsc --project portal/tsconfig.json --noEmit",
     "test": "vitest run --config portal/vitest.config.ts",
     "check": "npm run typecheck && npm run test && npm run test:academy && npm run build"

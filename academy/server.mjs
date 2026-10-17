@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
+import { handleSupport } from './support/api.mjs'
 import { handleWorkbook } from './workbook/api.mjs'
 import { handleLearnerMedia } from './learner-media.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
@@ -49,7 +50,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
-    if (requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
+    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
         res.writeHead(403, { 'Content-Type': 'application/json' })
@@ -59,9 +60,10 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
         res.setHeader('Access-Control-Allow-Origin', origin)
         res.setHeader('Vary', 'Origin')
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS')
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token')
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token, X-ACA-Support-Key')
       }
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
+      if (requestPath.startsWith('/api/support/') || requestPath === '/api/operations/support') { await handleSupport(req, res, enrollmentAutomation || {db}, {reviewerCheck:workbookReviewerCheck}); return }
       if (requestPath === '/api/operations/control-center') {
         await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return
       }
