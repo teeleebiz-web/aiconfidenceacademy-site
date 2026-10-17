@@ -8,11 +8,11 @@ const snapshot={updated_at:'2026-10-16T06:00:00Z',enrollments:[{id,learner_id:id
 const response=(value:unknown,status=200)=>({ok:status<400,status,json:async()=>value})
 afterEach(()=>vi.unstubAllGlobals())
 it('opens each working section and keeps the default view focused on Academy operations',async()=>{
- const user=userEvent.setup();const fetcher=vi.fn().mockResolvedValue(response(snapshot));vi.stubGlobal('fetch',fetcher)
+ const user=userEvent.setup();const fetcher=vi.fn(async(url:string)=>response(url.endsWith('/api/operations/support')?{cases:[],messages:[]}:snapshot));vi.stubGlobal('fetch',fetcher)
  render(<AcademyControlCenter accessToken="owner-token"/>);expect(await screen.findByRole('heading',{name:'Phase operations'})).toBeTruthy()
  expect(fetcher.mock.calls[0][0]).toContain('scope=operational')
  const nav=screen.getByRole('navigation',{name:'Academy administration'})
- for(const title of ['Learners','Curriculum & releases','Access & trials','Payments','Email center','Feedback','System activity']){await user.click(within(nav).getByRole('button',{name:title}));expect(screen.getByRole('heading',{level:1,name:title})).toBeTruthy()}
+ for(const title of ['Learners','Curriculum & releases','Access & trials','Payments','Email center','Support & feedback','System activity']){await user.click(within(nav).getByRole('button',{name:title}));expect(screen.getByRole('heading',{level:1,name:title})).toBeTruthy()}
  expect(screen.getByText('Configuration confirms that a connection is set up. The run history below shows what actually executed.')).toBeTruthy()
  expect(screen.getAllByText('No run recorded since instrumentation began')).toHaveLength(3)
 })

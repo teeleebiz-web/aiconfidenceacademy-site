@@ -26,6 +26,19 @@ const logCheckoutFailure = (mode, error) => {
   })
 }
 
+export const enrollmentPolicyVersion = '2026-10-17'
+async function agreement(req) {
+  try {
+    let raw = ''
+    if (req.body !== undefined) raw = typeof req.body === 'string' || Buffer.isBuffer(req.body) ? String(req.body) : new URLSearchParams(req.body).toString()
+    else for await (const chunk of req) { raw += chunk; if (raw.length > 4096) return null }
+    if (raw.length > 4096) return null
+    const values = new URLSearchParams(raw)
+    if (values.get('termsAccepted') !== 'yes' || values.get('policyVersion') !== enrollmentPolicyVersion) return null
+    return { aca_policy_version: enrollmentPolicyVersion, aca_terms_accepted_at: new Date().toISOString() }
+  } catch { return null }
+}
+
 export async function handleInstallmentCheckout(req, res, config) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' })
   if (!config?.stripe || !config?.installment50PriceId || !config?.installment49PriceId || !config?.appUrl) {
@@ -38,6 +51,9 @@ export async function handleInstallmentCheckout(req, res, config) {
     return json(res, 403, { error: 'Request origin was not accepted' })
   }
 
+  const accepted = await agreement(req)
+  if (!accepted) return json(res, 400, { error: 'Review and accept the current Terms, Privacy Policy, and Refund Policy on the enrollment page.' })
+
   try {
     const session = await config.stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -48,12 +64,14 @@ export async function handleInstallmentCheckout(req, res, config) {
       billing_address_collection: 'auto',
       subscription_data: {
         metadata: {
+          ...accepted,
           aca_plan: 'phase_one_installments',
           aca_course_id: config.courseId,
           aca_total_cents: '14900',
         },
       },
       metadata: {
+        ...accepted,
         aca_plan: 'phase_one_installments',
         aca_course_id: config.courseId,
       },
@@ -75,6 +93,8 @@ export async function handlePaidInFullCheckout(req, res, config) {
   const expectedOrigin = appOrigin(config.appUrl)
   const suppliedOrigin = appOrigin(req.headers.origin || req.headers.referer)
   if (!expectedOrigin || suppliedOrigin !== expectedOrigin) return json(res, 403, { error: 'Request origin was not accepted' })
+  const accepted = await agreement(req)
+  if (!accepted) return json(res, 400, { error: 'Review and accept the current Terms, Privacy Policy, and Refund Policy on the enrollment page.' })
   try {
     const price = await config.stripe.prices.retrieve(priceId)
     if (!price.active || price.currency !== 'usd' || price.unit_amount !== 12900 || price.type !== 'one_time') {
@@ -87,7 +107,7 @@ export async function handlePaidInFullCheckout(req, res, config) {
       success_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=success`,
       cancel_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=canceled`,
       billing_address_collection: 'auto',
-      metadata: { aca_plan: 'phase_one_paid_in_full', aca_course_id: config.courseId, aca_offer: 'founding_student', aca_total_cents: '12900' },
+      metadata: { ...accepted, aca_plan: 'phase_one_paid_in_full', aca_course_id: config.courseId, aca_offer: 'founding_student', aca_total_cents: '12900' },
     })
     res.writeHead(303, { Location: session.url, 'Cache-Control': 'no-store' })
     res.end()
