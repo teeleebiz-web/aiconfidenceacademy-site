@@ -272,6 +272,12 @@ export async function handleLearnerFeedback(req,res,{db}) {
 }
 
 // Cron authorization remains in each original handler. Unauthorized probes are never recorded as runs.
+const reviewHolds = new Set(['needs_review','provider_reconciliation_required','provider_status_requires_review','send_in_progress_or_requires_review'])
+function needsOperationalReview(value) {
+  if (!value || typeof value !== 'object') return false
+  if (Number(value.failed)>0 || value.error || reviewHolds.has(value.held)) return true
+  return Object.values(value).some(needsOperationalReview)
+}
 export async function recordAutomationRun(req,res,config,job,handler) {
   if (!config?.db || !config.cronSecret || req.headers.authorization!==`Bearer ${config.cronSecret}` || req.method!=='GET') return handler(req,res,config)
   let runId
@@ -282,7 +288,7 @@ export async function recordAutomationRun(req,res,config,job,handler) {
   catch {status=500;payload=JSON.stringify({error:'Automation failed.'});headers={'Content-Type':'application/json'}}
   if(runId) {
     let result;try{result=clean(JSON.parse(payload))}catch{result={summary:'No structured result'}}
-    try {await config.db.from('aca_automation_runs').update({finished_at:new Date().toISOString(),status:status>=400?'failed':Number(result.failed)>0?'warning':'completed',result}).eq('id',runId)}catch{ /* The job result still reaches its caller. */ }
+    try {await config.db.from('aca_automation_runs').update({finished_at:new Date().toISOString(),status:status>=400?'failed':needsOperationalReview(result)?'warning':'completed',result}).eq('id',runId)}catch{ /* The job result still reaches its caller. */ }
   }
   res.writeHead(status,headers);res.end(payload)
 }

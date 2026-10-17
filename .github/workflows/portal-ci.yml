@@ -4,6 +4,10 @@ on:
   pull_request:
     paths:
       - 'portal/**'
+      - 'academy/**'
+      - 'api/site.mjs'
+      - 'supabase/migrations/**'
+      - 'vercel.json'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/portal-ci.yml'
@@ -12,6 +16,10 @@ on:
       - main
     paths:
       - 'portal/**'
+      - 'academy/**'
+      - 'api/site.mjs'
+      - 'supabase/migrations/**'
+      - 'vercel.json'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/portal-ci.yml'

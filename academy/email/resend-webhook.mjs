@@ -38,10 +38,17 @@ export async function recordResendEvent(config, event) {
   if (!existing) return { received: true, ignored: true }
 
   if (terminalStatuses.has(existing.status)) return { received: true, duplicate: true }
-  if (existing.status === 'delivered' && update.status === 'sent') return { received: true, duplicate: true }
+  if (existing.status === 'delivered' && ['sent', 'delivered'].includes(update.status)) return { received: true, duplicate: true }
 
-  const { error: updateError } = await config.db.from('aca_email_events').update(update).eq('id', existing.id)
+  // A callback can change this row after the lookup. Enforce the transition in
+  // the UPDATE itself so concurrent or late callbacks cannot erase delivery or
+  // a recorded failure. A repeated delivery preserves its original timestamp.
+  const allowed = ['queued', 'sending', 'sent', ...(terminalStatuses.has(update.status) ? ['delivered'] : [])]
+  const { data: updated, error: updateError } = await config.db.from('aca_email_events')
+    .update(update).eq('id', existing.id).eq('provider_message_id', providerMessageId)
+    .in('status', allowed).select('id').maybeSingle()
   if (updateError) throw updateError
+  if (!updated) return { received: true, duplicate: true }
   return { received: true, status: update.status }
 }
 

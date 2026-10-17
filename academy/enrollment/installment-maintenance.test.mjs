@@ -80,3 +80,47 @@ test('maintenance sends an off-hour reminder once and leaves later payments alon
   assert.equal((await run()).remindersSent, 0)
   assert.equal(sent.length, 1)
 })
+
+function failureFixture({failure,overdue=false}={}) {
+ const plan={id:'plan',enrollment_id:'enrollment',learner_id:'learner',status:overdue?'grace':'active',grace_until:'2026-10-07T09:00:00Z',next_due_at:'2026-10-10T19:14:42Z',next_amount:5000,customer_email:'fixture@example.test',reminder_sent_for_due_at:null}
+ const tables={aca_installment_plans:[plan],enrollments:[{id:'enrollment',status:'active'}],aca_email_events:[]}
+ let failOnce=true,sends=0
+ const db={from(table){
+  const filters=[];let write,insert
+  const rows=()=>tables[table].filter(row=>filters.every(f=>f(row)))
+  const q={select(){return q},eq(k,v){filters.push(r=>r[k]===v);return q},gte(k,v){filters.push(r=>new Date(r[k])>=new Date(v));return q},lt(k,v){filters.push(r=>new Date(r[k])<new Date(v));return q},is(k,v){filters.push(r=>r[k]===v);return q},
+   update(value){write=value;return q},upsert(value){insert=value;return q},
+   async maybeSingle(){return {data:rows()[0]||null}},
+   async single(){let row=tables[table].find(r=>r.event_key===insert.event_key);if(!row){row={id:'email',attempts:0};tables[table].push(row)}Object.assign(row,insert);return {data:row}},
+   then(resolve,reject){
+    const refused=failOnce&&((failure==='reminder-write'&&write?.reminder_sent_for_due_at)||(failure==='enrollment-write'&&table==='enrollments'&&write)||(failure==='plan-write'&&table==='aca_installment_plans'&&write?.status==='paused'))
+    if(refused){failOnce=false;return Promise.resolve({error:Error('private database detail')}).then(resolve,reject)}
+    const found=rows();if(write)found.forEach(r=>Object.assign(r,write));return Promise.resolve({data:found,error:null}).then(resolve,reject)
+   }};return q
+ }}
+ const config={db,cronSecret:'fixture',emailFrom:'ACA <fixture@example.test>',resend:{emails:{send:async()=>{sends++;if(failure==='provider'&&failOnce){failOnce=false;return {error:{message:'private provider detail'}}}return {data:{id:'provider-fixture'}}}}}}
+ const run=async()=>{const res={writeHead(status){this.status=status},end(value){this.body=JSON.parse(value)}};await handleInstallmentMaintenance({method:'GET',headers:{authorization:'Bearer fixture'}},res,config,new Date('2026-10-08T09:00:00Z'));assert.equal(res.status,200);return res.body}
+ return {plan,tables,run,get sends(){return sends}}
+}
+
+test('provider failure is counted and a later run retries the unsent reminder',async()=>{
+ const f=failureFixture({failure:'provider'}),failed=await f.run()
+ assert.equal(failed.failed,1);assert.equal(failed.reminderFailures,1);assert.equal(failed.remindersSent,0);assert.equal(f.plan.reminder_sent_for_due_at,null)
+ assert.doesNotMatch(JSON.stringify(failed),/private/)
+ const retried=await f.run();assert.equal(retried.failed,0);assert.equal(retried.remindersSent,1);assert.equal(retried.remindersRecorded,1);assert.equal(f.sends,2)
+})
+
+test('retry after a reminder marker write fails records the prior send without another email',async()=>{
+ const f=failureFixture({failure:'reminder-write'}),failed=await f.run()
+ assert.equal(failed.failed,1);assert.equal(failed.remindersSent,1);assert.equal(failed.remindersRecorded,0);assert.equal(f.plan.reminder_sent_for_due_at,null)
+ const retried=await f.run();assert.equal(retried.failed,0);assert.equal(retried.remindersSent,0);assert.equal(retried.remindersRecorded,1);assert.equal(f.sends,1)
+ assert.equal(f.plan.next_due_at,'2026-10-10T19:14:42Z');assert.equal(f.plan.reminder_sent_for_due_at,f.plan.next_due_at)
+})
+
+test('partial access-pause writes are counted as failures and remain eligible for the next run',async()=>{
+ for(const failure of ['enrollment-write','plan-write']){
+  const f=failureFixture({failure,overdue:true}),failed=await f.run()
+  assert.equal(failed.failed,1);assert.equal(failed.pauseFailures,1);assert.equal(failed.accessPaused,0);assert.equal(f.plan.status,'grace')
+  const retried=await f.run();assert.equal(retried.failed,0);assert.equal(retried.accessPaused,1);assert.equal(f.plan.status,'paused');assert.equal(f.tables.enrollments[0].status,'paused');assert.equal(f.sends,0)
+ }
+})
