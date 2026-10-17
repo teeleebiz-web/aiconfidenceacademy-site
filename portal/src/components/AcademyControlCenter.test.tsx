@@ -16,16 +16,31 @@ it('opens each working section and keeps the default view focused on Academy ope
  expect(screen.getByText('Configuration confirms that a connection is set up. The run history below shows what actually executed.')).toBeTruthy()
  expect(screen.getAllByText('No run recorded since instrumentation began')).toHaveLength(3)
 })
-it('requires a review step before creating a real trial and exposes the raw code only in the resulting invitation',async()=>{
- const user=userEvent.setup();const fetcher=vi.fn(async(_url:string,options:RequestInit)=>options.method==='POST'?response({ok:true,id,code:JSON.parse(options.body as string).payload.code}):response(snapshot));vi.stubGlobal('fetch',fetcher)
+it('reviews the recipient and dates before sending the invitation directly by email',async()=>{
+ const user=userEvent.setup();const fetcher=vi.fn(async(_url:string,options:RequestInit)=>options.method==='POST'?response({ok:true,id,emailSent:true,recipient:'invited@example.com',starts_at:'2090-01-01T09:00:00Z',expires_at:'2090-02-01T09:00:00Z'}):response(snapshot));vi.stubGlobal('fetch',fetcher)
  render(<AcademyControlCenter accessToken="owner-token"/>);await screen.findByRole('heading',{name:'Phase operations'})
  await user.click(screen.getByRole('button',{name:'Grant trial access'}));await user.type(screen.getByLabelText('Assigned learner email'),'invited@example.com')
- await user.click(screen.getByRole('button',{name:'Review change'}));expect(fetcher.mock.calls.filter(([,o])=>o.method==='POST')).toHaveLength(0)
- expect(screen.getByText('This action is applied to the real Academy and recorded in its activity history.')).toBeTruthy()
- await user.click(screen.getByRole('button',{name:'Apply authorized change'}));await screen.findByRole('heading',{name:'Your trial invitation is ready'})
+ const start=screen.getByLabelText('Access begins'),end=screen.getByLabelText('Access ends');await user.clear(start);await user.type(start,'2090-01-01T09:00');await user.clear(end);await user.type(end,'2090-02-01T09:00')
+ await user.click(screen.getByRole('button',{name:'Review invitation'}));expect(fetcher.mock.calls.filter(([,o])=>o.method==='POST')).toHaveLength(0)
+ expect(screen.getByText('Send the secure invitation directly to the assigned email. Access follows the reviewed dates.')).toBeTruthy()
+ await user.click(screen.getByRole('button',{name:'Send invitation'}));await screen.findByRole('heading',{name:'Invitation sent'})
  const call=fetcher.mock.calls.find(([,o])=>o.method==='POST')!;const body=JSON.parse(call[1].body as string)
- expect(body.action).toBe('trial_create');expect(body.payload.email).toBe('invited@example.com');expect(body.payload.code).toMatch(/^ACA_[a-f0-9]{64}$/)
- const link=screen.getByLabelText('Invitation link') as HTMLTextAreaElement;expect(link.value).toContain('/learn/?view=trial#code=ACA_');expect(link.value.split('#')[0]).not.toContain(body.payload.code)
+ expect(body.action).toBe('trial_create');expect(body.payload.email).toBe('invited@example.com');expect(body.payload.code).toMatch(/^ACA_[a-f0-9]{64}$/);expect(body.payload.starts_at).toBe(new Date('2090-01-01T09:00').toISOString())
+ expect(screen.queryByRole('button',{name:'Copy invitation link'})).toBeNull();expect(screen.getByText('invited@example.com')).toBeTruthy()
+})
+it('keeps a failed saved invitation available for email-only retry',async()=>{
+ let posts=0;const calls:Array<{action:string;payload:unknown}>=[];const user=userEvent.setup()
+ vi.stubGlobal('fetch',vi.fn(async(_url:string,options:RequestInit)=>{if(options.method!=='POST')return response(snapshot);calls.push(JSON.parse(options.body as string));posts++;return posts===1?response({invitationSaved:true,id,error:'Invitation saved, but its email could not be sent. Retry sending this invitation.'},502):response({ok:true,id,emailSent:true,recipient:'retry@example.com',starts_at:'2090-01-01',expires_at:'2090-02-01'})}))
+ render(<AcademyControlCenter accessToken="owner-token"/>);await screen.findByRole('heading',{name:'Phase operations'});await user.click(screen.getByRole('button',{name:'Grant trial access'}));await user.type(screen.getByLabelText('Assigned learner email'),'retry@example.com');await user.click(screen.getByRole('button',{name:'Review invitation'}));await user.click(screen.getByRole('button',{name:'Send invitation'}))
+ await screen.findByRole('alert');expect(screen.getByText('retry@example.com')).toBeTruthy();expect(screen.queryByRole('button',{name:'Back'})).toBeNull();await user.click(screen.getByRole('button',{name:'Retry sending invitation'}));await screen.findByRole('heading',{name:'Invitation sent'})
+ expect(calls.map(c=>c.action)).toEqual(['trial_create','trial_send']);expect(calls[1].payload).toEqual({id})
+})
+it('sends a previously saved invitation without requiring its raw code or recreating the grant',async()=>{
+ const trial={id,allowed_email:'saved@example.com',course_id:courseId,cohort_id:null,starts_at:'2090-01-01T00:00:00Z',expires_at:'2090-02-01T00:00:00Z',status:'ready',enrollment_id:null,created_at:'2026-10-17',updated_at:'2026-10-17'}
+ const user=userEvent.setup(),fetcher=vi.fn(async(_url:string,options:RequestInit)=>options.method==='POST'?response({ok:true,id,emailSent:true,recipient:trial.allowed_email,starts_at:trial.starts_at,expires_at:trial.expires_at}):response({...snapshot,trials:[trial]}));vi.stubGlobal('fetch',fetcher)
+ render(<AcademyControlCenter accessToken="owner-token"/>);await screen.findByRole('heading',{name:'Phase operations'});await user.click(within(screen.getByRole('navigation',{name:'Academy administration'})).getByRole('button',{name:'Access & trials'}));await user.click(await screen.findByRole('button',{name:'Send invitation'}));expect(fetcher.mock.calls.filter(([,o])=>o.method==='POST')).toHaveLength(0)
+ const dialog=screen.getByRole('dialog');expect(within(dialog).getByText(trial.allowed_email)).toBeTruthy();await user.click(within(dialog).getByRole('button',{name:'Send invitation'}));await screen.findByRole('heading',{name:'Invitation sent'})
+ expect(JSON.parse(fetcher.mock.calls.find(([,o])=>o.method==='POST')![1].body as string)).toMatchObject({action:'trial_send',payload:{id}})
 })
 it('opens learner diagnostics using the selected enrollment rather than inventing progress',async()=>{
  const user=userEvent.setup();const detail={enrollment:snapshot.enrollments[0],access_state:null,lessons:[{id, page_id:'1.1',title:'First lesson',progress_status:null,access_status:'restricted',restriction_reason:'Founder welcome and Learning ChatGPT orientation are required.',scheduled_release:null,deadline_at:null,last_step:null}],workbooks:[],phase_two_workbooks:[],project:null,emails:[],activity:[]}

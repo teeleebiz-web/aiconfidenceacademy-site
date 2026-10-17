@@ -42,6 +42,40 @@ directly to `/control-center/` before the learner application loads. The hint
 contains no credentials and never grants access; the server still verifies every
 owner request. Password sign-in stays at `/control-center/` throughout.
 
+### Free access invitation delivery updated October 17 2026
+
+In **Access & trials**, choose **Create invitation**, enter the assigned email and
+access dates, select **Review invitation**, then **Send invitation**. ACA sends
+the secure access email directly to that saved recipient through the existing
+operational sender. The confirmation shows the recipient and access period;
+Email center separately records submission and provider delivery. Copying and
+manually emailing a link is no longer part of the owner workflow.
+
+Previously saved invitations have **Send invitation** in their row. Review the
+saved recipient and dates before sending. The server loads those values from
+the saved grant rather than accepting a replacement email from the browser.
+Sending provisions the named trial enrollment through the existing guarded
+redemption function. A future start remains future; no access dates, lesson
+rules, publication states, prices, or paid enrollment protections are changed.
+The grant's `redeemed` status records that allocation, not proof that the
+recipient read the message or signed in.
+
+A failed send retains the saved grant and offers **Retry sending invitation**.
+After closing or reloading, use its row action instead of recreating the grant.
+Successful repeated clicks do not generate another Auth link or email. A
+conditional email claim prevents concurrent submissions; an uncertain provider
+submission stays visible in Email center for verification before another try.
+Expired, revoked, converted, or otherwise restricted access is still rejected.
+Legacy code-entry links remain supported. A recipient whose secure sign-in link
+expires can request a fresh sign-in email at the normal Academy sign-in page.
+
+Implementation: `academy/enrollment/control-center.mjs`, the shared operational
+email sender, and `portal/src/components/AcademyControlCenter.tsx`. No database
+migration is required. The owner-reported October 17 record was found saved and
+unredeemed, with no `trial_access` email for it. No invitation to that recipient
+was sent during implementation; its dispatch remains an explicit owner action.
+Release evidence is recorded in the associated pull request and deployment.
+
 The earlier read-only enrollment backend is
 `/api/operations/enrollments` on the existing checkout domain. Every request
 validates the Supabase user and the existing server-controlled owner allowlist;
