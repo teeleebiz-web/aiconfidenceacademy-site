@@ -11,7 +11,7 @@
     "build:site": "npm run build && npm run build:academy",
     "start:academy": "node academy/server.mjs",
     "test:academy": "node --test academy/learner-media.test.mjs academy/server.test.mjs academy/public-preview.test.mjs academy/workbook/*.test.mjs academy/enrollment/*.test.mjs academy/email/*.test.mjs academy/support/*.test.mjs",
-    "test:recovery": "node --test operations/recovery.test.mjs",
+    "test:recovery": "node --test operations/*.test.mjs",
     "dev": "vite --config portal/vite.config.ts",
     "build": "node academy/support/build.mjs && vite build --config portal/vite.config.ts && node portal/build-control-center.mjs",
     "typecheck": "tsc --project portal/tsconfig.json --noEmit",
@@ -19,6 +19,7 @@
     "check": "npm run typecheck && npm run test && npm run test:academy && npm run test:recovery && npm run build"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1152.0",
     "@supabase/supabase-js": "2.112.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
