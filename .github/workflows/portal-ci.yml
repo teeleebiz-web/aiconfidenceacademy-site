@@ -12,6 +12,7 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/portal-ci.yml'
+      - '.github/workflows/r2-connection-check.yml'
   push:
     branches:
       - main
@@ -25,6 +26,7 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/portal-ci.yml'
+      - '.github/workflows/r2-connection-check.yml'
 
 permissions:
   contents: read

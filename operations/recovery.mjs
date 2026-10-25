@@ -20,7 +20,7 @@ export function objectKey(value) {
   return value
 }
 
-async function privateDestination(value) {
+export async function privateDestination(value) {
   if (!value) throw new Error('An explicit private destination is required')
   const parent = await realpath(dirname(resolve(value)))
   const path = join(parent, resolve(value).split(sep).at(-1))
@@ -41,7 +41,7 @@ async function regularFile(path) {
   return path
 }
 
-async function promote(staging, destination) {
+export async function promote(staging, destination) {
   // mkdir is exclusive: a racing writer cannot make us replace its directory.
   await mkdir(destination, { mode: 0o700 })
   try { await rename(staging, destination) }
@@ -167,6 +167,12 @@ export async function inspect({ snapshot, key }) {
   const { directory, summary, manifest } = await manifestFor(snapshot, key)
   for (const file of manifest.files) await decrypt(join(directory, file.encryptedFile), file.encryption, key, new Writable({ write(_, __, done) { done() } }))
   return { verified: true, fileCount: summary.fileCount, totalBytes: summary.totalBytes, createdAt: summary.createdAt }
+}
+
+export async function snapshotArtifacts({ snapshot, key }) {
+  await inspect({ snapshot, key })
+  const { directory, summary, manifest } = await manifestFor(snapshot, key)
+  return { summary, files: [...manifest.files.map(f => f.encryptedFile), 'manifest.bin', 'snapshot.json'].map(name => ({ name, path: join(directory, name) })) }
 }
 
 // Local proof only. There is deliberately no network upload or production restore command.
