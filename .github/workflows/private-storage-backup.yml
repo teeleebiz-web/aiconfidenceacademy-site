@@ -1,0 +1,59 @@
+name: ACA manual private Storage backup
+
+on:
+  workflow_dispatch:
+    inputs:
+      private_destination:
+        description: 'Verified private Cloudflare account ID/aca-private-backups'
+        required: true
+        type: string
+      recovery_key_saved:
+        description: 'I retained this exact recovery key in my own recovery records outside R2 and GitHub'
+        required: true
+        default: false
+        type: boolean
+      source_access_confirmed:
+        description: 'I authorize this manual job to read ACA private Storage and save an encrypted copy in R2'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aca-private-storage-backup
+  cancel-in-progress: false
+
+jobs:
+  backup-and-recover:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the reviewed main revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Verify recovery code without live credentials
+        run: npm run test:recovery
+
+      - name: Save encrypted private files and verify recovery from R2
+        env:
+          ACA_R2_PRIVATE_CONFIRMED: ${{ inputs.private_destination }}
+          ACA_BACKUP_OWNER_KEY_SAVED: ${{ inputs.recovery_key_saved }}
+          ACA_BACKUP_SOURCE_ACCESS_CONFIRMED: ${{ inputs.source_access_confirmed }}
+          ACA_BACKUP_KEY_BASE64: ${{ secrets.ACA_BACKUP_KEY_BASE64 }}
+          ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
+          ACA_R2_ACCESS_KEY_ID: ${{ secrets.ACA_R2_ACCESS_KEY_ID }}
+          ACA_R2_SECRET_ACCESS_KEY: ${{ secrets.ACA_R2_SECRET_ACCESS_KEY }}
+        run: node operations/manual-backup.mjs

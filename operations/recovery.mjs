@@ -109,9 +109,11 @@ export async function inventory(client) {
   return { buckets, files }
 }
 
-export async function backup({ client, out, key }) {
+export async function backup({ client, out, key, maxBytes = Infinity }) {
+  if (maxBytes !== Infinity && (!Number.isSafeInteger(maxBytes) || maxBytes < 1)) throw new Error('Invalid source snapshot limit')
   const destination = await privateDestination(out), staging = `${destination}.partial-${randomBytes(8).toString('hex')}`
   const before = await inventory(client)
+  if (before.files.reduce((sum, file) => sum + file.size, 0) > maxBytes) throw new Error('Source snapshot exceeds its explicit limit')
   await mkdir(staging, { mode: 0o700 })
   try {
     const files = []

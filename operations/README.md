@@ -209,3 +209,67 @@ live GitHub workflow result is still required before claiming R2 authentication
 or the synthetic transfer proved. The actual 68-file ACA snapshot, owner-held
 separate encryption key, durable saved-copy recovery, configuration recovery,
 retention, scheduling and monitoring remain separate unfinished work.
+
+## October 25 synthetic recovery verified and manual live backup prepared
+
+Owner-triggered run 40190388610 succeeded on main 05541ac at 11:48:51 UTC.
+Its final step reports `connectionVerified: true`, `syntheticOnly: true` and
+`liveAcaBackup: false`, with 4,096 original and 5,035 encrypted bytes. Encryption,
+R2 authentication, upload, readback, saved-copy download, decryption and byte
+recovery passed. The retained synthetic reference is
+`aca-connection-checks/b2adef81-05a3-4c31-a61a-0529117939f1`. Do not repeat this
+completed test as routine continuation. The action-runtime deprecation warning
+did not prevent it; working dependencies were preserved.
+
+`manual-backup.mjs` and `ACA manual private Storage backup` prepare the next
+manual step. They have not copied a live ACA file. They reuse the existing
+encrypted snapshot, transfer and recovery protocol for the fixed ACA project.
+Supabase calls only list private buckets, enumerate object metadata and download
+bytes; no course table, content inspection, source write, production restore,
+payment or email operation is called. Empty sources are rejected. The 2 GiB
+source bound is checked before file downloads and again for the encrypted
+upload. At least 6.5 GiB temporary private disk is required. Two encrypted copies
+and one fresh local restore stay outside the repository. Every original SHA-256
+and byte count is verified during recovery; temporary files are then removed.
+No snapshot, plaintext or key is saved as a GitHub artifact or cache. Remote
+encrypted objects remain, including partial uploads after failure.
+
+The owner must knowingly configure these repository secrets directly in GitHub.
+The assistant must not receive or retrieve their values:
+
+- `ACA_BACKUP_KEY_BASE64`: canonical Base64 for 32 cryptographically random bytes.
+  Retain this exact value in independent owner recovery records outside R2 and
+  GitHub before the first live run. Losing it makes the saved files unrecoverable.
+- `ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY`: an authorized existing server credential
+  for ACA. A Supabase secret or legacy service-role key gives full server-level
+  project access, not a Storage-only restriction. The reviewed job uses it only
+  for Storage reads. Authorizing access in this new runtime is a separate owner
+  decision. Do not export hidden Vercel values, reset working credentials or
+  claim the credential has narrower privileges than it actually does.
+- The two R2 bucket-scoped secrets already used by the successful check.
+
+Once source access is authorized and the secrets are saved, open Actions, select
+`ACA manual private Storage backup`, choose Run workflow on main, and enter the
+verified `account-id/aca-private-backups`. Affirm both explicit inputs: this exact
+recovery key is independently retained, and this manual job may read ACA private
+Storage and save an encrypted R2 copy. Both default to false. Missing confirmation,
+malformed keys, missing credentials, unsafe destination, inadequate disk or an
+oversized source stops the run. Only the final step receives secrets, after
+locked dependency installation and tests without live credentials.
+
+Run once and inspect the result. Success requires `liveAcaBackup: true`,
+`uploadedAndReadbackVerified: true`, `savedCopyDecryptionVerified: true` and
+`restoredWithOriginalHashesVerified: true`, nonzero counts and a new
+`aca-backups/UUID` reference. Retain the reference with the owner recovery record.
+This proves a saved file copy, not a recovered cloud service or device playback.
+Failure logs only its stage and safe reference, with no provider body, file path
+or secret. The 30-minute workflow is main-only, manually triggered, serialized
+and read-only for GitHub. It adds no schedule, cloud deletion, retention policy,
+credential rotation or public route. Limits are transfer guards, not billing
+caps; source egress and storage/execution usage count against provider allowances.
+
+Official references checked October 25, 2026:
+
+- https://supabase.com/docs/reference/javascript/storage-from-download
+- https://supabase.com/docs/guides/getting-started/api-keys
+- https://docs.github.com/en/actions/reference/runners/github-hosted-runners
