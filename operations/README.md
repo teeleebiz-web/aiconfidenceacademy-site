@@ -168,3 +168,44 @@ R2 references checked October 18, 2026:
 - https://developers.cloudflare.com/r2/api/tokens/
 - https://developers.cloudflare.com/r2/api/s3/api/
 - https://developers.cloudflare.com/r2/buckets/public-buckets/
+
+## October 25 account setup and manual connection check
+
+Terrence completed Cloudflare sign-in in his own Edge browser and activated R2.
+His screenshots confirm the Standard `aca-private-backups` bucket in Western
+North America, public access and r2.dev disabled, no custom domain and no CORS
+policy. The default seven-day incomplete-multipart abort rule was left unchanged;
+it is not a retention rule for completed backups. An initial HeadBucket 500 no
+longer occurred when the existing bucket was reopened. No duplicate was created.
+
+The account token is scoped to Object Read & Write for this bucket, active until
+November 1, 2026. Terrence reported saving its keys privately. The GitHub settings
+screenshot shows `ACA_R2_ACCESS_KEY_ID` and `ACA_R2_SECRET_ACCESS_KEY` as repository
+secrets. Their values were not read, printed, or verified by the assistant.
+Account activation and secret names do not establish working authentication.
+
+The `ACA private R2 connection check` workflow is manual only, limited to main,
+with read-only repository permission and a five-minute timeout. It receives only
+those two R2 secrets in its final step, after locked dependency installation and
+credential-free tests. Its required `private_destination` input is the exact
+verified Cloudflare account ID followed by `/aca-private-backups`; it contains
+no access key. Use Actions, select the workflow, choose Run workflow with main,
+paste that destination, and select Run workflow. Do not put keys in the input.
+
+`r2-connection-check.mjs` encrypts a new 4 KiB synthetic file, uploads it, checks
+readback, downloads into a separate temporary directory, decrypts, restores and
+compares every original byte. It calls no Supabase service and receives no live
+ACA data or credentials. Its 64 KiB encrypted-snapshot limit is not a billing cap.
+The four tiny encrypted test objects remain under `aca-connection-checks/UUID`
+for owner review. Its disposable test key is never uploaded or printed and is
+not a real backup recovery key. Local temporary files are removed. Nothing
+automatically deletes cloud objects, enables public access, or starts a schedule.
+
+Success reports `connectionVerified: true`, `syntheticOnly: true` and
+`liveAcaBackup: false`. Failure reports only the stage and safe random reference,
+without provider error bodies or credentials. The existing automated recovery
+tests and three new connection-check tests pass locally with a fake store. A
+live GitHub workflow result is still required before claiming R2 authentication
+or the synthetic transfer proved. The actual 68-file ACA snapshot, owner-held
+separate encryption key, durable saved-copy recovery, configuration recovery,
+retention, scheduling and monitoring remain separate unfinished work.
