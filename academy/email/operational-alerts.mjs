@@ -15,6 +15,7 @@ const reasons = {
   run_stalled: 'A recorded run has exceeded its expected completion window.',
   history_failed: 'The task ran, but its activity record could not be saved.',
   credential_expiring: 'The private backup credential expires within three days or has expired. Review the bucket-scoped R2 credential before the next backup.',
+  verification_test: 'This is a planned backup-alert delivery test. No backup failure is being reported.',
 }
 const checked = result => { if (result.error) throw result.error; return result.data }
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
@@ -31,6 +32,7 @@ export function scheduledSlot(job, now, allowance = 0) {
 
 export async function queueOperationalAlert(config, { job, reason, runId = null, occurredAt = new Date().toISOString() }) {
   if (!monitoredJobs[job] || !reasons[reason]) return
+  if (reason === 'verification_test' && job !== 'storage-backups') return
   const recipients = checked(await config.db.rpc('aca_support_alert_recipients'))
   if (!Array.isArray(recipients) || !recipients.length) throw new Error('No trusted alert recipients')
   const slot = scheduledSlot(job, new Date(occurredAt))
@@ -84,6 +86,7 @@ export async function dispatchOperationalAlerts(config, now = new Date()) {
         continue
       }
       const label = monitoredJobs[alert.job].label
+      const title = alert.reason === 'verification_test' ? 'ACA backup alert delivery test' : 'ACA system needs review'
       const control = new URL('/control-center/', config.appUrl).href
       // A malformed success response is uncertain, never proof of submission.
       const mailConfig = { ...config, resend: { emails: { async send(...args) {
@@ -93,9 +96,9 @@ export async function dispatchOperationalAlerts(config, now = new Date()) {
       } } } }
       await sendOperationalEmail(mailConfig, {
         eventKey, templateKey: 'automation_owner_alert', to: alert.recipient,
-        subject: `ACA system needs review · ${label}`,
+        subject: `${title} · ${label}`,
         metadata: { operational_alert_id: alert.id, automation_job: alert.job, reason: alert.reason },
-        html: `<div style="font-family:Arial,sans-serif;color:#102d4f;line-height:1.6"><h1>ACA system needs review</h1><p>${escape(label)}: ${escape(reasons[alert.reason])}</p><p>Recorded: ${escape(alert.occurred_at)}. Reference: ${escape(alert.id.slice(0, 8))}.</p><p><a href="${escape(control)}">Open the control center</a> and select System activity. Email center shows notification submission and delivery separately.</p></div>`,
+        html: `<div style="font-family:Arial,sans-serif;color:#102d4f;line-height:1.6"><h1>${title}</h1><p>${escape(label)}: ${escape(reasons[alert.reason])}</p><p>Recorded: ${escape(alert.occurred_at)}. Reference: ${escape(alert.id.slice(0, 8))}.</p><p><a href="${escape(control)}">Open the control center</a> and select System activity. Email center shows notification submission and delivery separately.</p></div>`,
       })
       await settle(config, alert, { status: 'sent', sent_at: now.toISOString(), last_error: null })
       result.submitted++

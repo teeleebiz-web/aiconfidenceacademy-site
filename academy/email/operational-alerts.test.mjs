@@ -65,6 +65,20 @@ const issue = { job: 'installment-maintenance', reason: 'job_failed', occurredAt
 const response = () => ({ writeHead(status, headers) { this.status = status; this.headers = headers }, end(v) { this.body = JSON.parse(v) } })
 const cron = { method: 'GET', headers: { authorization: 'Bearer secret' } }
 
+test('backup delivery verification is clearly labeled, owner-only and deduplicated without a false incident', async () => {
+  const c = fixture()
+  await queueOperationalAlert(c.config, { job: 'storage-backups', reason: 'verification_test', occurredAt: c.now.toISOString() })
+  await queueOperationalAlert(c.config, { job: 'storage-backups', reason: 'verification_test', occurredAt: c.now.toISOString() })
+  await queueOperationalAlert(c.config, { job: 'lesson-releases', reason: 'verification_test', occurredAt: c.now.toISOString() })
+  assert.equal(c.tables.aca_operational_alerts.length, 1)
+  await dispatchOperationalAlerts(c.config, c.now)
+  assert.equal(c.sends.length, 1)
+  assert.equal(c.sends[0].message.to, 'owner@example.test')
+  assert.match(c.sends[0].message.subject, /^ACA backup alert delivery test/)
+  assert.match(c.sends[0].message.html, /No backup failure is being reported/)
+  assert.doesNotMatch(c.sends[0].message.subject, /needs review/)
+})
+
 test('trusted-owner alerts coalesce by daily task, reason and recipient; email contains no raw failure or learner data', async () => {
   const c = fixture()
   await queueOperationalAlert(c.config, { ...issue, learnerEmail: 'private@example.test', error: 'sk_live_secret' })

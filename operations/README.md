@@ -314,7 +314,7 @@ Only main in the authoritative repository can execute it. No snapshot, recovery
 key or plaintext is published as a GitHub artifact or cache.
 
 `aca_backup_automation` is service-only and starts **disabled**. Its initial
-seven-copy retention value is a proposed setting; deletion also starts disabled.
+seven-copy retention policy was approved by Terrence on October 26; deletion starts disabled until release verification.
 The workflow exits with `held: not-activated` until the activation setting is
 explicitly changed after review. Do not describe a prepared schedule as an
 observed scheduled execution. A manual dispatch exercises the runner but does
@@ -328,11 +328,12 @@ A unique index prevents repeating the same GitHub run/attempt. History must
 accept the start record before source work and the verified completion record
 before any retention. Provider errors and source object paths are never logged.
 
-The existing independent Vercel operations monitor at 21:00 UTC checks backup
+The existing independent Vercel operations monitor scheduled for 21:00 UTC checks backup
 history after the two-hour scheduler allowance, a 45-minute unfinished-run window,
 recorded failures/warnings and credential expiration within 72 hours. It uses the
 existing trusted-owner lookup and email queue; no mail key is copied to GitHub.
-This is a daily monitor, not instant or continuous detection. Email submission
+Vercel Hobby may execute within its one-hour scheduling window. This is a daily
+monitor, not instant or continuous detection. Email submission
 and actual delivery remain distinct evidence. System activity displays backup
 run evidence alongside the existing jobs. Disabled policy creates no missing-run
 incidents. The existing manual workflow continues to be available separately.
@@ -349,12 +350,16 @@ does not delete them. The preserved manual baseline is rejected by both the
 planner and the object-deletion adapter. A failed backup never prunes; a retention
 failure leaves the new verified copy intact and records a warning.
 
-Before activation: confirm daily timing and copy-count/deletion policy, resolve
-the R2 token's November 1 expiration without widening its bucket scope, apply
-and verify the service-only migration, pass repository CI and backend preview
-checks, deploy the reviewed revision, dispatch the automatic runner once, and
-verify its recovered-copy/history evidence and owner alert delivery. Then enable
-and observe an actual scheduled execution. Do not reset working credentials or
+Terrence approved retention of seven verified automatic copies plus the original
+manual baseline, and a one-year extension of the existing R2 credential. The saved
+token list confirms October 26, 2027, unchanged Object Read & Write permission
+and only aca-private-backups. The monitor conservatively uses the start of that
+date in Bangkok (2027-10-25T17:00:00Z), since the display omits the exact hour.
+
+Before activation: verify the service-only migration and CI, deploy the reviewed
+revision with automation disabled, dispatch the automatic runner under controlled
+activation, and verify recovered-copy/history evidence and owner alert delivery.
+Then retain activation and observe an actual scheduled execution. Do not reset working credentials or
 ask the owner to recreate the recovery key. Current Cloudflare shared-browser
 Google sign-in and manual handoff have not established a signed-in dashboard;
 the owner's ordinary-browser session is not presently available to the agent.
@@ -373,3 +378,23 @@ Official scheduling and usage references checked October 26, 2026:
 - https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
 - https://developers.cloudflare.com/r2/pricing/
 - https://supabase.com/docs/guides/platform/manage-your-usage/egress
+
+
+## Release and owner-alert verification
+
+The public owner interface is served by GitHub Pages from committed generated
+control-center/index.html and learn/assets files. Include the matching production
+portal build when publishing a source change to that interface; a Vercel build
+does not update GitHub Pages. Retain older hashed assets for existing browser
+sessions. The website-only Vercel preview deliberately excludes owner pages,
+and backend HTML retains its separate construction-password gate. Do not weaken
+either gate to inspect the owner interface. Use the normal public owner sign-in
+after the flag-disabled release, then prove the backup before unattended use.
+
+A service-only verification_test operational-alert reason is restricted to
+storage-backups. Its subject and body explicitly identify a planned delivery
+test and state that no backup failure is reported. Queue one event for the
+existing trusted owner, invoke only /api/operations/maintenance through Vercel
+Cron Jobs, and verify both the durable email record and provider delivery. Do
+not run lesson, newsletter or installment jobs as a backup test. No new mail
+credential, public trigger endpoint or learner recipient is added.
