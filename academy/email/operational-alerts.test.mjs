@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os'
 
 function fixture() {
   let now = new Date('2026-10-17T21:00:00Z'), reject = false, uncertain = false, failMark = false
-  const tables = { aca_operational_monitor: [{ id: true, activated_at: '2026-10-17T08:00:00Z' }], aca_operational_alerts: [], aca_automation_runs: [], aca_email_events: [] }, sends = [], accepted = new Map()
+  const tables = { aca_backup_automation: [{ id: true, enabled: false }], aca_operational_monitor: [{ id: true, activated_at: '2026-10-17T08:00:00Z' }], aca_operational_alerts: [], aca_automation_runs: [], aca_email_events: [] }, sends = [], accepted = new Map()
   const db = {
     async rpc(name) {
       if (name === 'aca_support_alert_recipients') return { data: [{ email: 'owner@example.test' }] }
@@ -159,6 +159,45 @@ test('successful tasks and deliberately disabled newsletter holds produce no inc
   for (const [job, hour] of [['installment-maintenance', '09'], ['lesson-releases', '16'], ['newsletter-maintenance', '18']]) c.tables.aca_automation_runs.push({ id: randomUUID(), job, status: 'completed', started_at: `2026-10-17T${hour}:00:00Z`, finished_at: `2026-10-17T${hour}:00:05Z` })
   assert.equal((await checkOperationalRuns(c.config, c.now)).issues, 0)
   assert.equal(c.sends.length, 0)
+})
+
+test('disabled backup policy produces no false missing-run or credential alerts', async () => {
+  const c = fixture()
+  c.tables.aca_backup_automation[0].credential_expires_at = '2026-10-17T00:00:00Z'
+  await checkOperationalRuns(c.config, c.now)
+  assert.ok(c.tables.aca_operational_alerts.every(a => a.job !== 'storage-backups'))
+})
+
+test('backup monitor uses its activation date, exact minute, two-hour allowance and owner recipient', async () => {
+  const c = fixture()
+  Object.assign(c.tables.aca_backup_automation[0], { enabled: true, activated_at: '2026-10-17T10:00:00Z' })
+  c.now = '2026-10-17T20:16:59Z'
+  await checkOperationalRuns(c.config, c.now)
+  assert.ok(c.tables.aca_operational_alerts.every(a => a.job !== 'storage-backups'))
+  c.now = '2026-10-17T20:17:00Z'
+  await checkOperationalRuns(c.config, c.now)
+  const alert = c.tables.aca_operational_alerts.find(a => a.job === 'storage-backups')
+  assert.equal(alert.reason, 'run_missing')
+  assert.equal(alert.occurred_at, '2026-10-17T18:17:00.000Z')
+  assert.equal(alert.recipient, 'owner@example.test')
+})
+
+test('backup failure, interruption and approaching expiration are independent incidents', async () => {
+  const c = fixture()
+  Object.assign(c.tables.aca_backup_automation[0], { enabled: true, activated_at: '2026-10-17T10:00:00Z', credential_expires_at: '2026-10-20T21:00:00Z' })
+  c.tables.aca_automation_runs.push({ id: randomUUID(), job: 'storage-backups', status: 'failed', started_at: '2026-10-17T18:17:00Z', finished_at: '2026-10-17T18:20:00Z' })
+  c.tables.aca_automation_runs.push({ id: randomUUID(), job: 'storage-backups', status: 'running', started_at: '2026-10-17T20:14:00Z' })
+  await checkOperationalRuns(c.config, c.now)
+  assert.deepEqual(c.tables.aca_operational_alerts.filter(a => a.job === 'storage-backups').map(a => a.reason).sort(), ['credential_expiring', 'job_failed', 'run_stalled'])
+  assert.ok(c.sends.every(s => s.message.to === 'owner@example.test'))
+})
+
+test('a running backup gets forty-five minutes without changing other task windows', async () => {
+  const c = fixture()
+  Object.assign(c.tables.aca_backup_automation[0], { enabled: true, activated_at: '2026-10-17T10:00:00Z' })
+  c.tables.aca_automation_runs.push({ id: randomUUID(), job: 'storage-backups', status: 'running', started_at: '2026-10-17T20:30:00Z' })
+  await checkOperationalRuns(c.config, c.now)
+  assert.ok(c.tables.aca_operational_alerts.every(a => a.job !== 'storage-backups'))
 })
 test('unauthorized monitoring probes and wrong methods cannot read or send anything', async () => {
   for (const req of [{ method: 'GET', headers: {} }, { method: 'POST', headers: cron.headers }]) {

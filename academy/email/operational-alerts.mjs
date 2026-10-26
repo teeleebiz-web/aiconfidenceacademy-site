@@ -6,13 +6,15 @@ export const monitoredJobs = {
   'installment-maintenance': { hour: 9, label: 'Installment processing' },
   'lesson-releases': { hour: 16, label: 'Release notification delivery' },
   'newsletter-maintenance': { hour: 18, label: 'Newsletter processing' },
+  'storage-backups': { hour: 18, minute: 17, stalledMinutes: 45, label: 'Private file backups' },
 }
 const reasons = {
   job_failed: 'The scheduled task failed.',
   job_warning: 'The scheduled task reported a partial failure or an outcome needing review.',
   run_missing: 'No run was recorded after the scheduled time and its two-hour allowance.',
-  run_stalled: 'A recorded run has remained unfinished for more than fifteen minutes.',
+  run_stalled: 'A recorded run has exceeded its expected completion window.',
   history_failed: 'The task ran, but its activity record could not be saved.',
+  credential_expiring: 'The private backup credential expires within three days or has expired. Review the bucket-scoped R2 credential before the next backup.',
 }
 const checked = result => { if (result.error) throw result.error; return result.data }
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
@@ -22,7 +24,7 @@ const failures = new Set(['bounced', 'complained', 'suppressed', 'failed'])
 
 export function scheduledSlot(job, now, allowance = 0) {
   const scheduled = new Date(now)
-  scheduled.setUTCHours(monitoredJobs[job].hour, 0, 0, 0)
+  scheduled.setUTCHours(monitoredJobs[job].hour, monitoredJobs[job].minute ?? 0, 0, 0)
   if (scheduled.getTime() + allowance > now.getTime()) scheduled.setUTCDate(scheduled.getUTCDate() - 1)
   return scheduled.toISOString()
 }
@@ -114,15 +116,26 @@ export async function checkOperationalRuns(config, now = new Date()) {
   const monitor = checked(await config.db.from('aca_operational_monitor').select('activated_at').eq('id', true).single())
   let issues = 0
   for (const job of Object.keys(monitoredJobs)) {
+    let activatedAt = monitor.activated_at
+    if (job === 'storage-backups') {
+      const policy = checked(await config.db.from('aca_backup_automation').select('enabled,activated_at,credential_expires_at').eq('id', true).single())
+      if (!policy.enabled) continue
+      if (!policy.activated_at) throw new Error('Backup activation is incomplete')
+      activatedAt = policy.activated_at
+      if (policy.credential_expires_at && Date.parse(policy.credential_expires_at) <= now.getTime() + 72 * hour) {
+        await queueOperationalAlert(config, { job, reason: 'credential_expiring', occurredAt: now.toISOString() })
+        issues++
+      }
+    }
     const slot = scheduledSlot(job, now, 2 * hour)
-    if (Date.parse(slot) < Date.parse(monitor.activated_at)) continue
+    if (Date.parse(slot) < Date.parse(activatedAt)) continue
     const runs = checked(await config.db.from('aca_automation_runs').select('id,status,started_at,finished_at').eq('job', job).gte('started_at', slot).lte('started_at', now.toISOString()).order('started_at', { ascending: false }).limit(100))
     if (!runs.length) {
       await queueOperationalAlert(config, { job, reason: 'run_missing', occurredAt: slot })
       issues++
     }
     for (const run of runs) {
-      const reason = ['failed', 'warning'].includes(run.status) ? `job_${run.status}` : !run.finished_at && now.getTime() - Date.parse(run.started_at) > 15 * 60000 ? 'run_stalled' : null
+      const reason = ['failed', 'warning'].includes(run.status) ? `job_${run.status}` : !run.finished_at && now.getTime() - Date.parse(run.started_at) > (monitoredJobs[job].stalledMinutes ?? 15) * 60000 ? 'run_stalled' : null
       if (reason) {
         await queueOperationalAlert(config, { job, reason, runId: run.id, occurredAt: run.started_at })
         issues++

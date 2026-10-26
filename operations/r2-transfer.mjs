@@ -5,11 +5,12 @@ import { join, resolve } from 'node:path'
 import { Transform, Writable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import { fileURLToPath } from 'node:url'
-import { S3Client, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { inspect, loadKey, privateDestination, projectRef, promote, snapshotArtifacts } from './recovery.mjs'
 
 const transferFormat = 'aca-r2-transfer-v1'
 const defaultLimit = 2 * 1024 ** 3
+export const preservedManualBackup = 'aca-backups/71069015-2a6e-4578-bb35-b936ce364e87'
 const validName = name => /^(?:\d{8}\.bin|manifest\.bin|snapshot\.json)$/.test(name)
 const validPrefix = prefix => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(prefix)
 
@@ -34,6 +35,9 @@ export function r2Store(config, client = new S3Client({ region: 'auto', endpoint
       const response = await client.send(new GetObjectCommand({ Bucket: config.bucket, Key: key }))
       if (!response.Body) throw new Error('No R2 object body returned')
       return response.Body
+    },
+    async remove(key) {
+      await client.send(new DeleteObjectCommand({ Bucket: config.bucket, Key: key }))
     },
   }
 }
@@ -98,6 +102,19 @@ async function completionRecord(store, reference, maxBytes) {
   }
   if (!names.has('manifest.bin') || !names.has('snapshot.json') || total > maxBytes) throw new Error('Incomplete or oversized R2 recovery snapshot')
   return record
+}
+
+// Called only after a newly recovered replacement and its history record exist.
+// Retain complete.json as a tiny private tombstone: interrupted deletion and a
+// lost history response can then retry the exact same object set idempotently.
+export async function pruneSnapshot({ reference, store, fileCount, encryptedBytes, maxBytes = defaultLimit }) {
+  if (reference === preservedManualBackup || !Number.isSafeInteger(fileCount) || fileCount < 1 || !Number.isSafeInteger(encryptedBytes) || encryptedBytes < 1) throw failed(null)
+  try {
+    const record = await completionRecord(store, reference, maxBytes)
+    if (record.files.length !== fileCount + 2 || record.files.reduce((sum, f) => sum + f.size, 0) !== encryptedBytes) throw new Error('Retention history differs from saved copy')
+    for (const file of record.files) await store.remove(`${reference}/${file.name}`)
+    return { pruned: true }
+  } catch { throw failed(validPrefix(reference) ? reference : null) }
 }
 
 export async function downloadSnapshot({ reference, out, key, store, maxBytes = defaultLimit }) {
