@@ -14,6 +14,7 @@ on:
       - '.github/workflows/portal-ci.yml'
       - '.github/workflows/r2-connection-check.yml'
       - '.github/workflows/private-storage-backup.yml'
+      - '.github/workflows/automatic-storage-backup.yml'
   push:
     branches:
       - main
@@ -29,6 +30,7 @@ on:
       - '.github/workflows/portal-ci.yml'
       - '.github/workflows/r2-connection-check.yml'
       - '.github/workflows/private-storage-backup.yml'
+      - '.github/workflows/automatic-storage-backup.yml'
 
 permissions:
   contents: read
