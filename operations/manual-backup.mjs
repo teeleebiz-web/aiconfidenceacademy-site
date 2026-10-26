@@ -9,15 +9,30 @@ import { downloadSnapshot, r2Configuration, r2Store, uploadSnapshot } from './r2
 const limit = 2 * 1024 ** 3
 const safeReference = value => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value ?? '') ? value : null
 
+function configurationFailure(code, details = {}) {
+  const error = new Error('Manual backup configuration is invalid')
+  error.configurationIssue = { code, ...details }
+  return error
+}
+
 export function manualConfiguration(env) {
-  if (env.ACA_BACKUP_OWNER_KEY_SAVED !== 'true' || env.ACA_BACKUP_SOURCE_ACCESS_CONFIRMED !== 'true') throw new Error('Owner confirmation is required')
+  if (env.ACA_BACKUP_OWNER_KEY_SAVED !== 'true' || env.ACA_BACKUP_SOURCE_ACCESS_CONFIRMED !== 'true') throw configurationFailure('owner-confirmation-missing')
   const encoded = env.ACA_BACKUP_KEY_BASE64?.trim() ?? ''
+  if (encoded.length !== 44) throw configurationFailure('recovery-key-length', { expectedCharacters: 44, actualCharacters: encoded.length })
+  if (!/^[A-Za-z0-9+/]{43}=$/.test(encoded)) {
+    const checkPositions = Array.from({ length: 44 }, (_, i) => i).filter(i => i === 43 ? encoded[i] !== '=' : !/^[A-Za-z0-9+/]$/.test(encoded[i])).map(i => i + 1)
+    throw configurationFailure('recovery-key-characters', { checkPositions })
+  }
   const key = Buffer.from(encoded, 'base64')
-  if (!/^[A-Za-z0-9+/]{43}=$/.test(encoded) || key.length !== 32 || key.toString('base64') !== encoded) throw new Error('A canonical 32-byte recovery key is required')
-  if (!env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY) throw new Error('Authorized private source access is required')
+  if (key.length !== 32 || key.toString('base64') !== encoded) {
+    key.fill(0)
+    throw configurationFailure('recovery-key-noncanonical', { checkPositions: [43] })
+  }
+  if (!env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY) throw configurationFailure('source-credential-missing')
   const destination = env.ACA_R2_PRIVATE_CONFIRMED ?? ''
   const match = /^([0-9a-f]{32})\/aca-private-backups$/.exec(destination)
-  if (!match) throw new Error('The verified private destination is required')
+  if (!match) throw configurationFailure('private-destination-invalid')
+  if (!env.ACA_R2_ACCESS_KEY_ID || !env.ACA_R2_SECRET_ACCESS_KEY) throw configurationFailure('r2-credentials-missing')
   const r2 = r2Configuration({
     ACA_R2_ACCOUNT_ID: match[1], ACA_R2_BUCKET: 'aca-private-backups',
     ACA_R2_PRIVATE_CONFIRMED: destination,
@@ -63,6 +78,7 @@ export async function manualBackup({ env = process.env, createSource = createCli
     const error = new Error('Manual ACA file backup did not complete')
     error.stage = stage
     error.reference = safeReference(reference ?? cause?.reference)
+    if (stage === 'configuration') error.configurationIssue = cause?.configurationIssue ?? { code: 'configuration-check-failed' }
     throw error
   } finally {
     key?.fill(0)
@@ -72,7 +88,8 @@ export async function manualBackup({ env = process.env, createSource = createCli
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   manualBackup().then(result => console.log(JSON.stringify(result))).catch(error => {
-    console.error(JSON.stringify({ liveAcaBackup: false, stage: error.stage ?? 'initialization', reference: error.reference ?? null }))
+    console.error(JSON.stringify({ liveAcaBackup: false, stage: error.stage ?? 'initialization', reference: error.reference ?? null, ...(error.configurationIssue ? { configurationIssue: error.configurationIssue } : {}) }))
     process.exitCode = 1
   })
 }
+

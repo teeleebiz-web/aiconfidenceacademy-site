@@ -60,6 +60,31 @@ test('insufficient private disk stops before source access', async () => {
   await assert.rejects(manualBackup({ env, availableBytes: async () => 1n, createSource() { assert.fail('No source access allowed') } }), error => error.stage === 'private-disk-preflight')
 })
 
+test('configuration diagnostics identify the failed check without revealing credentials or opening a source', async () => {
+  const cases = [
+    [{ ACA_BACKUP_OWNER_KEY_SAVED: 'false' }, { code: 'owner-confirmation-missing' }],
+    [{ ACA_BACKUP_KEY_BASE64: 'A'.repeat(43) }, { code: 'recovery-key-length', expectedCharacters: 44, actualCharacters: 43 }],
+    [{ ACA_BACKUP_KEY_BASE64: 'A'.repeat(42) + '-=' }, { code: 'recovery-key-characters', checkPositions: [43] }],
+    [{ ACA_BACKUP_KEY_BASE64: 'A'.repeat(42) + 'B=' }, { code: 'recovery-key-noncanonical', checkPositions: [43] }],
+    [{ ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: '' }, { code: 'source-credential-missing' }],
+    [{ ACA_R2_PRIVATE_CONFIRMED: 'invalid' }, { code: 'private-destination-invalid' }],
+    [{ ACA_R2_ACCESS_KEY_ID: '' }, { code: 'r2-credentials-missing' }],
+    [{ ACA_R2_SECRET_ACCESS_KEY: '' }, { code: 'r2-credentials-missing' }],
+  ]
+  for (const [patch, issue] of cases) {
+    await assert.rejects(manualBackup({ env: { ...env, ...patch }, createSource() { assert.fail('No source access allowed') }, createStore() { assert.fail('No R2 access allowed') } }), error => {
+      assert.equal(error.stage, 'configuration')
+      assert.deepEqual(error.configurationIssue, issue)
+      const printed = JSON.stringify(error)
+      assert.ok(!printed.includes('PRIVATE_'))
+      assert.ok(!printed.includes(env.ACA_BACKUP_KEY_BASE64))
+      if (patch.ACA_BACKUP_KEY_BASE64) assert.ok(!printed.includes(patch.ACA_BACKUP_KEY_BASE64))
+      return true
+    })
+  }
+  assert.deepEqual(manualConfiguration({ ...env, ACA_BACKUP_KEY_BASE64: `\n${env.ACA_BACKUP_KEY_BASE64}\r\n` }).key, key)
+})
+
 test('oversized source inventory stops before any file download or R2 call', async () => {
   const count = {}
   await assert.rejects(manualBackup({ env, availableBytes: freeDisk, createSource: () => source({ oversized: true, count }), createStore() { assert.fail('No R2 access allowed') } }), error => error.stage === 'source-snapshot')
@@ -92,3 +117,4 @@ test('base recovery size bound rejects an inventory before creating partial outp
     assert.deepEqual(await readdir(root), [])
   } finally { await rm(root, { recursive: true, force: true }) }
 })
+
