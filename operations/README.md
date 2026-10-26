@@ -273,3 +273,26 @@ Official references checked October 25, 2026:
 - https://supabase.com/docs/reference/javascript/storage-from-download
 - https://supabase.com/docs/guides/getting-started/api-keys
 - https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+
+## October 26 configuration failure diagnosis
+
+Run 40258201859 and its second attempt both passed all 36 recovery tests, then
+stopped at configuration before source access, with no snapshot reference. All
+four secret names are present. The owner confirms using the independently saved
+PowerShell recovery key and manually entering it from a screenshot. Do not ask
+him to identify the key again or replace it merely because the stage is generic.
+
+The manual runner now emits a finite configuration issue: missing confirmations,
+key length, invalid character positions, noncanonical Base64, missing source
+credential, invalid private destination, or missing R2 credentials. Diagnostics
+contain only a fixed code, numeric lengths, or one-based positions; no key
+characters, credential values, file paths or provider bodies. All original key
+validation, authorization, transfer and recovery checks remain enforced. The
+additional regression checks diagnostic accuracy, redaction and no network
+access on rejected configuration. No secret is read back or changed by this fix.
+
+After merging the tested correction, run the existing manual workflow on main
+using the same approved destination and retained-key/source-read confirmations.
+Inspect the exact configuration issue before requesting a targeted owner action.
+A test pass is not a live backup. No source bytes have been protected by either
+failed configuration attempt; scheduling and retention remain unchanged.
