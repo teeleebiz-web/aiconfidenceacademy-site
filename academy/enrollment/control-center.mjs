@@ -187,7 +187,8 @@ export async function handleControlCenter(req, res, config) {
       p_search:(url.searchParams.get('search') || '').slice(0,100),
       p_phase:[1,2].includes(Number(url.searchParams.get('phase')))?Number(url.searchParams.get('phase')):0,p_scope:scope,
     }))
-    return reply(res,200,{...snapshot,configuration:{database:'connected',payments:!!automation?.stripe,email:!!automation?.resend,emailTracking:!!automation?.resendWebhookSecret,paymentTracking:!!automation?.webhookSecret,scheduler:!!automation?.cronSecret},request_duration_ms:Date.now()-started})
+    const backup = checked(await db.rpc('aca_backup_status'))
+    return reply(res,200,{...snapshot,backup,configuration:{database:'connected',payments:!!automation?.stripe,email:!!automation?.resend,emailTracking:!!automation?.resendWebhookSecret,paymentTracking:!!automation?.webhookSecret,scheduler:!!automation?.cronSecret},request_duration_ms:Date.now()-started})
   } catch (error) {
     if (error.status) return reply(res,error.status,{error:error.message})
     if (error.code === 'P0001') return reply(res,409,{error:redact(error.message)})

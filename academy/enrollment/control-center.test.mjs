@@ -7,7 +7,7 @@ const requestId='00000000-0000-4000-8000-000000000002'
 function fixture({owner=true,invalid=false,failure=false}={}) {
  const calls=[],sends=[],tables={aca_trial_grants:[{id:requestId,code_hash:'b'.repeat(64),allowed_email:'learner@example.com',course_id:actor,starts_at:'2090-01-01T00:00:00Z',expires_at:'2090-03-01T00:00:00Z',status:'ready'}],courses:[{id:actor,title:'ACA',phase_number:1,status:'published'}],aca_email_events:[]}
  let links=0,providerFailure=false,transportFailure=false
- const db={auth:{getUser:async()=>({data:{user:invalid?null:{id:actor,user_metadata:{is_owner:true}}},error:invalid?Error():null}),admin:{generateLink:async()=>{links++;return {data:{user:{id:actor},properties:{action_link:`https://auth.example/verify?token=private-${links}`,hashed_token:`private-${links}`,verification_type:'invite'}}}}}},rpc:async(name,args)=>{calls.push({name,args});return failure?{error:{message:'whsec_secret-private',code:'DB_FAILURE'}}:{data:name==='aca_control_snapshot'?{enrollments:[],summary:{},courses:[],lessons:[]}:name==='aca_trial_rate_limit'?true:name==='aca_redeem_trial'?{enrollment_id:requestId}:{ok:true,id:requestId}}},from(table){
+ const db={auth:{getUser:async()=>({data:{user:invalid?null:{id:actor,user_metadata:{is_owner:true}}},error:invalid?Error():null}),admin:{generateLink:async()=>{links++;return {data:{user:{id:actor},properties:{action_link:`https://auth.example/verify?token=private-${links}`,hashed_token:`private-${links}`,verification_type:'invite'}}}}}},rpc:async(name,args)=>{calls.push({name,args});return failure?{error:{message:'whsec_secret-private',code:'DB_FAILURE'}}:{data:name==='aca_backup_status'?{open_count:0,incidents:[],last_verified:null}:name==='aca_control_snapshot'?{enrollments:[],summary:{},courses:[],lessons:[]}:name==='aca_trial_rate_limit'?true:name==='aca_redeem_trial'?{enrollment_id:requestId}:{ok:true,id:requestId}}},from(table){
   let filters=[],write=null,rows=()=>tables[table].filter(r=>filters.every(f=>f(r)))
   const execute=()=>{if(write){if(write.kind==='upsert'){let r=tables[table].find(r=>r.event_key===write.value.event_key);if(!r){r={id:requestId,attempts:0,...write.value};tables[table].push(r)}else if(!write.ignore)Object.assign(r,write.value);return [r]}const found=rows();for(const r of found)Object.assign(r,write.value);return found}return rows()}
   const q={select(){return q},eq(k,v){filters.push(r=>r[k]===v);return q},in(k,v){filters.push(r=>v.includes(r[k]));return q},upsert(value,options){write={kind:'upsert',value,ignore:options?.ignoreDuplicates};return q},update(value){write={kind:'update',value};return q},maybeSingle:async()=>({data:execute()[0]||null}),single:async()=>({data:execute()[0]||null}),then(resolve,reject){return Promise.resolve({data:execute()}).then(resolve,reject)}}
@@ -195,4 +195,13 @@ test('invalid, revoked, converted and expired trial tokens never yield Auth veri
   const r=await run(handleTrialAccept,c.automation,{method:'POST',body:{code}});assert.equal(r.status,410);assert.equal(c.links,0);assert.equal(c.sends.length,0)
  }
  const c=fixture();assert.equal((await run(handleTrialAccept,c.automation,{method:'POST',body:{code:'bad'}})).status,400);assert.equal((await run(handleTrialAccept,c.automation)).status,405)
+})
+
+
+test('backup status reaches only the verified owner and comes from service-side evidence', async()=>{
+ const c=fixture(); const r=await run(handleControlCenter,c)
+ assert.equal(r.status,200); assert.deepEqual(r.body.backup,{open_count:0,incidents:[],last_verified:null})
+ assert.equal(c.calls.filter(x=>x.name==='aca_backup_status').length,1)
+ const denied=fixture({owner:false}); await run(handleControlCenter,denied)
+ assert.equal(denied.calls.length,0)
 })

@@ -71,6 +71,11 @@ export async function automaticBackup({ env = process.env, now = () => new Date(
       result.retention = { kept: plan.retained.length, pruned: plan.prune.length, manualBaselinePreserved: true }
     } else result.retention = { held: 'deletion-not-activated' }
     checked(await db.from('aca_automation_runs').update({ result }).eq('id', run.id))
+    // Resolve incidents only after complete recovery, retention and durable history.
+    // The independent mail monitor delivers queued recovery notices; no mail key enters this runner.
+    try { checked(await db.rpc('aca_reconcile_backup_alerts')) } catch {
+      // A verified copy remains successful. The independent monitor retries reconciliation.
+    }
     return { automatedBackup: true, ...result }
   } catch {
     // Never log provider errors, source paths, secrets, or unverified backup summaries.
