@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/wrangler/config-schema.json",
   "name": "aca-incident-timer",
-  "main": "incident-timer.mjs",
+  "main": "incident-timer-worker.mjs",
   "compatibility_date": "2026-10-27",
   "workers_dev": false,
   "preview_urls": false,
