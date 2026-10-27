@@ -36,6 +36,7 @@ export default function handler(request, response) {
           emailFrom: formatAcademyEmailFrom(process.env.ACA_EMAIL_FROM),
           appUrl: process.env.ACA_APP_URL,
           cronSecret: process.env.CRON_SECRET,
+          externalAvailability: process.env.ACA_EXTERNAL_AVAILABILITY,
           db,
           courseId: process.env.ACA_PHASE_ONE_COURSE_ID,
           lessonReleaseMessage,
