@@ -432,3 +432,62 @@ The generated portal and owner entry must be committed with the source release.
 Run `academy/email/backup-recovery-acceptance.sql` for rollback-only database proof,
 then the focused email, runner and owner component tests. Never create a false live
 failure or rerun historical recovery merely to test a notification.
+
+
+## Private incident diagnosis (October 27 increment)
+
+`incident-diagnostics.yml` runs outside ACA hosting at minute 7, 22, 37 and 52
+of each hour. GitHub scheduling can be delayed. Existing StatusCake checks and
+native owner notices remain five-minute checks; the diagnostic poll is separate.
+This is deterministic, read-only diagnosis, with no model calls, repair commands,
+email sends, backup reruns, deployments, DNS changes or payment actions.
+
+Activation starts disabled in the service-only `aca_incident_settings` singleton.
+Configure its exact two existing StatusCake monitor IDs and trusted owner contact
+group privately, never in repository configuration. The owner must create and
+save a StatusCake API token as Actions secret `ACA_STATUSCAKE_TOKEN`; do not paste
+it into chat or logs. Do not assume the provider token has a read-only scope.
+The collector itself permits only GET to the fixed StatusCake API, validates
+monitor identity, both fixed ACA URLs, HTTP type, 300-second interval and the
+trusted contact group, and refuses redirects and unexpected history. It requires
+fewer than 100 returned alert events and no next page; otherwise collection fails
+for review without skipping events. Events before activation are excluded.
+Repeated transitions within a polling interval can be grouped into one incident.
+
+The coordinator reuses the four existing private-backup Actions secrets, derives
+a separate incident encryption key with HKDF, and restricts all R2 reads/writes
+to `aca-incidents/v1/`. It imports no object-list or delete operations. Backup
+prefixes, keys and seven-copy retention are untouched. Immutable encrypted report
+versions are saved and read back before cursors advance. The encrypted active
+index holds at most 50 reports, evicting only synchronized recoveries; immutable
+history remains retained without an automatic deletion policy.
+
+A successfully cached activation policy allows collection into the encrypted R2
+outbox while ACA's database is unavailable. Missing initial or invalid fresh
+policy fails closed. A reachable disabled policy stops collection. To stop it
+independently during a database outage, disable this GitHub Actions workflow;
+the collector cannot see a database policy change while that database is down.
+After database recovery it mirrors the pending records into private incident
+tables. Anonymous and learner roles have no table or function access. The
+existing authenticated owner snapshot reads only the private diagnostic RPC and
+fails gracefully if that RPC is unavailable.
+
+Control Center → System activity → Incident diagnosis shows activation, collector
+freshness, uncertainty, confirmation samples and recovery separately. A provider
+up event alone cannot resolve an incident: current provider status and two live
+checks of the affected address must agree. Confirmation rounds are separated by
+16 seconds to exceed the readiness endpoint's internal 15-second cache. Findings are evidence classifications,
+not confirmed root causes. No repair actions are enabled. The owner dashboard
+may itself be unavailable during an ACA outage; native StatusCake alerts and
+its independent dashboard remain the immediate owner channel. This increment
+does not send separate diagnosis email.
+
+Run `node --test operations/incident-*.test.mjs` for injected provider, storage,
+database-outage and recovery tests. Run `operations/incident-acceptance.sql`
+through the database connector for rollback-only ACL and ingestion checks.
+The manual `verify-provider` mode checks authenticated monitor identity, API
+access and both fixed live addresses without activating policy or saving events.
+The workflow's manual `verify-private-storage` mode proves encrypted R2 fixture
+readback without contacting StatusCake, writing incident rows or changing a
+production target. Keep policy disabled until credential setup and a controlled
+real collection succeed; then observe a scheduled collection independently.
