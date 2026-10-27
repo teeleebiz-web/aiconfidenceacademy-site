@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { manualBackup, manualConfiguration } from './manual-backup.mjs'
 import { projectRef } from './recovery.mjs'
 import { pruneSnapshot, r2Store, preservedManualBackup } from './r2-transfer.mjs'
+import { backupFailure, backupFailureEvidence } from './backup-failure.mjs'
 
 export const backupJob = 'storage-backups'
 export const backupFormat = 'aca-automatic-backup-v1'
@@ -49,12 +50,12 @@ export async function automaticBackup({ env = process.env, now = () => new Date(
     run = checked(await db.from('aca_automation_runs').insert({ job: backupJob, started_at: now().toISOString(), status: 'running', result: identity }).select('id').single())
     if (!run?.id) throw new Error('No backup activity reference')
     stage = 'credential-preflight'
-    if (policy.credential_expires_at && Date.parse(policy.credential_expires_at) <= +now() + 3600000) throw new Error('Backup credential expires before a full run can safely finish')
+    if (policy.credential_expires_at && Date.parse(policy.credential_expires_at) <= +now() + 3600000) throw backupFailure('credential_or_access', 'configuration')
     stage = 'backup-and-recovery'
     // Reuse the proven encryption/readback/decryption/original-hash recovery path.
     const saved = await runBackup({ env })
     result = { ...identity, ...saved }
-    if (!verifiedBackup(result)) throw new Error('Saved copy did not prove recovery')
+    if (!verifiedBackup(result)) throw backupFailure('integrity', 'integrity_check')
     stage = 'activity-success'
     checked(await db.from('aca_automation_runs').update({ status: 'completed', finished_at: now().toISOString(), result }).eq('id', run.id))
     if (policy.prune_enabled) {
@@ -77,21 +78,24 @@ export async function automaticBackup({ env = process.env, now = () => new Date(
       // A verified copy remains successful. The independent monitor retries reconciliation.
     }
     return { automatedBackup: true, ...result }
-  } catch {
+  } catch (cause) {
     // Never log provider errors, source paths, secrets, or unverified backup summaries.
-    const safe = { ...identity, failed: true, stage }
+    const category = ['configuration', 'policy'].includes(stage) ? 'configuration' : stage.startsWith('activity-') ? 'history' : 'unknown'
+    const failure = backupFailureEvidence(backupFailure(category, category === 'configuration' ? 'configuration' : category === 'history' ? 'history' : 'unknown', cause))
+    const safe = { ...identity, failed: true, stage, failure }
     if (run?.id) try {
       checked(await db.from('aca_automation_runs').update({ status: verifiedBackup(result) ? 'warning' : 'failed', finished_at: now().toISOString(), result: verifiedBackup(result) ? { ...result, ...safe } : safe }).eq('id', run.id))
     } catch { /* Independent monitoring detects missing/unfinished history. */ }
     const error = new Error('Automatic ACA backup needs review')
     error.stage = stage
+    error.failure = failure
     throw error
   }
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   automaticBackup().then(value => console.log(JSON.stringify(value))).catch(error => {
-    console.error(JSON.stringify({ automatedBackup: false, failed: true, stage: error.stage ?? 'initialization' }))
+    console.error(JSON.stringify({ automatedBackup: false, failed: true, stage: error.stage ?? 'initialization', failure: error.failure ?? backupFailureEvidence(error) }))
     process.exitCode = 1
   })
 }

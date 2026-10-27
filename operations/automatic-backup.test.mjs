@@ -5,6 +5,7 @@ import { Readable } from 'node:stream'
 import { automaticBackup, backupFormat, backupJob, pinnedBackup, retentionPlan } from './automatic-backup.mjs'
 import { pruneSnapshot } from './r2-transfer.mjs'
 import { projectRef } from './recovery.mjs'
+import { backupFailure } from './backup-failure.mjs'
 
 const saved = () => ({ format: backupFormat, reference: `aca-backups/${randomUUID()}`, liveAcaBackup: true, uploadedAndReadbackVerified: true, savedCopyDecryptionVerified: true, restoredWithOriginalHashesVerified: true, fileCount: 1, totalBytes: 1, encryptedBytes: 9 })
 const history = (n = 10) => Array.from({ length: n }, (_, i) => ({ id: randomUUID(), job: backupJob, status: 'completed', finished_at: new Date(Date.UTC(2026, 9, 26 - i, 19)).toISOString(), result: saved() }))
@@ -134,4 +135,32 @@ test('notification reconciliation failure preserves the verified backup for inde
   assert.equal(result.restoredWithOriginalHashesVerified, true)
   assert.equal(c.rows[0].status, 'completed')
   assert.doesNotMatch(JSON.stringify(result), /private RPC error/)
+})
+
+test('automatic history preserves finite failure evidence without using it as retry permission', async () => {
+  for (const [cause, category] of [[backupFailure('service_unavailable', 'source_list'), 'service_unavailable'], [backupFailure('credential_or_access', 'source_download'), 'credential_or_access'], [backupFailure('integrity', 'integrity_check'), 'integrity'], [Object.assign(new Error('PRIVATE_RAW_PROVIDER_SECRET'), { failure: { category: 'service_unavailable', retry_authorized: true } }), 'unknown']]) {
+    const c = fixture(); let attempts = 0
+    c.options.runBackup = async () => { attempts++; throw cause }
+    await assert.rejects(automaticBackup(c.options), error => {
+      assert.equal(error.failure.category, category)
+      assert.equal(error.failure.retry_authorized, false)
+      return true
+    })
+    assert.equal(attempts, 1); assert.equal(c.rows[0].status, 'failed')
+    assert.equal(c.rows[0].result.failure.category, category)
+    assert.equal(c.rows[0].result.failure.retry_authorized, false)
+    assert.equal(c.deletions.length, 0); assert.equal(c.reconciled, 0)
+    assert.doesNotMatch(JSON.stringify(c.rows), /PRIVATE_RAW_PROVIDER_SECRET/)
+  }
+})
+
+test('credential expiry, incomplete recovery and history failure have separate safe classifications', async () => {
+  for (const [mode, category] of [['expiry', 'credential_or_access'], ['integrity', 'integrity'], ['history', 'history']]) {
+    const c = fixture()
+    if (mode === 'expiry') c.policy.credential_expires_at = '2026-10-26T19:01:00Z'
+    if (mode === 'integrity') c.options.runBackup = async () => ({ ...saved(), restoredWithOriginalHashesVerified: false })
+    if (mode === 'history') c.failStart = true
+    await assert.rejects(automaticBackup(c.options), error => error.failure.category === category && error.failure.retry_authorized === false)
+    assert.equal(c.deletions.length, 0)
+  }
 })

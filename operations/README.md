@@ -491,3 +491,39 @@ The workflow's manual `verify-private-storage` mode proves encrypted R2 fixture
 readback without contacting StatusCake, writing incident rows or changing a
 production target. Keep policy disabled until credential setup and a controlled
 real collection succeed; then observe a scheduled collection independently.
+
+## Backup failure evidence (October 27 increment)
+
+The backup runner records a finite `failure` object alongside its existing
+failure stage. It distinguishes observed service unavailability, recognized
+network interruptions, credential/access responses, configuration, known
+integrity failures, source changes, not-found responses, local resource checks,
+history failures and unknown errors. These are evidence categories, not proven
+root causes. HTTP 500 and unrecognized transport/body failures remain unknown.
+
+`backup-failure.mjs` reads actual pinned SDK error instances and HTTP metadata at
+the existing source/private-store adapters. It never interprets provider message
+text as instructions, retains body/path/request-ID fields, or trusts an arbitrary
+`error.failure` property. A private in-process evidence map preserves categories
+through the existing sanitized wrappers. Every emitted object explicitly has
+`retry_authorized: false`, including unavailable-service and network categories.
+Unknown or missing evidence cannot grant permission by default.
+
+No additional attempt, new timeout, schedule, repair command, provider credential,
+source write, backup rerun or retention rule is introduced. Possible private
+writes and retention failures keep their operation identity for later review.
+Existing verification still gates success, pruning and incident reconciliation.
+Do not deliberately fail a production backup to test classification.
+
+Run `node --test operations/*.test.mjs`. Tests include real SDK response/wrapper
+shapes with injected HTTP/transport failures, one-call/no-retry checks, forged
+evidence rejection, sanitized automatic history, altered encrypted readback,
+credential expiry, missing credentials, incomplete recovery and history failure.
+Official Storage error documentation and the installed SDK were checked; no SDK
+upgrade or schema change is part of this increment:
+https://supabase.com/docs/guides/storage/debugging/error-codes
+
+Next: prove unattended incident collection separately, then design the approved
+bounded retry gate using these observations plus failure stage, possible side
+effects, cooldown, attempt/cost limits, exclusion of overlapping work and durable
+outcome history. Classification alone must never dispatch that retry.

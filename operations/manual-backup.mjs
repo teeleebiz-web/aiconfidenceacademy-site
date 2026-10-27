@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import { backup, projectRef, restoreLocal } from './recovery.mjs'
 import { downloadSnapshot, r2Configuration, r2Store, uploadSnapshot } from './r2-transfer.mjs'
+import { backupFailure, backupFailureEvidence, backupSourceFetch } from './backup-failure.mjs'
 
 const limit = 2 * 1024 ** 3
 const safeReference = value => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value ?? '') ? value : null
@@ -58,7 +59,7 @@ export async function manualBackup({ env = process.env, createSource = createCli
     if (BigInt(await availableBytes()) < BigInt(limit) * 3n + 512n * 1024n ** 2n) throw new Error('Insufficient private temporary disk')
     root = await mkdtemp(join(tmpdir(), 'aca-manual-backup-'))
     const snapshot = join(root, 'snapshot'), downloaded = join(root, 'downloaded'), restored = join(root, 'restored')
-    const client = createSource(config.sourceUrl, config.sourceKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } })
+    const client = createSource(config.sourceUrl, config.sourceKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }, global: { fetch: backupSourceFetch() } })
     stage = 'source-snapshot'
     const original = await backup({ client, out: snapshot, key, maxBytes: limit })
     if (original.fileCount < 1 || original.totalBytes < 1) throw new Error('No ACA file bytes were protected')
@@ -75,10 +76,14 @@ export async function manualBackup({ env = process.env, createSource = createCli
     if (saved.fileCount !== original.fileCount || saved.totalBytes !== original.totalBytes || recovered.fileCount !== original.fileCount || recovered.totalBytes !== original.totalBytes) throw new Error('Saved-copy recovery summary differs')
     return { liveAcaBackup: true, uploadedAndReadbackVerified: true, savedCopyDecryptionVerified: true, restoredWithOriginalHashesVerified: true, reference, fileCount: original.fileCount, totalBytes: original.totalBytes, encryptedBytes: uploaded.encryptedBytes }
   } catch (cause) {
-    const error = new Error('Manual ACA file backup did not complete')
+    const credentialMissing = ['source-credential-missing', 'r2-credentials-missing'].includes(cause?.configurationIssue?.code)
+    const fallback = stage === 'configuration' ? [credentialMissing ? 'credential_or_access' : 'configuration', 'configuration'] : stage === 'private-disk-preflight' ? ['local_resource', 'local_resource'] : ['unknown', 'unknown']
+    const error = backupFailure(...fallback, cause)
+    error.message = 'Manual ACA file backup did not complete'
     error.stage = stage
     error.reference = safeReference(reference ?? cause?.reference)
     if (stage === 'configuration') error.configurationIssue = cause?.configurationIssue ?? { code: 'configuration-check-failed' }
+    error.failure = backupFailureEvidence(error)
     throw error
   } finally {
     key?.fill(0)
