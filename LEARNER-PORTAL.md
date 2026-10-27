@@ -33,6 +33,40 @@ credentials remain server-side.
 
 ## Enrollment administration
 
+### Independent availability monitoring (October 27, 2026)
+
+The backend exposes `GET` and `HEAD /api/health` on
+`https://checkout.aiconfidenceacademy.org`. It returns HTTP 200 and the generic
+JSON status `ok` only after a fixed read of the existing operational-monitor
+singleton succeeds. A missing record, database error, or four-second deadline
+returns HTTP 503 and `unavailable`. Concurrent requests share the probe and its
+result is cached internally for 15 seconds; HTTP responses use `no-store`.
+The address accepts no database selection, write, mail, or outage-test command.
+All owner and learner API authentication remains required.
+
+The intended outside service is StatusCake: one HTTPS monitor for the public
+website and one for this backend address, expecting HTTP 200. Confirm the actual
+free account's check interval, configure the owner's email contact group, enable
+both outage and recovery notifications, and verify delivery with a disposable
+test monitor without interrupting production. Keep incident history private and
+bookmark the provider dashboard so it remains reachable during an ACA outage.
+ACA's own database, cron jobs, and Resend sender are not the notification path.
+These probes establish website and database readiness; they do not certify
+payments, sign-in, email delivery, or every protected media operation.
+
+**System activity → Independent outage monitoring** records setup rather than
+live provider health. Until account setup and alert delivery are verified it
+displays **Setup pending**. Only after verification, set the backend production
+environment variable `ACA_EXTERNAL_AVAILABILITY` to JSON containing
+`dashboard_url` (a private `https://app.statuscake.com/` dashboard URL without
+credentials or query strings), distinct numeric `website_monitor_id` and
+`backend_monitor_id`, ISO `verified_at`, and actual `interval_seconds` (at least
+300). No provider API token is required. The server validates this metadata and
+does not expose monitor identifiers. Redeploy after changing the environment
+variable; this configuration record does not continuously confirm monitor or
+contact settings. Review current results and incident/alert history at the
+independent provider. Do not label monitoring active solely from an ACA build.
+
 The owner control center is `/control-center/`, with its own owner sign-in screen.
 Its entry checks the session and server-controlled owner authorization without
 loading learner enrollment, orientation, or curriculum. Legacy operations links

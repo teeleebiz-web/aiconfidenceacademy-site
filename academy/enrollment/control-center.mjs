@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises'
 import { join, basename } from 'node:path'
 import { sendOperationalEmail } from '../email/operational-email.mjs'
 import { queueOperationalAlert, dispatchOperationalAlerts } from '../email/operational-alerts.mjs'
+import { externalAvailability } from './availability.mjs'
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 const hash = value => createHash('sha256').update(String(value)).digest('hex')
@@ -188,7 +189,7 @@ export async function handleControlCenter(req, res, config) {
       p_phase:[1,2].includes(Number(url.searchParams.get('phase')))?Number(url.searchParams.get('phase')):0,p_scope:scope,
     }))
     const backup = checked(await db.rpc('aca_backup_status'))
-    return reply(res,200,{...snapshot,backup,configuration:{database:'connected',payments:!!automation?.stripe,email:!!automation?.resend,emailTracking:!!automation?.resendWebhookSecret,paymentTracking:!!automation?.webhookSecret,scheduler:!!automation?.cronSecret},request_duration_ms:Date.now()-started})
+    return reply(res,200,{...snapshot,backup,availability:externalAvailability(automation?.externalAvailability),configuration:{database:'connected',payments:!!automation?.stripe,email:!!automation?.resend,emailTracking:!!automation?.resendWebhookSecret,paymentTracking:!!automation?.webhookSecret,scheduler:!!automation?.cronSecret},request_duration_ms:Date.now()-started})
   } catch (error) {
     if (error.status) return reply(res,error.status,{error:error.message})
     if (error.code === 'P0001') return reply(res,409,{error:redact(error.message)})

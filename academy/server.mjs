@@ -13,6 +13,7 @@ import { handleInstallmentMaintenance } from './enrollment/installment-maintenan
 import { handleEnrollmentOperations } from './enrollment/operations.mjs'
 import { handleControlCenter, handleTrialAccept, handleTrialEntry, handleLearnerFeedback, recordAutomationRun } from './enrollment/control-center.mjs'
 import { handleOperationalMaintenance } from './email/operational-alerts.mjs'
+import { createAvailabilityHandler } from './enrollment/availability.mjs'
 import { handleResendWebhook } from './email/resend-webhook.mjs'
 import { handleLessonReleaseMaintenance } from './email/lesson-release-maintenance.mjs'
 import { handleLessonReleaseTest } from './email/lesson-release-test.mjs'
@@ -31,6 +32,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
   const publicRoot = resolve(root)
+  const availability = createAvailabilityHandler({ db })
   async function curriculum() {
     const results = await Promise.all([
       db.from('courses').select('id,code,title,summary').eq('id', courseId).single(),
@@ -51,6 +53,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
+    if (requestPath === '/api/health') { await availability(req, res); return }
     if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
