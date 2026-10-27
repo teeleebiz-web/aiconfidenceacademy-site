@@ -11,8 +11,10 @@ function fixture() {
   let now = new Date('2026-10-17T21:00:00Z'), reject = false, uncertain = false, failMark = false
   const tables = { aca_backup_automation: [{ id: true, enabled: false }], aca_operational_monitor: [{ id: true, activated_at: '2026-10-17T08:00:00Z' }], aca_operational_alerts: [], aca_automation_runs: [], aca_email_events: [] }, sends = [], accepted = new Map()
   const db = {
-    async rpc(name) {
+    async rpc(name, args) {
+      if (name === 'aca_backup_proof') return { data: args.p_result?.restoredWithOriginalHashesVerified === true && args.p_result?.fileCount > 0 }
       if (name === 'aca_support_alert_recipients') return { data: [{ email: 'owner@example.test' }] }
+      if (name === 'aca_reconcile_backup_alerts') return { data: { resolved: 0, queued: 0 } }
       assert.equal(name, 'aca_claim_operational_alerts')
       const rows = tables.aca_operational_alerts.filter(a => a.status === 'queued' && Date.parse(a.next_attempt_at) <= +now || a.status === 'sending' && Date.parse(a.claim_expires_at) < +now).slice(0, 5)
       for (const a of rows) Object.assign(a, { status: 'sending', attempts: a.attempts + 1, first_attempt_at: a.first_attempt_at || now.toISOString(), claim_token: randomUUID(), claim_expires_at: new Date(+now + 300000).toISOString() })
@@ -254,4 +256,46 @@ test('production server routes monitoring through cron authorization without the
     assert.equal((await fetch(url, { method: 'POST' })).status, 405)
     assert.equal((await fetch(url, { headers: { Origin: 'https://attacker.example' } })).status, 403)
   } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)) }
+})
+
+
+test('recovery notices follow database-proven events, reuse the owner mail queue and deduplicate', async () => {
+  const c = fixture(), runId = randomUUID()
+  c.tables.aca_automation_runs.push({ id: runId, job: 'storage-backups', status: 'completed', finished_at: '2026-10-17T20:50:00Z', result: { restoredWithOriginalHashesVerified: true, fileCount: 68 } })
+  c.tables.aca_operational_alerts.push({ id: randomUUID(), event_key: `storage-backups:recovered:${runId}`, job: 'storage-backups', reason: 'backup_recovered', run_id: runId, recipient: 'owner@example.test', occurred_at: '2026-10-17T20:50:00Z', status: 'queued', attempts: 0, next_attempt_at: c.now.toISOString() })
+  await dispatchOperationalAlerts(c.config, c.now)
+  assert.equal(c.sends.length, 1)
+  assert.equal(c.sends[0].message.subject, 'ACA backup recovered · Private file backups')
+  assert.match(c.sends[0].message.html, /68 files/)
+  assert.match(c.sends[0].message.html, /Bangkok time/)
+  assert.equal(c.sends[0].message.to, 'owner@example.test')
+  await dispatchOperationalAlerts(c.config, c.now); assert.equal(c.sends.length, 1)
+  await queueOperationalAlert(c.config, { job: 'storage-backups', reason: 'backup_recovered' })
+  assert.equal(c.tables.aca_operational_alerts.length, 1, 'Callers cannot manufacture recovery events')
+})
+test('missing recovery evidence and untrusted recipients cannot produce a recovery email', async () => {
+  for (const mode of ['no-proof', 'wrong-owner']) {
+    const c = fixture(), runId = randomUUID()
+    c.tables.aca_automation_runs.push({ id: runId, job: 'storage-backups', status: 'running', result: {} })
+    c.tables.aca_operational_alerts.push({ id: randomUUID(), event_key: runId, job: 'storage-backups', reason: 'backup_recovered', run_id: runId, recipient: mode === 'wrong-owner' ? 'former-owner@example.test' : 'owner@example.test', occurred_at: c.now.toISOString(), status: 'queued', attempts: 0, next_attempt_at: c.now.toISOString() })
+    await dispatchOperationalAlerts(c.config, c.now)
+    assert.equal(c.sends.length, 0)
+  }
+})
+
+
+test('backup reconciliation outage is reported without blocking other owner alerts', async () => {
+  const c = fixture(); await queueOperationalAlert(c.config, issue)
+  const rpc = c.config.db.rpc
+  c.config.db.rpc = async (name, args) => name === 'aca_reconcile_backup_alerts' ? { error: Error('private') } : rpc(name, args)
+  const result = await dispatchOperationalAlerts(c.config, c.now)
+  assert.equal(result.submitted, 1); assert.equal(result.review, 1); assert.equal(c.sends.length, 1)
+})
+
+
+test('a later backup failure has its own alert after an earlier same-day recovery', async () => {
+ const c=fixture()
+ for (const runId of [randomUUID(),randomUUID()]) await queueOperationalAlert(c.config,{job:'storage-backups',reason:'job_failed',runId,occurredAt:'2026-10-17T19:00:00Z'})
+ assert.equal(c.tables.aca_operational_alerts.length,2)
+ await dispatchOperationalAlerts(c.config,c.now);assert.equal(c.sends.length,2)
 })

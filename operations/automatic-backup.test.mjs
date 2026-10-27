@@ -11,8 +11,8 @@ const history = (n = 10) => Array.from({ length: n }, (_, i) => ({ id: randomUUI
 function fixture() {
   const policy = { id: true, enabled: true, activated_at: '2026-10-26T00:00:00Z', keep_daily: 7, prune_enabled: false, credential_expires_at: '2026-11-01T00:00:00Z' }
   const rows = [], deletions = []
-  let backups = 0, failStart = false, failFinish = false
-  const db = { from(table) {
+  let backups = 0, reconciled = 0, failStart = false, failFinish = false, failReconcile = false
+  const db = { async rpc(name) { assert.equal(name, 'aca_reconcile_backup_alerts'); assert.equal(rows[0].status, 'completed'); assert.ok(rows[0].result.retention); reconciled++; return failReconcile ? { error: Error('private RPC error') } : { data: { resolved: 1, queued: 1 } } }, from(table) {
     if (table === 'aca_backup_automation') return { select() { return this }, eq() { return this }, async single() { return { data: policy } } }
     assert.equal(table, 'aca_automation_runs')
     let insert, update, id
@@ -29,7 +29,7 @@ function fixture() {
   } }
   const env = { GITHUB_REPOSITORY: 'teeleebiz-web/aiconfidenceacademy-site', GITHUB_REF: 'refs/heads/main', GITHUB_EVENT_NAME: 'schedule', GITHUB_RUN_ID: '12345', GITHUB_RUN_ATTEMPT: '1', ACA_R2_PRIVATE_CONFIRMED: `${'a'.repeat(32)}/aca-private-backups`, ACA_BACKUP_OWNER_KEY_SAVED: 'true', ACA_BACKUP_SOURCE_ACCESS_CONFIRMED: 'true', ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: 'test-only-source', ACA_BACKUP_KEY_BASE64: Buffer.alloc(32, 7).toString('base64'), ACA_R2_ACCESS_KEY_ID: 'test-only-access', ACA_R2_SECRET_ACCESS_KEY: 'test-only-secret' }
   const options = { env, db, now: () => new Date('2026-10-26T19:00:00Z'), async runBackup() { backups++; return saved() }, makeStore: () => ({}), async prune({ reference }) { deletions.push(reference) } }
-  return { policy, rows, deletions, options, get backups() { return backups }, set failStart(v) { failStart = v }, set failFinish(v) { failFinish = v } }
+  return { policy, rows, deletions, options, get backups() { return backups }, get reconciled() { return reconciled }, set failReconcile(v) { failReconcile = v }, set failStart(v) { failStart = v }, set failFinish(v) { failFinish = v } }
 }
 
 test('disabled automation does not read source files, record a run, or delete copies', async () => {
@@ -116,4 +116,22 @@ test('retention deletes only recorded encrypted artifacts; private completion to
   completion.files[0].name = '../other-copy'
   await assert.rejects(pruneSnapshot({ reference: ref, store, fileCount: 1, encryptedBytes: 9 }))
   assert.equal(removed.length, 6)
+})
+
+
+test('only a durable successful recovery with finished retention can resolve incidents', async () => {
+  const c = fixture()
+  await automaticBackup(c.options)
+  assert.equal(c.reconciled, 1)
+  const bad = fixture(); bad.options.runBackup = async () => { throw Error('backup failed') }
+  await assert.rejects(automaticBackup(bad.options)); assert.equal(bad.reconciled, 0)
+  const held = fixture(); held.policy.enabled = false
+  await automaticBackup(held.options); assert.equal(held.reconciled, 0)
+})
+test('notification reconciliation failure preserves the verified backup for independent retry', async () => {
+  const c = fixture(); c.failReconcile = true
+  const result = await automaticBackup(c.options)
+  assert.equal(result.restoredWithOriginalHashesVerified, true)
+  assert.equal(c.rows[0].status, 'completed')
+  assert.doesNotMatch(JSON.stringify(result), /private RPC error/)
 })

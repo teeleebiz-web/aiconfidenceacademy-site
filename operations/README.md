@@ -398,3 +398,37 @@ existing trusted owner, invoke only /api/operations/maintenance through Vercel
 Cron Jobs, and verify both the durable email record and provider delivery. Do
 not run lesson, newsletter or installment jobs as a backup test. No new mail
 credential, public trigger endpoint or learner recipient is added.
+
+
+## October 27 backup incident recovery
+
+Backup incident state is independent of alert submission/delivery. The service-only
+`aca_reconcile_backup_alerts()` RPC resolves missing, stalled, failed, warning and
+history-write incidents only after a later completed automatic run proves encrypted
+readback, saved-copy decryption, original hashes, nonzero file counts/bytes and a
+durable retention outcome. A partial recovery, retention warning, earlier success,
+credential-expiry alert or unrelated job cannot close a backup incident. The runner
+reconciles after saving final history; the independent owner-alert monitor retries.
+A reconciliation failure preserves a verified copy and does not block other owner
+alerts; the monitor reports its pending review.
+
+The reconciler keeps the warning and attaches its verified resolution time/run.
+One `backup_recovered` message per recovered run and trusted recipient follows
+previously submitted warning messages, through the existing daily owner-mail queue.
+No new mail key or public trigger is introduced; delivery can occur at the next
+monitor invocation. Unattempted, unsent warnings resolved before dispatch are
+cancelled. Attempted/uncertain messages keep the existing provider-idempotency and
+manual-review safeguards. A new failed backup run has its own alert even on a day
+with an earlier recovery; repeated checks for the same run remain deduplicated.
+
+The authenticated Control Center System activity view shows last verified recovery,
+actual completion, file count/bytes, open incident count, resolved incident history
+and warning/recovery email delivery separately. The daily target remains 01:17
+Bangkok (18:17 UTC), with late scheduling disclosed. Existing seven-copy retention
+and the protected manual original are unchanged. `aca_backup_status()` is service-only
+and returns no recipient addresses. It is read only after existing owner authorization.
+The generated portal and owner entry must be committed with the source release.
+
+Run `academy/email/backup-recovery-acceptance.sql` for rollback-only database proof,
+then the focused email, runner and owner component tests. Never create a false live
+failure or rerun historical recovery merely to test a notification.
