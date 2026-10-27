@@ -527,3 +527,86 @@ Next: prove unattended incident collection separately, then design the approved
 bounded retry gate using these observations plus failure stage, possible side
 effects, cooldown, attempt/cost limits, exclusion of overlapping work and durable
 outcome history. Classification alone must never dispatch that retry.
+
+## Approved external incident timer (October 27 continuation)
+
+Terrence approved the Cloudflare Workers timer on October 27. It supplements the
+existing GitHub schedule after that schedule produced no observed unattended
+collector run. `incident-timer.mjs` dispatches only `incident-diagnostics.yml` in
+this repository, on `main`, in `collect` mode, every 15 minutes. The Worker reads
+the most recent 20 runs of that exact workflow and skips dispatch while any is
+active. The existing collector concurrency group serializes a racing native
+trigger. This timer does not trigger backups or repairs.
+
+The Wrangler configuration is the deployment source of truth. `workers_dev` and
+preview URLs are disabled, there are no routes or data-service bindings, and
+HTTP requests return 404. Activation defaults to `ACA_TIMER_ENABLED=false`.
+The Worker accepts no caller-selected URL, repository, branch, mode or workflow.
+It rejects other cron expressions and events more than ten minutes late, makes
+no automatic HTTP retry, refuses redirects and sanitizes failure messages. A
+lost dispatch response remains uncertain until GitHub history is reconciled.
+
+The only Worker secret is `ACA_TIMER_GITHUB_TOKEN`: a dedicated fine-grained
+GitHub token for this repository with Actions read/write and required metadata
+read only. GitHub's permission also permits other Actions operations in this
+repository; fixed code is a narrower control, not a provider-enforced token
+scope. Do not reuse a general-purpose GitHub credential or expose a token in
+source, chat, a CLI argument or a plain variable. Save it as a Cloudflare secret
+through the secure account workflow. Record its expiry privately and renew
+before expiry; a missing or expired token must stop dispatch, not widen access.
+
+Before deployment, verify the selected Cloudflare account, Workers Free plan,
+account-wide usage and available cron capacity. Published free limits are
+100,000 requests/day, five cron triggers/account and 10 ms CPU/invocation.
+The configured timer has 96 planned invocations/day and at most two GitHub
+requests/invocation. It has no storage, AI or paid-service bindings. No paid
+upgrade is authorized. Existing native GitHub ticks can add collector runs if
+that service resumes scheduling; busy detection reduces overlaps but is not a
+durable deduplication lock. Check actual Worker CPU use and GitHub runner usage.
+
+Validation and deployment commands (Wrangler is pinned in the root lockfile):
+
+```bash
+node --test operations/incident-timer.test.mjs
+node --test operations/incident-timer-runtime.test.mjs
+npx wrangler deploy --config operations/incident-timer.wrangler.json --dry-run
+npx wrangler dev --config operations/incident-timer.wrangler.json --local --test-scheduled
+```
+
+Use only fixtures in local scheduled tests. Never place a real token in a local
+development file. Review CI before deploying the disabled configuration with
+`npx wrangler deploy --config operations/incident-timer.wrangler.json`. Only
+after private secret setup and account verification, activate with the explicit
+non-secret override `--var ACA_TIMER_ENABLED:true`. A later ordinary deployment
+returns to the checked-in disabled default. Keep the selected account explicit
+with `CLOUDFLARE_ACCOUNT_ID` in the authenticated deployment environment.
+
+`incident-timer-worker.mjs` is the production entrypoint and exports only the
+default handler. Helper exports remain in the imported core; exporting a plain
+constant from a Worker entrypoint prevents workerd startup even when compilation
+passes. The runtime regression test starts the configured entrypoint in workerd
+using the Miniflare version installed by pinned Wrangler, confirms disabled
+scheduled execution makes no outbound request, and checks HTTP 404 behavior.
+It is included in the existing operations test glob and is not a real cron event.
+
+Acceptance requires a real Cloudflare cron event, its sanitized accepted run ID
+(or reconciliation after an older empty 204 response), the matching successful
+GitHub collector job and the same private coordinator heartbeat. Dispatch
+acceptance, local simulation and a manual run do not establish unattended
+success. Cloudflare cron changes can take up to 15 minutes to propagate. Do not
+create a false production incident to prove the timer. The current credential,
+plan, deployment and natural timer acceptance states belong in the protected
+continuity record, not an inferred success claim here.
+
+Rollback: redeploy with `--var ACA_TIMER_ENABLED:false`, then remove only this
+Worker's cron trigger if necessary (set `triggers.crons` to an empty array, not
+an omitted key). Native alerts and the original collector remain. To stop all
+collection during a database outage, disable the GitHub incident workflow as
+already documented. This timer still depends on GitHub API and runner uptime.
+
+Official references checked for this increment:
+https://developers.cloudflare.com/workers/platform/limits/
+https://developers.cloudflare.com/workers/platform/pricing/
+https://developers.cloudflare.com/workers/configuration/cron-triggers/
+https://developers.cloudflare.com/workers/wrangler/configuration/
+https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
