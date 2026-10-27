@@ -7,6 +7,7 @@ import { pipeline } from 'node:stream/promises'
 import { fileURLToPath } from 'node:url'
 import { S3Client, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { inspect, loadKey, privateDestination, projectRef, promote, snapshotArtifacts } from './recovery.mjs'
+import { backupFailure, privateStoreFailure } from './backup-failure.mjs'
 
 const transferFormat = 'aca-r2-transfer-v1'
 const defaultLimit = 2 * 1024 ** 3
@@ -29,15 +30,19 @@ export function r2Configuration(env) {
 export function r2Store(config, client = new S3Client({ region: 'auto', endpoint: config.endpoint, credentials: config.credentials, maxAttempts: 1, requestChecksumCalculation: 'WHEN_REQUIRED', responseChecksumValidation: 'WHEN_REQUIRED' })) {
   return {
     async put(key, body, size) {
-      await client.send(new PutObjectCommand({ Bucket: config.bucket, Key: key, Body: body, ContentLength: size, ContentType: 'application/octet-stream', CacheControl: 'private, no-store', StorageClass: 'STANDARD', IfNoneMatch: '*' }))
+      try { await client.send(new PutObjectCommand({ Bucket: config.bucket, Key: key, Body: body, ContentLength: size, ContentType: 'application/octet-stream', CacheControl: 'private, no-store', StorageClass: 'STANDARD', IfNoneMatch: '*' })) }
+      catch (error) { throw privateStoreFailure(error, 'private_write') }
     },
     async get(key) {
-      const response = await client.send(new GetObjectCommand({ Bucket: config.bucket, Key: key }))
+      let response
+      try { response = await client.send(new GetObjectCommand({ Bucket: config.bucket, Key: key })) }
+      catch (error) { throw privateStoreFailure(error, 'private_read') }
       if (!response.Body) throw new Error('No R2 object body returned')
       return response.Body
     },
     async remove(key) {
-      await client.send(new DeleteObjectCommand({ Bucket: config.bucket, Key: key }))
+      try { await client.send(new DeleteObjectCommand({ Bucket: config.bucket, Key: key })) }
+      catch (error) { throw privateStoreFailure(error, 'retention') }
     },
   }
 }
@@ -46,16 +51,17 @@ async function digest(input, expectedSize, sink) {
   const hash = createHash('sha256'); let size = 0
   const meter = new Transform({ transform(chunk, _, done) {
     size += chunk.length
-    if (size > expectedSize) { done(new Error('Transferred object exceeded its declared size')); return }
+    if (size > expectedSize) { done(backupFailure('integrity', 'integrity_check')); return }
     hash.update(chunk); done(null, chunk)
   } })
   await pipeline(input, meter, sink ?? new Writable({ write(_, __, done) { done() } }))
-  if (size !== expectedSize) throw new Error('Transferred object size did not match')
+  if (size !== expectedSize) throw backupFailure('integrity', 'integrity_check')
   return hash.digest('hex')
 }
 
-function failed(reference) {
-  const error = new Error('R2 recovery operation did not complete; no success is claimed')
+function failed(reference, cause) {
+  const error = backupFailure('unknown', 'unknown', cause)
+  error.message = 'R2 recovery operation did not complete; no success is claimed'
   error.reference = reference
   return error
 }
@@ -73,16 +79,16 @@ export async function uploadSnapshot({ snapshot, key, store, maxBytes = defaultL
       const body = createReadStream(file.path)
       try { await store.put(`${reference}/${file.name}`, body, file.size) }
       finally { body.destroy() }
-      if (await digest(await store.get(`${reference}/${file.name}`), file.size) !== sha256) throw new Error('R2 readback did not match the encrypted file')
+      if (await digest(await store.get(`${reference}/${file.name}`), file.size) !== sha256) throw backupFailure('integrity', 'integrity_check')
       files.push({ name: file.name, size: file.size, sha256 })
     }
     const completion = Buffer.from(JSON.stringify({ format: transferFormat, projectRef, reference, files, completedAt: new Date().toISOString() }))
     if (completion.length > 2 * 1024 ** 2) throw new Error('Completion record exceeds its limit')
     await store.put(`${reference}/complete.json`, completion, completion.length)
     const sha256 = createHash('sha256').update(completion).digest('hex')
-    if (await digest(await store.get(`${reference}/complete.json`), completion.length) !== sha256) throw new Error('Completion record could not be verified')
+    if (await digest(await store.get(`${reference}/complete.json`), completion.length) !== sha256) throw backupFailure('integrity', 'integrity_check')
     return { uploadedAndReadbackVerified: true, reference, fileCount: artifacts.summary.fileCount, encryptedBytes: totalBytes }
-  } catch { throw failed(reference) }
+  } catch (error) { throw failed(reference, error) }
 }
 
 async function completionRecord(store, reference, maxBytes) {
@@ -114,7 +120,7 @@ export async function pruneSnapshot({ reference, store, fileCount, encryptedByte
     if (record.files.length !== fileCount + 2 || record.files.reduce((sum, f) => sum + f.size, 0) !== encryptedBytes) throw new Error('Retention history differs from saved copy')
     for (const file of record.files) await store.remove(`${reference}/${file.name}`)
     return { pruned: true }
-  } catch { throw failed(validPrefix(reference) ? reference : null) }
+  } catch (error) { throw failed(validPrefix(reference) ? reference : null, error) }
 }
 
 export async function downloadSnapshot({ reference, out, key, store, maxBytes = defaultLimit }) {
@@ -124,7 +130,7 @@ export async function downloadSnapshot({ reference, out, key, store, maxBytes = 
     await mkdir(staging, { mode: 0o700 })
     for (const f of record.files) {
       const hash = await digest(await store.get(`${reference}/${f.name}`), f.size, createWriteStream(join(staging, f.name), { flags: 'wx', mode: 0o600 }))
-      if (hash !== f.sha256) throw new Error('R2 recovery object failed integrity validation')
+      if (hash !== f.sha256) throw backupFailure('integrity', 'integrity_check')
     }
     const verified = await inspect({ snapshot: staging, key })
     const expected = (await snapshotArtifacts({ snapshot: staging, key })).files.map(f => f.name).sort()
@@ -132,7 +138,7 @@ export async function downloadSnapshot({ reference, out, key, store, maxBytes = 
     await privateDestination(destination)
     await promote(staging, destination)
     return { downloadedAndDecryptionVerified: true, reference, fileCount: verified.fileCount, totalBytes: verified.totalBytes }
-  } catch { await rm(staging, { recursive: true, force: true }); throw failed(validPrefix(reference) ? reference : null) }
+  } catch (error) { await rm(staging, { recursive: true, force: true }); throw failed(validPrefix(reference) ? reference : null, error) }
 }
 
 async function cli() {

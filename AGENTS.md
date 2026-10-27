@@ -10,5 +10,6 @@ At the beginning of every ACA work session, establish the current authorized tas
 - Keep the $129 Founding Student Price distinct from the $149 three-payment option. Preserve existing paid enrollments and old valid Checkout sessions.
 - Separate plans, implemented features, automated tests, live configuration, provider submission, and demonstrated delivery. A working connection is not proof that every flow succeeded.
 - After a substantive authorized change, update the existing continuity reference with the date, actual revision, evidence, remaining work, and exact continuation point. Update relevant operating instructions when controls change. Keep one source of truth rather than creating another plan or duplicate asset.
+- Record the chosen course of action and why, and distinguish approved direction from activation authority. Status comments are progress updates: continue authorized work until completion or a concrete decision/access blocker requires Terrence. Do not end a working turn merely after making a statement.
 
 The October 17, 2026 founder direction is to complete launch operations, security, policies, terms, refund disclosures, and automated support. It does not reopen approved curriculum.

@@ -7,6 +7,7 @@ import { manualBackup, manualConfiguration } from './manual-backup.mjs'
 import { mkdtemp, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { StorageApiError } from '@supabase/supabase-js'
 
 const key = randomBytes(32)
 const env = { ACA_BACKUP_OWNER_KEY_SAVED: 'true', ACA_BACKUP_SOURCE_ACCESS_CONFIRMED: 'true', ACA_BACKUP_KEY_BASE64: key.toString('base64'), ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: 'PRIVATE_SOURCE_SECRET', ACA_R2_ACCESS_KEY_ID: 'PRIVATE_R2_ID', ACA_R2_SECRET_ACCESS_KEY: 'PRIVATE_R2_SECRET', ACA_R2_PRIVATE_CONFIRMED: `${'a'.repeat(32)}/aca-private-backups` }
@@ -116,5 +117,36 @@ test('base recovery size bound rejects an inventory before creating partial outp
     assert.equal(count.downloads, undefined)
     assert.deepEqual(await readdir(root), [])
   } finally { await rm(root, { recursive: true, force: true }) }
+})
+
+test('source failures retain safe categories through the real backup wrapper without additional attempts or R2 access', async () => {
+  for (const [status, category] of [[503, 'service_unavailable'], [403, 'credential_or_access'], [500, 'unknown']]) {
+    let reads = 0
+    await assert.rejects(manualBackup({ env, availableBytes: freeDisk, createSource: () => ({ storage: { async listBuckets() { reads++; return { error: new StorageApiError('PRIVATE_SOURCE_SECRET /private/object/path', status, String(status)) } } } }), createStore() { assert.fail('Source failure cannot reach R2') } }), error => {
+      assert.equal(error.stage, 'source-snapshot')
+      assert.deepEqual(error.failure, { category, operation: 'source_list', retry_authorized: false })
+      assert.doesNotMatch(JSON.stringify(error), /PRIVATE_|private\/object/)
+      return true
+    })
+    assert.equal(reads, 1)
+  }
+})
+
+test('altered encrypted readback is classified as integrity and cannot publish a completion record', async () => {
+  const store = memoryStore()
+  store.get = async path => { const changed = Buffer.from(store.objects.get(path)); changed[0] ^= 1; return Readable.from([changed]) }
+  await assert.rejects(manualBackup({ env, availableBytes: freeDisk, createSource: () => source(), createStore: () => store }), error => {
+    assert.equal(error.stage, 'upload-and-readback')
+    assert.deepEqual(error.failure, { category: 'integrity', operation: 'integrity_check', retry_authorized: false })
+    return true
+  })
+  assert.equal(store.objects.size, 1)
+  assert.ok(![...store.objects.keys()].some(path => path.endsWith('/complete.json')))
+})
+
+test('configuration and missing credentials remain separate and cannot start source reads', async () => {
+  for (const [patch, category] of [[{ ACA_R2_ACCESS_KEY_ID: '' }, 'credential_or_access'], [{ ACA_BACKUP_KEY_BASE64: 'invalid' }, 'configuration']]) {
+    await assert.rejects(manualBackup({ env: { ...env, ...patch }, createSource() { assert.fail('Configuration failure cannot read source') } }), error => error.failure.category === category && error.failure.retry_authorized === false)
+  }
 })
 

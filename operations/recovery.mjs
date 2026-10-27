@@ -5,6 +5,7 @@ import { dirname, isAbsolute, join, resolve, sep } from 'node:path'
 import { Readable, Transform, Writable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import { fileURLToPath } from 'node:url'
+import { backupFailure, sourceReadFailure } from './backup-failure.mjs'
 
 export const projectRef = 'ymmkodlifpxutynpjnxm'
 const repository = resolve(dirname(fileURLToPath(import.meta.url)), '..')
@@ -73,13 +74,14 @@ async function decrypt(path, descriptor, key, sink) {
   const hash = sha(); let size = 0
   const meter = new Transform({ transform(chunk, _, done) { size += chunk.length; hash.update(chunk); done(null, chunk) } })
   await pipeline(createReadStream(await regularFile(path)), cipher, meter, sink)
-  if (size !== descriptor.size || hash.digest('hex') !== descriptor.sha256) throw new Error('Recovery integrity check failed')
+  if (size !== descriptor.size || hash.digest('hex') !== descriptor.sha256) throw backupFailure('integrity', 'integrity_check')
 }
 
 // Only bucket configuration and file metadata are read. No course tables are queried.
 export async function inventory(client) {
   const { data, error } = await client.storage.listBuckets()
-  if (error || !Array.isArray(data)) throw new Error('Could not list storage buckets')
+  if (error) throw sourceReadFailure(error, 'source_list')
+  if (!Array.isArray(data)) throw backupFailure('unknown', 'source_list')
   const buckets = data.map(b => ({ id: objectKey(b.id), public: b.public, file_size_limit: b.file_size_limit ?? null, allowed_mime_types: b.allowed_mime_types ?? null })).sort((a, b) => a.id.localeCompare(b.id))
   if (buckets.some(b => b.public || b.id.includes('/'))) throw new Error('This recovery tool accepts private buckets only')
   const files = [], seen = new Set()
@@ -89,7 +91,8 @@ export async function inventory(client) {
       const prefix = pending.pop()
       for (let offset = 0; ; offset += 100) {
         const page = await client.storage.from(bucket.id).list(prefix, { limit: 100, offset, sortBy: { column: 'name', order: 'asc' } })
-        if (page.error || !Array.isArray(page.data)) throw new Error('Could not enumerate private storage')
+        if (page.error) throw sourceReadFailure(page.error, 'source_list')
+        if (!Array.isArray(page.data)) throw backupFailure('unknown', 'source_list')
         for (const item of page.data) {
           if (!item.name || item.name.includes('/')) throw new Error('Unexpected storage listing entry')
           const key = objectKey(prefix ? `${prefix}/${item.name}` : item.name), identity = `${bucket.id}/${key}`
@@ -119,13 +122,14 @@ export async function backup({ client, out, key, maxBytes = Infinity }) {
     const files = []
     for (const [i, file] of before.files.entries()) {
       const { data, error } = await client.storage.from(file.bucket).download(file.key)
-      if (error || !data?.stream) throw new Error('Could not copy a storage file')
+      if (error) throw sourceReadFailure(error, 'source_download')
+      if (!data?.stream) throw backupFailure('unknown', 'source_download')
       const encryptedFile = `${String(i).padStart(8, '0')}.bin`
       const encryption = await encrypt(Readable.fromWeb(data.stream()), join(staging, encryptedFile), key)
-      if (encryption.size !== file.size) throw new Error('Storage file changed during backup')
+      if (encryption.size !== file.size) throw backupFailure('source_changed', 'source_download')
       files.push({ ...file, encryptedFile, encryption })
     }
-    if (JSON.stringify(before) !== JSON.stringify(await inventory(client))) throw new Error('Storage inventory changed during backup; snapshot rejected')
+    if (JSON.stringify(before) !== JSON.stringify(await inventory(client))) throw backupFailure('source_changed', 'source_list')
     const createdAt = new Date().toISOString()
     const manifest = { format, projectRef, createdAt, buckets: before.buckets, files }
     const encryption = await encrypt(Readable.from([JSON.stringify(manifest)]), join(staging, 'manifest.bin'), key)
