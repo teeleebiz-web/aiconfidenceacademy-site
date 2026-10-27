@@ -568,6 +568,7 @@ Validation and deployment commands (Wrangler is pinned in the root lockfile):
 
 ```bash
 node --test operations/incident-timer.test.mjs
+node --test operations/incident-timer-runtime.test.mjs
 npx wrangler deploy --config operations/incident-timer.wrangler.json --dry-run
 npx wrangler dev --config operations/incident-timer.wrangler.json --local --test-scheduled
 ```
@@ -579,6 +580,14 @@ after private secret setup and account verification, activate with the explicit
 non-secret override `--var ACA_TIMER_ENABLED:true`. A later ordinary deployment
 returns to the checked-in disabled default. Keep the selected account explicit
 with `CLOUDFLARE_ACCOUNT_ID` in the authenticated deployment environment.
+
+`incident-timer-worker.mjs` is the production entrypoint and exports only the
+default handler. Helper exports remain in the imported core; exporting a plain
+constant from a Worker entrypoint prevents workerd startup even when compilation
+passes. The runtime regression test starts the configured entrypoint in workerd
+using the Miniflare version installed by pinned Wrangler, confirms disabled
+scheduled execution makes no outbound request, and checks HTTP 404 behavior.
+It is included in the existing operations test glob and is not a real cron event.
 
 Acceptance requires a real Cloudflare cron event, its sanitized accepted run ID
 (or reconciliation after an older empty 204 response), the matching successful
