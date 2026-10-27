@@ -15,6 +15,7 @@ on:
       - '.github/workflows/r2-connection-check.yml'
       - '.github/workflows/private-storage-backup.yml'
       - '.github/workflows/automatic-storage-backup.yml'
+      - '.github/workflows/incident-diagnostics.yml'
   push:
     branches:
       - main
@@ -31,6 +32,7 @@ on:
       - '.github/workflows/r2-connection-check.yml'
       - '.github/workflows/private-storage-backup.yml'
       - '.github/workflows/automatic-storage-backup.yml'
+      - '.github/workflows/incident-diagnostics.yml'
 
 permissions:
   contents: read
