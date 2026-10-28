@@ -205,10 +205,10 @@ export const failedInstallmentHtml = ({ amount, graceUntil, paymentUrl }) => `
     <p>Correcting this payment does not change the date of your remaining scheduled installment.</p>
   </div>`
 
-export const recoveredInstallmentHtml = ({ nextAmount, nextDueAt, appUrl }) => `
+export const recoveredInstallmentHtml = ({ nextAmount, nextDueAt, appUrl, portalPath = "/learn/" }) => `
   <div style="font-family:Arial,sans-serif;color:#173d62;line-height:1.6">
     <h1>Your ACA payment was received</h1>
     <p>Your Academy access is active. Continue where you left off.</p>
-    <p><a href="${escapeHtml(appUrl.replace(/\/$/, '') + '/learn/')}">Open your learner portal</a></p>
+    <p><a href="${escapeHtml(appUrl.replace(/\/$/, '') + portalPath)}">Open your learner portal</a></p>
     ${nextDueAt ? `<p>Your remaining installment of $${(nextAmount / 100).toFixed(2)} is still scheduled for ${new Date(nextDueAt).toLocaleDateString('en-US', { dateStyle: 'long', timeZone: 'America/Los_Angeles' })}. Paying late did not change that date.</p>` : '<p>All three installments have been paid. No further installment is due.</p>'}
   </div>`

@@ -77,5 +77,9 @@ for (const phaseTwo of [false,true]) test(`${phaseTwo ? 'Phase Two' : 'Phase One
   await deliver('paid-again', 'invoice.payment_succeeded')
   await deliver('stale-failure', 'invoice.payment_failed')
   assert.equal(plan.paid_amount, phaseTwo ? 13300 : 10000); assert.equal(sent.length, 2)
+  if (phaseTwo) {
+    assert.match(sent[1].html, /learn\/\?course=phase-two/)
+    assert.equal(tables.aca_payment_events.find(e=>e.stripe_event_id==='paid').course_id,'course-two')
+  }
   assert.deepEqual([...touched].sort(), Object.keys(tables).sort())
 })

@@ -162,8 +162,8 @@ async function invoiceSucceeded(event, config) {
   const { data: prior, error: priorLookupError } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
   if (priorLookupError) throw priorLookupError
   if (prior?.status === 'completed') return { received: true, duplicate: true }
-  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount: invoice.amount_paid, currency: invoice.currency, outcome: 'paid' })
   config = { ...config, courseId: plan.course_id || config.courseId }
+  await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount: invoice.amount_paid, currency: invoice.currency, outcome: 'paid' })
   const amounts = installmentAmounts(plan)
   const totalAmount = amounts.reduce((a,b) => a+b, 0)
   // Reconcile against Stripe's paid invoices, so a retry after a partial database
@@ -201,7 +201,7 @@ async function invoiceSucceeded(event, config) {
       eventKey: `installment-recovered:${invoice.id}`, templateKey: 'installment_recovered',
       enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
       to: plan.customer_email, subject: 'Your ACA payment was received — access is active',
-      html: recoveredInstallmentHtml({ nextAmount: values.next_amount, nextDueAt: values.next_due_at, appUrl: config.appUrl }),
+      html: recoveredInstallmentHtml({ nextAmount: values.next_amount, nextDueAt: values.next_due_at, appUrl: config.appUrl, portalPath: plan.total_amount === 19900 ? "/learn/?course=phase-two" : "/learn/" }),
     })
   }
   await completeEvent(config, event)
