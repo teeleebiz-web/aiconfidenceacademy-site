@@ -1,3 +1,4 @@
+import { phaseTwoConfig } from './enrollment/offers.mjs'
 import { createServer } from 'node:http'
 import { createHash, timingSafeEqual } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
@@ -89,6 +90,12 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     }
     if (requestPath === '/api/webhooks/resend') {
       await handleResendWebhook(req, res, enrollmentAutomation); return
+    }
+    if (requestPath === '/api/enrollment/phase-two/installments') {
+      await handleInstallmentCheckout(req, res, phaseTwoConfig(enrollmentAutomation)); return
+    }
+    if (requestPath === '/api/enrollment/phase-two/paid-in-full') {
+      await handlePaidInFullCheckout(req, res, phaseTwoConfig(enrollmentAutomation)); return
     }
     if (requestPath === '/api/enrollment/phase-one/installments') {
       await handleInstallmentCheckout(req, res, enrollmentAutomation); return
