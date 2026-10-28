@@ -8,7 +8,9 @@ const failure = () => new Error('Incident timer needs review; dispatch outcome m
 export async function tick(controller, env, { request = fetch, now = Date.now, log = console.log } = {}) {
   if (env.ACA_TIMER_ENABLED !== 'true') return { status: 'held' }
   const time = controller?.scheduledTime
-  if (controller?.cron !== timerCron || !Number.isSafeInteger(time) || time % 900000 !== 0
+  // Cloudflare timestamps need not land on an exact quarter-hour boundary.
+  // Validate the configured cron and event freshness rather than rounding time.
+  if (controller?.cron !== timerCron || !Number.isSafeInteger(time)
       || now() - time < 0 || now() - time > 600000) throw failure()
   if (typeof env.ACA_TIMER_GITHUB_TOKEN !== 'string' || !env.ACA_TIMER_GITHUB_TOKEN.trim()
       || /[\r\n]/.test(env.ACA_TIMER_GITHUB_TOKEN)) throw failure()
@@ -23,7 +25,9 @@ export async function tick(controller, env, { request = fetch, now = Date.now, l
   const call = async (url, options) => {
     try {
       return await request(url, { ...options, headers: { ...headers, ...options.headers },
-        redirect: 'error', signal: AbortSignal.timeout(10000) })
+        // Workers supports manual redirects; the status checks below reject
+        // every 3xx without forwarding the credential to a new destination.
+        redirect: 'manual', signal: AbortSignal.timeout(10000) })
     } catch { throw failure() }
   }
   const emit = value => {

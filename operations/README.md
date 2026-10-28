@@ -542,8 +542,13 @@ The Wrangler configuration is the deployment source of truth. `workers_dev` and
 preview URLs are disabled, there are no routes or data-service bindings, and
 HTTP requests return 404. Activation defaults to `ACA_TIMER_ENABLED=false`.
 The Worker accepts no caller-selected URL, repository, branch, mode or workflow.
-It rejects other cron expressions and events more than ten minutes late, makes
-no automatic HTTP retry, refuses redirects and sanitizes failure messages. A
+Cloudflare's scheduled timestamp may include seconds and milliseconds; the
+timer validates the exact cron and a fresh integer timestamp, rather than
+requiring timestamp alignment to a quarter-hour. It rejects other cron
+expressions and events more than ten minutes late, makes
+no automatic HTTP retry, refuses redirects and sanitizes failure messages.
+Workers requests use `redirect: manual` and reject unexpected HTTP statuses,
+including every 3xx, without following the Location header. A
 lost dispatch response remains uncertain until GitHub history is reconciled.
 
 The only Worker secret is `ACA_TIMER_GITHUB_TOKEN`: a dedicated fine-grained
@@ -587,7 +592,10 @@ constant from a Worker entrypoint prevents workerd startup even when compilation
 passes. The runtime regression test starts the configured entrypoint in workerd
 using the Miniflare version installed by pinned Wrangler, confirms disabled
 scheduled execution makes no outbound request, and checks HTTP 404 behavior.
-It is included in the existing operations test glob and is not a real cron event.
+It also runs the enabled entrypoint with a fresh non-rounded timestamp against
+fixture GitHub responses, verifying the fixed workflow and dispatch payload.
+These checks are included in the existing operations test glob and are not real
+cron events.
 
 Acceptance requires a real Cloudflare cron event, its sanitized accepted run ID
 (or reconciliation after an older empty 204 response), the matching successful

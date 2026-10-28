@@ -20,7 +20,7 @@ test('timer dispatches only the fixed collector, main ref and collect mode; logs
   assert.deepEqual(calls.map(c => [c.url, c.init.method]), [[`${base}/runs?branch=main&per_page=20`, 'GET'], [`${base}/dispatches`, 'POST']])
   assert.deepEqual(JSON.parse(calls[1].init.body), { ref: 'main', inputs: { mode: 'collect' } })
   for (const { init } of calls) {
-    assert.equal(init.redirect, 'error')
+    assert.equal(init.redirect, 'manual')
     assert.equal(init.headers.Authorization, 'Bearer fixture-token')
     assert.equal(init.headers['X-GitHub-Api-Version'], '2026-03-10')
     assert.ok(init.signal instanceof AbortSignal)
@@ -36,8 +36,19 @@ test('disabled or missing activation cannot touch GitHub', async () => {
   }
 })
 
+test('a fresh Cloudflare timestamp with seconds and milliseconds dispatches normally', async () => {
+  const scheduledTime = Date.parse('2026-10-28T06:45:53.640Z')
+  let count = 0
+  const result = await tick({ cron: timerCron, scheduledTime }, env, options({
+    now: () => scheduledTime + 1040,
+    request: async () => ++count === 1 ? ready() : Response.json({ workflow_run_id: 456 }),
+  }))
+  assert.equal(count, 2)
+  assert.deepEqual(result, { scheduled_at: '2026-10-28T06:45:53.640Z', status: 'accepted', workflow_run_id: '456' })
+})
+
 test('invalid schedule, stale/future event and missing or malformed token fail closed', async () => {
-  for (const controller of [{ ...event, cron: '* * * * *' }, { ...event, scheduledTime: time + 1 }, { ...event, scheduledTime: 'time' }, null]) {
+  for (const controller of [{ ...event, cron: '* * * * *' }, { ...event, scheduledTime: time + 0.5 }, { ...event, scheduledTime: 'time' }, { ...event, scheduledTime: NaN }, { ...event, scheduledTime: Infinity }, null]) {
     await assert.rejects(tick(controller, env, options({ request: () => assert.fail('network') })), /needs review/)
   }
   for (const now of [time - 1, time + 600001]) await assert.rejects(tick(event, env, options({ now: () => now, request: () => assert.fail('network') })), /needs review/)
