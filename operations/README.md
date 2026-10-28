@@ -733,3 +733,86 @@ scripts remain exclusively for disposable databases. CI and a configuration
 readback establish rollout and activation, not a demonstrated real retry. Await
 a naturally qualifying source failure; do not inject a production failure or
 manually rerun a backup merely to prove this feature.
+
+
+## Service-configuration recovery review (October 28)
+
+This is a metadata review and recovery procedure, not proof of a recovered site.
+No new project, deployment, restore, credential rotation, DNS update, webhook
+replay, payment, email or backup dispatch is part of this review. Later dated
+continuity entries supersede historical pending-status descriptions above.
+
+### Verified dependencies and open gaps
+
+| Dependency | Current evidence | Recovery requirement or gap |
+| --- | --- | --- |
+| Source | Authoritative GitHub main includes the approved retry rollout; preserve lockfile and a separately identified sandbox branch. | Record the exact source and compatible database migration point for the chosen backup. Do not blindly apply migrations already restored in it. |
+| Backend hosting | The `-mkvf` Vercel project owns the verified checkout custom domain; the similarly named project has only its default domain and no listed env entries. Both use Node 24. | Select the domain-owning project; do not recreate the other project as a second backend or change working projects. Preserve build/routes from `vercel.json`. |
+| Runtime configuration | Domain-owning project has 17 production entries, including 10 sensitive/write-only entries, plus separate sandbox branch overrides. | Names, types and scopes were read with decryption off. Values and owner-held recovery custody remain unverified. Do not export hidden values or reset credentials. |
+| Supabase | Existing project is healthy in us-west-1 on PostgreSQL 17. Private bucket limits/types were inspected; `aca-interest-list` Edge Function is active at version 8. | Database restoration and file-byte recovery have separate prior proof. Auth URLs, redirect allowlist, SMTP/provider settings, API-key custody and deployed Edge Function source parity still require configuration evidence. A database copy alone does not supply them. |
+| Payment provider | Existing enrollment/payment evidence remains preserved. | Stripe connection requires reauthentication; current account/mode, price IDs, webhook events and destinations were not independently rechecked. Preserve $129 founding and separate $50/$50/$49 pricing; do not recreate products or charge a payment. |
+| Operational email | Sending domain is verified, sending enabled/receiving disabled, tracking off. The enabled checkout Resend callback subscribes to sent/delivered/bounced/complained/suppressed/failed events. | Preserve public DKIM/SPF metadata and the callback definition; independently retained send keys and callback signing secret are not proven by their configured names. Never retrieve a signing secret merely to fill this record. |
+| R2 and incident timer | Existing Standard backup bucket has r2.dev disabled and no custom domains. Worker cron and dedicated secret name were read back. | Preserve the owner's independent backup-key custody and current bucket-scoped keys. Secret-name presence does not prove an independent recoverable copy. Do not broaden or rotate the timer token. |
+| Public DNS and monitoring | Repository CNAME identifies the public website; Vercel confirms checkout domain attachment. Existing continuity records demonstrate StatusCake setup and delivery. | Registrar/authoritative DNS export and current Auth configuration are not available through these reads. Runtime DNS lookup was unavailable; this is not evidence of an outage. Record current zone settings through authorized metadata access later. |
+
+### Recovery order with outbound activity held
+
+1. Identify the incident, chosen backup time, exact source revision and a separately
+   approved target. Preserve production. Obtain cost approval before creating any
+   billed target; the earlier temporary database-restore project was deleted and
+   must not be recreated as routine continuation.
+2. Before provisioning or executing recovered source, establish containment.
+   A restored database can retain enabled backup/retry, incident, newsletter and
+   maintenance policy rows. Set the **isolated target's** operational policies off
+   before attaching any runner or sender. Disable copied GitHub workflows, remove
+   cron triggers from the recovery deployment configuration, keep the Worker held
+   with no cron, and omit live payment, sending, webhook and DNS connections.
+   Never perform these containment changes against the healthy production system.
+3. Restore the database only into the approved target using the established
+   outbound-extension/trigger preflight. Validate schema/migration compatibility,
+   operational relationships, owner/learner permissions and disabled task policies.
+4. Recover the separately encrypted files to a new private local destination and
+   compare every original hash. Recreate approved private bucket limits/MIME types
+   in the target only when authorized. Do not overwrite source objects or the
+   protected manual baseline. This remains distinct from a complete live service.
+5. Rebuild hosting from locked source with target-specific configuration. Check
+   every production fallback in portal and backend source: the frontend defaults
+   reference the production Supabase project and checkout host, and backup/incident
+   utilities intentionally restrict their source project. Setting three VITE_*
+   overrides or copying `recovery.env.example` is not sufficient proof of isolation.
+   A new target needs a separately reviewed compatible implementation before use.
+6. Reconfigure target Auth URL/redirects, SMTP/provider settings, required Edge
+   Functions and safe application URLs from verified records. Keep private keys in
+   their original approved scopes and separate production from sandbox overrides.
+   Verify matching source for deployed functions; do not assume a repository copy
+   equals the deployed version merely because their function names match.
+7. Validate readiness, rejection of unauthenticated owner access, owner/learner
+   permissions and safe URL routing against the contained target. No real customer
+   account, welcome-media playback or full recovered service is implied by metadata.
+8. Only after explicit cutover authority, recheck current Stripe account/mode and
+   price/webhook definitions, the sending domain/callback, DNS ownership/targets and
+   monitoring. Reconnect each dependency in a controlled order. Enabling payment,
+   email, schedules, timer collection, backups, retries and retention are distinct
+   actions with their own authority and acceptance checks. Do not enable them by
+   importing the old policy rows or deploying an unchanged cron configuration.
+
+### Owner-held credential check and next continuation
+
+For each configured backend key/signing secret, backup master key, bucket key,
+StatusCake token, dedicated timer token, registrar account and provider recovery
+method, confirm that the owner can retrieve the current recovery material from
+independent secure records. Record only confirmed/unconfirmed custody and a
+non-secret owner-chosen locator. Do not request values in chat, copy them into this
+public repository, or regard existing deployment secrets as their own backup.
+Previous confirmations of backup-master-key custody remain valid; do not ask for
+that completed setup again. The other groups' independent custody is unconfirmed.
+
+Next: reconnect the existing Stripe plugin to complete the blocked read-only
+payment configuration check; obtain a names/status-only Auth and DNS configuration
+record through an authorized interface; confirm remaining independent credential
+custody. This does not authorize a new restore target or a production cutover.
+
+Official references checked for this review:
+https://supabase.com/docs/guides/platform/clone-project
+https://vercel.com/docs/environment-variables/sensitive-environment-variables
+https://vercel.com/docs/cron-jobs/manage-cron-jobs
