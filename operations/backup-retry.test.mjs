@@ -24,8 +24,8 @@ async function fixture() {
  runAttempt:async()=>{attempts++;return saved}}
  return {options,state,facts,outcomes,get clock(){return clock},get attempts(){return attempts},get states(){return states},get reservations(){return reservations}}
 }
-test('disabled production gate preserves the original failure without queries or attempts',async()=>{
- const f=await fixture();delete f.options.enabled; assert.equal(liveRetryEnabled,false)
+test('explicit disable preserves the original failure without queries or attempts',async()=>{
+ const f=await fixture();f.options.enabled=false; assert.equal(liveRetryEnabled,true)
  await assert.rejects(retryBackup(f.options),e=>e===f.options.error);assert.equal(f.states,0);assert.equal(f.attempts,0)
 })
 test('owned SDK transport captures absent, numeric, HTTP-date and invalid provider backoff without bodies',async()=>{
@@ -94,4 +94,9 @@ test('a changed start day or lost begin response leaves no executing child',asyn
   f.options.db.rpc=async(name,args)=>{if(name==='aca_reserve_backup_retry'&&mode==='day')return {data:{reserved:true,id:'claim',quota_day:'2026-10-29'}};if(name==='aca_begin_backup_retry'&&mode==='begin')return {error:Error('PRIVATE')};return rpc(name,args)}
   await assert.rejects(retryBackup(f.options));assert.equal(f.attempts,0);assert.deepEqual(f.outcomes,['failed'])
  }
+})
+
+test('activated code default still denies work when the fresh database policy is off',async()=>{
+ const f=await fixture();delete f.options.enabled;f.state.retry_enabled=false
+ await assert.rejects(retryBackup(f.options));assert.equal(f.attempts,0);assert.equal(f.reservations,0)
 })

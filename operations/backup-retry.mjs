@@ -4,8 +4,9 @@ import { performance } from 'node:perf_hooks'
 import { manualRetryEvidence } from './manual-backup.mjs'
 import { previewBackupRetry, proposedRetryLimits as limits } from './backup-retry-preview.mjs'
 
-// Approval covers implementation/testing only. No environment variable enables it.
-export const liveRetryEnabled = false
+// Founder approved production activation on October 28, 2026 (Bangkok).
+// The fresh service-only database policy remains an independent kill switch.
+export const liveRetryEnabled = true
 const day = t => new Date(t + 7 * 3600000).toISOString().slice(0, 10)
 const checked = r => { if (r?.error || !r?.data) throw new Error('Retry history unavailable'); return r.data }
 
