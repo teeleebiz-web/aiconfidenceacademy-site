@@ -5,7 +5,10 @@ import { fileURLToPath } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import { backup, projectRef, restoreLocal } from './recovery.mjs'
 import { downloadSnapshot, r2Configuration, r2Store, uploadSnapshot } from './r2-transfer.mjs'
-import { backupFailure, backupFailureEvidence, backupSourceFetch } from './backup-failure.mjs'
+import { backupFailure, backupFailureEvidence, backupSourceFetch, sourceRetryEvidence } from './backup-failure.mjs'
+
+const attemptEvidence = new WeakMap()
+export const manualRetryEvidence = error => attemptEvidence.get(error) ?? null
 
 const limit = 2 * 1024 ** 3
 const safeReference = value => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value ?? '') ? value : null
@@ -49,8 +52,8 @@ async function diskBytes() {
   return disk.bavail * disk.bsize
 }
 
-export async function manualBackup({ env = process.env, createSource = createClient, createStore = r2Store, availableBytes = diskBytes } = {}) {
-  let stage = 'configuration', root, key, reference = null
+export async function manualBackup({ env = process.env, createSource = createClient, createStore = r2Store, availableBytes = diskBytes, now = Date.now } = {}) {
+  let stage = 'configuration', root, key, reference = null, failed, failedAt, privateStoreTouched = false
   try {
     const config = manualConfiguration(env)
     key = config.key
@@ -59,11 +62,12 @@ export async function manualBackup({ env = process.env, createSource = createCli
     if (BigInt(await availableBytes()) < BigInt(limit) * 3n + 512n * 1024n ** 2n) throw new Error('Insufficient private temporary disk')
     root = await mkdtemp(join(tmpdir(), 'aca-manual-backup-'))
     const snapshot = join(root, 'snapshot'), downloaded = join(root, 'downloaded'), restored = join(root, 'restored')
-    const client = createSource(config.sourceUrl, config.sourceKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }, global: { fetch: backupSourceFetch() } })
+    const client = createSource(config.sourceUrl, config.sourceKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }, global: { fetch: backupSourceFetch(fetch, { captureRetry: true, now }) } })
     stage = 'source-snapshot'
     const original = await backup({ client, out: snapshot, key, maxBytes: limit })
     if (original.fileCount < 1 || original.totalBytes < 1) throw new Error('No ACA file bytes were protected')
     stage = 'upload-and-readback'
+    privateStoreTouched = true
     const store = createStore(config.r2)
     const uploaded = await uploadSnapshot({ snapshot, key, store, maxBytes: limit })
     reference = uploaded.reference
@@ -84,10 +88,12 @@ export async function manualBackup({ env = process.env, createSource = createCli
     error.reference = safeReference(reference ?? cause?.reference)
     if (stage === 'configuration') error.configurationIssue = cause?.configurationIssue ?? { code: 'configuration-check-failed' }
     error.failure = backupFailureEvidence(error)
+    failed = error; failedAt = now()
     throw error
   } finally {
     key?.fill(0)
     if (root) await rm(root, { recursive: true, force: true })
+    if (failed) attemptEvidence.set(failed, Object.freeze({ stage, failedAt, privateStoreTouched, cleanupCompleted: true, sourceLimitBytes: limit, encryptedLimitBytes: limit, providerNotBefore: sourceRetryEvidence(failed)?.providerNotBefore ?? null }))
   }
 }
 
