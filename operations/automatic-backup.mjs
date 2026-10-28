@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { manualBackup, manualConfiguration } from './manual-backup.mjs'
 import { projectRef } from './recovery.mjs'
 import { pruneSnapshot, r2Store, preservedManualBackup } from './r2-transfer.mjs'
+import { retryBackup } from './backup-retry.mjs'
 import { backupFailure, backupFailureEvidence } from './backup-failure.mjs'
 
 export const backupJob = 'storage-backups'
@@ -53,7 +54,12 @@ export async function automaticBackup({ env = process.env, now = () => new Date(
     if (policy.credential_expires_at && Date.parse(policy.credential_expires_at) <= +now() + 3600000) throw backupFailure('credential_or_access', 'configuration')
     stage = 'backup-and-recovery'
     // Reuse the proven encryption/readback/decryption/original-hash recovery path.
-    const saved = await runBackup({ env })
+    let saved
+    try { saved = await runBackup({ env }) }
+    catch (error) {
+      saved = await retryBackup({ error, env, db, runId: run.id,
+        deadlineAt: Number(env.ACA_BACKUP_WORKFLOW_DEADLINE), now: () => +now() })
+    }
     result = { ...identity, ...saved }
     if (!verifiedBackup(result)) throw backupFailure('integrity', 'integrity_check')
     stage = 'activity-success'

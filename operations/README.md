@@ -668,3 +668,47 @@ All existing encryption, complete saved-copy recovery, original-hash checks,
 durable success, seven-copy retention, protected manual original and incident
 reconciliation gates remain required. No production failure or backup rerun is
 needed to test this preview. Run `node --test operations/backup-retry-preview.test.mjs`.
+
+## Approved retry limits: inactive integration (October 28)
+
+Terrence approved the limits above for implementation and integration testing.
+Live activation remains unapproved. `backup-retry.mjs` now connects owned manual
+failure evidence to fresh policy/history checks, a service-only atomic claim,
+a second policy check before starting, and a separate child process bounded to
+ten minutes. `liveRetryEnabled` remains a literal `false`; no environment value
+can enable it. The automatic runner preserves its single original attempt while
+this gate is off. The Cloudflare timer and its diagnostic-only token are unchanged.
+
+`backupSourceFetch` captures bounded Retry-After facts at the actual transport;
+malformed backoff blocks eligibility. `manualRetryEvidence` accepts only errors
+owned by the manual runner, after successful cleanup, and proves source phase,
+no private-store activity and the two existing 2 GiB limits. Saved error JSON
+cannot substitute for that in-memory evidence. The original workflow deadline
+is recorded before setup, conservatively leaving one minute inside its existing
+30-minute job timeout. The child deadline covers the extra complete copy and
+saved-copy recovery, not just the source download. Deadline kill waits for child
+exit; a killed attempt may leave its own local temporary files on the disposable
+runner, and partial encrypted remote objects remain for review as before.
+
+`backup-retry-schema.sql` is an unapplied integration candidate, not a production
+migration or activation. Its default is disabled. Unique Bangkok-day, original
+run and workflow-run keys prevent repeat allowance use; unresolved reservations
+also block attempts on later days. Neither failure nor an ambiguous response
+releases an allowance. Reservation and begin both validate current policy,
+credential margin, running activity and clock. The child must finish all recovery
+checks before completion can be recorded; the original automatic runner still
+validates success and performs its existing history/retention/reconciliation gates.
+
+`backup-retry-db-fixture.sql`, `backup-retry-acceptance.sql`, and
+`backup-retry-db-check.sh` are exclusively for a new disposable local/CI database.
+NEVER run the fixture against ACA production. The CI job uses PostgreSQL 17 and
+checks permissions, disabled defaults, quotas, backoff, deadlines and competing
+reservations. No real keys, private files, backup workflow dispatch or billed
+Supabase project is needed. Run `node --test operations/backup-retry.test.mjs`
+and `npm run test:recovery` for credential-free runtime tests.
+
+Before any production activation, review the exact passing CI revision, apply the
+reviewed schema through the established migration workflow, and explicitly approve
+changing the code gate and retry policy. Neither this PR nor its tests grants that
+activation authority. Preserve working backups, seven-copy retention, protected
+manual original, alerts, payments, learner access and curriculum.
