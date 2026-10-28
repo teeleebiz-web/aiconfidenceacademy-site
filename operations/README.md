@@ -618,3 +618,53 @@ https://developers.cloudflare.com/workers/platform/pricing/
 https://developers.cloudflare.com/workers/configuration/cron-triggers/
 https://developers.cloudflare.com/workers/wrangler/configuration/
 https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
+
+## Proposed bounded backup retry: decision preview only (October 28)
+
+`backup-retry-preview.mjs` defines and tests a proposed decision policy. No
+production runner, workflow, database function or Cloudflare Worker imports it.
+It has no network, timer, dispatch, storage or database calls. Every result has
+`preview: true` and `retry_authorized: false`, including eligible candidates.
+There is no activation switch in this increment. The numeric limits below are
+proposals for founder review, not approved live settings.
+
+Proposed boundary: one extra full backup attempt after a temporary source-list
+or source-download failure, only while still in `source-snapshot`, with proof
+that no private-store operation began and local partial cleanup completed.
+Use existing owned SDK/transport evidence; provider text, copied failure JSON,
+generic HTTP 500, access, configuration, integrity, source-change, not-found,
+resource, history, private-read/write and retention failures cannot qualify.
+
+Proposed limits: one extra attempt per original run and per Bangkok calendar
+day; wait at least five minutes and honor any longer provider backoff; allow
+at most ten minutes for the additional attempt within the existing 30-minute
+workflow deadline. Preserve the current 2 GiB source and 2 GiB encrypted-upload
+bounds per attempt. A full restart can reread up to an additional 2 GiB of source
+data and upload up to 2 GiB encrypted data, plus the existing readback/recovery
+traffic and API calls. These are transfer bounds, not monetary billing caps.
+No extra retry follows an uncertain or failed additional attempt.
+
+The preview requires explicit runtime facts for the main-branch backup, original
+workflow attempt, enabled backup policy, healthy durable history, lock ownership,
+exactly one active backup, unused per-run allowance, source phase, no private
+operations, cleanup completion, deadline, credential expiry and provider backoff.
+Missing evidence denies the candidate. Credential validity must extend at least
+one hour beyond the additional attempt's deadline. The quota day is calculated
+for the intended retry start, including a cooldown crossing Bangkok midnight.
+
+Before live integration, add service-only durable atomic quota reservation and
+attempt/outcome history; unresolved claims must consume the allowance and block
+another attempt. Re-read policy, activity, provider backoff and budget after the
+wait. The existing runner does not yet supply these facts or enforce a separate
+retry deadline. Existing saved failure categories also omit HTTP status and
+Retry-After details: do not infer absent backoff as zero from them. Capture that
+bounded evidence at the actual source adapter before executing this proposal.
+The preview accepts supplied fixture facts to test decisions; it does not prove
+their provenance, atomic concurrency or runtime enforcement. All these remain
+required integration work after policy approval. The timer's GitHub token must
+remain restricted in code to incident diagnostics, never backup dispatch.
+
+All existing encryption, complete saved-copy recovery, original-hash checks,
+durable success, seven-copy retention, protected manual original and incident
+reconciliation gates remain required. No production failure or backup rerun is
+needed to test this preview. Run `node --test operations/backup-retry-preview.test.mjs`.
