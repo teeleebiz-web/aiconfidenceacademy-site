@@ -712,3 +712,24 @@ reviewed schema through the established migration workflow, and explicitly appro
 changing the code gate and retry policy. Neither this PR nor its tests grants that
 activation authority. Preserve working backups, seven-copy retention, protected
 manual original, alerts, payments, learner access and curriculum.
+
+
+## Production rollout and activation approved (October 28)
+
+Terrence subsequently approved production rollout and live activation. PR 80's
+inactive integration was merged first. The reviewed retry schema was applied
+with its database policy still disabled, and service-only permissions and a
+rejected disabled reservation were verified without a live backup.
+
+The activation change sets `liveRetryEnabled` to `true`; the current service-only
+`aca_backup_automation.retry_enabled` policy must also be true before any claim.
+All earlier limits remain unchanged. Set only that database field to `false` for
+immediate rollback; ordinary backups, retention and the incident timer continue.
+Do not erase spent or unresolved retry history to restore an allowance.
+
+The schema in `backup-retry-schema.sql` remains the reviewed SQL source; its
+applied migration version is also recorded under `supabase/migrations`. Fixture
+scripts remain exclusively for disposable databases. CI and a configuration
+readback establish rollout and activation, not a demonstrated real retry. Await
+a naturally qualifying source failure; do not inject a production failure or
+manually rerun a backup merely to prove this feature.
