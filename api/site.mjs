@@ -26,6 +26,12 @@ export default function handler(request, response) {
     const enrollmentAutomation = {
           stripe: process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null,
           webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+          phaseTwoCohortId: process.env.ACA_PHASE_TWO_COHORT_ID,
+          phaseTwoCourseId: process.env.ACA_PHASE_TWO_COURSE_ID,
+          phaseTwoPaidInFullPriceId: process.env.ACA_PHASE_TWO_PAID_IN_FULL_PRICE_ID,
+          phaseTwoStandardPriceId: process.env.ACA_PHASE_TWO_STANDARD_PRICE_ID,
+          installment67PriceId: process.env.ACA_PHASE_TWO_INSTALLMENT_67_PRICE_ID,
+          installment66PriceId: process.env.ACA_PHASE_TWO_INSTALLMENT_66_PRICE_ID,
           phaseOnePriceId: process.env.ACA_PHASE_ONE_PRICE_ID,
           phaseOneFoundingPriceId: process.env.ACA_PHASE_ONE_FOUNDING_PRICE_ID,
           installment50PriceId: process.env.ACA_INSTALLMENT_50_PRICE_ID,

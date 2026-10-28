@@ -93,3 +93,34 @@ claim rejection without retained fixtures or email. This monitor shares Vercel,
 Supabase, and Resend with the application: it cannot independently detect its own
 failure or guarantee delivery during an outage of those services. Independent
 outage monitoring and actual isolated backup restoration remain separate work.
+
+## Phase Two enrollment configuration — October 28, 2026
+
+Approved pricing: Phase One pay-in-full $129 versus $50/$50/$49 ($149 total);
+Phase Two pay-in-full $179 versus $67/$66/$66 ($199 total). Every new enrollee
+qualifies for the $20 pay-in-full saving; no special eligibility or code is needed.
+Keep legacy Phase One Stripe price IDs and checkout records fulfillable.
+
+Phase Two routes are `/api/enrollment/phase-two/paid-in-full` and
+`/api/enrollment/phase-two/installments`. Configure the existing course through
+`ACA_PHASE_TWO_COURSE_ID`, its approved active cohort through
+`ACA_PHASE_TWO_COHORT_ID`, and the four dedicated price IDs named in
+`operations/recovery.env.example`. Only the $179 and initial $67 prices open
+checkout. The $199 standard price records the offer comparison, not an extra
+public payment choice. The two $66 installments use the same weekly price.
+
+Checkout refuses to create a Phase Two payment unless its existing course is
+published, its enrollment dates allow it, and its configured cohort is active.
+This implementation does not publish that course, create a cohort, choose a start
+date, or change curriculum. Pricing can be displayed while enrollment stays closed.
+Before activation, confirm the actual cohort schedule and access period, verify
+Phase Two learner entry and its protected curriculum, and complete the isolated
+Stripe sandbox purchase/retry/invitation acceptance flow. Do not label these
+provider checks complete based on unit tests.
+
+Signed checkout events resolve the course from configured Stripe prices, validate
+Phase Two metadata/amount, preserve the session cohort through fulfillment, and
+send its `/learn/?course=phase-two` entrance. Existing memberships cannot be
+reassigned by another purchase. Invoice reconciliation uses the saved plan total
+and dates; Phase One payment amounts remain unchanged. The installment table
+accepts only the approved $149/$199 totals and their corresponding next amounts.

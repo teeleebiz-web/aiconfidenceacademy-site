@@ -40,13 +40,13 @@
         <div class="purchase-notice"><strong>Before you pay</strong><p>This is personal, time-limited program access, not lifetime access to an instructional library. The two-hour lesson window begins on first opening and continues if you close the browser. Released workbook pages and saved answers remain separate from protected instruction. Enrollment is non-refundable for change of mind or non-use, subject to applicable legal rights. Read the <a href="/terms/">Terms</a> and <a href="/refund-policy/">Refund Policy</a>. <a href="/contact/">Get automatic help or submit a support case</a>.</p></div>
         <div class="payment-options" aria-label="Phase One payment options">
           <article class="payment-card payment-card-featured">
-            <p class="payment-label">Founding Student Price</p>
+            <p class="payment-label">Pay-in-full price</p>
             <h3>Pay once</h3>
             <p class="payment-amount">$129</p>
-            <p class="payment-saving">Save $20 on the $149 course price.</p>
+            <p class="payment-saving">Save $20 on the $149 course price. Every new enrollee qualifies. No special eligibility or discount code is required.</p>
             <p class="payment-note">One payment covers your Phase One enrollment.</p>
             <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-one/paid-in-full">
-              <label class="consent"><input type="checkbox" name="termsAccepted" value="yes" required><input type="hidden" name="policyVersion" value="2026-10-17"><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
+              <label class="consent"><input type="checkbox" name="termsAccepted" value="yes" required><input type="hidden" name="policyVersion" value="2026-10-28"><span>I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
               <button class="button button-gold" type="submit">Pay $129 today</button>
             </form>
           </article>
@@ -62,7 +62,7 @@
             <p class="payment-total">$149 total</p>
             <details class="payment-terms"><summary>How the installments work</summary><p>Stripe handles your payment method; ACA does not store your full card number. We email a reminder two days before the later payments. If a payment fails, you have 48 hours to correct it before access pauses. Access resumes when the account is brought current; correcting a payment does not move the remaining scheduled date. Automatic payments end after the third successful payment.</p></details>
             <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-one/installments">
-              <label class="consent"><input type="checkbox" name="termsAccepted" value="yes" required><input type="hidden" name="policyVersion" value="2026-10-17"><span>I authorize the three-payment schedule above and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
+              <label class="consent"><input type="checkbox" name="termsAccepted" value="yes" required><input type="hidden" name="policyVersion" value="2026-10-28"><span>I authorize the three-payment schedule above and agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>, <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>.</span></label>
               <button class="button button-gold" type="submit">Start with $50 today</button>
             </form>
           </article>
@@ -74,6 +74,11 @@
       section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
     }
     enrollmentPage.before(section);
+    const phaseTwo = document.createElement('section');
+    phaseTwo.className = 'enrollment-offer section-pad';
+    phaseTwo.setAttribute('aria-labelledby', 'phase-two-enrollment-title');
+    phaseTwo.innerHTML = `<div class="offer-inner"><div class="offer-intro"><div><p class="section-kicker">Phase Two enrollment</p><h2 id="phase-two-enrollment-title">Capability &amp; Application</h2><p>Develop, test, and explain a useful AI-supported project.</p></div><div class="offer-course-price"><span>Phase Two course price</span><strong>$199</strong></div></div><p><strong>Choose how you pay.</strong> Every new enrollee can save $20 by paying in full. No special eligibility or discount code is required. Prefer installments? Choose three payments at the amounts shown.</p><div class="payment-options" aria-label="Phase Two payment options"><article class="payment-card payment-card-featured"><p class="payment-label">Pay-in-full price</p><h3>Pay once</h3><p class="payment-amount">$179</p><p class="payment-saving">Save $20 on the $199 course price.</p></article><article class="payment-card payment-card-installments"><p class="payment-label">Three weekly payments</p><h3>Pay in installments</h3><ol class="payment-schedule" aria-label="Phase Two installment schedule"><li><span>Today</span><strong>$67</strong></li><li><span>In 7 days</span><strong>$66</strong></li><li><span>In 14 days</span><strong>$66</strong></li></ol><p class="payment-total">$199 total</p></article></div><p role="status">Phase Two enrollment is not open yet. <a href="/contact/">Ask about availability</a>. No payment is being collected for Phase Two.</p></div>`;
+    enrollmentPage.before(phaseTwo);
     if (['#interest-list', '#updates-signup'].includes(window.location.hash)) {
       window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView());
     }
