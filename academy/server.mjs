@@ -1,20 +1,16 @@
-import { phaseTwoConfig } from './enrollment/offers.mjs'
 import { createServer } from 'node:http'
 import { createHash, timingSafeEqual } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
-import { handleSupport } from './support/api.mjs'
 import { handleWorkbook } from './workbook/api.mjs'
 import { handleLearnerMedia } from './learner-media.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollment/installment-plan.mjs'
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
 import { handleEnrollmentOperations } from './enrollment/operations.mjs'
-import { handleControlCenter, handleTrialAccept, handleTrialEntry, handleLearnerFeedback, recordAutomationRun } from './enrollment/control-center.mjs'
-import { handleOperationalMaintenance } from './email/operational-alerts.mjs'
-import { createAvailabilityHandler } from './enrollment/availability.mjs'
+import { handleControlCenter, handleTrialEntry, handleLearnerFeedback, recordAutomationRun } from './enrollment/control-center.mjs'
 import { handleResendWebhook } from './email/resend-webhook.mjs'
 import { handleLessonReleaseMaintenance } from './email/lesson-release-maintenance.mjs'
 import { handleLessonReleaseTest } from './email/lesson-release-test.mjs'
@@ -33,7 +29,6 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
   const publicRoot = resolve(root)
-  const availability = createAvailabilityHandler({ db })
   async function curriculum() {
     const results = await Promise.all([
       db.from('courses').select('id,code,title,summary').eq('id', courseId).single(),
@@ -54,8 +49,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
-    if (requestPath === '/api/health') { await availability(req, res); return }
-    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
+    if (requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
         res.writeHead(403, { 'Content-Type': 'application/json' })
@@ -65,15 +59,12 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
         res.setHeader('Access-Control-Allow-Origin', origin)
         res.setHeader('Vary', 'Origin')
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS')
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token, X-ACA-Support-Key')
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-ACA-Workbook, X-ACA-Access-Token')
       }
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
-      if (requestPath === '/api/operations/maintenance') { await recordAutomationRun(req, res, enrollmentAutomation, 'operations-monitor', handleOperationalMaintenance); return }
-      if (requestPath.startsWith('/api/support/') || requestPath === '/api/operations/support') { await handleSupport(req, res, enrollmentAutomation || {db}, {reviewerCheck:workbookReviewerCheck}); return }
       if (requestPath === '/api/operations/control-center') {
         await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return
       }
-      if (requestPath === '/api/trials/accept') { await handleTrialAccept(req, res, enrollmentAutomation); return }
       if (requestPath === '/api/trials/request-access') { await handleTrialEntry(req, res, enrollmentAutomation); return }
       if (requestPath === '/api/learner/feedback') { await handleLearnerFeedback(req, res, { db }); return }
       if (requestPath === '/api/operations/enrollments') {
@@ -90,12 +81,6 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     }
     if (requestPath === '/api/webhooks/resend') {
       await handleResendWebhook(req, res, enrollmentAutomation); return
-    }
-    if (requestPath === '/api/enrollment/phase-two/installments') {
-      await handleInstallmentCheckout(req, res, phaseTwoConfig(enrollmentAutomation)); return
-    }
-    if (requestPath === '/api/enrollment/phase-two/paid-in-full') {
-      await handlePaidInFullCheckout(req, res, phaseTwoConfig(enrollmentAutomation)); return
     }
     if (requestPath === '/api/enrollment/phase-one/installments') {
       await handleInstallmentCheckout(req, res, enrollmentAutomation); return

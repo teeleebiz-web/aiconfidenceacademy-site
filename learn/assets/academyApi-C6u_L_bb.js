@@ -1,1 +1,0 @@
-var e=()=>window.location.hostname.endsWith(`.vercel.app`)?window.location.origin:`https://checkout.aiconfidenceacademy.org`;export{e as t};

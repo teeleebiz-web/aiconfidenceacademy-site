@@ -32,9 +32,7 @@ for (const { slug } of hub.updates) {
 }
 await cp('assets', 'private-dist/assets', { recursive: true })
 await cp('learn', 'private-dist/learn', { recursive: true })
-await cp('control-center', 'private-dist/control-center', { recursive: true })
 await cp('site.js', 'private-dist/site.js')
-for(const file of ['support.js','support.css','support-knowledge.js']) await cp(file, `private-dist/${file}`)
 for (const file of await readdir('.')) {
   if (/\.(png|svg|jpg|jpeg|webp|ico|pdf)$/.test(file)) await cp(file, `private-dist/${file}`)
 }

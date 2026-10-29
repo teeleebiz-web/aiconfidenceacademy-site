@@ -1,4 +1,3 @@
-import { enrollmentOffer, phaseTwoConfig, installmentAmounts } from './offers.mjs'
 import { attachApprovedInstallmentSchedule, failedInstallmentHtml, installmentConfirmationHtml, recoveredInstallmentHtml } from './installment-plan.mjs'
 import { sendOperationalEmail } from '../email/operational-email.mjs'
 
@@ -25,14 +24,8 @@ async function activateEnrollment(config, session, email) {
   }
   const { data: course, error: courseError } = await config.db.from('courses')
     .select('id,status,default_access_days').eq('id', config.courseId).single()
-  if (courseError || course?.status !== 'published') throw new Error(`${enrollmentOffer(config).label} is not open for enrollment`)
-  let cohort
-  if (enrollmentOffer(config).phaseNumber === 2) {
-    const result = await config.db.from('aca_phase_two_cohorts').select('id,status,course_id').eq('id', session.metadata?.aca_cohort_id).eq('course_id', config.courseId).single()
-    if (result.error || result.data?.status !== 'active') throw new Error('Phase Two cohort is unavailable')
-    cohort = result.data
-  }
-  const options = { redirectTo: `${config.appUrl.replace(/\/$/, '')}${enrollmentOffer(config).portalPath}` }
+  if (courseError || course?.status !== 'published') throw new Error('Phase One is not open for enrollment')
+  const options = { redirectTo: `${config.appUrl.replace(/\/$/, '')}/learn/` }
   let { data: link, error: linkError } = await config.db.auth.admin.generateLink({
     type: 'invite', email, options,
   })
@@ -58,20 +51,11 @@ async function activateEnrollment(config, session, email) {
     access_expires_at: existingEnrollment ? existingEnrollment.access_expires_at : expiresAt, completed_at: existingEnrollment?.completed_at ?? null,
   }, { onConflict: 'learner_id,course_id' }).select('id').single()
   if (enrollmentError) throw enrollmentError
-  if (cohort) {
-    const {data: membership, error: membershipError} = await config.db.from('aca_phase_two_memberships').select('cohort_id').eq('enrollment_id', enrollment.id).maybeSingle()
-    if (membershipError) throw membershipError
-    if (membership && membership.cohort_id !== cohort.id) throw new Error('Existing Phase Two cohort cannot be reassigned by a purchase')
-    if (!membership) {
-      const {error} = await config.db.from('aca_phase_two_memberships').insert({enrollment_id: enrollment.id, learner_id: link.user.id, course_id: config.courseId, cohort_id: cohort.id})
-      if (error) throw error
-    }
-  }
   await sendOperationalEmail(config, {
     eventKey: `enrollment-access:${session.id}`, templateKey: 'enrollment_access',
     enrollmentId: enrollment.id, learnerId: link.user.id,
     to: email, subject: 'Your AI Confidence Academy access is ready',
-    html: `<div style="font-family:Arial,sans-serif;color:#173d62;line-height:1.6"><h1>Welcome to AI Confidence Academy</h1><p>Your ${enrollmentOffer(config).label} enrollment is active.</p><p><a href="${link.properties.action_link}" style="background:#173d62;color:#fff;padding:12px 18px;text-decoration:none">Open your learner portal</a></p><p>This secure link signs you in. You may also use your Academy password from the learner sign-in page.</p><p>People come first. AI is the tool. Confidence is the product.</p></div>`,
+    html: `<div style="font-family:Arial,sans-serif;color:#173d62;line-height:1.6"><h1>Welcome to AI Confidence Academy</h1><p>Your Phase One enrollment is active.</p><p><a href="${link.properties.action_link}" style="background:#173d62;color:#fff;padding:12px 18px;text-decoration:none">Open your learner portal</a></p><p>This secure link signs you in. You may also use your Academy password from the learner sign-in page.</p><p>People come first. AI is the tool. Confidence is the product.</p></div>`,
   })
   return { learnerId: link.user.id, enrollmentId: enrollment.id }
 }
@@ -101,13 +85,9 @@ async function checkoutCompleted(event, config) {
   if (prior) return { received: true, duplicate: true }
   const lineItems = await config.stripe.checkout.sessions.listLineItems(session.id, { limit: 100 })
   const priceIds = new Set(lineItems.data.map(item => item.price?.id).filter(Boolean))
-  if (config.phaseTwoCourseId && [config.phaseTwoPaidInFullPriceId, config.phaseTwoStandardPriceId, config.installment67PriceId].some(id => id && priceIds.has(id))) config = phaseTwoConfig(config)
-  const offer = enrollmentOffer(config)
-  if (offer.phaseNumber === 2 && (lineItems.has_more || lineItems.data.length !== 1 || session.metadata?.aca_course_id !== config.courseId)) throw new Error('Phase Two checkout course does not match its approved price')
-  const isPaidInFull = offer.phaseNumber === 2 ? priceIds.has(config.phaseTwoPaidInFullPriceId) : priceIds.has(config.phaseOnePriceId) || (config.phaseOneFoundingPriceId && priceIds.has(config.phaseOneFoundingPriceId))
-  const isInstallment = priceIds.has(offer.priceIds[0]) && session.metadata?.aca_plan === `${offer.planPrefix}_installments`
+  const isPaidInFull = priceIds.has(config.phaseOnePriceId) || (config.phaseOneFoundingPriceId && priceIds.has(config.phaseOneFoundingPriceId))
+  const isInstallment = priceIds.has(config.installment50PriceId) && session.metadata?.aca_plan === 'phase_one_installments'
   if (!isPaidInFull && !isInstallment) return { received: true, ignored: true }
-  if (offer.phaseNumber === 2 && (session.currency !== 'usd' || session.amount_total !== (isInstallment ? offer.amounts[0] : offer.paidInFullAmount))) throw new Error('Phase Two checkout amount does not match the approved purchase')
   const email = session.customer_details?.email ?? session.customer_email
   if (!email) throw new Error('Paid checkout is missing an email address')
   await recordEvent(config, event, { objectId: session.id, email, amount: session.amount_total, currency: session.currency, outcome: 'paid' })
@@ -129,16 +109,16 @@ async function checkoutCompleted(event, config) {
         stripe_customer_id: typeof session.customer === 'string' ? session.customer : session.customer?.id,
         stripe_subscription_id: subscriptionId, stripe_schedule_id: schedule.scheduleId,
         stripe_first_invoice_id: typeof session.invoice === 'string' ? session.invoice : session.invoice?.id,
-        status: 'active', total_amount: offer.totalAmount, paid_amount: offer.amounts[0], payments_completed: 1,
+        status: 'active', total_amount: 14900, paid_amount: 5000, payments_completed: 1,
         second_due_at: schedule.secondDueAt.toISOString(), third_due_at: schedule.thirdDueAt.toISOString(),
-        next_due_at: schedule.secondDueAt.toISOString(), next_amount: offer.amounts[1], grace_until: null,
+        next_due_at: schedule.secondDueAt.toISOString(), next_amount: 5000, grace_until: null,
       }, { onConflict: 'stripe_subscription_id' })
       if (planError) throw planError
     }
     await sendOperationalEmail(config, {
       eventKey: `installment-confirmed:${subscriptionId}`, templateKey: 'installment_confirmation',
       enrollmentId: access.enrollmentId, learnerId: access.learnerId,
-      to: email, subject: 'Your ACA installment schedule is confirmed', html: installmentConfirmationHtml({ ...schedule, amounts: offer.amounts }),
+      to: email, subject: 'Your ACA installment schedule is confirmed', html: installmentConfirmationHtml(schedule),
     })
   }
   await completeEvent(config, event)
@@ -162,32 +142,27 @@ async function invoiceSucceeded(event, config) {
   const { data: prior, error: priorLookupError } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
   if (priorLookupError) throw priorLookupError
   if (prior?.status === 'completed') return { received: true, duplicate: true }
-  config = { ...config, courseId: plan.course_id || config.courseId }
   await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount: invoice.amount_paid, currency: invoice.currency, outcome: 'paid' })
-  const amounts = installmentAmounts(plan)
-  const totalAmount = amounts.reduce((a,b) => a+b, 0)
   // Reconcile against Stripe's paid invoices, so a retry after a partial database
   // failure cannot count the same invoice as another installment.
   const paidInvoices = await config.stripe.invoices.list({ subscription: subscriptionId, status: 'paid', limit: 100 })
   const payments = paidInvoices.data.filter(item => item.amount_paid > 0)
   if (paidInvoices.has_more || !payments.some(item => item.id === invoice.id)
-    || payments.some(item => item.currency !== 'usd' || !amounts.includes(item.amount_paid))) {
+    || payments.some(item => item.currency !== 'usd' || ![4900, 5000].includes(item.amount_paid))) {
     throw new Error('The paid installment invoices could not be reconciled')
   }
   const completed = payments.length
   const paidAmount = payments.reduce((total, item) => total + item.amount_paid, 0)
-  if (completed < 1 || completed > 3 || (completed === 1 && paidAmount !== amounts[0])
-    || (completed === 2 && ![amounts[0] + amounts[1], amounts[0] + amounts[2]].includes(paidAmount)) || (completed === 3 && paidAmount !== totalAmount)) {
+  if (completed < 1 || completed > 3 || (completed === 1 && paidAmount !== 5000)
+    || (completed === 2 && ![9900, 10000].includes(paidAmount)) || (completed === 3 && paidAmount !== 14900)) {
     throw new Error('The paid installment total does not match the approved schedule')
   }
-  const finalInstallmentPaid = totalAmount === 14900
-    ? payments.some(item => item.amount_paid === amounts[2])
-    : payments.some(item => item.id !== plan.stripe_first_invoice_id && Number(item.period_start) >= Date.parse(plan.third_due_at) / 1000)
+  const finalInstallmentPaid = payments.some(item => item.amount_paid === 4900)
   const values = completed >= 3
     ? { status: 'completed', payments_completed: 3, paid_amount: paidAmount, next_due_at: null, next_amount: null, grace_until: null }
     : { status: 'active', payments_completed: completed, paid_amount: paidAmount,
       next_due_at: completed === 1 || finalInstallmentPaid ? plan.second_due_at : plan.third_due_at,
-      next_amount: completed === 1 || finalInstallmentPaid ? amounts[1] : amounts[2],
+      next_amount: completed === 1 || finalInstallmentPaid ? 5000 : 4900,
       grace_until: null, reminder_sent_for_due_at: null }
   const { error } = await config.db.from('aca_installment_plans').update(values).eq('id', plan.id).lte('payments_completed', completed)
   if (error) throw error
@@ -201,7 +176,7 @@ async function invoiceSucceeded(event, config) {
       eventKey: `installment-recovered:${invoice.id}`, templateKey: 'installment_recovered',
       enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
       to: plan.customer_email, subject: 'Your ACA payment was received — access is active',
-      html: recoveredInstallmentHtml({ nextAmount: values.next_amount, nextDueAt: values.next_due_at, appUrl: config.appUrl, portalPath: plan.total_amount === 19900 ? "/learn/?course=phase-two" : "/learn/" }),
+      html: recoveredInstallmentHtml({ nextAmount: values.next_amount, nextDueAt: values.next_due_at, appUrl: config.appUrl }),
     })
   }
   await completeEvent(config, event)
@@ -219,7 +194,6 @@ async function invoiceFailed(event, config) {
   const { data: prior, error: priorLookupError } = await config.db.from('aca_payment_events').select('status').eq('stripe_event_id', event.id).maybeSingle()
   if (priorLookupError) throw priorLookupError
   if (prior?.status === 'completed') return { received: true, duplicate: true }
-  config = { ...config, courseId: plan.course_id || config.courseId }
   const currentInvoice = await config.stripe.invoices.retrieve(invoice.id)
   if (currentInvoice.status === 'paid') return { received: true, ignored: true }
   const paymentUrl = currentInvoice.hosted_invoice_url

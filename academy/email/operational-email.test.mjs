@@ -59,9 +59,3 @@ test('records provider failure without exposing the provider detail to callers',
   assert.equal(db.writes.at(-1)[1].status, 'failed')
   assert.equal(db.writes.at(-1)[1].last_error, 'private provider detail')
 })
-
-test('an explicitly supplied provider key is private and leaves the logical event key unchanged',async()=>{
- const db=database(),sends=[]
- await sendOperationalEmail({db,emailFrom:'ACA <learn@example.com>',resend:{emails:{send:async(...args)=>{sends.push(args);return {data:{id:'provider-1'}}}}}}, {...message,providerIdempotencyKey:'trial-access:grant:token-fingerprint'})
- assert.equal(sends[0][1].idempotencyKey,'trial-access:grant:token-fingerprint');assert.equal(db.writes[0][1].event_key,message.eventKey);assert.equal(db.writes[0][1].providerIdempotencyKey,undefined)
-})

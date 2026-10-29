@@ -6,7 +6,7 @@ const publicSections = new Set([
   'enroll', 'explore', 'faq', 'library', 'privacy', 'programs', 'reflections',
   'refund-policy', 'terms', 'videos',
 ])
-const rootFiles = new Set(['index.html', 'site.js', 'support.js', 'support.css', 'support-knowledge.js', 'favicon.svg', 'aca-official-seal.png'])
+const rootFiles = new Set(['index.html', 'site.js', 'favicon.svg', 'aca-official-seal.png'])
 const mime = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png',

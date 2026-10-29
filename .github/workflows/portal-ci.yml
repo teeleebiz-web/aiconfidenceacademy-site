@@ -4,62 +4,22 @@ on:
   pull_request:
     paths:
       - 'portal/**'
-      - 'academy/**'
-      - 'operations/**'
-      - 'api/site.mjs'
-      - 'supabase/migrations/**'
-      - 'vercel.json'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/portal-ci.yml'
-      - '.github/workflows/r2-connection-check.yml'
-      - '.github/workflows/private-storage-backup.yml'
-      - '.github/workflows/automatic-storage-backup.yml'
-      - '.github/workflows/incident-diagnostics.yml'
   push:
     branches:
       - main
     paths:
       - 'portal/**'
-      - 'academy/**'
-      - 'operations/**'
-      - 'api/site.mjs'
-      - 'supabase/migrations/**'
-      - 'vercel.json'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/portal-ci.yml'
-      - '.github/workflows/r2-connection-check.yml'
-      - '.github/workflows/private-storage-backup.yml'
-      - '.github/workflows/automatic-storage-backup.yml'
-      - '.github/workflows/incident-diagnostics.yml'
 
 permissions:
   contents: read
 
 jobs:
-  retry-database:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:17
-        env:
-          POSTGRES_PASSWORD: fixture-only
-          POSTGRES_DB: retry_fixture
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
-    env:
-      PGHOST: localhost
-      PGPORT: 5432
-      PGUSER: postgres
-      PGPASSWORD: fixture-only
-      PGDATABASE: retry_fixture
-    steps:
-      - uses: actions/checkout@v4
-      - name: Verify retry SQL permissions, policy, quotas and concurrent reservations
-        run: bash operations/backup-retry-db-check.sh
   verify:
     runs-on: ubuntu-latest
     steps:

@@ -155,15 +155,3 @@ test('catch-all routing preserves owner selections, filters, and learner entry p
   assert.equal(routedRequestUrl({url:'/api/site.mjs',query:{__aca_path:'learn/',view:'trial',history:'emails',offset:'50'}},'learn/'),'/learn/?view=trial&history=emails&offset=50')
   assert.equal(routedRequestUrl({url:'/learn/?course=phase-two'},undefined),'/learn/?course=phase-two')
 })
-
-test('direct trial access is publicly reachable with origin checks and no general sign-in redirect',async()=>{
- const db={from(){throw Error('invalid tokens must not query records')}}
- const server=createAcademyServer({password:'test-only-long-construction-password',root:tmpdir(),courseId:'test-course',db,enrollmentAutomation:{db,appUrl:'https://aiconfidenceacademy.org'}})
- server.listen(0,'127.0.0.1');await once(server,'listening');const url=`http://127.0.0.1:${server.address().port}/api/trials/accept`
- try{
-  const preflight=await fetch(url,{method:'OPTIONS',headers:{Origin:'https://aiconfidenceacademy.org'}});assert.equal(preflight.status,204);assert.equal(preflight.headers.get('access-control-allow-origin'),'https://aiconfidenceacademy.org')
-  assert.equal((await fetch(url,{method:'POST',headers:{Origin:'https://outside.example','Content-Type':'application/json'},body:'{}'})).status,403)
-  const invalid=await fetch(url,{method:'POST',headers:{Origin:'https://aiconfidenceacademy.org','Content-Type':'application/json'},body:'{}'});assert.equal(invalid.status,400);assert.match(invalid.headers.get('cache-control'),/no-store/);assert.equal(invalid.headers.get('location'),null)
-  assert.equal((await fetch(url)).status,405)
- }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve))}
-})

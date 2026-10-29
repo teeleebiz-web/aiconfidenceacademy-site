@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { PortalEntry } from './PortalEntry'
+import { App } from './App'
 import './styles.css'
 
 const root = document.getElementById('root')
@@ -11,6 +11,6 @@ if (!root) {
 
 createRoot(root).render(
   <StrictMode>
-    <PortalEntry />
+    <App />
   </StrictMode>,
 )

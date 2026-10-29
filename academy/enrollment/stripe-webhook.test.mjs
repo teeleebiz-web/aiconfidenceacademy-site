@@ -12,8 +12,7 @@ const database = ({ existingEnrollment = null, completedSession = null, inviteEr
   const chain = (table) => ({
     select() { return this }, eq() { return this }, limit() { return this },
     maybeSingle: async () => ({ data: table === 'enrollments' ? existingEnrollment : table === 'aca_payment_events' ? completedSession : table === 'aca_email_events' ? accessEmail : table === 'aca_installment_plans' ? existingPlan : null, error: null }),
-    single: async () => ({ data: { id: 'course', status: table === 'aca_phase_two_cohorts' ? 'active' : 'published', default_access_days: 30 }, error: null }),
-    insert(value) { writes.push([table,'insert',value]); return Promise.resolve({error:null}) },
+    single: async () => ({ data: { id: 'course', status: 'published', default_access_days: 30 }, error: null }),
     upsert(value) {
       writes.push([table, 'upsert', value])
       if (table === 'enrollments') {
@@ -46,7 +45,7 @@ test('rejects an unsigned enrollment webhook', async () => {
   assert.equal(db.writes.length, 0)
 })
 
-async function deliverCheckout({ type = 'checkout.session.completed', paymentStatus = 'paid', price = 'price_129', db = database(), sessionValues = {}, configValues = {} } = {}) {
+async function deliverCheckout({ type = 'checkout.session.completed', paymentStatus = 'paid', price = 'price_129', db = database(), sessionValues = {} } = {}) {
   const req = request(); const res = response(); const sent = []
   const work = handleStripeEnrollment(req, res, {
     db, webhookSecret: 'secret', phaseOnePriceId: 'legacy_price_149', phaseOneFoundingPriceId: 'price_129',
@@ -59,7 +58,7 @@ async function deliverCheckout({ type = 'checkout.session.completed', paymentSta
       } } }) },
       checkout: { sessions: { listLineItems: async () => ({ data: [{ price: { id: price } }] }) } },
     },
-    installment50PriceId: 'price_50', installment49PriceId: 'price_49', ...configValues,
+    installment50PriceId: 'price_50', installment49PriceId: 'price_49',
   })
   req.emit('end'); await work
   return { res, db, sent }
@@ -143,21 +142,4 @@ test('activates one paid Phase One enrollment and sends its secure entrance', as
   assert.equal(sent[0].to, 'learner@example.com')
   assert.match(sent[0].html, /secure\.example\/invite/)
   assert.equal(db.writes.some(([table, action, value]) => table === 'enrollments' && action === 'upsert' && value.status === 'active'), true)
-})
-
-const phaseTwoValues = {phaseTwoCourseId:'phase-two-course',phaseTwoPaidInFullPriceId:'price_179',installment67PriceId:'price_67',installment66PriceId:'price_66'}
-test('a paid Phase Two checkout creates only Phase Two access and cohort membership',async()=>{
- const {res,db,sent}=await deliverCheckout({price:'price_179',configValues:phaseTwoValues,sessionValues:{amount_total:17900,metadata:{aca_plan:'phase_two_paid_in_full',aca_course_id:'phase-two-course',aca_cohort_id:'cohort'}}})
- assert.equal(res.status,200)
- assert.equal(db.writes.find(([t,a])=>t==='enrollments'&&a==='upsert')[2].course_id,'phase-two-course')
- assert.equal(db.writes.find(([t,a])=>t==='aca_phase_two_memberships'&&a==='insert')[2].cohort_id,'course')
- assert.match(db.authCalls[0].options.redirectTo,/learn\/\?course=phase-two/)
- assert.match(sent[0].html,/Phase Two enrollment/)
- assert.equal(db.writes.find(([t,a])=>t==='aca_payment_events'&&a==='upsert')[2].course_id,'phase-two-course')
-})
-test('wrong-course metadata or wrong amounts cannot grant Phase Two access',async()=>{
- for(const sessionValues of [{amount_total:17900,metadata:{aca_course_id:'phase-one-course'}},{amount_total:12900,metadata:{aca_course_id:'phase-two-course'}}]){
-  const {res,db}=await deliverCheckout({price:'price_179',configValues:phaseTwoValues,sessionValues})
-  assert.equal(res.status,500);assert.equal(db.authCalls.length,0);assert.equal(db.writes.some(([t])=>t==='enrollments'),false)
- }
 })
