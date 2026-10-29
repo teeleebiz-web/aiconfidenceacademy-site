@@ -81,3 +81,47 @@ test('public failure labels are fixed and never contain arbitrary provider or cr
  assert.equal(incidentFailureLabel(new Error('Monitoring history needs pagination review')),'monitor_history_pagination')
  for(const error of [new Error('Bearer secret-token; response contains a private email'),new Error('Monitoring configuration needs review: private payload'),{message:'Monitoring configuration needs review'},null])assert.equal(incidentFailureLabel(error),'unclassified_failure')
 })
+
+test('alert pagination preserves the activation lower bound and every boundary-second event',async()=>{
+ const events=Array.from({length:150},(_,i)=>({id:String(i+1),status:i%2?'up':'down',status_code:i%2?200:503,triggered_at:new Date((1000+i)*1000).toISOString()})),calls=[]
+ const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async(url,options)=>{
+  calls.push({url,options});const u=new URL(url),after=Number(u.searchParams.get('after')),before=Number(u.searchParams.get('before')??Infinity)
+  const rows=events.filter(a=>Date.parse(a.triggered_at)/1000>after&&Date.parse(a.triggered_at)/1000<before).reverse().slice(0,100)
+  return new Response(JSON.stringify({data:rows,links:{next:rows.length?'https://api.statuscake.com/v1/uptime/1/alerts?before='+Date.parse(rows.at(-1).triggered_at)/1000:null}}))
+ }})
+ const result=await reader('1','alerts',999)
+ assert.equal(result.data.length,150);assert.equal(new Set(result.data.map(a=>a.id)).size,150);assert.equal(result.links.next,null);assert.equal(calls.length,3)
+ assert.ok(calls.every(c=>new URL(c.url).searchParams.get('after')==='999'&&c.options.method==='GET'&&c.options.redirect==='error'))
+ assert.equal(new URL(calls[1].url).searchParams.get('before'),'1051')
+})
+test('pagination links cannot redirect credentials, change monitor or lower bound, or add unexpected parameters',async()=>{
+ const row={id:'1',status:'down',triggered_at:'2026-10-27T09:55:00Z'}
+ for(const next of ['https://attacker.test/v1/uptime/1/alerts?before=1793094900','https://api.statuscake.com/v1/uptime/2/alerts?before=1793094900','https://api.statuscake.com/v1/uptime/1/alerts?before=1793094900&after=0','https://api.statuscake.com/v1/uptime/1/alerts?before=1793094900&limit=25','https://api.statuscake.com/v1/uptime/1/alerts?before=1793094900&secret=value','https://api.statuscake.com/v1/uptime/1/alerts?before=1&before=2']){
+  let calls=0;const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>{calls++;return new Response(JSON.stringify({data:[row],links:{next}}))}})
+  await assert.rejects(()=>reader('1','alerts',1),/pagination review/);assert.equal(calls,1)
+ }
+})
+test('empty final pages and missing next links complete history without inventing alerts',async()=>{
+ for(const links of [{next:null},{},{next:'https://api.statuscake.com/v1/uptime/1/alerts?before=0'}]){
+  const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>new Response(JSON.stringify({data:[],links}))})
+  assert.deepEqual((await reader('1','alerts',1)).data,[])
+ }
+})
+test('conflicting duplicate events and a full same-second boundary fail without losing the cursor',async()=>{
+ let calls=0;const row={id:'1',status:'down',triggered_at:'2026-10-27T09:55:00Z'},boundary=Date.parse(row.triggered_at)/1000
+ const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>new Response(JSON.stringify({data:[{...row,status:++calls===1?'down':'up'}],links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+boundary}}))})
+ await assert.rejects(()=>reader('1','alerts',1),/pagination review/);assert.equal(calls,2)
+ let sameCalls=0;const same=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>{sameCalls++;return new Response(JSON.stringify({data:Array.from({length:100},(_,i)=>({...row,id:String(i+1)})),links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+boundary}}))}})
+ await assert.rejects(()=>same('1','alerts',1),/pagination review/);assert.equal(sameCalls,2)
+ const f=fixture();f.options.readProvider=async()=>{throw Error('Monitoring history needs pagination review')}
+ await assert.rejects(()=>coordinate(f.options),/pagination review/);assert.deepEqual(f.state.monitors,{});assert.equal(f.mirrors.length,0)
+})
+test('pagination stops at its page and elapsed-time budgets',async()=>{
+ let calls=0;const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>{
+  calls++;const second=2000-calls*2;return new Response(JSON.stringify({data:[{id:String(calls),status:'down',triggered_at:new Date(second*1000).toISOString()}],links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+second}}))
+ }})
+ await assert.rejects(()=>reader('1','alerts',1),/pagination review/);assert.equal(calls,10)
+ let ticks=0,requests=0;const expired=statusCakeReader('fixture-token-not-a-real-key',{clock:()=>++ticks===1?0:30001,fetcher:async()=>{requests++;throw Error('must not run')}})
+ await assert.rejects(()=>expired('1','alerts',1),/pagination review/);assert.equal(requests,0)
+ assert.throws(()=>parseAlerts({data:Array(1001).fill({}),links:{next:null}},0),/pagination review/)
+})
