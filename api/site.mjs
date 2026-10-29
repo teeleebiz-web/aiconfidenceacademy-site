@@ -59,6 +59,9 @@ export default async function handler(req,res){
  let s=await state(db)
  if(req.method==='POST'&&input.action==='start'){
   if(!s.installment){
+   const product=await stripe.products.retrieve('prod_VWs6RUFv6gSdN1');
+   if(!product.tax_code)await stripe.products.update(product.id,{tax_code:'txcd_20060158'});
+   else if(product.tax_code!=='txcd_20060158')throw Error('Sandbox course category differs from existing Academy category');
    for(const [key,id]of Object.entries(prices)){const p=await stripe.prices.retrieve(id);if(p.livemode||!p.active||p.currency!=='usd'||p.unit_amount!==({phaseTwoPaidInFullPriceId:17900,phaseTwoStandardPriceId:19900,installment67PriceId:6700,installment66PriceId:6600})[key])throw Error('Wrong sandbox price');if(key.startsWith('installment')&&(p.recurring?.interval!=='week'||p.recurring.interval_count!==1))throw Error('Wrong interval')}
    s.paidInFull=await checkout(config,handlePaidInFullCheckout);s.installment=await checkout(config,handleInstallmentCheckout);s=await save(db,s)
   }
