@@ -24,15 +24,70 @@ export function validatePolicy(value, now=Date.now()) {
 
 // All destinations and methods are fixed in source. Provider payloads cannot
 // choose a destination, execute a command, inject a repair or request a write.
-export function statusCakeReader(token, {fetcher=fetch,timeoutMs=10000}={}) {
+const maxAlertEvents = 1000
+const maxAlertPages = 10
+const historyReview = () => new Error('Monitoring history needs pagination review')
+
+function nextAlertBoundary(link,id,after,before) {
+  let url
+  try { url = new URL(link) } catch { throw historyReview() }
+  const allowed = new Set(['limit','after','before'])
+  if(url.origin!=='https://api.statuscake.com'||url.pathname!==`/v1/uptime/${id}/alerts`||url.username||url.password||url.hash||[...url.searchParams.keys()].some(k=>!allowed.has(k)))throw historyReview()
+  for(const key of allowed)if(url.searchParams.getAll(key).length>1)throw historyReview()
+  const integer=value=>typeof value==='string'&&/^\d+$/.test(value)&&Number.isSafeInteger(Number(value))
+  const next=url.searchParams.get('before'),lower=url.searchParams.get('after'),limit=url.searchParams.get('limit')
+  if(!integer(next)||(lower!==null&&(!integer(lower)||Number(lower)!==after))||(limit!==null&&limit!=='100')||(before!==undefined&&Number(next)>=before))throw historyReview()
+  return Number(next)
+}
+export function statusCakeReader(token, {fetcher=fetch,timeoutMs=10000,clock=Date.now}={}) {
   if (typeof token!=='string' || token.length<16 || /\s/.test(token)) throw new Error('Monitoring API access is missing')
   return async (id,resource='',after) => {
     if (!/^\d+$/.test(id) || !['','alerts'].includes(resource) || (after!==undefined && (!Number.isSafeInteger(after)||after<0))) throw new Error('Invalid monitoring read')
-    const path=`https://api.statuscake.com/v1/uptime/${id}${resource?'/'+resource:''}${resource?`?limit=100&after=${after}`:''}`
-    const res=await fetcher(path,{method:'GET',headers:{Authorization:`Bearer ${token}`,Accept:'application/json'},redirect:'error',signal:AbortSignal.timeout(timeoutMs)})
-    if (!res.ok) throw new Error('Monitoring API read failed')
-    const raw=await boundedText(res,128*1024)
-    try{return JSON.parse(raw)}catch{throw new Error('Monitoring API response is invalid')}
+    const deadline=clock()+30000
+    async function read(before) {
+      const query=resource?`?limit=100${after===undefined?'':`&after=${after}`}${before===undefined?'':`&before=${before}`}`:''
+      const path=`https://api.statuscake.com/v1/uptime/${id}${resource?'/'+resource:''}${query}`
+      const remaining=deadline-clock()
+      if(remaining<=0)throw historyReview()
+      const res=await fetcher(path,{method:'GET',headers:{Authorization:`Bearer ${token}`,Accept:'application/json'},redirect:'error',signal:AbortSignal.timeout(Math.max(1,Math.min(timeoutMs,remaining)))})
+      if (!res.ok) throw new Error('Monitoring API read failed')
+      const raw=await boundedText(res,128*1024)
+      try{return JSON.parse(raw)}catch{throw new Error('Monitoring API response is invalid')}
+    }
+    if(!resource)return read()
+    const alerts=new Map()
+    let before
+    for(let page=0;page<maxAlertPages;page++){
+      const value=await read(before)
+      if(!Array.isArray(value?.data)||value.data.length>100)throw historyReview()
+      const rows=parseAlerts({...value,links:{next:null}},after??0)
+      if(before!==undefined&&rows.some(a=>Date.parse(a.at)>=before*1000))throw historyReview()
+      for(const row of rows){
+        const normalized={id:row.id,status:row.status,triggered_at:row.at,status_code:row.code},previous=alerts.get(row.id)
+        if(previous&&JSON.stringify(previous)!==JSON.stringify(normalized))throw historyReview()
+        alerts.set(row.id,normalized)
+      }
+      if(alerts.size>maxAlertEvents)throw historyReview()
+      const next=value.links?.next
+      if(next!==null&&next!==undefined&&next!==''){
+        const boundary=nextAlertBoundary(next,id,after,before)
+        if(rows.length){
+          const oldest=Math.floor(Math.min(...rows.map(a=>Date.parse(a.at)))/1000)
+          if(boundary!==oldest)throw historyReview()
+          if(oldest>(after??0)){
+            // A full page can split a timestamp second: overlap and deduplicate.
+            // A short page contains that complete boundary second, so its strict
+            // before cursor can move past it without repeating the same page.
+            const candidate=oldest+(rows.length===100?1:0)
+            if(before!==undefined&&candidate>=before)throw historyReview()
+            before=candidate
+            continue
+          }
+        }
+      }
+      return {data:[...alerts.values()],links:{next:null}}
+    }
+    throw historyReview()
   }
 }
 
@@ -65,7 +120,7 @@ export function validateMonitor(role,id,value,policy) {
 }
 
 export function parseAlerts(value,after,now=Date.now()) {
-  if (!Array.isArray(value?.data) || value.data.length>=100 || value.links?.next) throw new Error('Monitoring history needs pagination review')
+  if (!Array.isArray(value?.data) || value.data.length>maxAlertEvents || value.links?.next) throw new Error('Monitoring history needs pagination review')
   const seen=new Set()
   return value.data.map(a=>{
     if (typeof a.id!=='string'||!/^\d+$/.test(a.id)||!['up','down'].includes(a.status)||!validDate(a.triggered_at)||Date.parse(a.triggered_at)>now+300000||Date.parse(a.triggered_at)<after*1000||seen.has(a.id))throw new Error('Monitoring alert is invalid')

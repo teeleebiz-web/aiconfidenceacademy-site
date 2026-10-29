@@ -449,9 +449,7 @@ save a StatusCake API token as Actions secret `ACA_STATUSCAKE_TOKEN`; do not pas
 it into chat or logs. Do not assume the provider token has a read-only scope.
 The collector itself permits only GET to the fixed StatusCake API, validates
 monitor identity, both fixed ACA URLs, HTTP type, 300-second interval and the
-trusted contact group, and refuses redirects and unexpected history. It requires
-fewer than 100 returned alert events and no next page; otherwise collection fails
-for review without skipping events. Events before activation are excluded.
+trusted contact group, and refuses redirects and unexpected history. Alert history uses at most ten fixed-origin GET pages and 1,000 unique events per monitor, with a thirty-second read budget. Pagination retains the activation lower bound, overlaps the final second and deduplicates identical IDs. Untrusted links, conflicting duplicates, ambiguous same-second saturation, or exhausted budgets stop for review without advancing the saved event cursor. Raw provider URLs and error text are never logged; the runner reports only reviewed finite failure labels. Events before activation are excluded.
 Repeated transitions within a polling interval can be grouped into one incident.
 
 The coordinator reuses the four existing private-backup Actions secrets, derives
