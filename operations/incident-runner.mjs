@@ -1,7 +1,7 @@
 import {createClient} from '@supabase/supabase-js'
 import {resolve} from 'node:path'
 import {fileURLToPath} from 'node:url'
-import {coordinate,statusCakeReader,validatePolicy,validateMonitor,parseAlerts,probe} from './incident-diagnostics.mjs'
+import {coordinate,statusCakeReader,validatePolicy,validateMonitor,parseAlerts,probe,incidentFailureLabel} from './incident-diagnostics.mjs'
 import {incidentConfiguration,incidentStore} from './incident-store.mjs'
 import {projectRef} from './recovery.mjs'
 
@@ -43,5 +43,5 @@ export async function runIncidentCoordinator({env=process.env,makeStore=incident
   }finally{config.key.fill(0)}
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
-  runIncidentCoordinator().then(result=>console.log(result.verification?'Private incident storage verification passed.':result.providerVerification?'Read-only monitoring API and fixed target verification passed.':result.held?'Incident coordinator is held pending activation.':result.synchronized?'Incident coordinator completed.':'Private evidence retained; database synchronization needs review.')).catch(()=>{console.error('Incident coordinator needs review; no repair was performed.');process.exitCode=1})
+  runIncidentCoordinator().then(result=>console.log(result.verification?'Private incident storage verification passed.':result.providerVerification?'Read-only monitoring API and fixed target verification passed.':result.held?'Incident coordinator is held pending activation.':result.synchronized?'Incident coordinator completed.':'Private evidence retained; database synchronization needs review.')).catch(error=>{console.error(`Incident coordinator needs review [${incidentFailureLabel(error)}]; no repair was performed.`);process.exitCode=1})
 }
