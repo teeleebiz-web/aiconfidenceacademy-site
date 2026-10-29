@@ -4,8 +4,8 @@ import test from 'node:test'
 import { handleStripeEnrollment } from './stripe-webhook.mjs'
 import { handleInstallmentMaintenance } from './installment-maintenance.mjs'
 
-for (const phaseTwo of [false,true]) test(`${phaseTwo ? 'Phase Two' : 'Phase One'} failed invoice can be paid after access pauses without moving the remaining installment`, async () => {
-  const plan = { total_amount: phaseTwo ? 19900 : 14900, course_id: phaseTwo ? 'course-two' : 'course', id: 'plan', status: 'active', stripe_subscription_id: 'sub', stripe_first_invoice_id: 'first', enrollment_id: 'enrollment', learner_id: 'learner', customer_email: 'learner@example.com', payments_completed: 1, paid_amount: phaseTwo ? 6700 : 5000, next_amount: phaseTwo ? 6600 : 5000, next_due_at: '2026-10-10T19:00:00Z', third_due_at: '2026-10-17T19:00:00Z', grace_until: null }
+for (const [phaseTwo,thirdFirst] of [[false,false],[true,false],[true,true]]) test(`${phaseTwo ? 'Phase Two' : 'Phase One'} ${thirdFirst ? 'third installment received before the second;' : ''} failed invoice can be paid after access pauses without moving the remaining installment`, async () => {
+  const plan = { total_amount: phaseTwo ? 19900 : 14900, course_id: phaseTwo ? 'course-two' : 'course', id: 'plan', status: 'active', stripe_subscription_id: 'sub', stripe_first_invoice_id: 'first', enrollment_id: 'enrollment', learner_id: 'learner', customer_email: 'learner@example.com', payments_completed: 1, paid_amount: phaseTwo ? 6700 : 5000, next_amount: phaseTwo ? 6600 : 5000, next_due_at: '2026-10-10T19:00:00Z', second_due_at: '2026-10-10T19:00:00Z', third_due_at: '2026-10-17T19:00:00Z', grace_until: null }
   const tables = { aca_installment_plans: [plan], enrollments: [{ id: 'enrollment', status: 'active' }], aca_payment_events: [], aca_email_events: [] }
   const touched = new Set()
   let failAccessOnce = false
@@ -41,7 +41,7 @@ for (const phaseTwo of [false,true]) test(`${phaseTwo ? 'Phase Two' : 'Phase One
   let invoiceStatus = 'open'
   const config = { db, cronSecret: 'cron', webhookSecret: 'secret', phaseOnePriceId: 'price', courseId: 'course', appUrl: 'https://example.com', emailFrom: 'ACA <test@example.com>', stripe: { webhooks: { constructEvent: () => event }, invoices: {
     retrieve: async () => ({ status: invoiceStatus, hosted_invoice_url: 'https://invoice.stripe.com/i/test' }),
-    list: async () => ({ data: [{ id: 'first', amount_paid: phaseTwo ? 6700 : 5000, currency: 'usd' }, { id: 'overdue', amount_paid: phaseTwo ? 6600 : 5000, currency: 'usd', period_start: Date.parse('2026-10-10T19:00:00Z')/1000 }], has_more: false }),
+    list: async () => ({ data: [{ id: 'first', amount_paid: phaseTwo ? 6700 : 5000, currency: 'usd' }, { id: 'overdue', amount_paid: phaseTwo ? 6600 : 5000, currency: 'usd', period_start: Date.parse(thirdFirst ? '2026-10-10T19:00:00Z' : '2026-10-03T19:00:00Z')/1000, lines: {data:[{period:{start:Date.parse(thirdFirst ? '2026-10-17T19:00:00Z' : '2026-10-10T19:00:00Z')/1000}}]} }], has_more: false }),
   } }, resend: { emails: { send: async message => { sent.push(message); return { data: { id: 'mail' } } } } } }
   const deliver = async (id, type, expectedStatus = 200) => {
     event = { id, type, data: { object: { id: 'overdue', amount_due: phaseTwo ? 6600 : 5000, amount_paid: phaseTwo ? 6600 : 5000, currency: 'usd', parent: { subscription_details: { subscription: 'sub' } } } } }
@@ -71,8 +71,8 @@ for (const phaseTwo of [false,true]) test(`${phaseTwo ? 'Phase Two' : 'Phase One
   await deliver('paid', 'invoice.payment_succeeded')
   assert.equal(plan.status, 'active'); assert.equal(tables.enrollments[0].status, 'active')
   assert.equal(plan.payments_completed, 2); assert.equal(plan.paid_amount, phaseTwo ? 13300 : 10000)
-  assert.equal(plan.next_due_at, '2026-10-17T19:00:00Z'); assert.equal(plan.next_amount, phaseTwo ? 6600 : 4900)
-  assert.match(sent[1].html, phaseTwo ? /\$66\.00/ : /\$49\.00/); assert.match(sent[1].html, /October 17, 2026/)
+  assert.equal(plan.next_due_at, thirdFirst ? '2026-10-10T19:00:00Z' : '2026-10-17T19:00:00Z'); assert.equal(plan.next_amount, phaseTwo ? 6600 : 4900)
+  assert.match(sent[1].html, phaseTwo ? /\$66\.00/ : /\$49\.00/); assert.match(sent[1].html, thirdFirst ? /October 10, 2026/ : /October 17, 2026/)
   await deliver('paid', 'invoice.payment_succeeded')
   await deliver('paid-again', 'invoice.payment_succeeded')
   await deliver('stale-failure', 'invoice.payment_failed')

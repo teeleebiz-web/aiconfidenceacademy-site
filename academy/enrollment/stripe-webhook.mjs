@@ -182,7 +182,7 @@ async function invoiceSucceeded(event, config) {
   }
   const finalInstallmentPaid = totalAmount === 14900
     ? payments.some(item => item.amount_paid === amounts[2])
-    : payments.some(item => item.id !== plan.stripe_first_invoice_id && Number(item.period_start) >= Date.parse(plan.third_due_at) / 1000)
+    : payments.some(item => item.id !== plan.stripe_first_invoice_id && item.lines?.data?.some(line => Number(line.period?.start) >= Date.parse(plan.third_due_at) / 1000))
   const values = completed >= 3
     ? { status: 'completed', payments_completed: 3, paid_amount: paidAmount, next_due_at: null, next_amount: null, grace_until: null }
     : { status: 'active', payments_completed: completed, paid_amount: paidAmount,

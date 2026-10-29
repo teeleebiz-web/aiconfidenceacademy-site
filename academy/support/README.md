@@ -101,6 +101,15 @@ Phase Two pay-in-full $179 versus $67/$66/$66 ($199 total). Every new enrollee
 qualifies for the $20 pay-in-full saving; no special eligibility or code is needed.
 Keep legacy Phase One Stripe price IDs and checkout records fulfillable.
 
+Phase Two prices used for checkout must have `tax_behavior: inclusive` so the
+charged integration totals remain $179, or $67/$66/$66. Stripe Adaptive Pricing
+keeps the API Checkout Session amount and currency in the integration currency;
+presentment to the buyer is separate. Preserve existing currency and Managed
+Payments settings. Stripe cannot change an already exclusive price to inclusive:
+create dedicated Phase Two replacement prices and update only its server-owned
+price IDs after approval. Keep Phase Two closed until those IDs and sandbox
+acceptance pass. No Phase One price or checkout behavior changes are required.
+
 Phase Two routes are `/api/enrollment/phase-two/paid-in-full` and
 `/api/enrollment/phase-two/installments`. Configure the existing course through
 `ACA_PHASE_TWO_COURSE_ID`, its approved active cohort through
@@ -124,3 +133,9 @@ send its `/learn/?course=phase-two` entrance. Existing memberships cannot be
 reassigned by another purchase. Invoice reconciliation uses the saved plan total
 and dates; Phase One payment amounts remain unchanged. The installment table
 accepts only the approved $149/$199 totals and their corresponding next amounts.
+
+Phase Two late-payment reconciliation distinguishes its equal $66 installments
+using the paid invoice line's billed service-period start, not the invoice's
+summary `period_start` (which can describe the preceding invoice period). If the
+third installment is paid while the second remains unpaid, the remaining due
+date stays the second installment's original date.
