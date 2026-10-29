@@ -12,9 +12,16 @@ const course='00000000-0000-4000-8000-000000000002', cohort='00000000-0000-4000-
 const prices={phaseTwoPaidInFullPriceId:'price_1UVoLwISbjgQbMXEqlivPAdz',phaseTwoStandardPriceId:'price_1UVoPXISbjgQbMXEk2mS9aKj',installment67PriceId:'price_1UVoRIISbjgQbMXE10eXn0m4',installment66PriceId:'price_1UVoVEISbjgQbMXEmqzhdGYz'}
 const json=(res,status,value)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(value))}
 const equal=(a,b)=>{const x=Buffer.from(a||''),y=Buffer.from(b||'');return x.length===y.length&&x.length>30&&timingSafeEqual(x,y)}
-function setup(){
+async function setup(){
  if(process.env.VERCEL_ENV!=='preview'||process.env.VERCEL_GIT_COMMIT_REF!=='test/aca-sandbox-checkout'||!/^([sr]k)_test_/.test(process.env.STRIPE_SECRET_KEY||'')||!process.env.ACA_PHASE_TWO_ACCEPTANCE_TOKEN)throw Error('Sandbox guard refused execution')
  const stripe=new Stripe(process.env.STRIPE_SECRET_KEY)
+ const account=await stripe.accounts.retrieve();if(account.id!=='acct_1UGt8vISbjgQbMXE')throw Error('Wrong sandbox account')
+ const existing=await stripe.prices.list({product:'prod_VWs6RUFv6gSdN1',active:true,limit:100})
+ for(const [key,amount]of [['phaseTwoPaidInFullPriceId',17900],['installment67PriceId',6700],['installment66PriceId',6600]]){
+  const recurring=key.startsWith('installment')
+  const price=existing.data.find(p=>p.currency==='usd'&&p.unit_amount===amount&&p.tax_behavior==='inclusive'&&(recurring?p.recurring?.interval==='week'&&p.recurring.interval_count===1:p.type==='one_time'))||await stripe.prices.create({product:'prod_VWs6RUFv6gSdN1',currency:'usd',unit_amount:amount,tax_behavior:'inclusive',...(recurring?{recurring:{interval:'week',interval_count:1}}:{}),nickname:'Phase Two inclusive USD sandbox acceptance'})
+  prices[key]=price.id
+ }
  const db=createClient(`https://${ref}.supabase.co`,'acceptance-proxy',{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:async(url,options={})=>{
   const parsed=new URL(url),headers=Object.fromEntries(new Headers(options.headers).entries())
   delete headers.apikey;delete headers.authorization
@@ -37,7 +44,7 @@ async function checkout(config,handler){let created
 }
 export default async function handler(req,res){
  try{
- const {stripe,db,config}=setup()
+ const {stripe,db,config}=await setup()
  const path=req.query?.__aca_path||new URL(req.url,'https://sandbox.invalid').pathname.replace(/^\//,'')
  if(path==='api/webhooks/stripe'){
   // Only verified sandbox payment events can reach the isolated fixture database.
@@ -58,12 +65,16 @@ export default async function handler(req,res){
  const account=await stripe.accounts.retrieve();if(account.id!=='acct_1UGt8vISbjgQbMXE')throw Error('Wrong sandbox account')
  let s=await state(db)
  if(req.method==='POST'&&input.action==='start'){
+  if(s.installment&&s.pricingVersion!=='inclusive-usd-v1'){
+   for(const item of [s.paidInFull,s.installment])if(item){const old=await stripe.checkout.sessions.retrieve(item.id);if(old.status==='open')await stripe.checkout.sessions.expire(item.id);else if(old.payment_status==='paid')throw Error('An earlier test session was paid; preserve it for review')}
+   s={};await save(db,s)
+  }
   if(!s.installment){
    const product=await stripe.products.retrieve('prod_VWs6RUFv6gSdN1');
    if(!product.tax_code)await stripe.products.update(product.id,{tax_code:'txcd_20060158'});
    else if(product.tax_code!=='txcd_20060158')throw Error('Sandbox course category differs from existing Academy category');
    for(const [key,id]of Object.entries(prices)){const p=await stripe.prices.retrieve(id);if(p.livemode||!p.active||p.currency!=='usd'||p.unit_amount!==({phaseTwoPaidInFullPriceId:17900,phaseTwoStandardPriceId:19900,installment67PriceId:6700,installment66PriceId:6600})[key])throw Error('Wrong sandbox price');if(key.startsWith('installment')&&(p.recurring?.interval!=='week'||p.recurring.interval_count!==1))throw Error('Wrong interval')}
-   s.paidInFull=await checkout(config,handlePaidInFullCheckout);s.installment=await checkout(config,handleInstallmentCheckout);s=await save(db,s)
+   s.paidInFull=await checkout(config,handlePaidInFullCheckout);s.installment=await checkout(config,handleInstallmentCheckout);s.pricingVersion='inclusive-usd-v1';s=await save(db,s)
   }
   return json(res,200,s)
  }
