@@ -1,0 +1,818 @@
+# ACA storage and configuration recovery
+
+Continue from the existing Enrollment and Backend Continuity Mandate. Database
+restoration was proved separately on October 18. The temporary recovery project
+has been removed. Do not recreate that billed project for these local checks.
+
+## Current boundary
+
+Supabase database backups preserve storage metadata, not file bytes. The October
+18 read-only inventory found 68 private objects, 1,650,971,985 bytes, plus one
+empty private bucket. The October 26 live manual run copied and recovered all
+68 files from R2 with the original hashes verified. Automated software tests use
+independent binary fixtures and do not open approved media. See the evidence below.
+
+Vercel lists 16 production configuration entries. Its Secret values are
+write-only after saving. Their names and scopes are not recoverable credentials.
+Do not weaken their visibility, export them through a website route, rotate them,
+or copy production access into a new environment just to complete a backup.
+
+## Encrypted file snapshots
+
+`recovery.mjs` uses the existing Supabase client and Node 22 or later. It lists
+private buckets and recursively copies their objects without querying course
+tables or writing to Supabase. Each file and the object-name manifest are
+encrypted with AES-256-GCM. It checks SHA-256 and byte counts, repeats the source
+inventory, and rejects an incomplete or changing snapshot. Output is promoted
+only after every encrypted file verifies. A failed operation removes its own
+partial directory; it never deletes source objects.
+
+An authorized storage credential must already be available in a private execution
+environment as `SUPABASE_SERVICE_ROLE_KEY` with the existing `SUPABASE_URL`.
+The project URL is restricted to ACA's existing source project. This does not
+grant new access or provision credentials. `ACA_BACKUP_KEY_FILE` must name a
+32-byte random encryption key held outside the website repository. Keep that key
+in the owner's secure credential recovery location, separately from snapshots.
+Losing it makes encrypted snapshots unrecoverable. Do not paste keys in chat.
+
+Run `node operations/recovery.mjs backup aca /private/new-snapshot-directory`.
+The destination must not already exist, its parent must exist, and it must be
+outside this website repository. Choose an owner-controlled private destination;
+the transient build workspace and public GitHub artifacts are not durable backup
+storage. This command does not set up automatic transfers or retention.
+
+Run `node operations/recovery.mjs verify /private/snapshot-directory` to decrypt
+and hash-check every file without saving plaintext. Run
+`node operations/recovery.mjs restore-local /private/snapshot-directory /private/new-restore-directory`
+to recover into a new private local directory, including original bucket/path
+mapping and private bucket settings. Existing directories are rejected. There is
+no production restore, deletion, or public-serving command. The separately invoked
+R2 transfer utility below handles the approved off-site destination. A local
+binary recovery check does not prove a recovered cloud service,
+Storage permissions, or playback on a recipient's device.
+
+Before claiming live file recovery: complete the authorized live snapshot, store
+it durably outside production, verify the saved snapshot again, recover into a
+new private directory, and check every byte. Then separately approve and verify
+any cloud destination, its cost, access restrictions, retention, monitoring, and
+credential custody. Never restore over production for a test.
+
+## Service configuration recovery
+
+Use `recovery.env.example` for the entry-point variable names. Keep actual values
+out of this repository and out of continuity documents. Restore service
+configuration only inside an approved isolated target with outbound email,
+payments, and cron schedules disabled. Required dependencies include:
+
+- GitHub: authoritative repository, exact tested revision, locked dependencies,
+  existing public Pages deployment, and backend build configuration in
+  `vercel.json`. Preserve the test branch independently.
+- Vercel: project/team identity, runtime, domains, redirects, production and
+  branch-scoped variables. Read-only metadata can verify names and scopes. It
+  cannot recover hidden values. Existing deployments are not a secret vault.
+- Supabase: separately verified database backup, private file snapshot and bucket
+  settings, Auth URL/redirect configuration and mail settings, provider keys,
+  permissions, extensions, and any Edge Functions. Recovered database rows do not
+  establish that these external settings were recreated.
+- Stripe: correct account and live/test distinction, current product and price
+  identifiers, signed callback destination and subscribed event types. Preserve
+  $129 Founding Student Price and separate $50/$50/$49 installment pricing.
+- Resend: verified sender/domain records, restricted send credentials, signed
+  delivery callback destination and subscribed event types. A stored callback
+  configuration is not proof of delivery.
+- DNS: current public and checkout destinations plus verified sender records.
+  Do not change production DNS as part of a restoration test.
+
+Re-enter Secrets from the owner's secure records or perform an explicitly
+authorized provider rotation. A missing source credential is a recovery gap,
+not permission to reset working credentials. Complete a configuration-only
+isolation review before enabling any schedule, sending email, charging a payment,
+or reconnecting production services.
+
+## Verification
+
+`npm run test:recovery` checks binary round-trip recovery, authenticated
+encryption, missing/corrupt files, wrong keys, pagination, changed-source
+rejection, partial cleanup, path restrictions, existing-output protection, and
+redaction of credentials from metadata inventories. No live service is called.
+
+Official references checked October 18, 2026:
+
+- https://supabase.com/docs/guides/platform/backups
+- https://supabase.com/docs/guides/storage/management/download-objects
+- https://supabase.com/docs/reference/javascript/storage-from-list
+- https://supabase.com/docs/reference/javascript/storage-from-download
+- https://vercel.com/docs/environment-variables/sensitive-environment-variables
+
+## Cloudflare R2 approval and transfer
+
+Terrence approved Cloudflare R2 as ACA's separate private backup destination on
+October 18, 2026 at 15:47 Manila. Do not request that same provider approval again.
+Approval is not proof of account activation, a private bucket, billing settings,
+credential custody, an uploaded backup, or scheduled execution. The browser's
+Google sign-in returned “Unable to sign in. Try again or use your email and
+password.” No R2 bucket, credential, or charge was created through that attempt.
+Stop automated retries of that rejected sign-in and use the supported manual
+handoff for the account step. Do not reset working credentials to get past it.
+
+`r2-transfer.mjs` uses the pinned AWS S3 SDK with the R2 account endpoint. It sends
+only the authenticated snapshot's encrypted files, encrypted path manifest, and
+non-secret summary; it never sends the encryption key or unrelated local files.
+Each transfer gets a fresh random snapshot prefix. Conditional writes prevent
+replacement. Every uploaded object is downloaded and hash-checked before the
+completion record is written and checked. A failed or uncertain request does not
+become a success. Partial remote objects are retained for owner review, never
+automatically deleted. The only error reference is a random snapshot prefix;
+provider responses and credentials are not logged.
+
+Download requires the completion record, enforces file/path/size limits, verifies
+every encrypted object's SHA-256 and authenticated decryption, and refuses files
+outside the authenticated snapshot manifest. Output must be a new private local
+directory outside the website repository. Use the base `restore-local` command
+after downloading to test recovery of the original file bytes. There is still no
+command that overwrites Supabase or serves a backup publicly.
+
+After the owner completes account setup, create a dedicated private bucket such
+as `aca-private-backups`. Do not enable an r2.dev address, custom domain, public
+access, or browser CORS. Verify those settings in the account before recording
+`ACA_R2_PRIVATE_CONFIRMED` as the exact `account-id/bucket`. This explicit operator
+confirmation is a prerequisite; it is not an automated check of Cloudflare's
+current access settings. Use an Object Read & Write credential scoped only to
+that bucket, rather than an account-wide administrator credential. Record the
+one-time secret securely and keep the encryption key separately. Follow required
+action-time confirmation for creating security-sensitive credentials and any
+unapproved billing or terms step; never request secrets in chat.
+
+Private runtime variable names are in `recovery.env.example`. The endpoint is
+restricted to Cloudflare's account/jurisdiction R2 hosts. The default maximum
+snapshot size is 2 GiB, checked before upload. This per-transfer limit is not a
+Cloudflare billing cap or an approval of additional usage. Use Standard storage;
+retention, existing account usage, source egress, and execution costs need their
+own verification before enabling unattended copies. No schedule, lifecycle
+deletion, retention policy, or public endpoint is activated by this code.
+
+Commands in the authorized private environment:
+
+- `node operations/r2-transfer.mjs upload /private/encrypted-snapshot`
+- `node operations/r2-transfer.mjs download aca-backups/SNAPSHOT-UUID /private/new-snapshot`
+- `node operations/recovery.mjs restore-local /private/new-snapshot /private/new-restore`
+
+The transfer tests use a fake object store with independent binary files. They
+prove the transfer protocol's checks, not live R2 authentication or durable file
+recovery. Activation still requires a live saved-snapshot download, decryption,
+byte comparison, and separate private-setting/credential-custody verification.
+
+R2 references checked October 18, 2026:
+
+- https://developers.cloudflare.com/r2/examples/aws/aws-sdk-js-v3/
+- https://developers.cloudflare.com/r2/api/tokens/
+- https://developers.cloudflare.com/r2/api/s3/api/
+- https://developers.cloudflare.com/r2/buckets/public-buckets/
+
+## October 25 account setup and manual connection check
+
+Terrence completed Cloudflare sign-in in his own Edge browser and activated R2.
+His screenshots confirm the Standard `aca-private-backups` bucket in Western
+North America, public access and r2.dev disabled, no custom domain and no CORS
+policy. The default seven-day incomplete-multipart abort rule was left unchanged;
+it is not a retention rule for completed backups. An initial HeadBucket 500 no
+longer occurred when the existing bucket was reopened. No duplicate was created.
+
+The account token is scoped to Object Read & Write for this bucket, active until
+November 1, 2026. Terrence reported saving its keys privately. The GitHub settings
+screenshot shows `ACA_R2_ACCESS_KEY_ID` and `ACA_R2_SECRET_ACCESS_KEY` as repository
+secrets. Their values were not read, printed, or verified by the assistant.
+Account activation and secret names do not establish working authentication.
+
+The `ACA private R2 connection check` workflow is manual only, limited to main,
+with read-only repository permission and a five-minute timeout. It receives only
+those two R2 secrets in its final step, after locked dependency installation and
+credential-free tests. Its required `private_destination` input is the exact
+verified Cloudflare account ID followed by `/aca-private-backups`; it contains
+no access key. Use Actions, select the workflow, choose Run workflow with main,
+paste that destination, and select Run workflow. Do not put keys in the input.
+
+`r2-connection-check.mjs` encrypts a new 4 KiB synthetic file, uploads it, checks
+readback, downloads into a separate temporary directory, decrypts, restores and
+compares every original byte. It calls no Supabase service and receives no live
+ACA data or credentials. Its 64 KiB encrypted-snapshot limit is not a billing cap.
+The four tiny encrypted test objects remain under `aca-connection-checks/UUID`
+for owner review. Its disposable test key is never uploaded or printed and is
+not a real backup recovery key. Local temporary files are removed. Nothing
+automatically deletes cloud objects, enables public access, or starts a schedule.
+
+Success reports `connectionVerified: true`, `syntheticOnly: true` and
+`liveAcaBackup: false`. Failure reports only the stage and safe random reference,
+without provider error bodies or credentials. The existing automated recovery
+tests and three new connection-check tests pass locally with a fake store. A
+live GitHub workflow result is still required before claiming R2 authentication
+or the synthetic transfer proved. The actual 68-file ACA snapshot, owner-held
+separate encryption key, durable saved-copy recovery, configuration recovery,
+retention, scheduling and monitoring remain separate unfinished work.
+
+## October 25 synthetic recovery verified and manual live backup prepared
+
+Owner-triggered run 40190388610 succeeded on main 05541ac at 11:48:51 UTC.
+Its final step reports `connectionVerified: true`, `syntheticOnly: true` and
+`liveAcaBackup: false`, with 4,096 original and 5,035 encrypted bytes. Encryption,
+R2 authentication, upload, readback, saved-copy download, decryption and byte
+recovery passed. The retained synthetic reference is
+`aca-connection-checks/b2adef81-05a3-4c31-a61a-0529117939f1`. Do not repeat this
+completed test as routine continuation. The action-runtime deprecation warning
+did not prevent it; working dependencies were preserved.
+
+`manual-backup.mjs` and `ACA manual private Storage backup` prepare the next
+manual step. They have not copied a live ACA file. They reuse the existing
+encrypted snapshot, transfer and recovery protocol for the fixed ACA project.
+Supabase calls only list private buckets, enumerate object metadata and download
+bytes; no course table, content inspection, source write, production restore,
+payment or email operation is called. Empty sources are rejected. The 2 GiB
+source bound is checked before file downloads and again for the encrypted
+upload. At least 6.5 GiB temporary private disk is required. Two encrypted copies
+and one fresh local restore stay outside the repository. Every original SHA-256
+and byte count is verified during recovery; temporary files are then removed.
+No snapshot, plaintext or key is saved as a GitHub artifact or cache. Remote
+encrypted objects remain, including partial uploads after failure.
+
+The owner must knowingly configure these repository secrets directly in GitHub.
+The assistant must not receive or retrieve their values:
+
+- `ACA_BACKUP_KEY_BASE64`: canonical Base64 for 32 cryptographically random bytes.
+  Retain this exact value in independent owner recovery records outside R2 and
+  GitHub before the first live run. Losing it makes the saved files unrecoverable.
+- `ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY`: an authorized existing server credential
+  for ACA. A Supabase secret or legacy service-role key gives full server-level
+  project access, not a Storage-only restriction. The reviewed job uses it only
+  for Storage reads. Authorizing access in this new runtime is a separate owner
+  decision. Do not export hidden Vercel values, reset working credentials or
+  claim the credential has narrower privileges than it actually does.
+- The two R2 bucket-scoped secrets already used by the successful check.
+
+Once source access is authorized and the secrets are saved, open Actions, select
+`ACA manual private Storage backup`, choose Run workflow on main, and enter the
+verified `account-id/aca-private-backups`. Affirm both explicit inputs: this exact
+recovery key is independently retained, and this manual job may read ACA private
+Storage and save an encrypted R2 copy. Both default to false. Missing confirmation,
+malformed keys, missing credentials, unsafe destination, inadequate disk or an
+oversized source stops the run. Only the final step receives secrets, after
+locked dependency installation and tests without live credentials.
+
+Run once and inspect the result. Success requires `liveAcaBackup: true`,
+`uploadedAndReadbackVerified: true`, `savedCopyDecryptionVerified: true` and
+`restoredWithOriginalHashesVerified: true`, nonzero counts and a new
+`aca-backups/UUID` reference. Retain the reference with the owner recovery record.
+This proves a saved file copy, not a recovered cloud service or device playback.
+Failure logs only its stage and safe reference, with no provider body, file path
+or secret. The 30-minute workflow is main-only, manually triggered, serialized
+and read-only for GitHub. It adds no schedule, cloud deletion, retention policy,
+credential rotation or public route. Limits are transfer guards, not billing
+caps; source egress and storage/execution usage count against provider allowances.
+
+Official references checked October 25, 2026:
+
+- https://supabase.com/docs/reference/javascript/storage-from-download
+- https://supabase.com/docs/guides/getting-started/api-keys
+- https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+
+## October 26 configuration failure diagnosis
+
+Run 40258201859 and its second attempt both passed all 36 recovery tests, then
+stopped at configuration before source access, with no snapshot reference. All
+four secret names are present. The owner confirms using the independently saved
+PowerShell recovery key and manually entering it from a screenshot. Do not ask
+him to identify the key again or replace it merely because the stage is generic.
+
+The manual runner now emits a finite configuration issue: missing confirmations,
+key length, invalid character positions, noncanonical Base64, missing source
+credential, invalid private destination, or missing R2 credentials. Diagnostics
+contain only a fixed code, numeric lengths, or one-based positions; no key
+characters, credential values, file paths or provider bodies. All original key
+validation, authorization, transfer and recovery checks remain enforced. The
+additional regression checks diagnostic accuracy, redaction and no network
+access on rejected configuration. No secret is read back or changed by this fix.
+
+After merging the tested correction, run the existing manual workflow on main
+using the same approved destination and retained-key/source-read confirmations.
+Inspect the exact configuration issue before requesting a targeted owner action.
+A test pass is not a live backup. No source bytes have been protected by either
+failed configuration attempt; scheduling and retention remain unchanged.
+
+## October 26 verified manual backup and automatic backup preparation
+
+Main revision `2621b6512f47d32eb5ef0873c164a7819149cacd`, workflow run
+`40261532250`, attempt 2, completed at 03:24:14 UTC. It protected 68 files,
+1,650,971,985 original bytes and 1,651,002,110 encrypted bytes. Upload readback,
+saved-copy decryption and restoration with original hashes all succeeded.
+Preserve `aca-backups/71069015-2a6e-4578-bb35-b936ce364e87` independently of
+any automatic retention policy. Keep the existing owner-held recovery key.
+
+The new `ACA automatic private Storage backup` workflow proposes daily execution
+at 18:17 UTC (01:17 the following day in Bangkok). It shares the manual workflow's
+concurrency group and uses the same proven full-copy/recovery path, four existing
+GitHub secrets, 2 GiB source/transfer guard and private temporary disk cleanup.
+Only main in the authoritative repository can execute it. No snapshot, recovery
+key or plaintext is published as a GitHub artifact or cache.
+
+`aca_backup_automation` is service-only and starts **disabled**. Its initial
+seven-copy retention policy was approved by Terrence on October 26; deletion starts disabled until release verification.
+The workflow exits with `held: not-activated` until the activation setting is
+explicitly changed after review. Do not describe a prepared schedule as an
+observed scheduled execution. A manual dispatch exercises the runner but does
+not prove the scheduler fired. Never enable a preview deployment's cron jobs.
+
+The automatic runner uses the existing source server credential for Storage
+reads and backup-only policy/history access. That credential has full project
+permissions; the code does not narrow them. It writes safe backup activity to
+`aca_automation_runs`, not enrollment, curriculum, payment or learner tables.
+A unique index prevents repeating the same GitHub run/attempt. History must
+accept the start record before source work and the verified completion record
+before any retention. Provider errors and source object paths are never logged.
+
+The existing independent Vercel operations monitor scheduled for 21:00 UTC checks backup
+history after the two-hour scheduler allowance, a 45-minute unfinished-run window,
+recorded failures/warnings and credential expiration within 72 hours. It uses the
+existing trusted-owner lookup and email queue; no mail key is copied to GitHub.
+Vercel Hobby may execute within its one-hour scheduling window. This is a daily
+monitor, not instant or continuous detection. Email submission
+and actual delivery remain distinct evidence. System activity displays backup
+run evidence alongside the existing jobs. Disabled policy creates no missing-run
+incidents. The existing manual workflow continues to be available separately.
+
+If separately activated, retention keeps the seven most recent verified
+**automatic** copies, including the newly recovered replacement. Extra manual
+runs of the automatic workflow count as automatic copies. Original manual and
+connection-test prefixes are excluded. It removes only encrypted artifacts named
+in the old copy's validated completion record, within that copy's exact UUID
+prefix. Each completion record remains as a small private tombstone for safe,
+idempotent retry after an interrupted deletion or lost database response.
+Partial/unverified uploads and unknown prefixes require owner review; retention
+does not delete them. The preserved manual baseline is rejected by both the
+planner and the object-deletion adapter. A failed backup never prunes; a retention
+failure leaves the new verified copy intact and records a warning.
+
+Terrence approved retention of seven verified automatic copies plus the original
+manual baseline, and a one-year extension of the existing R2 credential. The saved
+token list confirms October 26, 2027, unchanged Object Read & Write permission
+and only aca-private-backups. The monitor conservatively uses the start of that
+date in Bangkok (2027-10-25T17:00:00Z), since the display omits the exact hour.
+
+Before activation: verify the service-only migration and CI, deploy the reviewed
+revision with automation disabled, dispatch the automatic runner under controlled
+activation, and verify recovered-copy/history evidence and owner alert delivery.
+Then retain activation and observe an actual scheduled execution. Do not reset working credentials or
+ask the owner to recreate the recovery key. Current Cloudflare shared-browser
+Google sign-in and manual handoff have not established a signed-in dashboard;
+the owner's ordinary-browser session is not presently available to the agent.
+
+Usage planning: one current full copy is about 1.65 GB; daily source download is
+about 49.5 GB per 30 days, before other source traffic. Seven copies plus the
+preserved baseline use about 13.2 GB; temporarily retaining a replacement adds
+about 1.65 GB. These are estimates, not billing caps. R2's shared free allowance,
+daily-peak storage billing, existing account usage and source egress allowances
+must be considered. GitHub may delay/drop a scheduled run or disable a public
+repository's schedule after 60 days without activity; the independent monitor
+checks for the missing history rather than assuming the timer worked.
+
+Official scheduling and usage references checked October 26, 2026:
+
+- https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule
+- https://developers.cloudflare.com/r2/pricing/
+- https://supabase.com/docs/guides/platform/manage-your-usage/egress
+
+
+## Release and owner-alert verification
+
+The public owner interface is served by GitHub Pages from committed generated
+control-center/index.html and learn/assets files. Include the matching production
+portal build when publishing a source change to that interface; a Vercel build
+does not update GitHub Pages. Retain older hashed assets for existing browser
+sessions. The website-only Vercel preview deliberately excludes owner pages,
+and backend HTML retains its separate construction-password gate. Do not weaken
+either gate to inspect the owner interface. Use the normal public owner sign-in
+after the flag-disabled release, then prove the backup before unattended use.
+
+A service-only verification_test operational-alert reason is restricted to
+storage-backups. Its subject and body explicitly identify a planned delivery
+test and state that no backup failure is reported. Queue one event for the
+existing trusted owner, invoke only /api/operations/maintenance through Vercel
+Cron Jobs, and verify both the durable email record and provider delivery. Do
+not run lesson, newsletter or installment jobs as a backup test. No new mail
+credential, public trigger endpoint or learner recipient is added.
+
+
+## October 27 backup incident recovery
+
+Backup incident state is independent of alert submission/delivery. The service-only
+`aca_reconcile_backup_alerts()` RPC resolves missing, stalled, failed, warning and
+history-write incidents only after a later completed automatic run proves encrypted
+readback, saved-copy decryption, original hashes, nonzero file counts/bytes and a
+durable retention outcome. A partial recovery, retention warning, earlier success,
+credential-expiry alert or unrelated job cannot close a backup incident. The runner
+reconciles after saving final history; the independent owner-alert monitor retries.
+A reconciliation failure preserves a verified copy and does not block other owner
+alerts; the monitor reports its pending review.
+
+The reconciler keeps the warning and attaches its verified resolution time/run.
+One `backup_recovered` message per recovered run and trusted recipient follows
+previously submitted warning messages, through the existing daily owner-mail queue.
+No new mail key or public trigger is introduced; delivery can occur at the next
+monitor invocation. Unattempted, unsent warnings resolved before dispatch are
+cancelled. Attempted/uncertain messages keep the existing provider-idempotency and
+manual-review safeguards. A new failed backup run has its own alert even on a day
+with an earlier recovery; repeated checks for the same run remain deduplicated.
+
+The authenticated Control Center System activity view shows last verified recovery,
+actual completion, file count/bytes, open incident count, resolved incident history
+and warning/recovery email delivery separately. The daily target remains 01:17
+Bangkok (18:17 UTC), with late scheduling disclosed. Existing seven-copy retention
+and the protected manual original are unchanged. `aca_backup_status()` is service-only
+and returns no recipient addresses. It is read only after existing owner authorization.
+The generated portal and owner entry must be committed with the source release.
+
+Run `academy/email/backup-recovery-acceptance.sql` for rollback-only database proof,
+then the focused email, runner and owner component tests. Never create a false live
+failure or rerun historical recovery merely to test a notification.
+
+
+## Private incident diagnosis (October 27 increment)
+
+`incident-diagnostics.yml` runs outside ACA hosting at minute 7, 22, 37 and 52
+of each hour. GitHub scheduling can be delayed. Existing StatusCake checks and
+native owner notices remain five-minute checks; the diagnostic poll is separate.
+This is deterministic, read-only diagnosis, with no model calls, repair commands,
+email sends, backup reruns, deployments, DNS changes or payment actions.
+
+Activation starts disabled in the service-only `aca_incident_settings` singleton.
+Configure its exact two existing StatusCake monitor IDs and trusted owner contact
+group privately, never in repository configuration. The owner must create and
+save a StatusCake API token as Actions secret `ACA_STATUSCAKE_TOKEN`; do not paste
+it into chat or logs. Do not assume the provider token has a read-only scope.
+The collector itself permits only GET to the fixed StatusCake API, validates
+monitor identity, both fixed ACA URLs, HTTP type, 300-second interval and the
+trusted contact group, and refuses redirects and unexpected history. It requires
+fewer than 100 returned alert events and no next page; otherwise collection fails
+for review without skipping events. Events before activation are excluded.
+Repeated transitions within a polling interval can be grouped into one incident.
+
+The coordinator reuses the four existing private-backup Actions secrets, derives
+a separate incident encryption key with HKDF, and restricts all R2 reads/writes
+to `aca-incidents/v1/`. It imports no object-list or delete operations. Backup
+prefixes, keys and seven-copy retention are untouched. Immutable encrypted report
+versions are saved and read back before cursors advance. The encrypted active
+index holds at most 50 reports, evicting only synchronized recoveries; immutable
+history remains retained without an automatic deletion policy.
+
+A successfully cached activation policy allows collection into the encrypted R2
+outbox while ACA's database is unavailable. Missing initial or invalid fresh
+policy fails closed. A reachable disabled policy stops collection. To stop it
+independently during a database outage, disable this GitHub Actions workflow;
+the collector cannot see a database policy change while that database is down.
+After database recovery it mirrors the pending records into private incident
+tables. Anonymous and learner roles have no table or function access. The
+existing authenticated owner snapshot reads only the private diagnostic RPC and
+fails gracefully if that RPC is unavailable.
+
+Control Center → System activity → Incident diagnosis shows activation, collector
+freshness, uncertainty, confirmation samples and recovery separately. A provider
+up event alone cannot resolve an incident: current provider status and two live
+checks of the affected address must agree. Confirmation rounds are separated by
+16 seconds to exceed the readiness endpoint's internal 15-second cache. Findings are evidence classifications,
+not confirmed root causes. No repair actions are enabled. The owner dashboard
+may itself be unavailable during an ACA outage; native StatusCake alerts and
+its independent dashboard remain the immediate owner channel. This increment
+does not send separate diagnosis email.
+
+Run `node --test operations/incident-*.test.mjs` for injected provider, storage,
+database-outage and recovery tests. Run `operations/incident-acceptance.sql`
+through the database connector for rollback-only ACL and ingestion checks.
+The manual `verify-provider` mode checks authenticated monitor identity, API
+access and both fixed live addresses without activating policy or saving events.
+The workflow's manual `verify-private-storage` mode proves encrypted R2 fixture
+readback without contacting StatusCake, writing incident rows or changing a
+production target. Keep policy disabled until credential setup and a controlled
+real collection succeed; then observe a scheduled collection independently.
+
+## Backup failure evidence (October 27 increment)
+
+The backup runner records a finite `failure` object alongside its existing
+failure stage. It distinguishes observed service unavailability, recognized
+network interruptions, credential/access responses, configuration, known
+integrity failures, source changes, not-found responses, local resource checks,
+history failures and unknown errors. These are evidence categories, not proven
+root causes. HTTP 500 and unrecognized transport/body failures remain unknown.
+
+`backup-failure.mjs` reads actual pinned SDK error instances and HTTP metadata at
+the existing source/private-store adapters. It never interprets provider message
+text as instructions, retains body/path/request-ID fields, or trusts an arbitrary
+`error.failure` property. A private in-process evidence map preserves categories
+through the existing sanitized wrappers. Every emitted object explicitly has
+`retry_authorized: false`, including unavailable-service and network categories.
+Unknown or missing evidence cannot grant permission by default.
+
+No additional attempt, new timeout, schedule, repair command, provider credential,
+source write, backup rerun or retention rule is introduced. Possible private
+writes and retention failures keep their operation identity for later review.
+Existing verification still gates success, pruning and incident reconciliation.
+Do not deliberately fail a production backup to test classification.
+
+Run `node --test operations/*.test.mjs`. Tests include real SDK response/wrapper
+shapes with injected HTTP/transport failures, one-call/no-retry checks, forged
+evidence rejection, sanitized automatic history, altered encrypted readback,
+credential expiry, missing credentials, incomplete recovery and history failure.
+Official Storage error documentation and the installed SDK were checked; no SDK
+upgrade or schema change is part of this increment:
+https://supabase.com/docs/guides/storage/debugging/error-codes
+
+Next: prove unattended incident collection separately, then design the approved
+bounded retry gate using these observations plus failure stage, possible side
+effects, cooldown, attempt/cost limits, exclusion of overlapping work and durable
+outcome history. Classification alone must never dispatch that retry.
+
+## Approved external incident timer (October 27 continuation)
+
+Terrence approved the Cloudflare Workers timer on October 27. It supplements the
+existing GitHub schedule after that schedule produced no observed unattended
+collector run. `incident-timer.mjs` dispatches only `incident-diagnostics.yml` in
+this repository, on `main`, in `collect` mode, every 15 minutes. The Worker reads
+the most recent 20 runs of that exact workflow and skips dispatch while any is
+active. The existing collector concurrency group serializes a racing native
+trigger. This timer does not trigger backups or repairs.
+
+The Wrangler configuration is the deployment source of truth. `workers_dev` and
+preview URLs are disabled, there are no routes or data-service bindings, and
+HTTP requests return 404. Activation defaults to `ACA_TIMER_ENABLED=false`.
+The Worker accepts no caller-selected URL, repository, branch, mode or workflow.
+Cloudflare's scheduled timestamp may include seconds and milliseconds; the
+timer validates the exact cron and a fresh integer timestamp, rather than
+requiring timestamp alignment to a quarter-hour. It rejects other cron
+expressions and events more than ten minutes late, makes
+no automatic HTTP retry, refuses redirects and sanitizes failure messages.
+Workers requests use `redirect: manual` and reject unexpected HTTP statuses,
+including every 3xx, without following the Location header. A
+lost dispatch response remains uncertain until GitHub history is reconciled.
+
+The only Worker secret is `ACA_TIMER_GITHUB_TOKEN`: a dedicated fine-grained
+GitHub token for this repository with Actions read/write and required metadata
+read only. GitHub's permission also permits other Actions operations in this
+repository; fixed code is a narrower control, not a provider-enforced token
+scope. Do not reuse a general-purpose GitHub credential or expose a token in
+source, chat, a CLI argument or a plain variable. Save it as a Cloudflare secret
+through the secure account workflow. Record its expiry privately and renew
+before expiry; a missing or expired token must stop dispatch, not widen access.
+
+Before deployment, verify the selected Cloudflare account, Workers Free plan,
+account-wide usage and available cron capacity. Published free limits are
+100,000 requests/day, five cron triggers/account and 10 ms CPU/invocation.
+The configured timer has 96 planned invocations/day and at most two GitHub
+requests/invocation. It has no storage, AI or paid-service bindings. No paid
+upgrade is authorized. Existing native GitHub ticks can add collector runs if
+that service resumes scheduling; busy detection reduces overlaps but is not a
+durable deduplication lock. Check actual Worker CPU use and GitHub runner usage.
+
+Validation and deployment commands (Wrangler is pinned in the root lockfile):
+
+```bash
+node --test operations/incident-timer.test.mjs
+node --test operations/incident-timer-runtime.test.mjs
+npx wrangler deploy --config operations/incident-timer.wrangler.json --dry-run
+npx wrangler dev --config operations/incident-timer.wrangler.json --local --test-scheduled
+```
+
+Use only fixtures in local scheduled tests. Never place a real token in a local
+development file. Review CI before deploying the disabled configuration with
+`npx wrangler deploy --config operations/incident-timer.wrangler.json`. Only
+after private secret setup and account verification, activate with the explicit
+non-secret override `--var ACA_TIMER_ENABLED:true`. A later ordinary deployment
+returns to the checked-in disabled default. Keep the selected account explicit
+with `CLOUDFLARE_ACCOUNT_ID` in the authenticated deployment environment.
+
+`incident-timer-worker.mjs` is the production entrypoint and exports only the
+default handler. Helper exports remain in the imported core; exporting a plain
+constant from a Worker entrypoint prevents workerd startup even when compilation
+passes. The runtime regression test starts the configured entrypoint in workerd
+using the Miniflare version installed by pinned Wrangler, confirms disabled
+scheduled execution makes no outbound request, and checks HTTP 404 behavior.
+It also runs the enabled entrypoint with a fresh non-rounded timestamp against
+fixture GitHub responses, verifying the fixed workflow and dispatch payload.
+These checks are included in the existing operations test glob and are not real
+cron events.
+
+Acceptance requires a real Cloudflare cron event, its sanitized accepted run ID
+(or reconciliation after an older empty 204 response), the matching successful
+GitHub collector job and the same private coordinator heartbeat. Dispatch
+acceptance, local simulation and a manual run do not establish unattended
+success. Cloudflare cron changes can take up to 15 minutes to propagate. Do not
+create a false production incident to prove the timer. The current credential,
+plan, deployment and natural timer acceptance states belong in the protected
+continuity record, not an inferred success claim here.
+
+Rollback: redeploy with `--var ACA_TIMER_ENABLED:false`, then remove only this
+Worker's cron trigger if necessary (set `triggers.crons` to an empty array, not
+an omitted key). Native alerts and the original collector remain. To stop all
+collection during a database outage, disable the GitHub incident workflow as
+already documented. This timer still depends on GitHub API and runner uptime.
+
+Official references checked for this increment:
+https://developers.cloudflare.com/workers/platform/limits/
+https://developers.cloudflare.com/workers/platform/pricing/
+https://developers.cloudflare.com/workers/configuration/cron-triggers/
+https://developers.cloudflare.com/workers/wrangler/configuration/
+https://docs.github.com/en/rest/actions/workflows#create-a-workflow-dispatch-event
+
+## Proposed bounded backup retry: decision preview only (October 28)
+
+`backup-retry-preview.mjs` defines and tests a proposed decision policy. No
+production runner, workflow, database function or Cloudflare Worker imports it.
+It has no network, timer, dispatch, storage or database calls. Every result has
+`preview: true` and `retry_authorized: false`, including eligible candidates.
+There is no activation switch in this increment. The numeric limits below are
+proposals for founder review, not approved live settings.
+
+Proposed boundary: one extra full backup attempt after a temporary source-list
+or source-download failure, only while still in `source-snapshot`, with proof
+that no private-store operation began and local partial cleanup completed.
+Use existing owned SDK/transport evidence; provider text, copied failure JSON,
+generic HTTP 500, access, configuration, integrity, source-change, not-found,
+resource, history, private-read/write and retention failures cannot qualify.
+
+Proposed limits: one extra attempt per original run and per Bangkok calendar
+day; wait at least five minutes and honor any longer provider backoff; allow
+at most ten minutes for the additional attempt within the existing 30-minute
+workflow deadline. Preserve the current 2 GiB source and 2 GiB encrypted-upload
+bounds per attempt. A full restart can reread up to an additional 2 GiB of source
+data and upload up to 2 GiB encrypted data, plus the existing readback/recovery
+traffic and API calls. These are transfer bounds, not monetary billing caps.
+No extra retry follows an uncertain or failed additional attempt.
+
+The preview requires explicit runtime facts for the main-branch backup, original
+workflow attempt, enabled backup policy, healthy durable history, lock ownership,
+exactly one active backup, unused per-run allowance, source phase, no private
+operations, cleanup completion, deadline, credential expiry and provider backoff.
+Missing evidence denies the candidate. Credential validity must extend at least
+one hour beyond the additional attempt's deadline. The quota day is calculated
+for the intended retry start, including a cooldown crossing Bangkok midnight.
+
+Before live integration, add service-only durable atomic quota reservation and
+attempt/outcome history; unresolved claims must consume the allowance and block
+another attempt. Re-read policy, activity, provider backoff and budget after the
+wait. The existing runner does not yet supply these facts or enforce a separate
+retry deadline. Existing saved failure categories also omit HTTP status and
+Retry-After details: do not infer absent backoff as zero from them. Capture that
+bounded evidence at the actual source adapter before executing this proposal.
+The preview accepts supplied fixture facts to test decisions; it does not prove
+their provenance, atomic concurrency or runtime enforcement. All these remain
+required integration work after policy approval. The timer's GitHub token must
+remain restricted in code to incident diagnostics, never backup dispatch.
+
+All existing encryption, complete saved-copy recovery, original-hash checks,
+durable success, seven-copy retention, protected manual original and incident
+reconciliation gates remain required. No production failure or backup rerun is
+needed to test this preview. Run `node --test operations/backup-retry-preview.test.mjs`.
+
+## Approved retry limits: inactive integration (October 28)
+
+Terrence approved the limits above for implementation and integration testing.
+Live activation remains unapproved. `backup-retry.mjs` now connects owned manual
+failure evidence to fresh policy/history checks, a service-only atomic claim,
+a second policy check before starting, and a separate child process bounded to
+ten minutes. `liveRetryEnabled` remains a literal `false`; no environment value
+can enable it. The automatic runner preserves its single original attempt while
+this gate is off. The Cloudflare timer and its diagnostic-only token are unchanged.
+
+`backupSourceFetch` captures bounded Retry-After facts at the actual transport;
+malformed backoff blocks eligibility. `manualRetryEvidence` accepts only errors
+owned by the manual runner, after successful cleanup, and proves source phase,
+no private-store activity and the two existing 2 GiB limits. Saved error JSON
+cannot substitute for that in-memory evidence. The original workflow deadline
+is recorded before setup, conservatively leaving one minute inside its existing
+30-minute job timeout. The child deadline covers the extra complete copy and
+saved-copy recovery, not just the source download. Deadline kill waits for child
+exit; a killed attempt may leave its own local temporary files on the disposable
+runner, and partial encrypted remote objects remain for review as before.
+
+`backup-retry-schema.sql` is an unapplied integration candidate, not a production
+migration or activation. Its default is disabled. Unique Bangkok-day, original
+run and workflow-run keys prevent repeat allowance use; unresolved reservations
+also block attempts on later days. Neither failure nor an ambiguous response
+releases an allowance. Reservation and begin both validate current policy,
+credential margin, running activity and clock. The child must finish all recovery
+checks before completion can be recorded; the original automatic runner still
+validates success and performs its existing history/retention/reconciliation gates.
+
+`backup-retry-db-fixture.sql`, `backup-retry-acceptance.sql`, and
+`backup-retry-db-check.sh` are exclusively for a new disposable local/CI database.
+NEVER run the fixture against ACA production. The CI job uses PostgreSQL 17 and
+checks permissions, disabled defaults, quotas, backoff, deadlines and competing
+reservations. No real keys, private files, backup workflow dispatch or billed
+Supabase project is needed. Run `node --test operations/backup-retry.test.mjs`
+and `npm run test:recovery` for credential-free runtime tests.
+
+Before any production activation, review the exact passing CI revision, apply the
+reviewed schema through the established migration workflow, and explicitly approve
+changing the code gate and retry policy. Neither this PR nor its tests grants that
+activation authority. Preserve working backups, seven-copy retention, protected
+manual original, alerts, payments, learner access and curriculum.
+
+
+## Production rollout and activation approved (October 28)
+
+Terrence subsequently approved production rollout and live activation. PR 80's
+inactive integration was merged first. The reviewed retry schema was applied
+with its database policy still disabled, and service-only permissions and a
+rejected disabled reservation were verified without a live backup.
+
+The activation change sets `liveRetryEnabled` to `true`; the current service-only
+`aca_backup_automation.retry_enabled` policy must also be true before any claim.
+All earlier limits remain unchanged. Set only that database field to `false` for
+immediate rollback; ordinary backups, retention and the incident timer continue.
+Do not erase spent or unresolved retry history to restore an allowance.
+
+The schema in `backup-retry-schema.sql` remains the reviewed SQL source; its
+applied migration version is also recorded under `supabase/migrations`. Fixture
+scripts remain exclusively for disposable databases. CI and a configuration
+readback establish rollout and activation, not a demonstrated real retry. Await
+a naturally qualifying source failure; do not inject a production failure or
+manually rerun a backup merely to prove this feature.
+
+
+## Service-configuration recovery review (October 28)
+
+This is a metadata review and recovery procedure, not proof of a recovered site.
+No new project, deployment, restore, credential rotation, DNS update, webhook
+replay, payment, email or backup dispatch is part of this review. Later dated
+continuity entries supersede historical pending-status descriptions above.
+
+### Verified dependencies and open gaps
+
+| Dependency | Current evidence | Recovery requirement or gap |
+| --- | --- | --- |
+| Source | Authoritative GitHub main includes the approved retry rollout; preserve lockfile and a separately identified sandbox branch. | Record the exact source and compatible database migration point for the chosen backup. Do not blindly apply migrations already restored in it. |
+| Backend hosting | The `-mkvf` Vercel project owns the verified checkout custom domain; the similarly named project has only its default domain and no listed env entries. Both use Node 24. | Select the domain-owning project; do not recreate the other project as a second backend or change working projects. Preserve build/routes from `vercel.json`. |
+| Runtime configuration | Domain-owning project has 17 production entries, including 10 sensitive/write-only entries, plus separate sandbox branch overrides. | Names, types and scopes were read with decryption off. Values and owner-held recovery custody remain unverified. Do not export hidden values or reset credentials. |
+| Supabase | Existing project is healthy in us-west-1 on PostgreSQL 17. Private bucket limits/types were inspected; `aca-interest-list` Edge Function is active at version 8. | Database restoration and file-byte recovery have separate prior proof. Auth URLs, redirect allowlist, SMTP/provider settings, API-key custody and deployed Edge Function source parity still require configuration evidence. A database copy alone does not supply them. |
+| Payment provider | Existing enrollment/payment evidence remains preserved. | Stripe connection requires reauthentication; current account/mode, price IDs, webhook events and destinations were not independently rechecked. Preserve $129 founding and separate $50/$50/$49 pricing; do not recreate products or charge a payment. |
+| Operational email | Sending domain is verified, sending enabled/receiving disabled, tracking off. The enabled checkout Resend callback subscribes to sent/delivered/bounced/complained/suppressed/failed events. | Preserve public DKIM/SPF metadata and the callback definition; independently retained send keys and callback signing secret are not proven by their configured names. Never retrieve a signing secret merely to fill this record. |
+| R2 and incident timer | Existing Standard backup bucket has r2.dev disabled and no custom domains. Worker cron and dedicated secret name were read back. | Preserve the owner's independent backup-key custody and current bucket-scoped keys. Secret-name presence does not prove an independent recoverable copy. Do not broaden or rotate the timer token. |
+| Public DNS and monitoring | Repository CNAME identifies the public website; Vercel confirms checkout domain attachment. Existing continuity records demonstrate StatusCake setup and delivery. | Registrar/authoritative DNS export and current Auth configuration are not available through these reads. Runtime DNS lookup was unavailable; this is not evidence of an outage. Record current zone settings through authorized metadata access later. |
+
+### Recovery order with outbound activity held
+
+1. Identify the incident, chosen backup time, exact source revision and a separately
+   approved target. Preserve production. Obtain cost approval before creating any
+   billed target; the earlier temporary database-restore project was deleted and
+   must not be recreated as routine continuation.
+2. Before provisioning or executing recovered source, establish containment.
+   A restored database can retain enabled backup/retry, incident, newsletter and
+   maintenance policy rows. Set the **isolated target's** operational policies off
+   before attaching any runner or sender. Disable copied GitHub workflows, remove
+   cron triggers from the recovery deployment configuration, keep the Worker held
+   with no cron, and omit live payment, sending, webhook and DNS connections.
+   Never perform these containment changes against the healthy production system.
+3. Restore the database only into the approved target using the established
+   outbound-extension/trigger preflight. Validate schema/migration compatibility,
+   operational relationships, owner/learner permissions and disabled task policies.
+4. Recover the separately encrypted files to a new private local destination and
+   compare every original hash. Recreate approved private bucket limits/MIME types
+   in the target only when authorized. Do not overwrite source objects or the
+   protected manual baseline. This remains distinct from a complete live service.
+5. Rebuild hosting from locked source with target-specific configuration. Check
+   every production fallback in portal and backend source: the frontend defaults
+   reference the production Supabase project and checkout host, and backup/incident
+   utilities intentionally restrict their source project. Setting three VITE_*
+   overrides or copying `recovery.env.example` is not sufficient proof of isolation.
+   A new target needs a separately reviewed compatible implementation before use.
+6. Reconfigure target Auth URL/redirects, SMTP/provider settings, required Edge
+   Functions and safe application URLs from verified records. Keep private keys in
+   their original approved scopes and separate production from sandbox overrides.
+   Verify matching source for deployed functions; do not assume a repository copy
+   equals the deployed version merely because their function names match.
+7. Validate readiness, rejection of unauthenticated owner access, owner/learner
+   permissions and safe URL routing against the contained target. No real customer
+   account, welcome-media playback or full recovered service is implied by metadata.
+8. Only after explicit cutover authority, recheck current Stripe account/mode and
+   price/webhook definitions, the sending domain/callback, DNS ownership/targets and
+   monitoring. Reconnect each dependency in a controlled order. Enabling payment,
+   email, schedules, timer collection, backups, retries and retention are distinct
+   actions with their own authority and acceptance checks. Do not enable them by
+   importing the old policy rows or deploying an unchanged cron configuration.
+
+### Owner-held credential check and next continuation
+
+For each configured backend key/signing secret, backup master key, bucket key,
+StatusCake token, dedicated timer token, registrar account and provider recovery
+method, confirm that the owner can retrieve the current recovery material from
+independent secure records. Record only confirmed/unconfirmed custody and a
+non-secret owner-chosen locator. Do not request values in chat, copy them into this
+public repository, or regard existing deployment secrets as their own backup.
+Previous confirmations of backup-master-key custody remain valid; do not ask for
+that completed setup again. The other groups' independent custody is unconfirmed.
+
+Next: reconnect the existing Stripe plugin to complete the blocked read-only
+payment configuration check; obtain a names/status-only Auth and DNS configuration
+record through an authorized interface; confirm remaining independent credential
+custody. This does not authorize a new restore target or a production cutover.
+
+Official references checked for this review:
+https://supabase.com/docs/guides/platform/clone-project
+https://vercel.com/docs/environment-variables/sensitive-environment-variables
+https://vercel.com/docs/cron-jobs/manage-cron-jobs

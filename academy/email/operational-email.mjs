@@ -35,7 +35,7 @@ export async function sendOperationalEmail(config, message) {
     to: recipient,
     subject: message.subject,
     html: message.html,
-  }, { idempotencyKey: message.eventKey })
+  }, { idempotencyKey: message.providerIdempotencyKey || message.eventKey })
 
   if (result.error) {
     const lastError = failureMessage(result)
