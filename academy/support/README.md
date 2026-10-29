@@ -133,3 +133,9 @@ send its `/learn/?course=phase-two` entrance. Existing memberships cannot be
 reassigned by another purchase. Invoice reconciliation uses the saved plan total
 and dates; Phase One payment amounts remain unchanged. The installment table
 accepts only the approved $149/$199 totals and their corresponding next amounts.
+
+Phase Two late-payment reconciliation distinguishes its equal $66 installments
+using the paid invoice line's billed service-period start, not the invoice's
+summary `period_start` (which can describe the preceding invoice period). If the
+third installment is paid while the second remains unpaid, the remaining due
+date stays the second installment's original date.
