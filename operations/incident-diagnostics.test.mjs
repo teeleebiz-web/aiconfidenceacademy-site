@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {coordinate,validatePolicy,validateMonitor,parseAlerts,probe,statusCakeReader,targets} from './incident-diagnostics.mjs'
+import {coordinate,validatePolicy,validateMonitor,parseAlerts,probe,statusCakeReader,targets,incidentFailureLabel} from './incident-diagnostics.mjs'
 const time='2026-10-27T10:00:00.000Z',policy={enabled:true,activated_at:'2026-10-27T09:00:00Z',monitors:{website:'1',backend:'2'},contact_group:'3'}
 const copy=x=>structuredClone(x)
 const healthy=role=>({code:200,ready:true,readiness:role==='backend'?'ok':null,error:null})
@@ -74,4 +74,10 @@ test('live checks discard provider error bodies and require the exact readiness 
  assert.equal((await probe('backend',{fetcher:async()=>new Response('{"service":"other","status":"ok"}')})).ready,false)
  const fail=await probe('website',{fetcher:async()=>new Response('secret private error body',{status:500})});assert.doesNotMatch(JSON.stringify(fail),/secret|private/)
  await assert.rejects(()=>probe('http://attacker.test'))
+})
+
+test('public failure labels are fixed and never contain arbitrary provider or credential text',()=>{
+ assert.equal(incidentFailureLabel(new Error('Monitoring configuration needs review')),'monitor_configuration')
+ assert.equal(incidentFailureLabel(new Error('Monitoring history needs pagination review')),'monitor_history_pagination')
+ for(const error of [new Error('Bearer secret-token; response contains a private email'),new Error('Monitoring configuration needs review: private payload'),{message:'Monitoring configuration needs review'},null])assert.equal(incidentFailureLabel(error),'unclassified_failure')
 })

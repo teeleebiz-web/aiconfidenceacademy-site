@@ -141,3 +141,27 @@ export async function coordinate({readPolicy,store,readProvider,mirror,heartbeat
   try{await heartbeat({checked_at:time,status:synchronized?'completed':'sync_pending'})}catch{synchronized=false}
   return {held:false,synchronized}
 }
+
+// Only reviewed, fixed labels reach public workflow logs. Never include the
+// underlying provider response, credential, identifier or arbitrary error text.
+const failureLabels = new Map([
+  ['Private incident record could not be read', 'private_storage_read'],
+  ['Private incident record is invalid', 'private_state_validation'],
+  ['Private coordinator state needs review', 'private_state_validation'],
+  ['Private incident record could not be saved', 'private_storage_write'],
+  ['Private incident readback did not match', 'private_storage_readback'],
+  ['Coordinator policy is unavailable', 'policy_unavailable'],
+  ['Coordinator policy is invalid', 'policy_validation'],
+  ['Coordinator activation is invalid', 'policy_validation'],
+  ['Monitoring API access is missing', 'monitor_credentials'],
+  ['Monitoring API read failed', 'monitor_api_read'],
+  ['Monitoring API response is invalid', 'monitor_response_validation'],
+  ['Monitoring configuration needs review', 'monitor_configuration'],
+  ['Monitoring history needs pagination review', 'monitor_history_pagination'],
+  ['Monitoring alert is invalid', 'monitor_alert_validation'],
+  ['Open incident evidence is missing', 'incident_evidence_missing'],
+  ['Private incident synchronization needs review', 'incident_synchronization'],
+])
+export function incidentFailureLabel(error) {
+  return error instanceof Error ? failureLabels.get(error.message) || 'unclassified_failure' : 'unclassified_failure'
+}
