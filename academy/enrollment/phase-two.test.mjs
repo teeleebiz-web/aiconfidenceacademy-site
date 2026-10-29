@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import {Readable} from 'node:stream'
 import {handleInstallmentCheckout, handlePaidInFullCheckout, attachApprovedInstallmentSchedule, installmentConfirmationHtml} from './installment-plan.mjs'
 import {phaseTwoConfig, installmentAmounts} from './offers.mjs'
-const request = (raw='termsAccepted=yes&policyVersion=2026-10-28') => Object.assign(Readable.from([raw]),{method:'POST',headers:{origin:'https://aca.example'}})
+const request = (raw='termsAccepted=yes&policyVersion=2026-10-29') => Object.assign(Readable.from([raw]),{method:'POST',headers:{origin:'https://aca.example'}})
 const response = () => ({writeHead(status,headers){this.status=status;this.headers=headers},end(value){this.value=value}})
 const options = ({published=true,cohort=true,wrongPrice=false,taxBehavior='inclusive'}={}) => {
  const calls=[]
@@ -40,5 +40,14 @@ test('Phase Two stops its weekly schedule after $67, $66, $66',async()=>{
 test('Phase Two rejects tax-exclusive prices before creating checkout',async()=>{
  for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout]){
   const {config,calls}=options({taxBehavior:'exclusive'}),res=response();await handler(request(),res,config);assert.equal(res.status,502);assert.equal(calls.length,0)
+ }
+})
+
+test('Phase Two preserves the exact accepted disclosure version and rejects the Phase One legacy bundle',async()=>{
+ for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout]){
+  for(const version of ['2026-10-29','2026-10-28']){
+   const {config,calls}=options(),res=response();await handler(request(`termsAccepted=yes&policyVersion=${version}`),res,config);assert.equal(res.status,303);assert.equal(calls[0].metadata.aca_policy_version,version)
+  }
+  const {config,calls}=options(),res=response();await handler(request('termsAccepted=yes&policyVersion=2026-10-17'),res,config);assert.equal(res.status,400);assert.equal(calls.length,0)
  }
 })

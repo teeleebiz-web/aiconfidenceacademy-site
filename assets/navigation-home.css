@@ -1,1 +1,7 @@
 @media (min-width: 1051px) { .nav { gap: clamp(12px, 1.5vw, 22px); } }
+
+/* Public pages share one keyboard bypass and comfortably sized mobile menu. */
+.skip-link { position: fixed; top: 12px; left: 12px; z-index: 2000; transform: translateY(-200%); padding: 12px 18px; border: 2px solid #B48632; border-radius: 4px; background: #102D4F; color: #FFFDF9; font-weight: 700; }
+.skip-link:focus { transform: translateY(0); outline: 3px solid #B48632; outline-offset: 3px; }
+#main-content { scroll-margin-top: 100px; }
+.menu-button { min-height: 44px; min-width: 44px; }

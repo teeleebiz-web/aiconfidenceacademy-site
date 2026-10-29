@@ -1,4 +1,4 @@
-import {answers,findAnswers} from './support-knowledge.js'
+import {answers,findAnswers} from './support-knowledge.js?v=20261029-disclosures'
 const endpoint='https://checkout.aiconfidenceacademy.org/api/support/cases'
 const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n}
 const list=document.getElementById('help-results'),question=document.getElementById('help-question')

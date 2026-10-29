@@ -115,3 +115,11 @@ test('Vercel parsed form bodies retain acceptance before checkout',async()=>{
  await handlePaidInFullCheckout(req,res,{appUrl:'https://aca.example',phaseOnePriceId:'p',stripe:{prices:{retrieve:async()=>({active:true,currency:'usd',unit_amount:12900,type:'one_time'})},checkout:{sessions:{create:async()=>({url:'https://checkout.stripe.test/example'})}}}})
  assert.equal(res.status,303)
 })
+
+test('Phase One retains current and previously released disclosure versions without changing its installment total',async()=>{
+ for(const version of ['2026-10-29','2026-10-28','2026-10-17']){
+  let payload;const req=Object.assign(Readable.from([`termsAccepted=yes&policyVersion=${version}`]),{method:'POST',headers:{origin:'https://aca.example'}}),res=response()
+  await handleInstallmentCheckout(req,res,{stripe:{checkout:{sessions:{create:async value=>{payload=value;return {url:'https://checkout.stripe.test/session'}}}}},installment50PriceId:'price_50',installment49PriceId:'price_49',courseId:'course',appUrl:'https://aca.example'})
+  assert.equal(res.status,303);assert.equal(payload.metadata.aca_policy_version,version);assert.equal(payload.subscription_data.metadata.aca_total_cents,'14900')
+ }
+})
