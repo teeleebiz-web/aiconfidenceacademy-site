@@ -27,7 +27,7 @@ const logCheckoutFailure = (mode, error) => {
   })
 }
 
-export const enrollmentPolicyVersion = '2026-10-28'
+export const enrollmentPolicyVersion = '2026-10-29'
 async function agreement(req, config) {
   try {
     let raw = ''
@@ -36,7 +36,7 @@ async function agreement(req, config) {
     if (raw.length > 4096) return null
     const values = new URLSearchParams(raw)
     const version = values.get('policyVersion')
-    const acceptedVersions = config?.phaseNumber === 2 ? [enrollmentPolicyVersion] : [enrollmentPolicyVersion, '2026-10-17']
+    const acceptedVersions = config?.phaseNumber === 2 ? [enrollmentPolicyVersion, '2026-10-28'] : [enrollmentPolicyVersion, '2026-10-28', '2026-10-17']
     if (values.get('termsAccepted') !== 'yes' || !acceptedVersions.includes(version)) return null
     return { aca_policy_version: version, aca_terms_accepted_at: new Date().toISOString() }
   } catch { return null }
@@ -59,7 +59,7 @@ export async function handleInstallmentCheckout(req, res, config) {
   if (!accepted) return json(res, 400, { error: 'Review and accept the current Terms, Privacy Policy, and Refund Policy on the enrollment page.' })
 
   try {
-    if (!await checkEnrollmentOpen(config)) return json(res, 503, { error: 'Phase Two enrollment is not open yet. No payment has been taken.' })
+    if (!await checkEnrollmentOpen(config)) return json(res, 503, { error: 'Phase Two enrollment is closed. No payment has been taken.' })
     if (offer.phaseNumber === 2) {
       for (const [index, id] of offer.priceIds.entries()) {
         const price = await config.stripe.prices.retrieve(id)
@@ -110,7 +110,7 @@ export async function handlePaidInFullCheckout(req, res, config) {
   const accepted = await agreement(req, config)
   if (!accepted) return json(res, 400, { error: 'Review and accept the current Terms, Privacy Policy, and Refund Policy on the enrollment page.' })
   try {
-    if (!await checkEnrollmentOpen(config)) return json(res, 503, { error: 'Phase Two enrollment is not open yet. No payment has been taken.' })
+    if (!await checkEnrollmentOpen(config)) return json(res, 503, { error: 'Phase Two enrollment is closed. No payment has been taken.' })
     const price = await config.stripe.prices.retrieve(priceId)
     if (!price.active || price.currency !== 'usd' || price.unit_amount !== offer.paidInFullAmount || price.type !== 'one_time' || (offer.phaseNumber === 2 && price.tax_behavior !== 'inclusive')) {
       throw new Error('The approved pay-in-full price is not configured')

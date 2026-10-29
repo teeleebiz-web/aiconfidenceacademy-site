@@ -67,7 +67,7 @@ main.phase-two-overview > .phase-two-hero {
 .phase-two-overview .phase-two-takeaways strong { margin-bottom: 5px; line-height: 1.5; }
 .phase-two-overview .phase-two-readiness { background: var(--mist); }
 .phase-two-overview .phase-two-readiness .phase-two-actions { margin-top: 28px; }
-.phase-two-overview .phase-two-prose .phase-two-availability { margin: 18px 0 0; font-size: 13px; }
+.phase-two-overview .phase-two-prose .phase-two-availability { margin: 18px 0 0; font-size: 16px; }
 .phase-two-overview a:focus-visible { outline: 3px solid var(--navy); outline-offset: 5px; }
 @media (max-width: 900px) {
   .phase-two-overview .phase-two-value-grid,

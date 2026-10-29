@@ -3,7 +3,7 @@ import { dirname } from 'node:path'
 
 const data = JSON.parse(await readFile(new URL('./public-hub.json', import.meta.url), 'utf8'))
 const source = await readFile('library/index.html', 'utf8')
-const shell = /^([\s\S]*?<main>)[\s\S]*?(<\/main>[\s\S]*)$/.exec(source)
+const shell = /^([\s\S]*?<main(?:\s[^>]*)?>)[\s\S]*?(<\/main>[\s\S]*)$/.exec(source)
 if (!shell) throw new Error('The Academy public site shell was not found')
 const esc = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 const articleBySlug = new Map(data.articles.map(item => [item.slug, item]))
