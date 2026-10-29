@@ -1,42 +1,14 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "npm ci",
-  "buildCommand": "npm run build:site",
+  "buildCommand": "mkdir -p vercel-public",
   "outputDirectory": "vercel-public",
   "functions": {
     "api/site.mjs": {
-      "includeFiles": "private-dist/**",
       "maxDuration": 60
     }
   },
-  "crons": [
-    {
-      "path": "/api/operations/maintenance",
-      "schedule": "0 21 * * *"
-    },
-    {
-      "path": "/api/email/newsletter-maintenance",
-      "schedule": "0 18 * * *"
-    },
-    {
-      "path": "/api/enrollment/installment-maintenance",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/email/lesson-release-maintenance",
-      "schedule": "0 16 * * *"
-    }
-  ],
   "routes": [
-    {
-      "src": "^/api/bookstore/([^/]+)/?$",
-      "dest": "/api/bookstore.mjs?route=$1"
-    },
-    {
-      "src": "^/$",
-      "dest": "/api/site.mjs?__aca_path=index.html"
-    },
     {
       "src": "^/(.*)$",
       "dest": "/api/site.mjs?__aca_path=$1"
