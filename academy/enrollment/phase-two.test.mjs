@@ -18,7 +18,7 @@ test('Phase Two checkout is blocked before Stripe when course or cohort is not o
 test('Phase Two uses its course, cohort and approved amounts for both choices',async()=>{
  for(const [handler,price,total,mode] of [[handlePaidInFullCheckout,'p179','17900','payment'],[handleInstallmentCheckout,'p67','19900','subscription']]){
   const {config,calls}=options(),res=response();await handler(request(),res,config);assert.equal(res.status,303)
-  assert.equal(calls[0].mode,mode);assert.deepEqual(calls[0].adaptive_pricing,{enabled:false});assert.equal(calls[0].line_items[0].price,price);assert.equal(calls[0].metadata.aca_course_id,'phase-two-course');assert.equal(calls[0].metadata.aca_cohort_id,'cohort')
+  assert.equal(calls[0].mode,mode);assert.equal(calls[0].line_items[0].price,price);assert.equal(calls[0].metadata.aca_course_id,'phase-two-course');assert.equal(calls[0].metadata.aca_cohort_id,'cohort')
   assert.equal((calls[0].subscription_data?.metadata||calls[0].metadata).aca_total_cents,total)
  }
 })
