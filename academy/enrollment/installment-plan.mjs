@@ -68,7 +68,6 @@ export async function handleInstallmentCheckout(req, res, config) {
     }
     const session = await config.stripe.checkout.sessions.create({
       mode: 'subscription',
-      ...(offer.phaseNumber === 2 ? { adaptive_pricing: { enabled: false } } : {}),
       integration_identifier: `aca_${offer.planPrefix}_${integrationSuffix}`,
       line_items: [{ price: offer.priceIds[0], quantity: 1 }],
       success_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=success`,
@@ -118,7 +117,6 @@ export async function handlePaidInFullCheckout(req, res, config) {
     }
     const session = await config.stripe.checkout.sessions.create({
       mode: 'payment',
-      ...(offer.phaseNumber === 2 ? { adaptive_pricing: { enabled: false } } : {}),
       integration_identifier: `aca_${offer.planPrefix}_${integrationSuffix}`,
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=success`,
