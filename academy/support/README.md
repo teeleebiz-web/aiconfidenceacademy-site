@@ -101,6 +101,15 @@ Phase Two pay-in-full $179 versus $67/$66/$66 ($199 total). Every new enrollee
 qualifies for the $20 pay-in-full saving; no special eligibility or code is needed.
 Keep legacy Phase One Stripe price IDs and checkout records fulfillable.
 
+Phase Two prices used for checkout must have `tax_behavior: inclusive`. Its
+Checkout Sessions explicitly disable Adaptive Pricing so their charged totals
+remain USD $179, or USD $67/$66/$66. This preserves the exact totals validated
+by enrollment fulfillment, including when the buyer is outside the United States.
+Do not change account-wide tax/currency settings or Phase One checkout behavior.
+Stripe cannot change an already exclusive price to inclusive: create dedicated
+Phase Two replacement prices and update only its server-owned price IDs after
+approval. Keep Phase Two closed until those IDs and sandbox acceptance pass.
+
 Phase Two routes are `/api/enrollment/phase-two/paid-in-full` and
 `/api/enrollment/phase-two/installments`. Configure the existing course through
 `ACA_PHASE_TWO_COURSE_ID`, its approved active cohort through

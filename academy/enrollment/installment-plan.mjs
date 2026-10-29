@@ -63,11 +63,12 @@ export async function handleInstallmentCheckout(req, res, config) {
     if (offer.phaseNumber === 2) {
       for (const [index, id] of offer.priceIds.entries()) {
         const price = await config.stripe.prices.retrieve(id)
-        if (!price.active || price.currency !== 'usd' || price.unit_amount !== offer.amounts[index] || price.recurring?.interval !== 'week' || price.recurring?.interval_count !== 1) throw new Error('The approved weekly installment prices are not configured')
+        if (!price.active || price.currency !== 'usd' || price.unit_amount !== offer.amounts[index] || price.tax_behavior !== 'inclusive' || price.recurring?.interval !== 'week' || price.recurring?.interval_count !== 1) throw new Error('The approved weekly installment prices are not configured')
       }
     }
     const session = await config.stripe.checkout.sessions.create({
       mode: 'subscription',
+      ...(offer.phaseNumber === 2 ? { adaptive_pricing: { enabled: false } } : {}),
       integration_identifier: `aca_${offer.planPrefix}_${integrationSuffix}`,
       line_items: [{ price: offer.priceIds[0], quantity: 1 }],
       success_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=success`,
@@ -112,11 +113,12 @@ export async function handlePaidInFullCheckout(req, res, config) {
   try {
     if (!await checkEnrollmentOpen(config)) return json(res, 503, { error: 'Phase Two enrollment is not open yet. No payment has been taken.' })
     const price = await config.stripe.prices.retrieve(priceId)
-    if (!price.active || price.currency !== 'usd' || price.unit_amount !== offer.paidInFullAmount || price.type !== 'one_time') {
+    if (!price.active || price.currency !== 'usd' || price.unit_amount !== offer.paidInFullAmount || price.type !== 'one_time' || (offer.phaseNumber === 2 && price.tax_behavior !== 'inclusive')) {
       throw new Error('The approved pay-in-full price is not configured')
     }
     const session = await config.stripe.checkout.sessions.create({
       mode: 'payment',
+      ...(offer.phaseNumber === 2 ? { adaptive_pricing: { enabled: false } } : {}),
       integration_identifier: `aca_${offer.planPrefix}_${integrationSuffix}`,
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=success`,
