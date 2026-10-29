@@ -50,10 +50,12 @@ export default async function handler(req,res){
   return handleStripeEnrollment(cloned,res,config)
  }
  if(path!=='api/phase-two-acceptance')return json(res,404,{error:'Isolated Phase Two sandbox acceptance only'})
- if(!equal(req.headers.authorization,`Bearer ${process.env.ACA_PHASE_TWO_ACCEPTANCE_TOKEN}`))return json(res,401,{error:'Unauthorized'})
+ if(req.method==='GET'&&!req.headers.authorization){res.writeHead(200,{'Content-Type':'text/html','Cache-Control':'no-store','Content-Security-Policy':"default-src 'none'; form-action 'self'; base-uri 'none'"});return res.end('<!doctype html><title>Phase Two isolated sandbox test</title><h1>Phase Two isolated sandbox acceptance</h1><p>No real money. Disposable database only.</p><form method="post"><label>Test authorization <input name="token" type="password" required autocomplete="off"></label><label>Action <select name="action"><option value="start">Start checkouts</option><option value="status">Read results</option><option value="clock">Attach simulation clock</option><option value="advance">Advance simulation</option></select></label><label>Stage <select name="stage"><option>2</option><option>3</option><option>4</option></select></label><button>Run sandbox action</button></form>')}
+ let input=req.body||{};if(typeof input==='string')input=req.headers['content-type']?.includes('application/x-www-form-urlencoded')?Object.fromEntries(new URLSearchParams(input)):JSON.parse(input)
+ if(req.method==='POST'&&(!input||!input.action)){let raw='';for await(const c of req)raw+=c;input=raw?(req.headers['content-type']?.includes('application/x-www-form-urlencoded')?Object.fromEntries(new URLSearchParams(raw)):JSON.parse(raw)):{}}
+ if(!equal(req.headers.authorization||`Bearer ${input.token||''}`,`Bearer ${process.env.ACA_PHASE_TWO_ACCEPTANCE_TOKEN}`))return json(res,401,{error:'Unauthorized'})
+ if(input.stage)input.stage=Number(input.stage)
  const account=await stripe.accounts.retrieve();if(account.id!=='acct_1UGt8vISbjgQbMXE')throw Error('Wrong sandbox account')
- let input=req.body||{};if(typeof input==='string')input=JSON.parse(input)
- if(req.method==='POST'&&(!input||!input.action)){let raw='';for await(const c of req)raw+=c;input=raw?JSON.parse(raw):{}}
  let s=await state(db)
  if(req.method==='POST'&&input.action==='start'){
   if(!s.installment){
