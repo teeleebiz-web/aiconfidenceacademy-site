@@ -60,12 +60,12 @@ export function statusCakeReader(token, {fetcher=fetch,timeoutMs=10000,clock=Dat
     for(let page=0;page<maxAlertPages;page++){
       const value=await read(before)
       if(!Array.isArray(value?.data)||value.data.length>100)throw historyReview()
-      const rows=parseAlerts({...value,links:{next:null}},after??0)
+      const rows=parseAlerts({...value,links:{next:null}},after??0,clock(),id)
       if(before!==undefined&&rows.some(a=>Date.parse(a.at)>=before*1000))throw historyReview()
       for(const row of rows){
-        const normalized={id:row.id,status:row.status,triggered_at:row.at,status_code:row.code},previous=alerts.get(row.id)
+        const normalized={id:row.id,status:row.status,triggered_at:row.at,status_code:row.code},previous=alerts.get(row.event_key)
         if(previous&&JSON.stringify(previous)!==JSON.stringify(normalized))throw historyReview()
-        alerts.set(row.id,normalized)
+        alerts.set(row.event_key,normalized)
       }
       if(alerts.size>maxAlertEvents)throw historyReview()
       const next=value.links?.next
@@ -119,23 +119,26 @@ export function validateMonitor(role,id,value,policy) {
   return {status:d.status,paused:d.paused}
 }
 
-export function parseAlerts(value,after,now=Date.now()) {
+export function parseAlerts(value,after,now=Date.now(),expectedId) {
   if (!Array.isArray(value?.data) || value.data.length>maxAlertEvents || value.links?.next) throw new Error('Monitoring history needs pagination review')
   const seen=new Map()
   for(const a of value.data){
     // Report only fixed failure categories, never provider values or payloads.
     if (typeof a.id!=='string')throw new Error('Monitoring alert ID type is invalid')
     if (!/^\d+$/.test(a.id))throw new Error('Monitoring alert ID format is invalid')
+    if (expectedId!==undefined&&a.id!==expectedId)throw new Error('Monitoring alert check ID does not match')
     if (!['up','down'].includes(a.status))throw new Error('Monitoring alert status is invalid')
     if (!validDate(a.triggered_at))throw new Error('Monitoring alert time format is invalid')
     if (Date.parse(a.triggered_at)>now+300000)throw new Error('Monitoring alert time is in the future')
     if (Date.parse(a.triggered_at)<after*1000)throw new Error('Monitoring alert precedes requested window')
     const row={id:a.id,status:a.status,at:new Date(a.triggered_at).toISOString(),code:Number.isInteger(a.status_code)&&a.status_code>=0&&a.status_code<=599?a.status_code:null}
-    const previous=seen.get(a.id)
-    if(previous&&JSON.stringify(previous)!==JSON.stringify(row))throw new Error('Monitoring alert ID has conflicting records')
-    seen.set(a.id,row)
+    // StatusCake's id is the monitored check ID, not a unique alert ID.
+    row.event_key=digest(JSON.stringify([row.id,row.at,row.status]))
+    const previous=seen.get(row.event_key)
+    if(previous&&previous.code!==row.code)throw new Error('Monitoring alert ID has conflicting records')
+    seen.set(row.event_key,row)
   }
-  return [...seen.values()].sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)||a.id.localeCompare(b.id,undefined,{numeric:true}))
+  return [...seen.values()].sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)||a.status.localeCompare(b.status)||a.event_key.localeCompare(b.event_key))
 }
 
 export function classify(role,provider,samples) {
@@ -172,17 +175,23 @@ export async function coordinate({readPolicy,store,readProvider,mirror,heartbeat
     const id=policy.monitors[role],current=validateMonitor(role,id,await readProvider(id),policy)
     if(current.paused)continue
     const cursor=state.monitors[role] || {after:Math.floor(Date.parse(policy.activated_at)/1000),seen:[],open:null}
-    const alerts=parseAlerts(await readProvider(id,'alerts',Math.max(Math.floor(Date.parse(policy.activated_at)/1000),cursor.after-1)),Math.max(Math.floor(Date.parse(policy.activated_at)/1000),cursor.after-1),+now())
+    const alerts=parseAlerts(await readProvider(id,'alerts',Math.max(Math.floor(Date.parse(policy.activated_at)/1000),cursor.after-1)),Math.max(Math.floor(Date.parse(policy.activated_at)/1000),cursor.after-1),+now(),id)
     for(const alert of alerts){
       if(Date.parse(alert.at)<Date.parse(policy.activated_at))continue
-      if(cursor.seen.includes(alert.id))continue
+      if(cursor.seen.includes(alert.event_key))continue
       if(alert.status==='down'&&!cursor.open){
-        const report={id:digest(`${role}:${alert.id}`),role,source_at:alert.at,observed_at:time,resolved_at:null,status:'open',diagnosis:'monitor_disagreement',provider_status:current.status,source_code:alert.code,samples:null,repair_performed:false}
+        // Reuse retained legacy evidence for the same down transition. Old
+        // cursor entries used check IDs and must not suppress later alerts.
+        const existing=state.reports.find(r=>r.report.role===role&&r.report.source_at===alert.at)
+        if(existing){if(existing.report.status==='open')cursor.open=existing.report.id}
+        else{
+        const report={id:digest(`${role}:${alert.event_key}`),role,source_at:alert.at,observed_at:time,resolved_at:null,status:'open',diagnosis:'monitor_disagreement',provider_status:current.status,source_code:alert.code,samples:null,repair_performed:false}
         state.reports.push({report,synced:false});cursor.open=report.id
+        }
       }
       // Up events are not a recovery assertion by themselves. Current provider
       // status and two live checks must independently agree below.
-      cursor.seen.push(alert.id);cursor.seen=cursor.seen.slice(-200);cursor.after=Math.max(cursor.after,Math.floor(Date.parse(alert.at)/1000))
+      cursor.seen.push(alert.event_key);cursor.seen=cursor.seen.slice(-200);cursor.after=Math.max(cursor.after,Math.floor(Date.parse(alert.at)/1000))
     }
     if(cursor.open){
       const record=state.reports.find(r=>r.report.id===cursor.open)
@@ -226,6 +235,7 @@ const failureLabels = new Map([
   ['Monitoring alert ID type is invalid', 'monitor_alert_id_type'],
   ['Monitoring alert ID format is invalid', 'monitor_alert_id_format'],
   ['Monitoring alert status is invalid', 'monitor_alert_status'],
+  ['Monitoring alert check ID does not match', 'monitor_alert_check_mismatch'],
   ['Monitoring alert time format is invalid', 'monitor_alert_time_format'],
   ['Monitoring alert time is in the future', 'monitor_alert_time_future'],
   ['Monitoring alert precedes requested window', 'monitor_alert_time_before_window'],

@@ -1,12 +1,12 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {coordinate,validatePolicy,validateMonitor,parseAlerts,probe,statusCakeReader,targets,incidentFailureLabel} from './incident-diagnostics.mjs'
+import {coordinate,validatePolicy,validateMonitor,parseAlerts,probe,statusCakeReader,targets,incidentFailureLabel,digest} from './incident-diagnostics.mjs'
 const time='2026-10-27T10:00:00.000Z',policy={enabled:true,activated_at:'2026-10-27T09:00:00Z',monitors:{website:'1',backend:'2'},contact_group:'3'}
 const copy=x=>structuredClone(x)
 const healthy=role=>({code:200,ready:true,readiness:role==='backend'?'ok':null,error:null})
 const failed=()=>({code:503,ready:false,readiness:'unavailable',error:null})
 function fixture(){
- let saved=null,reachable=true,up=false,active=copy(policy),alerts=[{id:'10',status:'down',triggered_at:'2026-10-27T09:55:00Z',status_code:503}],mirrorUp=true,clock=time
+ let saved=null,reachable=true,up=false,active=copy(policy),alerts=[{id:'2',status:'down',triggered_at:'2026-10-27T09:55:00Z',status_code:503}],mirrorUp=true,clock=time
  const evidence=[],mirrors=[],writes=[]
  const options={
   now:()=>new Date(clock),pause:async()=>{},
@@ -16,7 +16,7 @@ function fixture(){
   check:async role=>role==='backend'&&!up?failed():healthy(role),
   mirror:async value=>{if(!mirrorUp)throw Error('database offline');mirrors.push(copy(value))},heartbeat:async()=>{if(!mirrorUp)throw Error('offline')},
  }
- return {options,evidence,mirrors,writes,get state(){return copy(saved)},offline(){reachable=false;mirrorUp=false},online(){reachable=true;mirrorUp=true},recover(){up=true;clock='2026-10-27T10:15:00Z';alerts=[...alerts,{id:'11',status:'up',triggered_at:'2026-10-27T10:12:00Z',status_code:200}]},disable(){active={enabled:false}},invalid(){active={enabled:true}},changeAlerts(v){alerts=v}}
+ return {options,evidence,mirrors,writes,get state(){return copy(saved)},offline(){reachable=false;mirrorUp=false},online(){reachable=true;mirrorUp=true},recover(){up=true;clock='2026-10-27T10:15:00Z';alerts=[...alerts,{id:'2',status:'up',triggered_at:'2026-10-27T10:12:00Z',status_code:200}]},disable(){active={enabled:false}},invalid(){active={enabled:true}},changeAlerts(v){alerts=v}}
 }
 test('verified event produces a private diagnostic record with fixed samples, not a claimed repair',async()=>{
  const f=fixture();const result=await coordinate(f.options)
@@ -31,7 +31,7 @@ test('repeated provider alerts keep one incident and recovery needs current prov
  assert.equal(r.status,'recovered');assert.equal(r.resolved_at,'2026-10-27T10:15:00.000Z');assert.equal(r.repair_performed,false)
 })
 test('an up alert cannot close an incident while the provider and readiness checks still fail',async()=>{
- const f=fixture();f.changeAlerts([{id:'10',status:'down',triggered_at:'2026-10-27T09:55:00Z',status_code:503},{id:'11',status:'up',triggered_at:'2026-10-27T09:58:00Z',status_code:200}]);await coordinate(f.options);assert.equal(f.state.reports[0].report.status,'open')
+ const f=fixture();f.changeAlerts([{id:'2',status:'down',triggered_at:'2026-10-27T09:55:00Z',status_code:503},{id:'2',status:'up',triggered_at:'2026-10-27T09:58:00Z',status_code:200}]);await coordinate(f.options);assert.equal(f.state.reports[0].report.status,'open')
 })
 test('cached policy and encrypted outbox continue collecting when the ACA database is unavailable, then synchronize',async()=>{
  const f=fixture();await coordinate(f.options);f.offline();f.recover();let r=await coordinate(f.options)
@@ -44,7 +44,7 @@ test('disabled or invalid fresh policy fails closed; a missing initial policy ca
 })
 test('activation excludes earlier events even within the same second',async()=>{
  const f=fixture();f.options.readPolicy=async()=>({...policy,activated_at:'2026-10-27T09:00:00.500Z'})
- f.changeAlerts([{id:'1',status:'down',triggered_at:'2026-10-27T09:00:00.000Z',status_code:500},{id:'2',status:'down',triggered_at:'2026-10-27T09:00:01.000Z',status_code:503}])
+ f.changeAlerts([{id:'2',status:'down',triggered_at:'2026-10-27T09:00:00.000Z',status_code:500},{id:'2',status:'down',triggered_at:'2026-10-27T09:00:01.000Z',status_code:503}])
  await coordinate(f.options);assert.equal(f.state.reports.length,1);assert.equal(f.state.reports[0].report.source_at,'2026-10-27T09:00:01.000Z')
 })
 test('confirmation rounds exceed the readiness cache and paused monitors are skipped',async()=>{
@@ -83,14 +83,14 @@ test('public failure labels are fixed and never contain arbitrary provider or cr
 })
 
 test('alert pagination preserves the activation lower bound and every boundary-second event',async()=>{
- const events=Array.from({length:150},(_,i)=>({id:String(i+1),status:i%2?'up':'down',status_code:i%2?200:503,triggered_at:new Date((1000+i)*1000).toISOString()})),calls=[]
+ const events=Array.from({length:150},(_,i)=>({id:'1',status:i%2?'up':'down',status_code:i%2?200:503,triggered_at:new Date((1000+i)*1000).toISOString()})),calls=[]
  const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async(url,options)=>{
   calls.push({url,options});const u=new URL(url),after=Number(u.searchParams.get('after')),before=Number(u.searchParams.get('before')??Infinity)
   const rows=events.filter(a=>Date.parse(a.triggered_at)/1000>after&&Date.parse(a.triggered_at)/1000<before).reverse().slice(0,100)
   return new Response(JSON.stringify({data:rows,links:{next:rows.length?'https://api.statuscake.com/v1/uptime/1/alerts?before='+Date.parse(rows.at(-1).triggered_at)/1000:null}}))
  }})
  const result=await reader('1','alerts',999)
- assert.equal(result.data.length,150);assert.equal(new Set(result.data.map(a=>a.id)).size,150);assert.equal(result.links.next,null);assert.equal(calls.length,3)
+ assert.equal(result.data.length,150);assert.equal(new Set(result.data.map(a=>a.triggered_at+':'+a.status)).size,150);assert.equal(result.links.next,null);assert.equal(calls.length,3)
  assert.ok(calls.every(c=>new URL(c.url).searchParams.get('after')==='999'&&c.options.method==='GET'&&c.options.redirect==='error'))
  assert.equal(new URL(calls[1].url).searchParams.get('before'),'1051')
 })
@@ -109,16 +109,16 @@ test('empty final pages and missing next links complete history without inventin
 })
 test('conflicting duplicate events and a full same-second boundary fail without losing the cursor',async()=>{
  let calls=0;const row={id:'1',status:'down',triggered_at:'2026-10-27T09:55:00Z'},boundary=Date.parse(row.triggered_at)/1000
- const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>new Response(JSON.stringify({data:[{...row,status:++calls===1?'down':'up'}],links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+boundary}}))})
+ const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>new Response(JSON.stringify({data:[{...row,status_code:++calls===1?503:500}],links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+boundary}}))})
  await assert.rejects(()=>reader('1','alerts',1),/pagination review/);assert.equal(calls,2)
- let sameCalls=0;const same=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>{sameCalls++;return new Response(JSON.stringify({data:Array.from({length:100},(_,i)=>({...row,id:String(i+1)})),links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+boundary}}))}})
+ let sameCalls=0;const same=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>{sameCalls++;return new Response(JSON.stringify({data:Array.from({length:100},()=>({...row})),links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+boundary}}))}})
  await assert.rejects(()=>same('1','alerts',1),/pagination review/);assert.equal(sameCalls,2)
  const f=fixture();f.options.readProvider=async()=>{throw Error('Monitoring history needs pagination review')}
  await assert.rejects(()=>coordinate(f.options),/pagination review/);assert.deepEqual(f.state.monitors,{});assert.equal(f.mirrors.length,0)
 })
 test('pagination stops at its page and elapsed-time budgets',async()=>{
  let calls=0;const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>{
-  calls++;const second=2000-calls*2;return new Response(JSON.stringify({data:[{id:String(calls),status:'down',triggered_at:new Date(second*1000).toISOString()}],links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+second}}))
+  calls++;const second=2000-calls*2;return new Response(JSON.stringify({data:[{id:'1',status:'down',triggered_at:new Date(second*1000).toISOString()}],links:{next:'https://api.statuscake.com/v1/uptime/1/alerts?before='+second}}))
  }})
  await assert.rejects(()=>reader('1','alerts',1),/pagination review/);assert.equal(calls,10)
  let ticks=0,requests=0;const expired=statusCakeReader('fixture-token-not-a-real-key',{clock:()=>++ticks===1?0:30001,fetcher:async()=>{requests++;throw Error('must not run')}})
@@ -143,14 +143,14 @@ test('alert validation identifies a fixed failing check without logging provider
   assert.doesNotMatch(error.message,/private-(?:id|status|time)-value/)
  }
  assert.equal(parseAlerts({data:[row,{...row}]},0,Date.parse(time)).length,1)
- assert.throws(()=>parseAlerts({data:[row,{...row,status:'up'}]},0,Date.parse(time)),e=>incidentFailureLabel(e)==='monitor_alert_conflict')
+ assert.throws(()=>parseAlerts({data:[row,{...row,status_code:500}]},0,Date.parse(time)),e=>incidentFailureLabel(e)==='monitor_alert_conflict')
  assert.equal(incidentFailureLabel(new Error('Monitoring alert status is invalid: private-response')),'unclassified_failure')
  assert.equal(parseAlerts({data:[row]},0,Date.parse(time)).length,1)
 })
 
 
 test('repeated identical IDs on a full page preserve every boundary-second event',async()=>{
- const event=(id,second)=>({id:String(id),status:'down',status_code:503,triggered_at:new Date(second*1000).toISOString()})
+ const event=(id,second)=>({id:'1',status:'down',status_code:503,triggered_at:new Date(second*1000).toISOString()})
  const events=Array.from({length:150},(_,i)=>event(i+1,1000+i))
  events.push(event(151,1051))
  const raw=[...events,{...events[124]}].sort((a,b)=>Date.parse(b.triggered_at)-Date.parse(a.triggered_at)||Number(b.id)-Number(a.id)),calls=[]
@@ -160,18 +160,60 @@ test('repeated identical IDs on a full page preserve every boundary-second event
   return new Response(JSON.stringify({data,links:{next:data.length?'https://api.statuscake.com/v1/uptime/1/alerts?before='+Date.parse(data.at(-1).triggered_at)/1000:null}}))
  }})
  const result=await reader('1','alerts',999)
- assert.equal(result.data.length,151);assert.equal(new Set(result.data.map(a=>a.id)).size,151)
- assert.ok(result.data.some(a=>a.id==='52'));assert.ok(result.data.some(a=>a.id==='151'))
+ assert.equal(result.data.length,150);assert.equal(new Set(result.data.map(a=>a.triggered_at+':'+a.status)).size,150)
+ assert.ok(result.data.some(a=>Date.parse(a.triggered_at)===1051*1000))
  assert.equal(new URL(calls[1]).searchParams.get('before'),'1052');assert.equal(calls.length,3)
 })
 
 test('conflicting duplicate records on the same provider page stop collection',async()=>{
- const row={id:'10',status:'down',status_code:503,triggered_at:'2026-10-27T09:55:00Z'}
- for(const change of [{status:'up'},{status_code:500},{triggered_at:'2026-10-27T09:56:00Z'}]){
+ const row={id:'1',status:'down',status_code:503,triggered_at:'2026-10-27T09:55:00Z'}
+ for(const change of [{status_code:500}]){
   const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>new Response(JSON.stringify({data:[row,{...row,...change}],links:{next:null}}))})
   await assert.rejects(()=>reader('1','alerts',0),e=>incidentFailureLabel(e)==='monitor_alert_conflict')
  }
- const f=fixture();f.changeAlerts([row,{...row,status:'up'}])
+ const f=fixture();f.changeAlerts([{...row,id:'2'},{...row,id:'2',status_code:500}])
  await assert.rejects(()=>coordinate(f.options),e=>incidentFailureLabel(e)==='monitor_alert_conflict')
  assert.deepEqual(f.state.monitors,{});assert.equal(f.mirrors.length,0);assert.equal(f.evidence.length,0)
+})
+
+
+test('provider check ID is shared across distinct alerts and event identity survives paging and replay',async()=>{
+ const rows=[{id:'1',status:'down',status_code:503,triggered_at:'2026-10-27T09:55:00Z'},{id:'1',status:'up',status_code:200,triggered_at:'2026-10-27T09:58:00Z'}]
+ const parsed=parseAlerts({data:rows},0,Date.parse(time),'1')
+ assert.equal(parsed.length,2);assert.notEqual(parsed[0].event_key,parsed[1].event_key)
+ assert.equal(parseAlerts({data:[rows[0],{...rows[0],triggered_at:'2026-10-27T09:55:00+00:00'}]},0,Date.parse(time),'1').length,1)
+ assert.throws(()=>parseAlerts({data:rows},0,Date.parse(time),'2'),e=>incidentFailureLabel(e)==='monitor_alert_check_mismatch')
+ const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>new Response(JSON.stringify({data:rows,links:{next:null}}))})
+ assert.equal((await reader('1','alerts',0)).data.length,2)
+ const f=fixture();await coordinate(f.options);f.recover();await coordinate(f.options);await coordinate(f.options)
+ assert.equal(f.state.reports.length,1);assert.equal(f.state.reports[0].report.status,'recovered')
+ assert.equal(new Set(f.state.monitors.backend.seen).size,2)
+})
+
+test('legacy check-ID cursors do not suppress a later alert or duplicate retained incident evidence',async()=>{
+ const f=fixture()
+ const legacy={version:1,policy,monitors:{backend:{after:Date.parse('2026-10-27T09:54:00Z')/1000,seen:['2'],open:null}},reports:[]}
+ f.options.store.load=async()=>copy(legacy)
+ await coordinate(f.options);assert.equal(f.state.reports.length,1)
+ const g=fixture();await coordinate(g.options);g.recover();await coordinate(g.options)
+ const retained=g.state,oldId=digest('backend:2');retained.reports[0].report.id=oldId
+ retained.monitors.backend={after:Date.parse('2026-10-27T09:55:00Z')/1000,seen:['2'],open:null}
+ g.options.store.load=async()=>copy(retained)
+ await coordinate(g.options)
+ assert.equal(g.state.reports.length,1);assert.equal(g.state.reports[0].report.id,oldId)
+})
+
+test('real check IDs remain stable through full-page duplicate and timestamp-boundary overlap',async()=>{
+ const events=Array.from({length:150},(_,i)=>({id:'1',status:'down',status_code:503,triggered_at:new Date((1000+i)*1000).toISOString()}))
+ events.push({id:'1',status:'up',status_code:200,triggered_at:new Date(1051*1000).toISOString()})
+ const raw=[...events,{...events[124]}].sort((a,b)=>Date.parse(b.triggered_at)-Date.parse(a.triggered_at)||a.status.localeCompare(b.status)),calls=[]
+ const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async url=>{
+  calls.push(url);const u=new URL(url),after=Number(u.searchParams.get('after')),before=Number(u.searchParams.get('before')??Infinity)
+  const data=raw.filter(a=>Date.parse(a.triggered_at)/1000>after&&Date.parse(a.triggered_at)/1000<before).slice(0,100)
+  return new Response(JSON.stringify({data,links:{next:data.length?'https://api.statuscake.com/v1/uptime/1/alerts?before='+Date.parse(data.at(-1).triggered_at)/1000:null}}))
+ }})
+ const result=await reader('1','alerts',999)
+ assert.equal(result.data.length,151)
+ assert.equal(new Set(result.data.map(a=>a.triggered_at+':'+a.status)).size,151)
+ assert.equal(calls.length,3)
 })
