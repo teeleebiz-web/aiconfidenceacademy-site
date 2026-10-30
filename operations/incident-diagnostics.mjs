@@ -78,7 +78,7 @@ export function statusCakeReader(token, {fetcher=fetch,timeoutMs=10000,clock=Dat
             // A full page can split a timestamp second: overlap and deduplicate.
             // A short page contains that complete boundary second, so its strict
             // before cursor can move past it without repeating the same page.
-            const candidate=oldest+(rows.length===100?1:0)
+            const candidate=oldest+(value.data.length===100?1:0)
             if(before!==undefined&&candidate>=before)throw historyReview()
             before=candidate
             continue
@@ -121,8 +121,8 @@ export function validateMonitor(role,id,value,policy) {
 
 export function parseAlerts(value,after,now=Date.now()) {
   if (!Array.isArray(value?.data) || value.data.length>maxAlertEvents || value.links?.next) throw new Error('Monitoring history needs pagination review')
-  const seen=new Set()
-  return value.data.map(a=>{
+  const seen=new Map()
+  for(const a of value.data){
     // Report only fixed failure categories, never provider values or payloads.
     if (typeof a.id!=='string')throw new Error('Monitoring alert ID type is invalid')
     if (!/^\d+$/.test(a.id))throw new Error('Monitoring alert ID format is invalid')
@@ -130,10 +130,12 @@ export function parseAlerts(value,after,now=Date.now()) {
     if (!validDate(a.triggered_at))throw new Error('Monitoring alert time format is invalid')
     if (Date.parse(a.triggered_at)>now+300000)throw new Error('Monitoring alert time is in the future')
     if (Date.parse(a.triggered_at)<after*1000)throw new Error('Monitoring alert precedes requested window')
-    if (seen.has(a.id))throw new Error('Monitoring alert ID is duplicated')
-    seen.add(a.id)
-    return {id:a.id,status:a.status,at:new Date(a.triggered_at).toISOString(),code:Number.isInteger(a.status_code)&&a.status_code>=0&&a.status_code<=599?a.status_code:null}
-  }).sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)||a.id.localeCompare(b.id,undefined,{numeric:true}))
+    const row={id:a.id,status:a.status,at:new Date(a.triggered_at).toISOString(),code:Number.isInteger(a.status_code)&&a.status_code>=0&&a.status_code<=599?a.status_code:null}
+    const previous=seen.get(a.id)
+    if(previous&&JSON.stringify(previous)!==JSON.stringify(row))throw new Error('Monitoring alert ID has conflicting records')
+    seen.set(a.id,row)
+  }
+  return [...seen.values()].sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)||a.id.localeCompare(b.id,undefined,{numeric:true}))
 }
 
 export function classify(role,provider,samples) {
@@ -228,6 +230,7 @@ const failureLabels = new Map([
   ['Monitoring alert time is in the future', 'monitor_alert_time_future'],
   ['Monitoring alert precedes requested window', 'monitor_alert_time_before_window'],
   ['Monitoring alert ID is duplicated', 'monitor_alert_id_duplicate'],
+  ['Monitoring alert ID has conflicting records', 'monitor_alert_conflict'],
   ['Open incident evidence is missing', 'incident_evidence_missing'],
   ['Private incident synchronization needs review', 'incident_synchronization'],
 ])
