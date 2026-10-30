@@ -125,3 +125,24 @@ test('pagination stops at its page and elapsed-time budgets',async()=>{
  await assert.rejects(()=>expired('1','alerts',1),/pagination review/);assert.equal(requests,0)
  assert.throws(()=>parseAlerts({data:Array(1001).fill({}),links:{next:null}},0),/pagination review/)
 })
+
+
+test('alert validation identifies a fixed failing check without logging provider values',()=>{
+ const row={id:'10',status:'down',triggered_at:'2026-10-27T09:55:00Z',status_code:503}
+ const cases=[
+  [{...row,id:10},'monitor_alert_id_type'],
+  [{...row,id:'private-id-value'},'monitor_alert_id_format'],
+  [{...row,status:'private-status-value'},'monitor_alert_status'],
+  [{...row,triggered_at:'private-time-value'},'monitor_alert_time_format'],
+  [{...row,triggered_at:'2026-10-27T11:00:00Z'},'monitor_alert_time_future'],
+  [{...row,triggered_at:'2026-10-27T08:00:00Z'},'monitor_alert_time_before_window'],
+ ]
+ for(const [value,label] of cases){
+  let error;try{parseAlerts({data:[value]},Date.parse(policy.activated_at)/1000,Date.parse(time))}catch(e){error=e}
+  assert.ok(error);assert.equal(incidentFailureLabel(error),label)
+  assert.doesNotMatch(error.message,/private-(?:id|status|time)-value/)
+ }
+ assert.throws(()=>parseAlerts({data:[row,row]},0,Date.parse(time)),e=>incidentFailureLabel(e)==='monitor_alert_id_duplicate')
+ assert.equal(incidentFailureLabel(new Error('Monitoring alert status is invalid: private-response')),'unclassified_failure')
+ assert.equal(parseAlerts({data:[row]},0,Date.parse(time)).length,1)
+})
