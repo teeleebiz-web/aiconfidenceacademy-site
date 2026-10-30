@@ -4,7 +4,7 @@ import test from 'node:test'
 import { handleStripeEnrollment } from './stripe-webhook.mjs'
 import { handleInstallmentMaintenance } from './installment-maintenance.mjs'
 
-for (const [phaseTwo,thirdFirst] of [[false,false],[true,false],[true,true]]) test(`${phaseTwo ? 'Phase Two' : 'Phase One'} ${thirdFirst ? 'third installment received before the second;' : ''} failed invoice can be paid after access pauses without moving the remaining installment`, async () => {
+for (const [phaseTwo,thirdFirst,settingsFailure] of [[false,false,false],[true,false,false],[true,true,false],[false,false,true],[true,false,true]]) test(`${phaseTwo ? 'Phase Two' : 'Phase One'} ${thirdFirst ? 'third installment received before the second;' : ''}${settingsFailure ? ' card-setting retry;' : ''} failed invoice can be paid after access pauses without moving the remaining installment`, async () => {
   const plan = { total_amount: phaseTwo ? 19900 : 14900, course_id: phaseTwo ? 'course-two' : 'course', id: 'plan', status: 'active', stripe_subscription_id: 'sub', stripe_first_invoice_id: 'first', enrollment_id: 'enrollment', learner_id: 'learner', customer_email: 'learner@example.com', payments_completed: 1, paid_amount: phaseTwo ? 6700 : 5000, next_amount: phaseTwo ? 6600 : 5000, next_due_at: '2026-10-10T19:00:00Z', second_due_at: '2026-10-10T19:00:00Z', third_due_at: '2026-10-17T19:00:00Z', grace_until: null }
   const tables = { aca_installment_plans: [plan], enrollments: [{ id: 'enrollment', status: 'active' }], aca_payment_events: [], aca_email_events: [] }
   const touched = new Set()
@@ -39,7 +39,17 @@ for (const [phaseTwo,thirdFirst] of [[false,false],[true,false],[true,true]]) te
   } }
   let event; const sent = []
   let invoiceStatus = 'open'
-  const config = { db, cronSecret: 'cron', webhookSecret: 'secret', phaseOnePriceId: 'price', courseId: 'course', appUrl: 'https://example.com', emailFrom: 'ACA <test@example.com>', stripe: { webhooks: { constructEvent: () => event }, invoices: {
+  let failSettingsOnce = settingsFailure
+  const subscriptionUpdates = []
+  const config = { db, cronSecret: 'cron', webhookSecret: 'secret', phaseOnePriceId: 'price', courseId: 'course', appUrl: 'https://example.com', emailFrom: 'ACA <test@example.com>', stripe: { webhooks: { constructEvent: () => event }, subscriptions: { update: async (id, values) => {
+    assert.equal(id, 'sub')
+    assert.deepEqual(values, { payment_settings: { save_default_payment_method: 'on_subscription' } })
+    assert.ok(['grace', 'paused'].includes(plan.status))
+    assert.ok(plan.grace_until)
+    subscriptionUpdates.push({ id, values })
+    if (failSettingsOnce) { failSettingsOnce = false; throw new Error('temporary provider settings failure') }
+    return { id }
+  } }, invoices: {
     retrieve: async () => ({ status: invoiceStatus, hosted_invoice_url: 'https://invoice.stripe.com/i/test' }),
     list: async () => ({ data: [{ id: 'first', amount_paid: phaseTwo ? 6700 : 5000, currency: 'usd' }, { id: 'overdue', amount_paid: phaseTwo ? 6600 : 5000, currency: 'usd', period_start: Date.parse(thirdFirst ? '2026-10-10T19:00:00Z' : '2026-10-03T19:00:00Z')/1000, lines: {data:[{period:{start:Date.parse(thirdFirst ? '2026-10-17T19:00:00Z' : '2026-10-10T19:00:00Z')/1000}}]} }], has_more: false }),
   } }, resend: { emails: { send: async message => { sent.push(message); return { data: { id: 'mail' } } } } } }
@@ -51,8 +61,16 @@ for (const [phaseTwo,thirdFirst] of [[false,false],[true,false],[true,true]]) te
     assert.equal(res.status, expectedStatus)
     return res.body
   }
-  await deliver('failed', 'invoice.payment_failed')
+  if (settingsFailure) {
+    await deliver('failed', 'invoice.payment_failed', 500)
+    assert.equal(plan.status, 'grace')
+    assert.equal(sent.length, 0)
+  } else await deliver('failed', 'invoice.payment_failed')
   const deadline = plan.grace_until
+  const updatesBeforeRetry = subscriptionUpdates.length
+  await deliver('failed', 'invoice.payment_failed')
+  assert.equal(subscriptionUpdates.length, updatesBeforeRetry + (settingsFailure ? 1 : 0))
+  assert.equal(plan.grace_until, deadline)
   assert.equal(plan.status, 'grace'); assert.equal(tables.enrollments[0].status, 'active')
   assert.match(sent[0].html, /https:\/\/invoice.stripe.com\/i\/test/)
   await deliver('failed', 'invoice.payment_failed')
@@ -63,6 +81,7 @@ for (const [phaseTwo,thirdFirst] of [[false,false],[true,false],[true,true]]) te
   assert.equal(plan.status, 'paused'); assert.equal(tables.enrollments[0].status, 'paused')
   await deliver('paused-retry', 'invoice.payment_failed')
   assert.equal(plan.status, 'paused'); assert.equal(plan.grace_until, deadline)
+  const completedSettingsUpdates = subscriptionUpdates.length
   invoiceStatus = 'paid'
   failAccessOnce = true
   await deliver('paid', 'invoice.payment_succeeded', 500)
@@ -77,9 +96,11 @@ for (const [phaseTwo,thirdFirst] of [[false,false],[true,false],[true,true]]) te
   await deliver('paid-again', 'invoice.payment_succeeded')
   await deliver('stale-failure', 'invoice.payment_failed')
   assert.equal(plan.paid_amount, phaseTwo ? 13300 : 10000); assert.equal(sent.length, 2)
+  assert.equal(subscriptionUpdates.length, completedSettingsUpdates, 'Paid invoices and duplicate events must not reconfigure payment settings')
   if (phaseTwo) {
     assert.match(sent[1].html, /learn\/\?course=phase-two/)
     assert.equal(tables.aca_payment_events.find(e=>e.stripe_event_id==='paid').course_id,'course-two')
   }
   assert.deepEqual([...touched].sort(), Object.keys(tables).sort())
 })
+

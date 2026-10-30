@@ -232,6 +232,11 @@ async function invoiceFailed(event, config) {
   await recordEvent(config, event, { objectId: invoice.id, email: plan.customer_email, amount, currency: invoice.currency, outcome: 'failed' })
   const { error } = await config.db.from('aca_installment_plans').update({ status: plan.status === 'paused' ? 'paused' : 'grace', grace_until: graceUntil.toISOString() }).eq('id', plan.id)
   if (error) throw error
+  // A card used to correct this invoice must also serve the remaining installment.
+  // Save the fixed grace deadline first, so provider retries cannot extend it.
+  await config.stripe.subscriptions.update(subscriptionId, {
+    payment_settings: { save_default_payment_method: 'on_subscription' },
+  })
   await sendOperationalEmail(config, {
     eventKey: `installment-failed:${invoice.id}`, templateKey: 'installment_failed',
     enrollmentId: plan.enrollment_id, learnerId: plan.learner_id,
@@ -276,3 +281,4 @@ export async function handleStripeEnrollment(req, res, config) {
     return json(res, 500, { error: 'Enrollment payment processing failed' })
   }
 }
+

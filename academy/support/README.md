@@ -197,3 +197,30 @@ This correction does not prove the learner-facing replacement-card flow or
 future-card selection. Complete that separate sandbox acceptance without repeating
 previous successful purchase tests. Phase Two cohort and launch activation remain
 separate founder decisions.
+
+## October 30 replacement card persistence on payment recovery
+
+The learner-facing Hosted Invoice Page can settle an overdue invoice without
+promoting the replacement card to the subscription default when Stripe's
+`payment_settings.save_default_payment_method` is `off`. Saving a card for future
+purchases is not sufficient evidence of future automatic installment selection.
+The isolated sandbox acceptance reproduced this: the overdue $66 invoice was paid
+with the replacement test Mastercard, but the next scheduled $66 attempt still
+failed with the original default card.
+
+Failure handling now records the existing fixed grace deadline and then sets
+`save_default_payment_method=on_subscription` on that plan's subscription before
+sending the existing correction email. A successful subscription payment can then
+promote the card used for correction to its subscription default. This update does
+not charge or retry an invoice, change its amount, move its dates, modify the
+customer-wide default, or bulk-update existing plans. If the settings write fails,
+the original grace deadline is retained, no correction email is sent yet, and the
+signed callback remains retryable. Already-paid invoices and completed duplicate
+events do not perform this configuration write.
+
+The focused recovery suite includes provider-setting failure/retry for both
+phases alongside preserved email deduplication, access recovery and due dates.
+The separate sandbox learner-interface acceptance and provider readback must
+establish replacement-card selection and the next automatic charge; do not claim
+that result from source tests alone. Existing successful checkout and three-payment
+completion evidence remains valid and is not restarted by this check.
