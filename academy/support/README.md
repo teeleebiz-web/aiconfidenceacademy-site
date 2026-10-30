@@ -145,3 +145,24 @@ date stays the second installment's original date.
 The current purchase-disclosure bundle is `2026-10-29`. Terms and Refund Policy use the same Phase Two labels as its overview and enrollment display: initial $67, Day 7 $66, Day 14 $66. Terms explicitly state the existing fixed two-hour lesson window. Prices, due dates, access rules, refund decisions and publication gates are unchanged. The server retains released October 28 acceptance for both phases and October 17 for Phase One; metadata records the version actually accepted, never a retroactive replacement. Existing sessions remain fulfillable.
 
 Approved automatic answers distinguish both phases and retain their existing authority. Keep `support-knowledge.js` generated from `knowledge.mjs`; version its import and the loading script when updating public answers. Public HTML includes a native skip-to-main link and a programmatically focusable main landmark. Its shared stylesheet is versioned. `content/build-public-hub.mjs` accepts the attributed main shell so later content builds preserve that navigation. This is functional disclosure and accessibility work, not legal clearance or an independent accessibility certification.
+
+
+## October 30 founder-approved minimum enrollment age
+
+Terrence set the minimum enrollment age to 18, superseding his earlier October 30
+no-minimum-age answer. Terms, Privacy and the enrollment purchase agreement state
+18 or older. New checkout requests require both terms acceptance and an explicit
+`ageConfirmed=yes` declaration before Stripe session creation. The server adds
+`aca_age_18_or_older=yes` to the session and, for installments, subscription
+metadata alongside the exact accepted policy version and acceptance timestamp.
+This is self-declaration, not documentary age verification.
+
+The current disclosure bundle is `2026-10-30`. Released October 29/28 bundles
+(and October 17 for Phase One) remain recognized only with the new explicit adult
+declaration. A cached older form without that declaration receives a reload
+instruction. Already-created Checkout sessions and historical records are not
+rewritten. No birth date or identity document is collected. Existing payment
+amounts, due dates, course/cohort gates and learner access rules are preserved.
+
+Owner-created trial invitations must follow the same 18+ enrollment policy. The
+checkout declaration does not verify the age of trial invitees or existing users.

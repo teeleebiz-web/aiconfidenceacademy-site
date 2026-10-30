@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import {Readable} from 'node:stream'
 import {handleInstallmentCheckout, handlePaidInFullCheckout, attachApprovedInstallmentSchedule, installmentConfirmationHtml} from './installment-plan.mjs'
 import {phaseTwoConfig, installmentAmounts} from './offers.mjs'
-const request = (raw='termsAccepted=yes&policyVersion=2026-10-29') => Object.assign(Readable.from([raw]),{method:'POST',headers:{origin:'https://aca.example'}})
+const request = (raw='termsAccepted=yes&ageConfirmed=yes&policyVersion=2026-10-30') => Object.assign(Readable.from([raw]),{method:'POST',headers:{origin:'https://aca.example'}})
 const response = () => ({writeHead(status,headers){this.status=status;this.headers=headers},end(value){this.value=value}})
 const options = ({published=true,cohort=true,wrongPrice=false,taxBehavior='inclusive'}={}) => {
  const calls=[]
@@ -18,7 +18,7 @@ test('Phase Two checkout is blocked before Stripe when course or cohort is not o
 test('Phase Two uses its course, cohort and approved amounts for both choices',async()=>{
  for(const [handler,price,total,mode] of [[handlePaidInFullCheckout,'p179','17900','payment'],[handleInstallmentCheckout,'p67','19900','subscription']]){
   const {config,calls}=options(),res=response();await handler(request(),res,config);assert.equal(res.status,303)
-  assert.equal(calls[0].mode,mode);assert.equal(calls[0].line_items[0].price,price);assert.equal(calls[0].metadata.aca_course_id,'phase-two-course');assert.equal(calls[0].metadata.aca_cohort_id,'cohort')
+  assert.equal(calls[0].metadata.aca_age_18_or_older,'yes');assert.equal((calls[0].subscription_data?.metadata||calls[0].metadata).aca_age_18_or_older,'yes');assert.equal(calls[0].mode,mode);assert.equal(calls[0].line_items[0].price,price);assert.equal(calls[0].metadata.aca_course_id,'phase-two-course');assert.equal(calls[0].metadata.aca_cohort_id,'cohort')
   assert.equal((calls[0].subscription_data?.metadata||calls[0].metadata).aca_total_cents,total)
  }
 })
@@ -45,9 +45,18 @@ test('Phase Two rejects tax-exclusive prices before creating checkout',async()=>
 
 test('Phase Two preserves the exact accepted disclosure version and rejects the Phase One legacy bundle',async()=>{
  for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout]){
-  for(const version of ['2026-10-29','2026-10-28']){
-   const {config,calls}=options(),res=response();await handler(request(`termsAccepted=yes&policyVersion=${version}`),res,config);assert.equal(res.status,303);assert.equal(calls[0].metadata.aca_policy_version,version)
+  for(const version of ['2026-10-30','2026-10-29','2026-10-28']){
+   const {config,calls}=options(),res=response();await handler(request(`termsAccepted=yes&ageConfirmed=yes&policyVersion=${version}`),res,config);assert.equal(res.status,303);assert.equal(calls[0].metadata.aca_policy_version,version)
   }
-  const {config,calls}=options(),res=response();await handler(request('termsAccepted=yes&policyVersion=2026-10-17'),res,config);assert.equal(res.status,400);assert.equal(calls.length,0)
+  const {config,calls}=options(),res=response();await handler(request('termsAccepted=yes&ageConfirmed=yes&policyVersion=2026-10-17'),res,config);assert.equal(res.status,400);assert.equal(calls.length,0)
+ }
+})
+
+
+test('new Phase Two checkout requires an explicit adult declaration for every released policy version',async()=>{
+ for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout])for(const version of ['2026-10-30','2026-10-29','2026-10-28'])for(const age of ['', '&ageConfirmed=no']){
+  const {config,calls}=options(),res=response()
+  await handler(request(`termsAccepted=yes&policyVersion=${version}${age}`),res,config)
+  assert.equal(res.status,400);assert.equal(calls.length,0)
  }
 })
