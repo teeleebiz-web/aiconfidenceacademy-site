@@ -166,3 +166,34 @@ amounts, due dates, course/cohort gates and learner access rules are preserved.
 
 Owner-created trial invitations must follow the same 18+ enrollment policy. The
 checkout declaration does not verify the age of trial invitees or existing users.
+
+## October 30 payment deadline access enforcement
+
+The existing failure callback records the fixed 48-hour `grace_until`. Curriculum
+access now checks that recorded deadline on each authorization, independently of
+the daily maintenance job that persists `paused` status. The private invoker
+helper `aca_installment_access_deadline` is not executable by anonymous or learner
+roles. Paid-in-full and active/completed installment plans keep their existing
+access; paused plans and grace records with no deadline fail closed.
+
+Phase One lesson state, opening and heartbeat, welcome/onboarding authorization,
+Phase Two lesson context, workbook and project authorization, and release candidate
+selection use the same cutoff. Returned active lesson deadlines and remaining
+seconds are capped by the payment deadline, so newly issued lesson media URLs do
+not outlast it. Stored first-open lesson windows, the two-hour allocation, approved
+Saturday access, remaining payment dates and saved work are not reset. Workbook
+requests reject a missing authorization state, including Journey One front matter.
+The existing successful-payment callback restores access by clearing grace and
+updating the plan; no new payment callback or automatic charging path is added.
+
+Run `academy/enrollment/payment-deadline-acceptance.sql` after the corresponding
+migration. It exercises the exact boundary, both phases, real learner RLS,
+returned media duration, unchanged stored windows, recovery and helper permissions
+inside a rollback-only transaction. Any temporary publication flags also roll back;
+it does not publish Phase Two or call a payment/email provider. The focused
+workbook regressions are `academy/workbook/payment-access.test.mjs`.
+
+This correction does not prove the learner-facing replacement-card flow or
+future-card selection. Complete that separate sandbox acceptance without repeating
+previous successful purchase tests. Phase Two cohort and launch activation remain
+separate founder decisions.

@@ -60,6 +60,7 @@ export async function workbookIdentity(req, db, courseId, ownerAuthenticated, wo
     p_at: new Date(now).toISOString(),
   })
   if (access.error) throw fault(503, 'Your workbook access could not be checked. Please try again.')
+  if (!access.data?.[0]) throw fault(403, 'Your workbook access is paused. Use your payment email to bring your installment current.')
   const releasedLessonIds = new Set(access.data?.[0]?.released_lesson_ids ?? [])
   const j = await db.from('course_journeys').select('id,status').eq('course_id', courseId).eq('journey_number', config.journey).maybeSingle()
   if (j.error) throw fault(503, 'Your workbook access could not be checked. Please try again.')
@@ -114,3 +115,4 @@ export async function handleWorkbook(req, res, { db, courseId, ownerAuthenticate
     reply(res, 200, present(saved.data))
   } catch (error) { reply(res, error.status ?? 503, { error: error.status ? error.message : 'Your workbook is temporarily unavailable. Please try again.' }) }
 }
+
