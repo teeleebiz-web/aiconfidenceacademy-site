@@ -142,7 +142,36 @@ test('alert validation identifies a fixed failing check without logging provider
   assert.ok(error);assert.equal(incidentFailureLabel(error),label)
   assert.doesNotMatch(error.message,/private-(?:id|status|time)-value/)
  }
- assert.throws(()=>parseAlerts({data:[row,row]},0,Date.parse(time)),e=>incidentFailureLabel(e)==='monitor_alert_id_duplicate')
+ assert.equal(parseAlerts({data:[row,{...row}]},0,Date.parse(time)).length,1)
+ assert.throws(()=>parseAlerts({data:[row,{...row,status:'up'}]},0,Date.parse(time)),e=>incidentFailureLabel(e)==='monitor_alert_conflict')
  assert.equal(incidentFailureLabel(new Error('Monitoring alert status is invalid: private-response')),'unclassified_failure')
  assert.equal(parseAlerts({data:[row]},0,Date.parse(time)).length,1)
+})
+
+
+test('repeated identical IDs on a full page preserve every boundary-second event',async()=>{
+ const event=(id,second)=>({id:String(id),status:'down',status_code:503,triggered_at:new Date(second*1000).toISOString()})
+ const events=Array.from({length:150},(_,i)=>event(i+1,1000+i))
+ events.push(event(151,1051))
+ const raw=[...events,{...events[124]}].sort((a,b)=>Date.parse(b.triggered_at)-Date.parse(a.triggered_at)||Number(b.id)-Number(a.id)),calls=[]
+ const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async url=>{
+  const u=new URL(url),after=Number(u.searchParams.get('after')),before=Number(u.searchParams.get('before')??Infinity);calls.push(url)
+  const data=raw.filter(a=>Date.parse(a.triggered_at)/1000>after&&Date.parse(a.triggered_at)/1000<before).slice(0,100)
+  return new Response(JSON.stringify({data,links:{next:data.length?'https://api.statuscake.com/v1/uptime/1/alerts?before='+Date.parse(data.at(-1).triggered_at)/1000:null}}))
+ }})
+ const result=await reader('1','alerts',999)
+ assert.equal(result.data.length,151);assert.equal(new Set(result.data.map(a=>a.id)).size,151)
+ assert.ok(result.data.some(a=>a.id==='52'));assert.ok(result.data.some(a=>a.id==='151'))
+ assert.equal(new URL(calls[1]).searchParams.get('before'),'1052');assert.equal(calls.length,3)
+})
+
+test('conflicting duplicate records on the same provider page stop collection',async()=>{
+ const row={id:'10',status:'down',status_code:503,triggered_at:'2026-10-27T09:55:00Z'}
+ for(const change of [{status:'up'},{status_code:500},{triggered_at:'2026-10-27T09:56:00Z'}]){
+  const reader=statusCakeReader('fixture-token-not-a-real-key',{fetcher:async()=>new Response(JSON.stringify({data:[row,{...row,...change}],links:{next:null}}))})
+  await assert.rejects(()=>reader('1','alerts',0),e=>incidentFailureLabel(e)==='monitor_alert_conflict')
+ }
+ const f=fixture();f.changeAlerts([row,{...row,status:'up'}])
+ await assert.rejects(()=>coordinate(f.options),e=>incidentFailureLabel(e)==='monitor_alert_conflict')
+ assert.deepEqual(f.state.monitors,{});assert.equal(f.mirrors.length,0);assert.equal(f.evidence.length,0)
 })
