@@ -1,6 +1,7 @@
 import { enrollmentOffer, phaseTwoConfig, installmentAmounts } from './offers.mjs'
 import { attachApprovedInstallmentSchedule, failedInstallmentHtml, installmentConfirmationHtml, recoveredInstallmentHtml } from './installment-plan.mjs'
 import { sendOperationalEmail } from '../email/operational-email.mjs'
+import { cancellationDisclosureHtml } from '../support/cancellation.mjs'
 
 const json = (res, status, payload) => {
   res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' })
@@ -70,7 +71,7 @@ async function activateEnrollment(config, session, email) {
     eventKey: `enrollment-access:${session.id}`, templateKey: 'enrollment_access',
     enrollmentId: enrollment.id, learnerId: link.user.id,
     to: email, subject: 'Your AI Confidence Academy access is ready',
-    html: `<div style="font-family:Arial,sans-serif;color:#173d62;line-height:1.6"><h1>Welcome to AI Confidence Academy</h1><p>Your ${enrollmentOffer(config).label} enrollment is active.</p><p><a href="${link.properties.action_link}" style="background:#173d62;color:#fff;padding:12px 18px;text-decoration:none">Open your learner portal</a></p><p>This secure link signs you in. You may also use your Academy password from the learner sign-in page.</p><p>People come first. AI is the tool. Confidence is the product.</p></div>`,
+    html: `<div style="font-family:Arial,sans-serif;color:#173d62;line-height:1.6"><h1>Welcome to AI Confidence Academy</h1><p>Your ${enrollmentOffer(config).label} enrollment is active.</p><p><a href="${link.properties.action_link}" style="background:#173d62;color:#fff;padding:12px 18px;text-decoration:none">Open your learner portal</a></p><p>This secure link signs you in. You may also use your Academy password from the learner sign-in page.</p>${cancellationDisclosureHtml(config.appUrl)}<p>People come first. AI is the tool. Confidence is the product.</p></div>`,
   })
   return { learnerId: link.user.id, enrollmentId: enrollment.id }
 }

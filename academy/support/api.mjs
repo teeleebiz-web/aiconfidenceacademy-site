@@ -1,6 +1,7 @@
 import {createHash,timingSafeEqual} from 'node:crypto'
 import {sendOperationalEmail} from '../email/operational-email.mjs'
 import {findAnswers,policyVersion} from './knowledge.mjs'
+import {withdrawalStatement,withdrawalReceiptText} from './cancellation.mjs'
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[1-8][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i
 const hash=v=>createHash('sha256').update(String(v)).digest('hex')
 const categories=['enrollment','sign-in','technical','payment','privacy','accessibility','general']
@@ -29,10 +30,11 @@ async function authorizeCase(req,db,id){
  return row
 }
 function privateLink(config,id,key){const url=new URL('/contact/',config.appUrl);url.hash=new URLSearchParams({case:id,key});return url.href}
-async function messageMail(config,row,message,key,ack=false){
+async function messageMail(config,row,message,key,ack=false,withdrawal=false){
  if(!config?.resend||!config?.emailFrom||!config?.appUrl)return false
  const url=key?privateLink(config,row.id,key):null
- try{await sendOperationalEmail(config,{eventKey:`support:${message.id}`,templateKey:ack?'support_received':'support_reply',to:row.email,subject:`ACA support ${ack?'received':'update'} · ${row.id.slice(0,8)}`,metadata:{support_case_id:row.id,policy_version:policyVersion},html:`<div style="font-family:Arial,sans-serif;color:#102d4f;line-height:1.6"><h1>${ack?'Your ACA request is saved':'An ACA support reply is ready'}</h1><p>Reference: ${row.id.slice(0,8)}</p>${ack?'<p>Your request has been recorded. Automatic help is available on our contact page. Requests needing account, billing, privacy, or accessibility decisions are reviewed by authorized Academy staff.</p>':`<p>${escape(message.body).replace(/\n/g,'<br>')}</p>`}${url?`<p><a href="${escape(url)}">Open your private support case</a></p><p>Keep this link private. Anyone with the link can read and update this case.</p>`:'<p>To continue, use the private case link in your original confirmation email or open your saved case in the browser where you submitted it.</p>'}<p>Use your private case or <a href="${escape(new URL('/contact/',config.appUrl).href)}">ACA contact</a> for follow-up. This sending address does not accept replies.</p></div>`});return true}catch{return false}
+ const receipt=withdrawal?withdrawalReceiptText({id:row.id,receivedAt:row.created_at,statement:message.body}):null
+ try{await sendOperationalEmail(config,{eventKey:`support:${message.id}`,templateKey:withdrawal?'withdrawal_received':ack?'support_received':'support_reply',to:row.email,subject:withdrawal?`ACA withdrawal received · ${row.id.slice(0,8)}`:`ACA support ${ack?'received':'update'} · ${row.id.slice(0,8)}`,metadata:{support_case_id:row.id,policy_version:policyVersion},html:`<div style="font-family:Arial,sans-serif;color:#102d4f;line-height:1.6"><h1>${withdrawal?'Your withdrawal notice is received':ack?'Your ACA request is saved':'An ACA support reply is ready'}</h1><p>Reference: ${row.id.slice(0,8)}</p>${withdrawal?`<p style="white-space:pre-wrap">${escape(receipt)}</p>`:ack?'<p>Your request has been recorded. Automatic help is available on our contact page. Requests needing account, billing, privacy, or accessibility decisions are reviewed by authorized Academy staff.</p>':`<p>${escape(message.body).replace(/\n/g,'<br>')}</p>`}${url?`<p><a href="${escape(url)}">Open your private support case</a></p><p>Keep this link private. Anyone with the link can read and update this case.</p>`:'<p>To continue, use the private case link in your original confirmation email or open your saved case in the browser where you submitted it.</p>'}<p>Use your private case or <a href="${escape(new URL('/contact/',config.appUrl).href)}">ACA contact</a> for follow-up. This sending address does not accept replies.</p></div>`});return true}catch{return false}
 }
 async function notifyOwner(config,row,message){
  if(!config?.resend||!config?.emailFrom||!config?.appUrl)return false
@@ -93,19 +95,33 @@ export async function handleSupport(req,res,config,{reviewerCheck}={}){
     return reply(res,200,{ok:true})
    }
   }
-  if(url.pathname!=='/api/support/cases'||req.method!=='POST')return reply(res,405,{error:'Method not allowed.'})
-  const v=await body(req)
+  const withdrawal=url.pathname==='/api/support/withdrawals'
+  if((url.pathname!=='/api/support/cases'&&!withdrawal)||req.method!=='POST')return reply(res,405,{error:'Method not allowed.'})
+  let v=await body(req)
+  if(withdrawal){
+   const name=String(v.name||'').trim(),email=String(v.email||'').trim().toLowerCase(),contract=String(v.contract||'').trim()
+   if(!name||name.length>120||contract.length<5||contract.length>1000)throw fail(400,'Enter your name and enough details to identify the enrollment you are withdrawing from.')
+   v={...v,name,email,category:'payment',subject:'Enrollment withdrawal notice',message:withdrawalStatement({name,email,contract}),consent:true}
+  }
   if(v.website)return reply(res,400,{error:'Please submit the form directly.'})
   const email=String(v.email||'').trim().toLowerCase(),name=String(v.name||'').trim(),subject=String(v.subject||'').trim(),message=String(v.message||'').trim()
   if(!uuid.test(v.requestId||'')||!validKey(v.key)||!/^\S+@\S+\.\S+$/.test(email)||email.length>254||name.length>120||!categories.includes(v.category)||subject.length<5||subject.length>160||message.length<5||message.length>4000||v.consent!==true)throw fail(400,'Check your email, category, subject, message, and contact consent.')
   await limited(req,db,email)
   let row=checked(await db.from('aca_support_cases').select('*').eq('request_id',v.requestId).maybeSingle())
-  if(row&&(row.email!==email||row.access_hash!==hash(v.key)))throw fail(409,'This request reference has already been used.')
-  if(!row){const result=await db.from('aca_support_cases').insert({id:v.requestId,request_id:v.requestId,access_hash:hash(v.key),email,name,category:v.category,subject}).select('*').single();if(result.error?.code==='23505'){row=checked(await db.from('aca_support_cases').select('*').eq('request_id',v.requestId).single());if(row.email!==email||row.access_hash!==hash(v.key))throw fail(409,'This request reference has already been used.')}else row=checked(result)}
+  if(row&&(row.email!==email||row.access_hash!==hash(v.key)||(withdrawal&&row.subject!==subject)))throw fail(409,'This request reference has already been used.')
+  if(!row){const result=await db.from('aca_support_cases').insert({id:v.requestId,request_id:v.requestId,access_hash:hash(v.key),email,name,category:v.category,subject}).select('*').single();if(result.error?.code==='23505'){row=checked(await db.from('aca_support_cases').select('*').eq('request_id',v.requestId).single());if(row.email!==email||row.access_hash!==hash(v.key)||(withdrawal&&row.subject!==subject))throw fail(409,'This request reference has already been used.')}else row=checked(result)}
   const old=checked(await db.from('aca_support_messages').select('*').eq('id',v.requestId).maybeSingle())
-  const first=old||checked(await db.from('aca_support_messages').insert({id:v.requestId,case_id:row.id,author:'requester',body:message}).select('*').single())
-  const emailSent=await messageMail(config,row,first,v.key,true)
+  if(withdrawal&&old&&(old.body!==message||old.case_id!==row.id||old.author!=='requester'))throw fail(409,'This request reference has already been used. Keep your original acknowledgment.')
+  let first=old
+  if(!first){
+   const result=await db.from('aca_support_messages').insert({id:v.requestId,case_id:row.id,author:'requester',body:message}).select('*').single()
+   if(withdrawal&&result.error?.code==='23505'){
+    first=checked(await db.from('aca_support_messages').select('*').eq('id',v.requestId).single())
+    if(first.body!==message||first.case_id!==row.id||first.author!=='requester')throw fail(409,'This request reference has already been used.')
+   }else first=checked(result)
+  }
+  const emailSent=await messageMail(config,row,first,v.key,true,withdrawal)
   const ownerNotified=await notifyOwner(config,row,first)
-  return reply(res,200,{ok:true,id:row.id,emailSent,ownerNotified})
+  return reply(res,200,{ok:true,id:row.id,emailSent,ownerNotified,...(withdrawal?{receipt:{id:row.id,receivedAt:row.created_at,statement:first.body,text:withdrawalReceiptText({id:row.id,receivedAt:row.created_at,statement:first.body})}}:{})})
  }catch(e){return reply(res,e.status||503,{error:e.status?e.message:'Your request could not be completed. Keep your message and try again.'})}
 }

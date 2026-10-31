@@ -73,6 +73,12 @@ test('a delayed confirmed $129 payment grants access; an unpaid checkout does no
   assert.equal(paid.res.status, 200)
   assert.equal(JSON.parse(paid.res.payload).enrolled, true)
   assert.equal(paid.sent.length, 1)
+  assert.match(paid.sent[0].html,/14 days after the day the contract is made/)
+  assert.match(paid.sent[0].html,/does not treat opening a lesson/)
+  assert.match(paid.sent[0].html,/contact\/#withdrawal/)
+  assert.match(paid.sent[0].html,/Sold through Link/)
+  assert.match(paid.sent[0].html,/no later than 14 days/)
+  assert.match(paid.sent[0].html,/I hereby give notice/)
 })
 
 test('keeps previous $149 checkouts fulfillable during the $129 offer change', async () => {

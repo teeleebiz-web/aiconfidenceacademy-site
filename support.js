@@ -1,4 +1,4 @@
-import {answers,findAnswers} from './support-knowledge.js?v=20261029-disclosures'
+import {answers,findAnswers} from './support-knowledge.js?v=20261031-cancellation'
 const endpoint='https://checkout.aiconfidenceacademy.org/api/support/cases'
 const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n}
 const list=document.getElementById('help-results'),question=document.getElementById('help-question')
@@ -14,3 +14,42 @@ async function loadCase(){if(!active||!casePanel)return;const data=await call(en
 if(form){form.addEventListener('submit',async e=>{e.preventDefault();if(!form.reportValidity())return;const v=Object.fromEntries(new FormData(form));v.consent=v.consent==='yes';v.requestId=requestId;v.key=caseKey;const button=form.querySelector('button[type=submit]');button.disabled=true;try{const result=await call(endpoint,{method:'POST',body:JSON.stringify(v)});active={id:result.id,key:caseKey};notice('Your request is saved. Reference '+result.id.slice(0,8)+(result.emailSent?'. A confirmation has been sent.':'. Save your private case link below; email confirmation was not delivered.'));const a=el('a','Open or copy your private case link');a.href=linkFor(result.id,caseKey);status.append(el('br'),a,el('p','Keep this link private. It gives access to this case.'));form.reset();requestId=crypto.randomUUID();caseKey=key();await loadCase()}catch(e){notice(e.message,true)}finally{button.disabled=false}})}
 function openPrivateCaseLink(){const fragment=new URLSearchParams(location.hash.slice(1));if(fragment.has('case')&&fragment.has('key')){active={id:fragment.get('case'),key:fragment.get('key')};history.replaceState(null,'',location.pathname+location.search);loadCase().catch(e=>notice(e.message,true))}}
 openPrivateCaseLink();window.addEventListener('hashchange',openPrivateCaseLink)
+
+// A withdrawal notice uses the existing private case store, not a payment action.
+const withdrawalForm=document.getElementById('withdrawal-form')
+if(withdrawalForm){
+ const review=document.getElementById('withdrawal-review'),receiptPanel=document.getElementById('withdrawal-status')
+ const confirm=document.getElementById('withdrawal-confirm'),edit=document.getElementById('withdrawal-edit')
+ const start=document.getElementById('withdrawal-review-button')
+ let pending=null,receiptUrl=null
+ start.disabled=false
+ const withdrawalNotice=(text,error=false)=>{receiptPanel.replaceChildren(el('p',text));receiptPanel.setAttribute('role',error?'alert':'status');receiptPanel.focus()}
+ withdrawalForm.addEventListener('submit',e=>{
+  e.preventDefault()
+  if(!withdrawalForm.reportValidity())return
+  const values=Object.fromEntries(new FormData(withdrawalForm))
+  pending={name:values.name.trim(),email:values.email.trim().toLowerCase(),contract:values.contract.trim(),website:values.website,requestId:crypto.randomUUID(),key:key()}
+  if(!pending.name||pending.contract.length<5){withdrawalNotice('Enter your name and enough details to identify the enrollment.',true);return}
+  document.getElementById('withdrawal-statement').textContent=`I hereby give notice that I withdraw from my ACA enrollment contract identified below.\nName: ${pending.name}\nContract or part withdrawn: ${pending.contract}\nConfirmation email: ${pending.email}`
+  withdrawalForm.hidden=true;review.hidden=false;receiptPanel.replaceChildren();review.focus()
+ })
+ edit.addEventListener('click',()=>{review.hidden=true;withdrawalForm.hidden=false;withdrawalForm.querySelector('input[name=name]').focus();pending=null})
+ async function submitWithdrawal(){
+  if(!pending)return
+  confirm.disabled=true;edit.disabled=true
+  try{
+   const result=await call(endpoint.replace('/cases','/withdrawals'),{method:'POST',body:JSON.stringify(pending)})
+   review.hidden=true
+   withdrawalNotice(`Your withdrawal notice is received. Reference ${result.id.slice(0,8)}. Received (UTC): ${result.receipt.receivedAt}. ${result.emailSent?'An acknowledgment has been submitted for email delivery.':'Email confirmation could not be submitted. Save your acknowledgment below; your notice is still recorded.'}`)
+   const statement=el('pre',result.receipt.text),download=el('a','Save withdrawal acknowledgment (.txt)'),privateCase=el('a','Open your private withdrawal case')
+   if(receiptUrl)URL.revokeObjectURL(receiptUrl)
+   receiptUrl=URL.createObjectURL(new Blob([result.receipt.text],{type:'text/plain;charset=utf-8'}))
+   download.href=receiptUrl;download.download=`ACA_withdrawal_${result.id.slice(0,8)}.txt`;download.className='button button-gold'
+   privateCase.href=linkFor(result.id,pending.key);privateCase.className='button'
+   receiptPanel.append(statement,download,privateCase,el('p','Keep your acknowledgment and private link. The link gives access to this case. Receipt is not confirmation that a refund has already been processed.'))
+   if(!result.emailSent){const retry=el('button','Retry acknowledgment email');retry.type='button';retry.className='button';retry.onclick=()=>{retry.disabled=true;submitWithdrawal()};receiptPanel.append(retry)}
+  }catch(error){withdrawalNotice(error.message,true)}finally{confirm.disabled=false;edit.disabled=false}
+ }
+ confirm.addEventListener('click',submitWithdrawal)
+ if(location.hash==='#withdrawal')requestAnimationFrame(()=>document.getElementById('withdrawal').scrollIntoView())
+}

@@ -54,3 +54,56 @@ test('Vercel parsed request bodies work without a second stream read',async()=>{
  const db=database(),req={url:'/api/support/cases',method:'POST',headers:{},body:input(),[Symbol.asyncIterator](){throw Error('stream already consumed')}}
  const result=await run({db},req);assert.equal(result.status,200);assert.equal(db.tables.aca_support_cases.length,1)
 })
+
+const withdrawalInput=()=>({requestId:randomUUID(),key:secret,name:'Fictional Learner',email:'person@example.test',contract:'Phase One, purchased October 31; no receipt reference available.'})
+test('withdrawal needs no login, country, reason, receipt number or general terms assent; it preserves a dated notice',async()=>{
+ const db=database(),v=withdrawalInput()
+ const r=await run({db},request('/api/support/withdrawals','POST',v))
+ assert.equal(r.status,200);assert.equal(r.body.emailSent,false)
+ assert.match(r.body.receipt.statement,/I hereby give notice that I withdraw/)
+ assert.match(r.body.receipt.statement,/Fictional Learner/)
+ assert.equal(r.body.receipt.receivedAt,db.tables.aca_support_cases[0].created_at)
+ assert.match(r.body.receipt.text,/not proof of account identity/)
+ assert.equal(db.tables.aca_support_cases[0].subject,'Enrollment withdrawal notice')
+ assert.deepEqual(Object.keys(db.tables).sort(),['aca_email_events','aca_support_cases','aca_support_messages'])
+ const again=await run({db},request('/api/support/withdrawals','POST',v))
+ assert.deepEqual(again.body.receipt,r.body.receipt)
+ assert.equal(db.tables.aca_support_cases.length,1);assert.equal(db.tables.aca_support_messages.length,1)
+ const other=await run({db},request('/api/support/cases/'+v.requestId,'GET',null,{'x-aca-support-key':'b'.repeat(64)}))
+ assert.equal(other.status,404)
+})
+test('withdrawal confirmation contains the full statement and received time, escapes submitted HTML, and deduplicates email',async()=>{
+ const db=database(),sent=[],config={db,emailFrom:'ACA <notify@example.test>',appUrl:'https://aca.example',resend:{emails:{send:async m=>{sent.push(m);return {data:{id:'withdrawal-mail'}}}}}},v=withdrawalInput()
+ v.name='<script>alert(1)</script>'
+ const first=await run(config,request('/api/support/withdrawals','POST',v))
+ await run(config,request('/api/support/withdrawals','POST',v))
+ assert.equal(sent.length,1);assert.equal(first.body.emailSent,true)
+ assert.match(sent[0].subject,/withdrawal received/)
+ assert.ok(sent[0].html.includes(first.body.receipt.receivedAt))
+ assert.ok(sent[0].html.includes(v.contract));assert.match(sent[0].html,/&lt;script&gt;/)
+ assert.doesNotMatch(sent[0].html,/<script>/)
+ assert.equal(db.tables.aca_email_events[0].template_key,'withdrawal_received')
+})
+test('email failure does not erase withdrawal receipt; retry sends the same acknowledgment once',async()=>{
+ const db=database(),v=withdrawalInput();let failing=true
+ const config={db,emailFrom:'ACA <notify@example.test>',appUrl:'https://aca.example',resend:{emails:{send:async()=>failing?{error:{message:'provider down'}}:{data:{id:'recovered'}}}}}
+ const first=await run(config,request('/api/support/withdrawals','POST',v));assert.equal(first.status,200);assert.equal(first.body.emailSent,false)
+ failing=false
+ const retry=await run(config,request('/api/support/withdrawals','POST',v));assert.equal(retry.body.emailSent,true)
+ assert.deepEqual(retry.body.receipt,first.body.receipt);assert.equal(db.tables.aca_support_messages.length,1)
+})
+test('a withdrawal reference cannot be silently reused with different notice details',async()=>{
+ const db=database(),v=withdrawalInput();await run({db},request('/api/support/withdrawals','POST',v))
+ const changed=await run({db},request('/api/support/withdrawals','POST',{...v,contract:'Different enrollment contract'}))
+ assert.equal(changed.status,409);assert.equal(db.tables.aca_support_messages.length,1)
+ assert.ok(db.tables.aca_support_messages[0].body.includes(v.contract))
+})
+test('withdrawal validation, honeypot, rate limit and concurrent confirmation preserve one notice',async()=>{
+ const db=database(),v=withdrawalInput()
+ for(const invalid of [{...v,name:''},{...v,email:'bad'},{...v,contract:''},{...v,key:'bad'},{...v,website:'bot'}])assert.equal((await run({db},request('/api/support/withdrawals','POST',invalid))).status,400)
+ db.setAllowed(false);assert.equal((await run({db},request('/api/support/withdrawals','POST',v))).status,429)
+ db.setAllowed(true)
+ const r=await Promise.all([run({db},request('/api/support/withdrawals','POST',v)),run({db},request('/api/support/withdrawals','POST',v))])
+ assert.ok(r.every(x=>x.status===200));assert.equal(db.tables.aca_support_cases.length,1);assert.equal(db.tables.aca_support_messages.length,1)
+ assert.deepEqual(r[0].body.receipt,r[1].body.receipt)
+})
