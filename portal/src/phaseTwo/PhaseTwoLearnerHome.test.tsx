@@ -6,7 +6,11 @@ import type { PhaseTwoLessonOutline } from './phaseTwoLearnerApi'
 const api = vi.hoisted(() => ({
   outline: vi.fn(),
   open: vi.fn(),
+  study: vi.fn(),
 }))
+
+vi.mock('../lib/lessonStudy', () => ({ requestStudySession: api.study, pauseStudyOnExit: vi.fn() }))
+beforeEach(() => api.study.mockReset().mockResolvedValue({access_status:'active',study_state:'running',active_seconds:0,remaining_seconds:7200,study_token:'fixture',limit_at:null,study_mode:'budget'}))
 
 vi.mock('./phaseTwoLearnerApi', () => ({
   loadPhaseTwoOutline: api.outline,
@@ -112,10 +116,11 @@ describe('Phase Two live schedule state', () => {
   it('marks the expired row closed immediately while retaining the project route', async () => {
     const items = closedOutline(); items[0] = { ...items[0], access_status: 'available', deadline_at: null }
     api.outline.mockResolvedValue(items); api.open.mockResolvedValue(openedLesson(1))
+    api.study.mockResolvedValueOnce({access_status:'active',study_state:'running',active_seconds:7199,remaining_seconds:1,study_token:'fixture',limit_at:null,study_mode:'budget'}).mockResolvedValue({access_status:'expired',study_state:'ended',active_seconds:7200,remaining_seconds:0,study_token:'fixture',limit_at:null,study_mode:'budget'})
     await act(async () => { render(<PhaseTwoLearnerHome enrollmentId="enrollment-1" />) })
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Begin lesson' })) })
     await act(async () => { await vi.advanceTimersByTimeAsync(1100) })
-    expect(screen.getByText(/window has closed/i)).toBeTruthy()
+    expect(screen.getByText(/study time has ended/i)).toBeTruthy()
     expect((within(row()).getByRole('button', { name: 'Not open' }) as HTMLButtonElement).disabled).toBe(true)
     expect((screen.getByRole('button', { name: 'My Project Record' }) as HTMLButtonElement).disabled).toBe(false)
     expect(api.open).toHaveBeenCalledTimes(1)
