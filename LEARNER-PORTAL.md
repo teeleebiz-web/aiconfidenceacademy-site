@@ -194,6 +194,20 @@ npm run dev
 The development preview opens the learner portal. The production build writes the
 same tested source to `learn/` for GitHub Pages.
 
+GitHub Pages serves the committed `learn/` tree. A passing CI or Vercel build
+alone does not replace that committed public entry. After a portal source change,
+commit the tested generated `learn/index.html` and new referenced assets, then
+verify the official `/learn/` loads the expected entry. The existing portal CI
+exports these entry files as `tested-portal-entry` for this release step; do not
+publish test-environment URLs or keys. Retain existing assets for rollback.
+
+The Phase Two delivery remains the existing frozen bundle. Its maintained
+TypeScript controller is `portal/src/phaseTwo/PhaseTwoLearnerHome.tsx` in this
+repository's retained `phase-two-curriculum-strengthening` branch (PR 99). Rebuild
+that source for a Phase Two controller correction, then update only the approved
+bundle/reference and the tested public entry in current main. Do not merge that
+historical branch wholesale or change curriculum/publication to test access.
+
 ## Release boundary
 
 Do not merge the learner portal into `main` until:

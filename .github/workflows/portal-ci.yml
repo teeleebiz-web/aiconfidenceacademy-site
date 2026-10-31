@@ -77,3 +77,31 @@ jobs:
 
       - name: Type-check, test, and build
         run: npm run check
+
+      - name: Capture tested portal entry
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import shutil
+          class Assets(HTMLParser):
+            def handle_starttag(self, tag, attrs):
+              a = dict(attrs)
+              value = a.get('src') if tag == 'script' else a.get('href') if tag == 'link' else None
+              if value and value.startswith('/learn/assets/') and value.endswith(('.js', '.css')):
+                source = Path(value.lstrip('/'))
+                destination = Path('portal-entry-build') / source
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, destination)
+          entry = Path('learn/index.html')
+          Assets().feed(entry.read_text())
+          destination = Path('portal-entry-build/learn/index.html')
+          destination.parent.mkdir(parents=True, exist_ok=True)
+          shutil.copy2(entry, destination)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tested-portal-entry
+          path: portal-entry-build/
+          retention-days: 1
+          if-no-files-found: error
