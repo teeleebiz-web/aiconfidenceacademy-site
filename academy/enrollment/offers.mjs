@@ -28,9 +28,5 @@ export async function checkEnrollmentOpen(config) {
   const {data, error} = await config.db.from('courses').select('id,status,enrollment_opens_at,enrollment_closes_at').eq('id', config.courseId).single()
   if (error) throw error
   const now = Date.now()
-  if (!config.phaseTwoCohortId) return false
-  const cohortResult = await config.db.from('aca_phase_two_cohorts').select('id,status,course_id,starts_monday,iana_timezone,release_local_time').eq('id', config.phaseTwoCohortId).eq('course_id', config.courseId).single()
-  if (cohortResult.error) throw cohortResult.error
-  if (cohortResult.data?.status !== 'active') return false
   return data?.status === 'published' && (!data.enrollment_opens_at || Date.parse(data.enrollment_opens_at) <= now) && (!data.enrollment_closes_at || Date.parse(data.enrollment_closes_at) > now)
 }

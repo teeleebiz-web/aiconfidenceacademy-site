@@ -161,3 +161,11 @@ test('wrong-course metadata or wrong amounts cannot grant Phase Two access',asyn
   assert.equal(res.status,500);assert.equal(db.authCalls.length,0);assert.equal(db.writes.some(([t])=>t==='enrollments'),false)
  }
 })
+
+test('new independent enrollments have no arbitrary default end and Phase Two needs no cohort',async()=>{
+ for(const phase of [1,2]){
+  const {res,db}=await deliverCheckout(phase===1?{}:{price:'price_179',configValues:phaseTwoValues,sessionValues:{amount_total:17900,metadata:{aca_course_id:'phase-two-course',aca_release_calendar:'independent-2026-10-31'}}});
+  assert.equal(res.status,200);const e=db.writes.find(([t,a])=>t==='enrollments'&&a==='upsert')[2];assert.equal(e.access_expires_at,null);assert.ok(e.starts_at);
+  if(phase===2)assert.equal(db.writes.find(([t,a])=>t==='aca_phase_two_memberships'&&a==='insert')[2].cohort_id,null)
+ }
+})

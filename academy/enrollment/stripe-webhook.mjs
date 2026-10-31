@@ -27,7 +27,7 @@ async function activateEnrollment(config, session, email) {
     .select('id,status,default_access_days').eq('id', config.courseId).single()
   if (courseError || course?.status !== 'published') throw new Error(`${enrollmentOffer(config).label} is not open for enrollment`)
   let cohort
-  if (enrollmentOffer(config).phaseNumber === 2) {
+  if (enrollmentOffer(config).phaseNumber === 2 && session.metadata?.aca_cohort_id) {
     const result = await config.db.from('aca_phase_two_cohorts').select('id,status,course_id').eq('id', session.metadata?.aca_cohort_id).eq('course_id', config.courseId).single()
     if (result.error || result.data?.status !== 'active') throw new Error('Phase Two cohort is unavailable')
     cohort = result.data
@@ -51,19 +51,18 @@ async function activateEnrollment(config, session, email) {
     .select('id,enrolled_at,starts_at,access_expires_at,completed_at,status').eq('learner_id', link.user.id).eq('course_id', config.courseId).maybeSingle()
   if (lookupError) throw lookupError
   const startedAt = new Date()
-  const expiresAt = course.default_access_days ? new Date(startedAt.getTime() + course.default_access_days * 86400000).toISOString() : null
   const { data: enrollment, error: enrollmentError } = await config.db.from('enrollments').upsert({
     learner_id: link.user.id, course_id: config.courseId, status: existingEnrollment?.status === 'completed' ? 'completed' : 'active',
     enrolled_at: existingEnrollment?.enrolled_at ?? startedAt.toISOString(), starts_at: existingEnrollment?.starts_at ?? startedAt.toISOString(),
-    access_expires_at: existingEnrollment ? existingEnrollment.access_expires_at : expiresAt, completed_at: existingEnrollment?.completed_at ?? null,
+    access_expires_at: existingEnrollment ? existingEnrollment.access_expires_at : null, completed_at: existingEnrollment?.completed_at ?? null,
   }, { onConflict: 'learner_id,course_id' }).select('id').single()
   if (enrollmentError) throw enrollmentError
-  if (cohort) {
+  if (enrollmentOffer(config).phaseNumber === 2) {
     const {data: membership, error: membershipError} = await config.db.from('aca_phase_two_memberships').select('cohort_id').eq('enrollment_id', enrollment.id).maybeSingle()
     if (membershipError) throw membershipError
-    if (membership && membership.cohort_id !== cohort.id) throw new Error('Existing Phase Two cohort cannot be reassigned by a purchase')
+    if (membership && cohort && membership.cohort_id !== cohort.id) throw new Error('Existing Phase Two cohort cannot be reassigned by a purchase')
     if (!membership) {
-      const {error} = await config.db.from('aca_phase_two_memberships').insert({enrollment_id: enrollment.id, learner_id: link.user.id, course_id: config.courseId, cohort_id: cohort.id})
+      const {error} = await config.db.from('aca_phase_two_memberships').insert({enrollment_id: enrollment.id, learner_id: link.user.id, course_id: config.courseId, cohort_id: cohort?.id ?? null})
       if (error) throw error
     }
   }

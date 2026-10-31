@@ -58,11 +58,11 @@ test('a valid-looking code assigned to a different email cannot generate an acco
  assert.equal(r.status,400);assert.equal(generated,false)
 })
 const base={enrollment:{effective_access:'active',course_status:'published',phase_number:1,onboarding_completed_at:'2026-10-01'},access_state:{current_lesson_id:'next',access_status:'scheduled'},lessons:[{id:'next',status:'published',journey_status:'published'}]}
-test('restriction diagnostics explain orientation, sequential release, expired access and Phase Two cohort restrictions',()=>{
+test('restriction diagnostics explain orientation, sequential release, expired access and Phase Two first-opening deadlines',()=>{
  assert.match(diagnoseLessons({...base,enrollment:{...base.enrollment,onboarding_completed_at:null}})[0].restriction_reason,/orientation/)
  assert.equal(diagnoseLessons(base)[0].access_status,'scheduled')
  assert.match(diagnoseLessons({...base,enrollment:{...base.enrollment,effective_access:'expired'}})[0].restriction_reason,/expired/)
- assert.match(diagnoseLessons({...base,enrollment:{...base.enrollment,phase_number:2}})[0].restriction_reason,/cohort/)
+ assert.equal(diagnoseLessons({...base,enrollment:{...base.enrollment,phase_number:2},lessons:[{...base.lessons[0],first_open_until:'2020-01-02',scheduled_release:'2020-01-01'}]})[0].access_status,'closed')
  const active={...base,enrollment:{...base.enrollment,phase_number:2},lessons:[{...base.lessons[0],cohort_status:'active',scheduled_release:'2020-01-01',phase_two_deadline:'2099-01-01'}]}
  assert.equal(diagnoseLessons(active)[0].access_status,'active')
 })

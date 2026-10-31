@@ -98,19 +98,19 @@ export function diagnoseLessons(detail, now = Date.now()) {
     if (e.effective_access !== 'active') reason = `Enrollment access: ${e.effective_access}`
     else if (e.course_status !== 'published') reason = 'This phase is not published.'
     else if (lesson.status !== 'published' || lesson.journey_status !== 'published') reason = 'Lesson or journey is not published.'
-    else if (e.phase_number === 2 && lesson.cohort_status !== 'active') reason = 'An active cohort assignment is required.'
     else if (e.phase_number === 1 && !e.onboarding_completed_at) reason = 'Founder welcome and Learning ChatGPT orientation are required.'
     else if (e.phase_number === 1) {
       const access = detail.access_state
       if (lesson.id === access?.current_lesson_id) {
         state = access.access_status
-        reason = state === 'scheduled' ? 'Waiting for the release time or the interval after the previous lesson.' : state === 'active' ? 'Lesson window is open.' : 'Ready to open; 120 minutes of study time are saved across pauses.'
+        reason = state === 'scheduled' ? 'Waiting for the scheduled Pacific release time.' : state === 'active' ? 'Lesson window is open.' : 'Ready to open; 120 minutes of study time are saved across pauses.'
       } else if (lesson.window_status === 'completed' || lesson.window_status === 'expired' || (lesson.phase_one_deadline && Date.parse(lesson.phase_one_deadline) <= now)) {
         state = lesson.window_status === 'completed' ? 'completed' : 'closed'; reason = 'Lesson window ended. Released workbook pages remain available.'
       } else reason = 'An earlier lesson must finish or its access window must close first.'
-    } else if (released > now) { state = 'scheduled'; reason = 'Waiting for the cohort release time.' }
+    } else if (released > now) { state = 'scheduled'; reason = 'Waiting for the scheduled Pacific release time.' }
+    else if (!lesson.first_opened_at && lesson.first_open_until && Date.parse(lesson.first_open_until) <= now && !lesson.extension_ends_at) { state = 'closed'; reason = 'The first-opening window has ended.' }
     else if (deadline && Date.parse(deadline) <= now) { state = 'closed'; reason = 'The lesson access window has ended.' }
-    else { state = lesson.study_remaining_seconds === 0 && lesson.first_opened_at ? 'closed' : lesson.first_opened_at ? 'active' : deadline ? 'active' : 'available'; reason = lesson.weekend_ends_at ? 'Extended weekend access follows the cohort schedule.' : deadline ? 'The lesson access window is open.' : 'Ready to open; weekday lessons have 120 minutes of study time, saved across pauses.' }
+    else { state = lesson.study_remaining_seconds === 0 && lesson.first_opened_at ? 'closed' : lesson.first_opened_at ? 'active' : deadline ? 'active' : 'available'; reason = lesson.weekend_ends_at ? 'Saturday access continues through Sunday, ending at midnight Monday Pacific.' : deadline ? 'The lesson access window is open.' : 'Ready to open; first open within 24 hours, then use 120 saved study minutes.' }
     return {...lesson, access_status:state, restriction_reason:reason, deadline_at:deadline || null}
   })
 }

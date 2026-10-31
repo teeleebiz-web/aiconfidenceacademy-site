@@ -251,3 +251,8 @@ This is database/RPC acceptance, not successful ordinary Phase Two browser entry
 or a new payment-recovery end-to-end test. Keep the prior payment and Phase One
 browser evidence closed. Production activation and launch dates remain founder
 decisions; they are not prerequisites for these temporary timing fixtures.
+
+
+## Independent-calendar candidate - October 31, 2026
+
+The current calendar candidate replaces the historical Phase Two shared-cohort requirement with independent enrollment starts. Course publication and enrollment-open dates remain the checkout gate. Lesson 1 opens with the enrollment link, even Sunday; later Phase Two releases are Monday-Saturday at 6 a.m. Pacific. Trial invitation dates remain owner controlled. New paid enrollments derive phase end from the final lesson rather than default_access_days; existing explicit limits are preserved. The same calendar drives access, workbook release visibility, notices and owner diagnostics. Old cohort-bearing Checkout events remain compatible; this change does not activate Phase Two or repeat payment acceptance. See LEARNER-PORTAL.md and the current continuity mandate for exact verification/release state.
