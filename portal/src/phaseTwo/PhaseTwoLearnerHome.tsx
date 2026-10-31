@@ -75,6 +75,9 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       const next = Math.max(0, Math.ceil((deadline - Date.now()) / 1000))
       setRemaining(next)
       if (!next) {
+        setLessons(items => items.map(item => item.page_id === opened.page_id
+          ? { ...item, access_status: 'closed' as const, deadline_at: opened.closes_at, remaining_seconds: 0 }
+          : item))
         setOpened(null)
         setView('overview')
         setError('Your lesson window has closed. Saved project work remains available.')
@@ -84,6 +87,42 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
     const timer = window.setInterval(update, 1000)
     return () => window.clearInterval(timer)
   }, [opened, view])
+
+  // Refresh metadata at the next server-supplied release/deadline, and on return.
+  // This never opens teaching or changes the stored first-open lesson window.
+  useEffect(() => {
+    if (status !== 'ready' || view !== 'overview') return
+    let alive = true
+    let pending = false
+    let timer: ReturnType<typeof window.setTimeout> | undefined
+    const refresh = async () => {
+      if (pending) return
+      pending = true
+      try {
+        const items = await loadPhaseTwoOutline(enrollmentId)
+        if (!alive) return
+        if (items.length !== 36 || new Set(items.map(item => item.page_id)).size !== 36) {
+          throw new Error('Incomplete lesson schedule')
+        }
+        setLessons(items)
+      } catch {
+        if (alive) timer = window.setTimeout(() => { void refresh() }, 30_000)
+      } finally {
+        pending = false
+      }
+    }
+    const boundaries = lessons.flatMap(item => item.access_status === 'scheduled'
+      ? [Date.parse(item.released_at)]
+      : item.access_status === 'active' && item.deadline_at
+        ? [Date.parse(item.deadline_at)] : []).filter(Number.isFinite)
+    if (boundaries.length) {
+      const delay = Math.min(2_147_483_647, Math.max(1000, Math.min(...boundaries) - Date.now() + 100))
+      timer = window.setTimeout(() => { void refresh() }, delay)
+    }
+    const onFocus = () => { window.clearTimeout(timer); void refresh() }
+    window.addEventListener('focus', onFocus)
+    return () => { alive = false; window.clearTimeout(timer); window.removeEventListener('focus', onFocus) }
+  }, [enrollmentId, lessons, status, view])
 
   const journeys = useMemo(() => Array.from({ length: 6 }, (_, index) => {
     const journey = index + 1
@@ -97,6 +136,9 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
     setOpeningId(lesson.lesson_id)
     try {
       const result = await openPhaseTwoLesson(enrollmentId, lesson.lesson_id)
+      setLessons(items => items.map(item => item.lesson_id === lesson.lesson_id
+        ? { ...item, access_status: 'active' as const, deadline_at: result.closes_at, remaining_seconds: result.remaining_seconds }
+        : item))
       setOpened(result)
       setRemaining(result.remaining_seconds)
       setView('lesson')
