@@ -94,7 +94,7 @@ begin
  select * into r from public.manage_lesson_study_session(e1,final1,'heartbeat',(select study_token from public.lesson_access_windows where enrollment_id=e1 and lesson_id=final1));
  if (select status from public.lesson_access_windows where enrollment_id=e1 and lesson_id=final1)<>'expired' then raise exception 'Derived phase end intercepted durable exhaustion';end if;
  update public.lesson_access_windows set last_seen_at=now()-interval '1 hour' where enrollment_id=e1 and lesson_id=final1;
- if private.aca_phase_ends_at(e1)>now() then raise exception 'Final phase reopened after a stale heartbeat lease';end if;
+ if private.aca_phase_ends_at(e1) is distinct from (select closed_at from public.lesson_access_windows where enrollment_id=e1 and lesson_id=final1) then raise exception 'Final phase reopened after a stale heartbeat lease';end if;
  if has_function_privilege('authenticated','private.aca_lesson_calendar(uuid,uuid)','EXECUTE') then raise exception 'Private calendar exposed as learner API';end if;
  perform set_config('fixture.calendar_learner',learner::text,false);
  perform set_config('fixture.calendar_enrollment',e2::text,false);

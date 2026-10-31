@@ -104,7 +104,7 @@ export function diagnoseLessons(detail, now = Date.now()) {
       if (lesson.id === access?.current_lesson_id) {
         state = access.access_status
         reason = state === 'scheduled' ? 'Waiting for the scheduled Pacific release time.' : state === 'active' ? 'Lesson window is open.' : 'Ready to open; 120 minutes of study time are saved across pauses.'
-      } else if (lesson.window_status === 'completed' || lesson.window_status === 'expired' || (lesson.phase_one_deadline && Date.parse(lesson.phase_one_deadline) <= now)) {
+      } else if (lesson.window_status === 'completed' || lesson.window_status === 'expired' || (!lesson.window_started_at && lesson.first_open_until && Date.parse(lesson.first_open_until) <= now) || (lesson.phase_one_deadline && Date.parse(lesson.phase_one_deadline) <= now)) {
         state = lesson.window_status === 'completed' ? 'completed' : 'closed'; reason = 'Lesson window ended. Released workbook pages remain available.'
       } else reason = 'An earlier lesson must finish or its access window must close first.'
     } else if (released > now) { state = 'scheduled'; reason = 'Waiting for the scheduled Pacific release time.' }
