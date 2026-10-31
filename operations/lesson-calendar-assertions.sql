@@ -1,7 +1,7 @@
 do $$
 declare learner uuid:=gen_random_uuid(); stranger uuid:=gen_random_uuid(); c1 uuid:=gen_random_uuid();c2 uuid:=gen_random_uuid();
  e1 uuid:=gen_random_uuid();e2 uuid:=gen_random_uuid();j1 uuid:=gen_random_uuid();j2 uuid:=gen_random_uuid();
- l1 uuid; l2 uuid; final1 uuid; final2 uuid; r record;s record;cal record;blocked boolean;opening timestamptz;workbook jsonb;
+ l1 uuid; l2 uuid; final1 uuid; final2 uuid; r record;s record;cal record;blocked boolean;opening timestamptz;workbook jsonb;candidates jsonb;
 begin
  if private.aca_release_at('2026-10-28 21:00 America/Los_Angeles',2,1,0)<>'2026-10-28 21:00 America/Los_Angeles'::timestamptz
  or private.aca_release_at('2026-10-28 21:00 America/Los_Angeles',2,2,1)<>'2026-10-29 06:00 America/Los_Angeles'::timestamptz
@@ -80,6 +80,9 @@ begin
  insert into public.aca_phase_two_workbook_responses values(e2,learner,1,'{"answer":"Synthetic saved answer"}',1,7,now());
  workbook:=public.get_aca_phase_two_workbook(e2,1);
  if workbook#>>'{answers,answer}'<>'Synthetic saved answer' then raise exception 'Calendar change lost saved workbook work';end if;
+ if (select count(*) from public.aca_phase_two_my_outline(e2))<>36 then raise exception 'Independent learning home outline failed';end if;
+ candidates:=public.aca_phase_two_release_candidates('2026-10-31 06:00 America/Los_Angeles','2026-10-31 07:00 America/Los_Angeles');
+ if not exists(select 1 from jsonb_array_elements(candidates)x where x->>'pageId'='1.4' and (x->>'weekend')::boolean) then raise exception 'Release notice did not follow the actual independent Saturday';end if;
  perform set_config('fixture.user',stranger::text,true);blocked:=false;
  begin perform public.open_aca_phase_two_lesson(e2,l2);exception when others then blocked:=true;end;
  if not blocked then raise exception 'Calendar weakened learner ownership';end if;
@@ -93,5 +96,13 @@ begin
  update public.lesson_access_windows set last_seen_at=now()-interval '1 hour' where enrollment_id=e1 and lesson_id=final1;
  if private.aca_phase_ends_at(e1)>now() then raise exception 'Final phase reopened after a stale heartbeat lease';end if;
  if has_function_privilege('authenticated','private.aca_lesson_calendar(uuid,uuid)','EXECUTE') then raise exception 'Private calendar exposed as learner API';end if;
+ perform set_config('fixture.calendar_learner',learner::text,false);
+ perform set_config('fixture.calendar_enrollment',e2::text,false);
  raise notice 'Calendar: immediate entry, Pacific/DST, Sundays, first-opening cutoffs, resumed budgets, final boundary, saved workbook and ownership passed';
 end; $$;
+set role authenticated;
+do $$begin
+ perform set_config('fixture.user',current_setting('fixture.calendar_learner'),true);
+ if (select count(*) from public.aca_phase_two_my_outline(current_setting('fixture.calendar_enrollment')::uuid))<>36 then raise exception 'Authenticated role cannot load its independent outline';end if;
+end; $$;
+reset role;
