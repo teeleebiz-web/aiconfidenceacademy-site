@@ -1,5 +1,53 @@
 # ACA operational support and policy source
 
+## October 31, 2026 cancellation implementation
+
+The founder approved implementing the specific cancellation recommendation after
+PR 106 completed the purchase acknowledgment polish. The current bundle is
+`2026-10-31-cancellation`; released older bundles and existing Checkout sessions
+remain recognized. Prices, schedules, existing access behavior and Phase Two's
+closed purchase gate are unchanged.
+
+`POST /api/support/withdrawals` receives a clear withdrawal notice through the
+existing support-case and message store. It requires name, acknowledgment email
+and contract identification, with the existing capability, body limits, form trap
+and rate limit. It requires no login, country, reason, receipt number or general
+Terms consent. It cannot refund, cancel a Stripe schedule, grant access or disclose
+an account. The original statement and database receipt time remain immutable on
+retry. Case subject is **Enrollment withdrawal notice**; the existing internal
+`payment` category routes it to authorized billing review without a new case system.
+
+Contact provides Review withdrawal, an explicit Confirm withdrawal action, the
+dated acknowledgment, a text download and the existing private case link. Email
+acknowledgments include the complete statement and received time; provider failure
+does not erase receipt and can be retried with the same notice reference. Submission
+is not claimed as inbox delivery. Trusted-owner alerts and the existing control
+center remain the handling route. A valid statutory withdrawal is a notice, not
+a discretionary refund application. Reconcile identity/purchase promptly; honor
+the applicable refund deadline and cancel remaining installments for the withdrawn
+contract. Never auto-change billing solely from an unverified submitted email.
+
+The Refund Policy and Terms preserve statutory rights and explain the ordinary
+EU/UK 14-day right without a blanket waiver on lesson opening. The purchase notice
+links the instructions and prominent withdrawal function. New enrollment access
+emails contain the full cancellation instructions, model notice, postal route,
+refund consequences and receipt-specific Link support route as durable text.
+An existing ACA Checkout record and Stripe documentation establish Managed
+Payments refund support, but do not establish a compliant EU withdrawal function;
+the ACA function therefore supplies notice receipt while retaining provider routing.
+This is not universal legal clearance or a general 60-day refund promise.
+
+Sources verified October 31: EU Directives 2011/83/EU and 2023/2673; German BGB
+356a; UK Consumer Contracts Regulations 2013/3134; ACCC consumer-remedy guidance;
+https://support.link.com/questions/requesting-a-refund-for-a-sold-through-link-payment;
+https://docs.stripe.com/payments/managed-payments/how-it-works.
+
+Verify `academy/support/*.test.mjs`, checkout/fulfillment tests, server/origin
+contracts, typecheck/build and the actual public withdrawal flow. Use a clearly
+fictional notice only for release acceptance; no customer purchase is withdrawn.
+The following dated sections retain historical evidence; later completion in the
+current handoff controls their pending items.
+
 The October 17, 2026 founder instruction controls this increment: prepare public launch policies, remove outdated launch-delay copy, prioritize automatic support, preserve established enrollment behavior, and leave approved curriculum untouched.
 
 `knowledge.mjs` is the single source for automatic public answers. The build copies it to `support-knowledge.js`; do not edit the generated copy. Contact and FAQ use this same answer set. Matching runs in the browser, sends no question to an AI model, and never decides a refund or account exception. Unsupported questions route to a case. This is approved-answer automation, not a deployed generative AI agent.
