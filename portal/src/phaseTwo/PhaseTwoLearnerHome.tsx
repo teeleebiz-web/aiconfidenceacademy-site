@@ -6,6 +6,7 @@ import {
 import { PhaseTwoProjectWorkspace } from './PhaseTwoProjectWorkspace'
 import { PhaseTwoWorkbook } from './PhaseTwoWorkbook'
 import { PhaseTwoOrientation } from './PhaseTwoOrientation'
+import { LessonStudySession } from '../components/LessonStudySession'
 import { PhaseTwoLessonExperience } from './PhaseTwoLessonExperience'
 import { validProducedLesson } from './PhaseTwoProducedLessonReview'
 import './phaseTwoLearnerHome.css'
@@ -19,12 +20,6 @@ const sections = [
   { key: 'verify_and_save', heading: 'Verify and save' },
   { key: 'applied_completion_check', heading: 'Applied completion check' },
 ] as const
-
-function formatRemaining(seconds: number) {
-  const mins = Math.floor(seconds / 60)
-  const secs = seconds % 60
-  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
-}
 
 /**
  * Phase Two learner surface, staged for the explicitly authorized Phase Two
@@ -61,32 +56,6 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
     })
     return () => { alive = false }
   }, [enrollmentId])
-
-  useEffect(() => {
-    if (view !== 'lesson' || !opened) return
-    const update = () => {
-      const deadline = Date.parse(opened.closes_at)
-      if (!Number.isFinite(deadline)) {
-        setRemaining(0)
-        setOpened(null)
-        setView('overview')
-        return
-      }
-      const next = Math.max(0, Math.ceil((deadline - Date.now()) / 1000))
-      setRemaining(next)
-      if (!next) {
-        setLessons(items => items.map(item => item.page_id === opened.page_id
-          ? { ...item, access_status: 'closed' as const, deadline_at: opened.closes_at, remaining_seconds: 0 }
-          : item))
-        setOpened(null)
-        setView('overview')
-        setError('Your lesson window has closed. Saved project work remains available.')
-      }
-    }
-    update()
-    const timer = window.setInterval(update, 1000)
-    return () => window.clearInterval(timer)
-  }, [opened, view])
 
   // Refresh metadata at the next server-supplied release/deadline, and on return.
   // This never opens teaching or changes the stored first-open lesson window.
@@ -149,6 +118,11 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
     }
   }
 
+  const closeStudy = (lessonId: string) => {
+    setLessons(items => items.map(item => item.lesson_id === lessonId ? { ...item, access_status: 'closed', remaining_seconds: 0 } : item))
+    setOpened(null); setView('overview')
+    setError('Your lesson is no longer available. Your saved work is preserved.')
+  }
   const teaching = opened?.lesson_content.phase_two
   const expanded = opened?.lesson_content.phase_two_production
   // A released, authenticated lesson uses the same complete learner-facing
@@ -157,7 +131,10 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       validProducedLesson(expanded, opened.page_id)) {
     const journeyNumber = Number(opened.page_id.split('.')[0])
     const linkedJourney = journeys.find(item => item.number === journeyNumber)
-    return <PhaseTwoLessonExperience
+    const outline = lessons.find(item => item.page_id === opened.page_id)!
+    return <LessonStudySession enrollmentId={enrollmentId} lessonId={outline.lesson_id}
+      onRemaining={setRemaining} onClosed={() => closeStudy(outline.lesson_id)}>
+      <PhaseTwoLessonExperience
       pageId={opened.page_id}
       lessonTitle={opened.lesson_title}
       journeyTitle={linkedJourney?.title ?? 'AI Strategy and Business Opportunity'}
@@ -170,11 +147,10 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
         ? opened.lesson_content.phase_two_media_plan.demonstration_clips.clips
         : undefined}
       enrollmentId={enrollmentId}
-      remainingSeconds={remaining}
       onBackToLessons={() => { setOpened(null); setView('overview') }}
       onOpenProject={() => { setOpened(null); setView('project') }}
       onOpenWorkbook={() => { setWorkbookJourney(journeyNumber); setWorkbookSource(opened.page_id); setView('workbook') }}
-    />
+    /></LessonStudySession>
   }
   return (
     <main className="phase-two-learner" id="phase-two-learning-home">
@@ -242,16 +218,14 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
       ) : null}
 
       {status === 'ready' && view === 'lesson' && opened ? (
+        <LessonStudySession enrollmentId={enrollmentId} lessonId={lessons.find(item => item.page_id === opened.page_id)!.lesson_id}
+          onRemaining={setRemaining} onClosed={() => closeStudy(lessons.find(item => item.page_id === opened.page_id)!.lesson_id)}>
         <article className="p2-opened-lesson">
           <header className="p2-opened-heading">
             <div>
               <p className="eyebrow">Lesson {opened.page_id} · Guided instruction</p>
               <h2>{opened.lesson_title}</h2>
               <p>{opened.lesson_purpose}</p>
-            </div>
-            <div className="p2-lesson-remaining" aria-label="Remaining lesson time">
-              <strong>{formatRemaining(remaining)}</strong>
-              <small>Time left in this access window</small>
             </div>
           </header>
           <section className="p2-opened-media" aria-label="Lesson media slot">
@@ -274,6 +248,7 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
             <button type="button" onClick={() => { setOpened(null); setView('project') }}>Open My Project Record</button>
           </footer>
         </article>
+        </LessonStudySession>
       ) : null}
 
       {status === 'ready' && view === 'project' ? <PhaseTwoProjectWorkspace enrollmentId={enrollmentId} /> : null}
@@ -284,7 +259,7 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
           backLessonId={workbookSource ?? undefined}
           initialLesson={workbookSource && Number(workbookSource.split('.')[0]) === workbookJourney ? Number(workbookSource.split('.')[1]) : undefined}
           onBack={() => {
-            if (workbookSource && opened && Date.parse(opened.closes_at) > Date.now()) setView('lesson')
+            if (workbookSource && opened && remaining > 0) setView('lesson')
             else { setOpened(null); setView('overview') }
           }} /> </> : null}
     </main>
