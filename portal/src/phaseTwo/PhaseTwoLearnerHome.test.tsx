@@ -120,7 +120,7 @@ describe('Phase Two live schedule state', () => {
     await act(async () => { render(<PhaseTwoLearnerHome enrollmentId="enrollment-1" />) })
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Begin lesson' })) })
     await act(async () => { await vi.advanceTimersByTimeAsync(1100) })
-    expect(screen.getByText(/study time has ended/i)).toBeTruthy()
+    expect(screen.getByText(/lesson is no longer available/i)).toBeTruthy()
     expect((within(row()).getByRole('button', { name: 'Not open' }) as HTMLButtonElement).disabled).toBe(true)
     expect((screen.getByRole('button', { name: 'My Project Record' }) as HTMLButtonElement).disabled).toBe(false)
     expect(api.open).toHaveBeenCalledTimes(1)

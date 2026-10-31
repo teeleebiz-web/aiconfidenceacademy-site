@@ -46,7 +46,7 @@ function ActiveStudySession({ enrollmentId, lessonId, children, onClosed, onResu
     callbacks.current.onRemaining?.(next.remaining_seconds)
     if (next.access_status !== 'active') {
       freezeMedia()
-      setMessage(next.access_status === 'superseded' ? 'This lesson was opened in another window. Resume here to continue.' : 'Your lesson study time has ended. Your saved work remains available.')
+      setMessage(next.access_status === 'superseded' ? 'This lesson was opened in another window. Resume here to continue.' : 'Your lesson is no longer available. Your saved work is preserved.')
       if (next.access_status === 'expired') callbacks.current.onClosed?.()
     }
   }

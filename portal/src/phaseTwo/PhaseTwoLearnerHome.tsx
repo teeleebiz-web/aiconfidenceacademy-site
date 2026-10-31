@@ -121,7 +121,7 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string }) 
   const closeStudy = (lessonId: string) => {
     setLessons(items => items.map(item => item.lesson_id === lessonId ? { ...item, access_status: 'closed', remaining_seconds: 0 } : item))
     setOpened(null); setView('overview')
-    setError('Your lesson study time has ended. Saved project work remains available.')
+    setError('Your lesson is no longer available. Your saved work is preserved.')
   }
   const teaching = opened?.lesson_content.phase_two
   const expanded = opened?.lesson_content.phase_two_production
