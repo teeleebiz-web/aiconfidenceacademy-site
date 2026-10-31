@@ -23,10 +23,10 @@ vi.mock('./lib/supabase', () => {
     }
     return q
   }
-  return { supabase: {
+  return { projectUrl:'https://example.supabase.co', publishableKey:'fixture-public', supabase: {
     auth: { getSession: async () => ({ data: { session: { user: { id: 'qa-user' }, access_token: 'qa-token' } } }), onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } }) },
     from: query,
-    rpc: async (name: string) => name === 'get_learner_workbooks' ? {data:[{page_id:'1.1',title:'Workbook'}],error:null} : name === 'is_aca_curriculum_owner' ? { data: false, error: null } : { data: [{ current_lesson_id: 'qa-lesson', current_journey_id: 'qa-journey', access_status: api.expired ? 'scheduled' : name === 'get_learner_lesson_access' ? 'available' : 'active', released_lesson_ids: ['qa-lesson'], remaining_seconds: 7200, hard_expires_at: new Date(Date.now()+7200000).toISOString() }], error: null },
+    rpc: async (name: string, params?: {p_action?: string}) => name === 'manage_lesson_study_session' ? {data:[{access_status:api.expired?'expired':'active',study_state:api.expired?'ended':params?.p_action==='pause'?'paused':'running',active_seconds:0,remaining_seconds:api.expired?0:7200,study_token:'fixture',limit_at:null,study_mode:'budget'}],error:null} : name === 'get_learner_workbooks' ? {data:[{page_id:'1.1',title:'Workbook'}],error:null} : name === 'is_aca_curriculum_owner' ? { data: false, error: null } : { data: [{ current_lesson_id: 'qa-lesson', current_journey_id: 'qa-journey', access_status: api.expired ? 'scheduled' : name === 'get_learner_lesson_access' ? 'available' : 'active', released_lesson_ids: ['qa-lesson'], remaining_seconds: 7200, hard_expires_at: new Date(Date.now()+7200000).toISOString() }], error: null },
     storage: { from: () => ({ createSignedUrl: api.sign }) },
   } }
 })
@@ -81,20 +81,18 @@ it('returns to the exact available lesson from its workbook link', async () => {
   expect(screen.getByRole('link',{name:'Open Workbook'}).getAttribute('target')).toBeNull()
 })
 
-it('closes teaching and media at the deadline and retains the workbook entrance', async () => {
-  const {container,unmount} = render(<App />)
+it('pauses teaching on departure and retains workbook access after server-confirmed closure', async () => {
+  const {container} = render(<App />)
   await userEvent.click(await screen.findByRole('button',{name:/open lesson/i}))
   await screen.findByRole('heading',{name:'Synthetic lesson'})
-  const later = Date.now()+7200001
+  await userEvent.click(screen.getByRole('button',{name:'Pause lesson'}))
+  expect(screen.queryByRole('heading',{name:'Synthetic lesson'})).toBeNull()
   api.expired = true
-  const now = vi.spyOn(Date,'now').mockReturnValue(later)
-  act(()=>window.dispatchEvent(new Event('focus')))
+  await userEvent.click(screen.getByRole('button',{name:'Resume lesson'}))
   await screen.findByRole('heading',{name:'My Workbooks'})
   expect(container.querySelector('video')).toBeNull()
   expect(screen.queryByText('Sample teaching')).toBeNull()
-  expect(screen.queryByText('Sample prompt')).toBeNull()
   expect(screen.getByRole('link',{name:'Journey 1 Workbook'}).getAttribute('href')).toBe('/learn/?workbook=journey-one&lesson=1.1')
-  unmount();now.mockRestore()
 })
 
 it('keeps an expired lesson closed on direct return', async () => {

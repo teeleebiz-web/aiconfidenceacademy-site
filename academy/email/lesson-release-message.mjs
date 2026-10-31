@@ -10,8 +10,8 @@ export function lessonReleaseMessage(candidate, { appUrl, learnerFirstName }) {
   const lesson = `Lesson ${escapeHtml(candidate.pageId)}: ${escapeHtml(candidate.lessonTitle)}`
   const portalUrl = `${appUrl.replace(/\/$/, '')}/learn/${candidate.phaseNumber === 2 ? '?course=phase-two' : ''}`
   const accessNote = candidate.phaseNumber === 2 && candidate.weekend
-    ? 'This Saturday lesson follows your extended cohort weekend window. Check your learning home for its closing time.'
-    : 'Your lesson closes two hours after you first open it.'
+    ? 'This Saturday lesson follows your extended weekend window. Check your learning home for its closing time.'
+    : 'You have 120 minutes of study time. Pause when you need a break, then resume with your unused minutes.'
   return {
     subject: 'Your next ACA lesson is ready',
     html: `<div style="font-family:Arial,sans-serif;color:#173d62;line-height:1.6">

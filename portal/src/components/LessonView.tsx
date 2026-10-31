@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Lesson, LessonProgress } from '../types'
-import { LessonClock, type LessonAccess } from './LessonClock'
+import type { LessonAccess } from './LessonClock'
 import sealUrl from '../../../aca-official-seal.png'
 
 const lesson61OpeningPoster = `data:image/svg+xml,${encodeURIComponent(`
@@ -51,9 +51,6 @@ export function LessonView({
   nextLesson,
   onSave,
   onOpenLesson,
-  lessonAccess,
-  onRefreshAccess,
-  onResumeAccess,
 }: LessonViewProps) {
   const [response, setResponse] = useState(initialArtifact)
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>(
@@ -101,13 +98,6 @@ export function LessonView({
   return (
     <main className="lesson-main">
       <article className="lesson-article">
-        {lessonAccess && onRefreshAccess && onResumeAccess ? (
-          <LessonClock
-            access={lessonAccess}
-            onHeartbeat={onRefreshAccess}
-            onResume={onResumeAccess}
-          />
-        ) : null}
         <header className="lesson-hero">
           <div>
             <p className="eyebrow">Lesson {lesson.page_id}</p>

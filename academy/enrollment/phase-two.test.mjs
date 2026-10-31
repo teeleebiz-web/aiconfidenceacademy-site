@@ -45,7 +45,7 @@ test('Phase Two rejects tax-exclusive prices before creating checkout',async()=>
 
 test('Phase Two preserves the exact accepted disclosure version and rejects the Phase One legacy bundle',async()=>{
  for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout]){
-  for(const version of ['2026-10-30','2026-10-29','2026-10-28']){
+  for(const version of ['2026-10-31','2026-10-30','2026-10-29','2026-10-28']){
    const {config,calls}=options(),res=response();await handler(request(`termsAccepted=yes&ageConfirmed=yes&policyVersion=${version}`),res,config);assert.equal(res.status,303);assert.equal(calls[0].metadata.aca_policy_version,version)
   }
   const {config,calls}=options(),res=response();await handler(request('termsAccepted=yes&ageConfirmed=yes&policyVersion=2026-10-17'),res,config);assert.equal(res.status,400);assert.equal(calls.length,0)
@@ -54,7 +54,7 @@ test('Phase Two preserves the exact accepted disclosure version and rejects the 
 
 
 test('new Phase Two checkout requires an explicit adult declaration for every released policy version',async()=>{
- for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout])for(const version of ['2026-10-30','2026-10-29','2026-10-28'])for(const age of ['', '&ageConfirmed=no']){
+ for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout])for(const version of ['2026-10-31','2026-10-30','2026-10-29','2026-10-28'])for(const age of ['', '&ageConfirmed=no']){
   const {config,calls}=options(),res=response()
   await handler(request(`termsAccepted=yes&policyVersion=${version}${age}`),res,config)
   assert.equal(res.status,400);assert.equal(calls.length,0)

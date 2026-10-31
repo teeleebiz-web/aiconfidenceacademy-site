@@ -9,8 +9,8 @@ test('renders the approved lesson-release wording with the two-hour access windo
   assert.equal(message.subject, 'Your next ACA lesson is ready')
   assert.match(message.html, /Hello Jordan,/)
   assert.match(message.html, /Lesson 2\.1: Shape Your Request/)
-  assert.match(message.html, /lesson closes two hours after you first open it/)
-  assert.doesNotMatch(message.html, /pauses when you leave/)
+  assert.match(message.html, /120 minutes of study time/)
+  assert.match(message.html, /resume with your unused minutes/)
   assert.match(message.html, /workbook pages remain available/)
   assert.match(message.html, /https:\/\/aiconfidenceacademy\.com\/learn\//)
 })
@@ -24,5 +24,5 @@ test('escapes learner and lesson data before placing it in the email', () => {
 
 test('Phase Two weekend notice follows the cohort window and links to the actual Phase Two learner entry',()=>{
  const message=lessonReleaseMessage({pageId:'1.6',lessonTitle:'Build and reflect',phaseNumber:2,weekend:true},{appUrl:'https://aiconfidenceacademy.org',learnerFirstName:'Learner'})
- assert.match(message.html,/extended cohort weekend window/);assert.doesNotMatch(message.html,/closes two hours/);assert.match(message.html,/learn\/\?course=phase-two/)
+ assert.match(message.html,/extended weekend window/);assert.doesNotMatch(message.html,/closes two hours/);assert.match(message.html,/learn\/\?course=phase-two/)
 })
