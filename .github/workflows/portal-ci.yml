@@ -37,3 +37,25 @@ jobs:
 
       - name: Type-check, test, and build
         run: npm run check
+
+      - name: Capture Phase Two delivery assets
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          import shutil
+          class Assets(HTMLParser):
+            def handle_starttag(self,tag,attrs):
+              a=dict(attrs)
+              value=a.get('src') if tag=='script' else a.get('href') if tag=='link' else None
+              if value and value.startswith('/learn/assets/') and value.endswith(('.js','.css')):
+                p=Path(value.lstrip('/')); dest=Path('phase-two-build')/p
+                dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,dest)
+          text=Path('learn/index.html').read_text(); Assets().feed(text)
+          out=Path('phase-two-build/learn/index.html');out.parent.mkdir(parents=True,exist_ok=True);out.write_text(text)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase-two-controller-build
+          path: phase-two-build/
+          retention-days: 1
