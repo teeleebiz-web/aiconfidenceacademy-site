@@ -374,6 +374,14 @@ begin
  if auth.uid() is null then raise exception 'Authentication required'; end if;
  select w.study_token into v_token from public.lesson_access_windows w
  where w.enrollment_id=p_enrollment_id and w.lesson_id=p_lesson_id and w.learner_id=auth.uid();
+ if not found then raise exception 'This lesson session is closed'; end if;
+ -- A cached legacy reader has already deliberately opened the lesson through
+ -- touch_lesson_access, but cannot supply the new token. Start its existing
+ -- saved budget once; do not mistake its first heartbeat for a stale tab.
+ if v_token is null then
+   return query select s.access_status,s.active_seconds,s.remaining_seconds from public.manage_lesson_study_session(p_enrollment_id,p_lesson_id,'start',null)s;
+   return;
+ end if;
  return query select s.access_status,s.active_seconds,s.remaining_seconds from public.manage_lesson_study_session(p_enrollment_id,p_lesson_id,'heartbeat',v_token)s;
 end; $$;
 

@@ -16,6 +16,10 @@ begin
  insert into public.aca_phase_two_cohorts values(cohort,c2,'America/Los_Angeles',(now() at time zone 'America/Los_Angeles')::date-5,'00:00','active');
  insert into public.aca_phase_two_memberships values(e2,learner,c2,cohort);
  perform set_config('fixture.user',learner::text,true);
+ -- Existing cached readers keep their original contract during the rollout.
+ perform public.touch_lesson_access(e1,l1);
+ select * into r from public.heartbeat_lesson_access(e1,l1);
+ if r.access_status<>'active' or r.remaining_seconds<>7200 then raise exception 'Legacy heartbeat closed an eligible pre-token session'; end if;
 
  -- Both phases: server counts 30 minutes of confirmed study, then preserves
  -- the remaining 90 minutes across a long interruption and repeated resumes.
