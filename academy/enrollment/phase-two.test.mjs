@@ -10,15 +10,15 @@ const options = ({published=true,cohort=true,wrongPrice=false,taxBehavior='inclu
  const config=phaseTwoConfig({phaseTwoCourseId:'phase-two-course',phaseTwoCohortId:'cohort',phaseTwoPaidInFullPriceId:'p179',installment67PriceId:'p67',installment66PriceId:'p66',appUrl:'https://aca.example',db:{from(table){return {select(){return this},eq(){return this},async single(){return {data:table==='courses'?{status:published?'published':'draft'}:{status:cohort?'active':'closed'},error:null}}}}},stripe:{prices:{retrieve:async id=>({active:true,currency:'usd',tax_behavior:taxBehavior,unit_amount:wrongPrice?5000:{p179:17900,p67:6700,p66:6600}[id],type:id==='p179'?'one_time':'recurring',recurring:{interval:'week',interval_count:1}})},checkout:{sessions:{create:async value=>{calls.push(value);return {url:'https://checkout.stripe.test/p2'}}}}}})
  return {config,calls}
 }
-test('Phase Two checkout is blocked before Stripe when course or cohort is not open',async()=>{
- for(const state of [{published:false},{cohort:false}])for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout]){
+test('Phase Two checkout is blocked before Stripe when course is not open',async()=>{
+ for(const state of [{published:false}])for(const handler of [handlePaidInFullCheckout,handleInstallmentCheckout]){
   const {config,calls}=options(state),res=response();await handler(request(),res,config);assert.equal(res.status,503);assert.equal(calls.length,0)
  }
 })
-test('Phase Two uses its course, cohort and approved amounts for both choices',async()=>{
+test('Phase Two uses its course, independent calendar and approved amounts for both choices',async()=>{
  for(const [handler,price,total,mode] of [[handlePaidInFullCheckout,'p179','17900','payment'],[handleInstallmentCheckout,'p67','19900','subscription']]){
   const {config,calls}=options(),res=response();await handler(request(),res,config);assert.equal(res.status,303)
-  assert.equal(calls[0].metadata.aca_age_18_or_older,'yes');assert.equal((calls[0].subscription_data?.metadata||calls[0].metadata).aca_age_18_or_older,'yes');assert.equal(calls[0].mode,mode);assert.equal(calls[0].line_items[0].price,price);assert.equal(calls[0].metadata.aca_course_id,'phase-two-course');assert.equal(calls[0].metadata.aca_cohort_id,'cohort')
+  assert.equal(calls[0].metadata.aca_age_18_or_older,'yes');assert.equal((calls[0].subscription_data?.metadata||calls[0].metadata).aca_age_18_or_older,'yes');assert.equal(calls[0].mode,mode);assert.equal(calls[0].line_items[0].price,price);assert.equal(calls[0].metadata.aca_course_id,'phase-two-course');assert.equal(calls[0].metadata.aca_release_calendar,'independent-2026-10-31');assert.equal(calls[0].metadata.aca_cohort_id,undefined)
   assert.equal((calls[0].subscription_data?.metadata||calls[0].metadata).aca_total_cents,total)
  }
 })
@@ -60,3 +60,8 @@ test('new Phase Two checkout requires an explicit adult declaration for every re
   assert.equal(res.status,400);assert.equal(calls.length,0)
  }
 })
+
+ test('independent Phase Two checkout does not require a shared cohort',async()=>{
+  const {config,calls}=options({cohort:false});delete config.phaseTwoCohortId;const res=response();
+  await handlePaidInFullCheckout(request(),res,config);assert.equal(res.status,303);assert.equal(calls.length,1)
+ })

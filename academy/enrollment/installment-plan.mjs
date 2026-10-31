@@ -78,7 +78,7 @@ export async function handleInstallmentCheckout(req, res, config) {
           ...accepted,
           aca_plan: `${offer.planPrefix}_installments`,
           aca_course_id: config.courseId,
-          ...(offer.phaseNumber === 2 ? { aca_cohort_id: config.phaseTwoCohortId } : {}),
+          ...(offer.phaseNumber === 2 ? { aca_release_calendar: 'independent-2026-10-31' } : {}),
           aca_total_cents: String(offer.totalAmount),
         },
       },
@@ -86,7 +86,7 @@ export async function handleInstallmentCheckout(req, res, config) {
         ...accepted,
         aca_plan: `${offer.planPrefix}_installments`,
         aca_course_id: config.courseId,
-        ...(offer.phaseNumber === 2 ? { aca_cohort_id: config.phaseTwoCohortId } : {}),
+        ...(offer.phaseNumber === 2 ? { aca_release_calendar: 'independent-2026-10-31' } : {}),
       },
     })
     res.writeHead(303, { Location: session.url, 'Cache-Control': 'no-store' })
@@ -123,7 +123,7 @@ export async function handlePaidInFullCheckout(req, res, config) {
       cancel_url: `${config.appUrl.replace(/\/$/, '')}/enroll/?payment=canceled`,
       billing_address_collection: 'auto',
       metadata: { ...accepted, aca_plan: `${offer.planPrefix}_paid_in_full`, aca_course_id: config.courseId,
-          ...(offer.phaseNumber === 2 ? { aca_cohort_id: config.phaseTwoCohortId } : {}), aca_offer: 'pay_in_full', aca_total_cents: String(offer.paidInFullAmount) },
+          ...(offer.phaseNumber === 2 ? { aca_release_calendar: 'independent-2026-10-31' } : {}), aca_offer: 'pay_in_full', aca_total_cents: String(offer.paidInFullAmount) },
     })
     res.writeHead(303, { Location: session.url, 'Cache-Control': 'no-store' })
     res.end()
