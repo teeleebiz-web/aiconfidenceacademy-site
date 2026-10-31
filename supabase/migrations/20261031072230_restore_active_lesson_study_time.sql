@@ -331,6 +331,9 @@ begin
    where w.enrollment_id=p_enrollment_id and w.lesson_id=p_lesson_id and w.learner_id=v_user for update;
  end if;
  if not found then raise exception 'Lesson session unavailable'; end if;
+ -- Read the clock after acquiring the row lock; queued requests must not use
+ -- an earlier timestamp to move a checkpoint backwards or miss a hard cutoff.
+ v_now:=clock_timestamp();
  -- A stale request never receives the current token.
  if p_action<>'start' and (p_token is null or p_token is distinct from v_token) then
    return query select 'superseded'::text,'paused'::text,floor(v_used/1000.0)::integer,

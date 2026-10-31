@@ -80,13 +80,22 @@ begin
  if has_table_privilege('authenticated','public.lesson_access_windows','UPDATE')
  or has_table_privilege('authenticated','public.lesson_access_windows','TRUNCATE')
  or has_table_privilege('authenticated','public.aca_phase_two_lesson_windows','INSERT') then raise exception 'Learner can overwrite the server ledger'; end if;
+ perform set_config('fixture.owned_user',learner::text,false);
+ perform set_config('fixture.owned_enrollment',e2::text,false);
+ perform set_config('fixture.owned_lesson',ls::text,false);
  raise notice 'Both phases: study accounting, pause/resume, stale/offline requests, ownership, exhaustion, Saturday and payment boundaries passed.';
 end; $$;
 
 set role authenticated;
-do $$begin
+do $$declare r record; begin
  if exists(select 1 from public.lesson_access_windows) then raise exception 'RLS exposed another learner ledger'; end if;
  begin perform public.manage_lesson_study_session(gen_random_uuid(),gen_random_uuid(),'start'); raise exception 'Unexpected session access';
  exception when others then if sqlerrm='Unexpected session access' then raise; end if; end;
+ perform set_config('fixture.user',current_setting('fixture.owned_user'),true);
+ select * into r from public.manage_lesson_study_session(current_setting('fixture.owned_enrollment')::uuid,current_setting('fixture.owned_lesson')::uuid,'start');
+ if r.access_status<>'active' or r.study_mode<>'weekend' then raise exception 'Real authenticated role cannot resume its own eligible session'; end if;
+ if not exists(select 1 from public.aca_phase_two_lesson_windows) then raise exception 'Learner cannot read its own checkpoint'; end if;
+ begin update public.aca_phase_two_lesson_windows set study_used_ms=0; raise exception 'Learner overwrote server accounting';
+ exception when insufficient_privilege then null; end;
 end; $$;
 reset role;
