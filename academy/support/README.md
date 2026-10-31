@@ -224,3 +224,30 @@ The separate sandbox learner-interface acceptance and provider readback must
 establish replacement-card selection and the next automatic charge; do not claim
 that result from source tests alone. Existing successful checkout and three-payment
 completion evidence remains valid and is not restarted by this check.
+
+
+## October 31 Phase Two timing and saved-work acceptance
+
+The manual rollback-only check is
+`academy/enrollment/phase-two-timing-acceptance.sql`. Run it Monday-Saturday in
+Asia/Bangkok; its exact daily-release assertions use the current local lesson
+day, and the active Saturday case runs when that day is Saturday. The October 31
+run exercised that Saturday case. It uses only temporary learners, membership,
+cohort dates, lesson clocks and marked workbook/project answers. Its uncommitted
+publication flags are invisible to other sessions and roll back with the test.
+It does not call a payment or email provider, choose a production launch schedule,
+or require a new paid environment.
+
+The check verifies one second before, at and after release; early lesson/workbook
+rejection; the fixed two-hour first-open window and unchanged reopen deadline;
+ordinary expiry with retained and editable workbook/project work; the approved
+Saturday-to-local-Monday window; New York/Los Angeles fall-back and Bangkok time
+conversion; ended-weekend rejection; and actual authenticated learner isolation.
+Only metadata and test answers are returned; no curriculum or media review is
+required. Read back zero retained fixtures and unchanged draft/zero-cohort Phase
+Two state after the transaction.
+
+This is database/RPC acceptance, not successful ordinary Phase Two browser entry
+or a new payment-recovery end-to-end test. Keep the prior payment and Phase One
+browser evidence closed. Production activation and launch dates remain founder
+decisions; they are not prerequisites for these temporary timing fixtures.
