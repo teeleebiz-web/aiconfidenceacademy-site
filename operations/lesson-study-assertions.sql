@@ -82,7 +82,15 @@ begin
  if r.access_status<>'closed' or r.remaining_seconds<>0 then raise exception 'Exhausted lesson stayed open'; end if;
  blocked:=false; begin perform public.manage_lesson_study_session(e2,l2,'start'); exception when others then blocked:=true; end;
  if not blocked then raise exception 'Exhausted allowance was reopened'; end if;
- update public.lesson_access_windows set study_used_ms=7200000,study_state='paused' where enrollment_id=e1 and lesson_id=l1;
+ -- Natural exhaustion must be made durable by its final heartbeat. It must
+ -- not reappear as unused time after the confirmation lease becomes stale.
+ select study_token into old_token from public.lesson_access_windows where enrollment_id=e1 and lesson_id=l1;
+ update public.lesson_access_windows set study_used_ms=7190000,active_seconds=7190,study_state='running',last_seen_at=clock_timestamp()-interval '10 seconds' where enrollment_id=e1 and lesson_id=l1;
+ select * into r from public.manage_lesson_study_session(e1,l1,'heartbeat',old_token);
+ if (select study_used_ms from public.lesson_access_windows where enrollment_id=e1 and lesson_id=l1)<>7200000
+ or (select status from public.lesson_access_windows where enrollment_id=e1 and lesson_id=l1)<>'expired' then
+   raise exception 'Final Phase One heartbeat did not durably close the exhausted budget'; end if;
+ update public.lesson_access_windows set last_seen_at=clock_timestamp()-interval '1 hour' where enrollment_id=e1 and lesson_id=l1;
  select * into r from private.lesson_access_state(e1,learner,now());
  if r.access_status<>'course_completed' then raise exception 'Phase One exhaustion no longer advances existing progress'; end if;
 
