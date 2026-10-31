@@ -15,9 +15,13 @@ export async function requestStudySession(enrollmentId: string, lessonId: string
   action: 'start' | 'heartbeat' | 'pause', token: string | null): Promise<StudySession> {
   const session = await supabase.auth.getSession()
   authorization = session.data.session?.access_token ?? null
-  const { data, error } = await supabase.rpc('manage_lesson_study_session', {
+  let timeout: ReturnType<typeof setTimeout> | undefined
+  const operation = supabase.rpc('manage_lesson_study_session', {
     p_enrollment_id: enrollmentId, p_lesson_id: lessonId, p_action: action, p_token: token,
   })
+  const { data, error } = await Promise.race([operation, new Promise<never>((_, reject) => {
+    timeout = setTimeout(() => reject(new Error('Your connection was interrupted. Your lesson is paused; reconnect and resume.')), 15000)
+  })]).finally(() => clearTimeout(timeout))
   if (error || !data?.[0]) throw new Error('Your lesson time could not be checked. It has been paused. Please try again.')
   return data[0] as StudySession
 }

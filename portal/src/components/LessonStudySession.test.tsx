@@ -117,3 +117,13 @@ it('does not request learner sessions for protected owner review', () => {
   render(<LessonStudySession lessonId="lesson"><p>Owner review</p></LessonStudySession>)
   expect(screen.getByText('Owner review')).toBeTruthy(); expect(api.request).not.toHaveBeenCalled()
 })
+
+it('restores the recording position when a paused media URL is refreshed', async () => {
+  let video!: HTMLVideoElement
+  await act(async () => { render(<LessonStudySession enrollmentId="enrollment" lessonId="lesson" onResume={async () => {
+    video.currentTime = 0; fireEvent.loadedMetadata(video)
+  }}><video ref={element => { if (element) video = element }} /></LessonStudySession>) })
+  video.currentTime = 122
+  await click('Pause lesson'); await click('Resume lesson')
+  expect(video.currentTime).toBe(122)
+})

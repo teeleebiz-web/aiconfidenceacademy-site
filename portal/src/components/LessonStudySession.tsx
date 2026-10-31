@@ -128,7 +128,18 @@ function ActiveStudySession({ enrollmentId, lessonId, children, onClosed, onResu
       const idle = now - lastInteraction.current
       setWarning(idle >= IDLE_MS - WARNING_MS)
       if (idle >= IDLE_MS) void pause('Your lesson paused after inactivity. Your unused study time is saved.')
-      if (!seconds && !pending.current) void check()
+      if (!seconds) {
+        // Hide teaching immediately at the displayed boundary, including when
+        // a network request is still outstanding. Only the server can reopen it.
+        freezeMedia()
+        state.current = { ...current, study_state: 'paused' }
+        setSession(state.current); setWarning(false)
+        setMessage('Checking your saved lesson time. Your work is preserved.')
+        void requestStudySession(enrollmentId, lessonId, 'heartbeat', current.study_token)
+          .then(next => {
+            if (active.current && state.current?.study_token === current.study_token) apply(next)
+          }).catch(() => { if (active.current) setMessage('Your lesson is paused. Reconnect and resume to check your saved time.') })
+      }
     }, 1000)
     const check = async () => {
       const current = state.current
