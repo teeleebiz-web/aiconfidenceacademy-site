@@ -324,6 +324,16 @@ begin
    if p_action='start' then perform public.touch_lesson_access(p_enrollment_id,p_lesson_id); end if;
    select * into v_access from private.lesson_access_state(p_enrollment_id,v_user,v_now);
    if not found or v_access.current_lesson_id is distinct from p_lesson_id or v_access.access_status<>'active' then
+     -- The read projection may already classify the just-exhausted lesson as
+     -- closed and select its successor. Confirm that final study interval in
+     -- the owned ledger before returning; otherwise a stale lease could later
+     -- expose the previous checkpoint as unused time again.
+     update public.lesson_access_windows w set study_used_ms=7200000,active_seconds=7200,
+       study_state='paused',status='expired',last_seen_at=clock_timestamp(),updated_at=clock_timestamp(),
+       closed_at=coalesce(w.closed_at,clock_timestamp())
+     where w.enrollment_id=p_enrollment_id and w.lesson_id=p_lesson_id and w.learner_id=v_user
+       and w.status='active'
+       and private.aca_study_used_ms(w.study_used_ms,w.study_state,w.last_seen_at,clock_timestamp())>=7200000;
      return query select 'expired'::text,'ended'::text,7200,0,null::uuid,v_limit,v_mode; return;
    end if;
    select w.study_used_ms,w.study_state,w.study_token,w.last_seen_at,w.status
