@@ -64,7 +64,8 @@ describe('signed-in learner enrollment entry', () => {
     api.enrollmentError = null
     api.rpc.mockReset()
     api.rpc.mockImplementation(async (name: string) => {
-      if (name === 'get_learner_workbooks') return { data: [{page_id:'1.1',title:'Workbook'}], error:null }
+        if (name === 'manage_lesson_study_session') return { data: [{access_status:'active',study_state:'running',active_seconds:0,remaining_seconds:7200,study_token:'fixture',limit_at:null,study_mode:'budget'}], error:null }
+    if (name === 'get_learner_workbooks') return { data: [{page_id:'1.1',title:'Workbook'}], error:null }
     if (name === 'is_aca_curriculum_owner') return { data: api.ownerData, error: api.ownerError }
       if (name === 'get_learner_lesson_access') return { data: [{
         current_lesson_id: 'synthetic-lesson', current_journey_id: 'synthetic-journey',

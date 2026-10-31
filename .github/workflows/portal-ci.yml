@@ -60,6 +60,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify retry SQL permissions, policy, quotas and concurrent reservations
         run: bash operations/backup-retry-db-check.sh
+      - name: Verify both phase study budgets, pause/resume and payment boundaries
+        run: bash operations/lesson-study-db-check.sh
   verify:
     runs-on: ubuntu-latest
     steps:

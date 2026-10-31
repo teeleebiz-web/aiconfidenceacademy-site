@@ -104,13 +104,13 @@ export function diagnoseLessons(detail, now = Date.now()) {
       const access = detail.access_state
       if (lesson.id === access?.current_lesson_id) {
         state = access.access_status
-        reason = state === 'scheduled' ? 'Waiting for the release time or the interval after the previous lesson.' : state === 'active' ? 'Lesson window is open.' : 'Ready to open; the two-hour window starts at first opening.'
+        reason = state === 'scheduled' ? 'Waiting for the release time or the interval after the previous lesson.' : state === 'active' ? 'Lesson window is open.' : 'Ready to open; 120 minutes of study time are saved across pauses.'
       } else if (lesson.window_status === 'completed' || lesson.window_status === 'expired' || (lesson.phase_one_deadline && Date.parse(lesson.phase_one_deadline) <= now)) {
         state = lesson.window_status === 'completed' ? 'completed' : 'closed'; reason = 'Lesson window ended. Released workbook pages remain available.'
       } else reason = 'An earlier lesson must finish or its access window must close first.'
     } else if (released > now) { state = 'scheduled'; reason = 'Waiting for the cohort release time.' }
     else if (deadline && Date.parse(deadline) <= now) { state = 'closed'; reason = 'The lesson access window has ended.' }
-    else { state = deadline ? 'active' : 'available'; reason = lesson.weekend_ends_at ? 'Extended weekend access follows the cohort schedule.' : deadline ? 'The lesson access window is open.' : 'Ready to open; weekday access lasts two hours from first opening.' }
+    else { state = lesson.study_remaining_seconds === 0 && lesson.first_opened_at ? 'closed' : lesson.first_opened_at ? 'active' : deadline ? 'active' : 'available'; reason = lesson.weekend_ends_at ? 'Extended weekend access follows the cohort schedule.' : deadline ? 'The lesson access window is open.' : 'Ready to open; weekday lessons have 120 minutes of study time, saved across pauses.' }
     return {...lesson, access_status:state, restriction_reason:reason, deadline_at:deadline || null}
   })
 }

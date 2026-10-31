@@ -4,6 +4,7 @@ import sealUrl from '../../aca-official-seal.png'
 import { Dashboard } from './components/Dashboard'
 import { JourneyIntroductionView } from './components/JourneyIntroductionView'
 import { LessonView } from './components/LessonView'
+import { LessonStudySession } from './components/LessonStudySession'
 import { SignIn } from './components/SignIn'
 import { LearnerOnboarding } from './components/LearnerOnboarding'
 const AcademyControlCenter = lazy(() => import('./components/AcademyControlCenter').then(module => ({ default: module.AcademyControlCenter })))
@@ -311,31 +312,12 @@ export function App() {
     return access
   }
 
-  async function heartbeatLessonAccess(lesson = selectedLesson) {
-    if (!lesson || !portalData.enrollment || reviewMode) return null
-    const { data, error: accessError } = await supabase.rpc('heartbeat_lesson_access', {
-      p_enrollment_id: portalData.enrollment.id,
-      p_lesson_id: lesson.id,
-    })
-    if (accessError) {
-      mediaRequest.current++
-      setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
-      setError('Lesson unavailable. Your workbooks remain available.')
-      setSelectedLesson(null)
-      setLessonAccess(null)
-      return null
-    }
-    const access = (data?.[0] ?? null) as LessonAccess | null
-    setLessonAccess(access ? { ...access, hard_expires_at: lessonAccess?.hard_expires_at } : null)
-    if (!access || access.access_status !== 'active') {
-      mediaRequest.current++
-      setSelectedIntroduction(null); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
-      setSelectedLesson(null)
-      setLessonAccess(null)
-      setError('Your lesson has closed. Your workbooks remain available.')
-      if (session?.user) await loadPortal(session.user.id)
-    }
-    return access
+  async function refreshLessonMedia() {
+    if (!selectedLesson || !session || reviewMode || (!selectedLesson.content.video_path && !selectedLesson.content.audio_path)) return
+    const response = await fetch(`${import.meta.env.VITE_ACA_BACKEND_ORIGIN ?? 'https://checkout.aiconfidenceacademy.org'}/api/learner/lesson-media/${encodeURIComponent(selectedLesson.id)}`, { headers: { 'X-ACA-Access-Token': session.access_token }, cache: 'no-store' })
+    if (!response.ok) throw new Error('The academy could not reload this material. Your lesson remains paused.')
+    const media = await response.json()
+    setLessonVideoUrl(media.video ?? undefined); setLessonAudioUrl(media.audio ?? undefined)
   }
 
   async function openIntroduction(savedIntroduction: JourneyIntroduction) {
@@ -501,21 +483,6 @@ export function App() {
     }
   }, [workbookKey, needsOnboarding, returnLesson?.id])
 
-  useEffect(() => {
-    if (reviewMode || !selectedLesson || !lessonAccess) return
-    const deadline = lessonAccess.hard_expires_at ? Date.parse(lessonAccess.hard_expires_at) : Date.now() + lessonAccess.remaining_seconds * 1000
-    const close = () => {
-      mediaRequest.current++
-      setSelectedLesson(null); setSelectedIntroduction(null); setLessonAccess(null)
-      setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
-      setError('Your lesson has closed. Your workbooks remain available.')
-      if (session?.user) void loadPortal(session.user.id)
-    }
-    const verify = () => { if (Date.now() >= deadline) close() }
-    const timer = window.setTimeout(close, Math.max(0, deadline - Date.now()))
-    window.addEventListener('focus', verify); document.addEventListener('visibilitychange', verify)
-    return () => { clearTimeout(timer); window.removeEventListener('focus', verify); document.removeEventListener('visibilitychange', verify) }
-  }, [selectedLesson?.id, lessonAccess, reviewMode])
 
   useEffect(() => {
     if (!workbookKey || reviewMode || !session?.user) return
@@ -581,8 +548,15 @@ export function App() {
           onContinue={continueFromIntroduction}
         />
       ) : selectedLesson ? (
+        <LessonStudySession key={selectedLesson.id} enrollmentId={reviewMode ? undefined : portalData.enrollment?.id}
+          lessonId={selectedLesson.id} onResume={refreshLessonMedia}
+          onClosed={() => {
+            mediaRequest.current++
+            setSelectedLesson(null); setLessonAccess(null); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
+            setError('Your lesson study time has ended. Your workbooks remain available.')
+            if (session?.user) void loadPortal(session.user.id)
+          }}>
         <LessonView
-          key={selectedLesson.id}
           lesson={selectedLesson}
           videoSrc={lessonVideoUrl}
           audioSrc={lessonAudioUrl}
@@ -599,10 +573,8 @@ export function App() {
           }}
           onSave={saveLesson}
           onOpenLesson={reviewMode ? openLesson : undefined}
-          lessonAccess={lessonAccess}
-          onRefreshAccess={async () => { await heartbeatLessonAccess() }}
-          onResumeAccess={async () => { await startOrResumeLessonAccess() }}
         />
+        </LessonStudySession>
       ) : portalData.enrollment ? (
         <Dashboard
           enrollment={portalData.enrollment}
