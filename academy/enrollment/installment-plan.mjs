@@ -27,7 +27,7 @@ const logCheckoutFailure = (mode, error) => {
   })
 }
 
-export const enrollmentPolicyVersion = '2026-10-30'
+export const enrollmentPolicyVersion = '2026-10-31'
 async function agreement(req, config) {
   try {
     let raw = ''
@@ -36,7 +36,7 @@ async function agreement(req, config) {
     if (raw.length > 4096) return null
     const values = new URLSearchParams(raw)
     const version = values.get('policyVersion')
-    const acceptedVersions = config?.phaseNumber === 2 ? [enrollmentPolicyVersion, '2026-10-29', '2026-10-28'] : [enrollmentPolicyVersion, '2026-10-29', '2026-10-28', '2026-10-17']
+    const acceptedVersions = config?.phaseNumber === 2 ? [enrollmentPolicyVersion, '2026-10-30', '2026-10-29', '2026-10-28'] : [enrollmentPolicyVersion, '2026-10-30', '2026-10-29', '2026-10-28', '2026-10-17']
     if (values.get('termsAccepted') !== 'yes' || values.get('ageConfirmed') !== 'yes' || !acceptedVersions.includes(version)) return null
     return { aca_policy_version: version, aca_terms_accepted_at: new Date().toISOString(), aca_age_18_or_older: 'yes' }
   } catch { return null }

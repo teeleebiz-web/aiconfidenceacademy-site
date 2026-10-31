@@ -95,6 +95,11 @@ jobs:
                 destination = Path('portal-entry-build') / source
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, destination)
+          for source in Path('learn/assets').glob('*'):
+            if source.suffix in ('.js', '.css'):
+              destination = Path('portal-entry-build') / source
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(source, destination)
           entry = Path('learn/index.html')
           Assets().feed(entry.read_text())
           destination = Path('portal-entry-build/learn/index.html')

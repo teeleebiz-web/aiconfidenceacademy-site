@@ -258,3 +258,12 @@ Before enabling owner review in production:
    only; and
 5. verify the complete owner view on desktop and mobile before any curriculum
    status changes.
+
+
+## Active study correction — October 31, 2026
+
+Terrence's controlling requirement is a 120-minute study allowance preserved across pauses, logout, browser closure, power loss and emergencies. Thirty minutes of study followed by an hour away must leave 90 minutes. The October 8 fixed elapsed deadline contradicted that requirement. PR #102 is the correction candidate; PR #103 updates the existing retained Phase Two controller source. Neither PR is a production deployment by itself.
+
+The candidate uses the existing phase ledgers, server-owned millisecond accounting, authenticated session tokens, a 30-second heartbeat and a 45-second confirmation lease. Manual Pause, hidden/closed pages and connection loss preserve unused minutes. Five minutes without interaction triggers an automatic pause with a warning in the last 30 seconds; playing lesson audio/video counts as activity. This five-minute interval is an implementation default, not a recovered founder-approved policy. No browser can determine the precise instant a person physically leaves. Long unconfirmed gaps are not charged. Resume does not reset the allowance. Saved work, payment cutoffs, existing owner extensions and the Phase Two Saturday-through-Sunday exception remain separate controls.
+
+Do not claim the release calendar has been corrected by the timer patch. Terrence subsequently specified independent enrollment starts, daily release at 6 a.m. Pacific, and 24 hours to first open an ordinary lesson. That first-opening window is not a 6–8 a.m. lesson and is not an elapsed two-hour completion window. Phase Two has six release days and a Saturday extension through Sunday. Phase end must follow the final lesson's applicable boundary, not an unrelated 42-day default. The present cohort-based calendar still requires alignment with those instructions. Do not request a Monday start date or treat the existing cohort implementation as an approved founder decision. Preserve prior evidence and update the existing continuity mandate with actual deployment and test status before closing the task.

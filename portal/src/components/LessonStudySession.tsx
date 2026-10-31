@@ -31,12 +31,13 @@ function ActiveStudySession({ enrollmentId, lessonId, children, onClosed, onResu
   const pending = useRef(false)
   const active = useRef(true)
   const generation = useRef(0)
+  const mediaPositions = useRef(new Map<HTMLMediaElement, number>())
   const checkpoint = useRef(0)
   const lastInteraction = useRef(0)
   const callbacks = useRef({ onClosed, onResume, onRemaining })
   callbacks.current = { onClosed, onResume, onRemaining }
 
-  const freezeMedia = () => content.current?.querySelectorAll<HTMLMediaElement>('video,audio').forEach(media => media.pause())
+  const freezeMedia = () => content.current?.querySelectorAll<HTMLMediaElement>('video,audio').forEach(media => { mediaPositions.current.set(media, media.currentTime); media.pause() })
   const apply = (next: StudySession) => {
     state.current = next
     checkpoint.current = performance.now()
@@ -103,7 +104,15 @@ function ActiveStudySession({ enrollmentId, lessonId, children, onClosed, onResu
     document.addEventListener('visibilitychange', visibility)
     window.addEventListener('pagehide', exit)
     window.addEventListener('offline', exit)
+    const restoreMediaPosition = (event: Event) => {
+      const media = event.target as HTMLMediaElement
+      const position = mediaPositions.current.get(media)
+      if (position !== undefined && Number.isFinite(position)) {
+        try { media.currentTime = position } catch { /* The recording may not yet be seekable. */ }
+      }
+    }
     const element = content.current
+    element?.addEventListener('loadedmetadata', restoreMediaPosition, true)
     const events = ['pointerdown', 'pointermove', 'keydown', 'scroll', 'touchstart']
     for (const event of events) element?.addEventListener(event, interact, { passive: true, capture: true })
     const tick = window.setInterval(() => {
@@ -119,7 +128,18 @@ function ActiveStudySession({ enrollmentId, lessonId, children, onClosed, onResu
       const idle = now - lastInteraction.current
       setWarning(idle >= IDLE_MS - WARNING_MS)
       if (idle >= IDLE_MS) void pause('Your lesson paused after inactivity. Your unused study time is saved.')
-      if (!seconds && !pending.current) void check()
+      if (!seconds) {
+        // Hide teaching immediately at the displayed boundary, including when
+        // a network request is still outstanding. Only the server can reopen it.
+        freezeMedia()
+        state.current = { ...current, study_state: 'paused' }
+        setSession(state.current); setWarning(false)
+        setMessage('Checking your saved lesson time. Your work is preserved.')
+        void requestStudySession(enrollmentId, lessonId, 'heartbeat', current.study_token)
+          .then(next => {
+            if (active.current && state.current?.study_token === current.study_token) apply(next)
+          }).catch(() => { if (active.current) setMessage('Your lesson is paused. Reconnect and resume to check your saved time.') })
+      }
     }, 1000)
     const check = async () => {
       const current = state.current
@@ -142,6 +162,7 @@ function ActiveStudySession({ enrollmentId, lessonId, children, onClosed, onResu
       document.removeEventListener('visibilitychange', visibility)
       window.removeEventListener('pagehide', exit); window.removeEventListener('offline', exit)
       for (const event of events) element?.removeEventListener(event, interact, true)
+      element?.removeEventListener('loadedmetadata', restoreMediaPosition, true)
     }
   }, [enrollmentId, lessonId])
 
