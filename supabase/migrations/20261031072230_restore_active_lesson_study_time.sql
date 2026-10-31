@@ -352,8 +352,12 @@ begin
    where w.enrollment_id=p_enrollment_id and w.lesson_id=p_lesson_id and w.learner_id=v_user;
  else
    update public.lesson_access_windows w set study_used_ms=v_used,study_state=v_state,study_token=v_token,last_seen_at=v_now,
-   active_seconds=floor(v_used/1000.0)::integer,updated_at=v_now,status=v_status,
-   closed_at=case when v_status='expired' then coalesce(w.closed_at,v_now) else w.closed_at end
+   active_seconds=floor(v_used/1000.0)::integer,updated_at=v_now,
+   -- An external access cutoff restricts the session, not the unused budget.
+   -- Preserve eligibility when payment is brought current, including the
+   -- fractional final second rounded down in remaining_seconds.
+   status=case when v_used>=7200000 then 'expired' else w.status end,
+   closed_at=case when v_used>=7200000 then coalesce(w.closed_at,v_now) else w.closed_at end
    where w.enrollment_id=p_enrollment_id and w.lesson_id=p_lesson_id and w.learner_id=v_user;
  end if;
  return query select v_status,case when v_status='expired' then 'ended' else v_state end,

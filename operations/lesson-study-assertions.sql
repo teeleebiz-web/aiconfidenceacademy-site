@@ -49,6 +49,13 @@ begin
    update public.aca_installment_plans set status='paused';
    select * into r from public.manage_lesson_study_session(case when i=1 then e1 else e2 end,case when i=1 then l1 else l2 end,'heartbeat',r.study_token);
    if r.access_status<>'expired' or r.remaining_seconds<>0 then raise exception 'Paused payment did not restrict teaching'; end if;
+   update public.aca_installment_plans set status='grace',grace_until=clock_timestamp()+interval '0.5 seconds';
+   select * into r from public.manage_lesson_study_session(case when i=1 then e1 else e2 end,case when i=1 then l1 else l2 end,'start');
+   if i=1 and (select status from public.lesson_access_windows where enrollment_id=e1 and lesson_id=l1)<>'active' then
+     raise exception 'Fractional payment cutoff permanently consumed unused study eligibility'; end if;
+   update public.aca_installment_plans set status='active';
+   select * into r from public.manage_lesson_study_session(case when i=1 then e1 else e2 end,case when i=1 then l1 else l2 end,'start');
+   if r.access_status<>'active' or r.remaining_seconds<5395 then raise exception 'Current payment did not restore unused study time'; end if;
    delete from public.aca_installment_plans;
    -- Ownership is checked before opening, changing or exposing a session.
    perform set_config('fixture.user',stranger::text,true); blocked:=false;

@@ -553,7 +553,7 @@ export function App() {
           onClosed={() => {
             mediaRequest.current++
             setSelectedLesson(null); setLessonAccess(null); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
-            setError('Your lesson study time has ended. Your workbooks remain available.')
+            setError('Your lesson is no longer available. Your saved work is preserved.')
             if (session?.user) void loadPortal(session.user.id)
           }}>
         <LessonView
