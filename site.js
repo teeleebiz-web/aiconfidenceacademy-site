@@ -68,16 +68,58 @@
           </article>
         </div>
       </div>`;
-    if (paymentStatus === 'success') {
-      section.insertAdjacentHTML('afterbegin', '<div class="form-confirmation" role="status"><span>Checkout submitted.</span><p>Your secure Academy access email will arrive after Stripe confirms your payment.</p></div>');
-    } else if (paymentStatus === 'canceled') {
-      section.insertAdjacentHTML('afterbegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
-    }
     enrollmentPage.before(section);
+    if (paymentStatus === 'success') {
+      section.insertAdjacentHTML('beforebegin', '<div class="form-confirmation" role="status"><span>Checkout submitted.</span><p>Your secure Academy access email will arrive after Stripe confirms your payment.</p></div>');
+    } else if (paymentStatus === 'canceled') {
+      section.insertAdjacentHTML('beforebegin', '<p class="form-error" role="status">Checkout was canceled. No new payment was completed.</p>');
+    }
     const phaseTwo = document.createElement('section');
     phaseTwo.className = 'enrollment-offer section-pad';
     phaseTwo.setAttribute('aria-labelledby', 'phase-two-enrollment-title');
-    phaseTwo.innerHTML = `<div class="offer-inner"><div class="offer-intro"><div><p class="section-kicker">Phase Two enrollment</p><h2 id="phase-two-enrollment-title">Capability &amp; Application</h2><p>Develop, test, and explain a useful AI-supported project.</p></div><div class="offer-course-price"><span>Phase Two course price</span><strong>$199</strong></div></div><p><strong>Choose how you pay.</strong> Every new enrollee can save $20 by paying in full. No special eligibility or discount code is required. Prefer installments? Choose three payments at the amounts shown.</p><div class="payment-options" aria-label="Phase Two payment options"><article class="payment-card payment-card-featured"><p class="payment-label">Pay-in-full price</p><h3>Pay once</h3><p class="payment-amount">$179</p><p class="payment-saving">Save $20 on the $199 course price.</p></article><article class="payment-card payment-card-installments"><p class="payment-label">Three weekly payments</p><h3>Pay in installments</h3><ol class="payment-schedule" aria-label="Phase Two installment schedule"><li><span>Initial payment</span><strong>$67</strong></li><li><span>Day 7 payment</span><strong>$66</strong></li><li><span>Day 14 payment</span><strong>$66</strong></li></ol><p class="payment-total">$199 total</p></article></div><p role="status">Phase Two enrollment is closed. No payment is being collected for Phase Two.</p></div>`;
+    phaseTwo.innerHTML = `
+      <div class="offer-inner">
+        <div class="offer-intro">
+          <div>
+            <p class="section-kicker">Phase Two enrollment</p>
+            <h2 id="phase-two-enrollment-title">Capability &amp; Application</h2>
+            <p>Develop, test, and explain a useful AI-supported project. You can enroll directly in Phase Two.</p>
+            <p><a href="/programs/phase-two/">Learn more about Phase Two</a></p>
+          </div>
+          <div class="offer-course-price"><span>Phase Two course price</span><strong>$199</strong></div>
+        </div>
+        <p><strong>Choose how you pay.</strong> Every new enrollee can save $20 by paying in full. No special eligibility or discount code is required. Prefer installments? Choose three payments at the amounts shown.</p>
+        <div class="purchase-notice"><strong>Before you pay</strong><p>You must be 18 or older to enroll. This is personal, time-limited program access, not lifetime access to an instructional library. Lesson 1 opens with your enrollment access. Later lessons release at 6 a.m. Pacific, Monday through Saturday. First open an ordinary lesson within 24 hours of release, then use 120 minutes of study time, with unused minutes preserved across pauses, browser closure, and sign-out. Saturday lesson access continues through Sunday, ending Monday at 00:00 Pacific. Enrollment and payment access restrictions still apply. Released workbook pages and saved answers remain separate from protected instruction. Enrollment is non-refundable for change of mind or non-use, subject to applicable legal rights. Read the <a href="/terms/">Terms</a> and <a href="/refund-policy/">Refund Policy</a>. For payment or access help, <a href="/contact/#request">contact ACA support</a>.</p></div>
+        <div class="payment-options" aria-label="Phase Two payment options">
+          <article class="payment-card payment-card-featured">
+            <p class="payment-label">Pay-in-full price</p>
+            <h3>Pay once</h3>
+            <p class="payment-amount">$179</p>
+            <p class="payment-saving">Save $20 on the $199 course price.</p>
+            <p class="payment-note">One payment covers your Phase Two enrollment.</p>
+            <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-two/paid-in-full">
+              <label class="consent"><input type="checkbox" name="termsAccepted" value="yes" required><input type="hidden" name="ageConfirmed" value="yes"><input type="hidden" name="policyVersion" value="2026-10-31"><span>I confirm that I am 18 or older. I have reviewed this option's total price and the lesson access conditions. I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Enrollment and Use</a> and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and acknowledge the <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span></label>
+              <button class="button button-gold" type="submit">Pay $179 today</button>
+            </form>
+          </article>
+          <article class="payment-card payment-card-installments">
+            <p class="payment-label">Three weekly payments</p>
+            <h3>Pay in installments</h3>
+            <p class="payment-amount">$67 <span>today</span></p>
+            <ol class="payment-schedule" aria-label="Phase Two installment schedule">
+              <li><span>Initial payment</span><strong>$67</strong></li>
+              <li><span>Day 7 payment</span><strong>$66</strong></li>
+              <li><span>Day 14 payment</span><strong>$66</strong></li>
+            </ol>
+            <p class="payment-total">$199 total</p>
+            <details class="payment-terms"><summary>How the installments work</summary><p>Stripe handles your payment method; ACA does not store your full card number. We email a reminder two days before the later payments. If a payment fails, you have 48 hours to correct it before access pauses. Access resumes when the account is brought current; correcting a payment does not move the remaining scheduled date. Automatic payments end after the third successful payment.</p></details>
+            <form method="post" action="https://checkout.aiconfidenceacademy.org/api/enrollment/phase-two/installments">
+              <label class="consent"><input type="checkbox" name="termsAccepted" value="yes" required><input type="hidden" name="ageConfirmed" value="yes"><input type="hidden" name="policyVersion" value="2026-10-31"><span>I confirm that I am 18 or older. I have reviewed this option's total price and the lesson access conditions. I authorize the three payments at the amounts and due dates shown above. I agree to the <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Enrollment and Use</a> and <a href="/refund-policy" target="_blank" rel="noopener noreferrer">Refund Policy</a>, and acknowledge the <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span></label>
+              <button class="button button-gold" type="submit">Start with $67 today</button>
+            </form>
+          </article>
+        </div>
+      </div>`;
     enrollmentPage.before(phaseTwo);
     if (['#interest-list', '#updates-signup'].includes(window.location.hash)) {
       window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView());
