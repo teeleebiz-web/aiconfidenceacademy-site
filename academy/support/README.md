@@ -1,5 +1,25 @@
 # ACA operational support and policy source
 
+## November 2 full Academy enrollment release
+
+Terrence explicitly confirmed public launch readiness for either phase, including
+learners enrolling directly in Phase Two. The former instruction to keep Phase Two
+closed is superseded for this release. Use the existing owner publication action
+for each complete six-journey, 36-lesson phase; preserve its content, media,
+schedules, saved work and billing controls.
+
+The public enrollment page offers the existing Phase One $129 or $50/$50/$49
+choices and Phase Two $179 or $67/$66/$66 choices. Phase Two uses its already-tested
+checkout routes, required adult/purchase acknowledgment, independent calendar and
+tax-inclusive live prices. The page, Terms availability sentence and shared price
+answer must agree with actual enrollment availability. Do not add a prerequisite
+to purchase Phase One, introduce a cancellation process, change the approved
+refund policy, or repeat completed purchase/timer/media acceptance for this wiring.
+
+Verify the four forms, phase-specific destinations, required assent and existing
+backend contracts. Confirm publication and the served public files before reporting
+release; creating the candidate alone does not make either phase available.
+
 The October 17, 2026 founder instruction controls this increment: prepare public launch policies, remove outdated launch-delay copy, prioritize automatic support, preserve established enrollment behavior, and leave approved curriculum untouched.
 
 `knowledge.mjs` is the single source for automatic public answers. The build copies it to `support-knowledge.js`; do not edit the generated copy. Contact and FAQ use this same answer set. Matching runs in the browser, sends no question to an AI model, and never decides a refund or account exception. Unsupported questions route to a case. This is approved-answer automation, not a deployed generative AI agent.
