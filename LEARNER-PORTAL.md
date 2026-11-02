@@ -31,6 +31,36 @@ before reporting the integration complete.
 The browser receives only the Supabase publishable key. Service-role and Resend
 credentials remain server-side.
 
+## Shared learner sign-in and return - November 2, 2026
+
+The homepage's existing Learner sign in link remains `/learn/`. Its shared entry
+restores the existing browser session, then reads only that signed-in account's
+enrollments through the normal client and RLS. A Phase One-only learner continues
+to the existing Phase One learning home. A Phase Two-only learner continues to
+`/learn/?course=phase-two`. A learner with both enrollments chooses a phase.
+No local navigation hint grants access; each phase still enforces its own
+enrollment, publication, payment and lesson restrictions. A failed enrollment
+lookup offers retry rather than assuming Phase One. Sign-out/account changes
+discard the earlier account's pending routing result.
+
+Without a saved session, the shared entry uses the existing enrollment-email
+sign-in form and optional existing-password method. Email sign-in does not create
+an account and returns to the shared entry after verification. Enrollment access
+is provisioned by the existing confirmed-payment or authorized trial flow.
+
+Restoring a session is different from opening a lesson. The learning home shows
+the learner's server-calculated progress, available lessons and released saved
+work. Clicking Open lesson begins or resumes its existing study session; the
+shared entry does not open teaching or start a timer. Closing a browser normally
+retains the session on that device, but sign-out, cleared site data, private
+browsing or an expired session can require sign-in again. It is not permanent
+access based on an email address or merely a connection to the API.
+
+Explicit phase, lesson, workbook, owner-review and trial links retain their
+existing routes. Owner administration stays at `/control-center/` and continues
+to require the existing server-controlled owner permission. A saved learner
+session is not evidence of owner permission, and navigation does not change it.
+
 ## Enrollment administration
 
 ### Independent availability monitoring (October 27, 2026)
