@@ -42,6 +42,7 @@ export type Enrollment = {
   starts_at: string | null
   access_expires_at: string | null
   onboarding_completed_at?: string | null
+  learner_start_pending?: boolean
   course: Course
 }
 

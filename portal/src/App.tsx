@@ -63,6 +63,7 @@ export function App() {
   const [reviewMode, setReviewMode] = useState(false)
   const [lessonAccess, setLessonAccess] = useState<LessonAccess | null>(null)
   const [completedOnboardingId, setCompletedOnboardingId] = useState('')
+  const [beginningEnrollment, setBeginningEnrollment] = useState(false)
   const [lessonVideoUrl, setLessonVideoUrl] = useState<string | undefined>()
   const [lessonAudioUrl, setLessonAudioUrl] = useState<string | undefined>()
   const mediaRequest = useRef(0)
@@ -105,10 +106,10 @@ export function App() {
       supabase.from('profiles').select('first_name, display_name').eq('id', userId).maybeSingle(),
       supabase
         .from('enrollments')
-        .select('id, learner_id, course_id, status, starts_at, access_expires_at, onboarding_completed_at, course:courses!inner(id, code, title, summary)')
+        .select('id, learner_id, course_id, status, starts_at, access_expires_at, onboarding_completed_at, learner_start_pending, course:courses!inner(id, code, title, summary)')
         .eq('learner_id', userId)
         .eq('course.code', 'phase-one-chatgpt-foundations')
-        .in('status', ['active', 'completed'])
+        .in('status', ['pending', 'active', 'completed'])
         .maybeSingle(),
       supabase.rpc('is_aca_curriculum_owner', undefined, { get: true }),
     ])
@@ -128,7 +129,8 @@ export function App() {
     const isOwner = !ownerResult.error && ownerResult.data === true
     setReviewMode(isOwner)
 
-    const enrollment = enrollmentResult.data as unknown as Enrollment | null
+    const candidate = enrollmentResult.data as unknown as Enrollment | null
+    const enrollment = candidate?.status === 'pending' && !candidate.learner_start_pending ? null : candidate
 
     if (isOwner && operationsView) {
       setPortalData({ ...emptyPortalData, enrollment, learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '' })
@@ -142,6 +144,14 @@ export function App() {
         ...emptyPortalData,
         learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '',
       })
+      setLoading(false)
+      return
+    }
+
+    if (enrollment.status === 'pending' && enrollment.learner_start_pending) {
+      setWorkbooks([])
+      setPortalData({ ...emptyPortalData, enrollment,
+        learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '' })
       setLoading(false)
       return
     }
@@ -497,6 +507,21 @@ export function App() {
     await openLesson(firstLesson, true)
   }
 
+  async function beginEnrollment() {
+    if (beginningEnrollment || !session?.user || !portalData.enrollment?.learner_start_pending) return
+    setBeginningEnrollment(true)
+    setError('')
+    try {
+      const { error: startError } = await supabase.rpc('begin_aca_learner_enrollment', {
+        p_enrollment_id: portalData.enrollment.id,
+      })
+      if (startError) throw startError
+      await loadPortal(session.user.id)
+    } catch {
+      setError('Your program could not be started. Please try again.')
+    } finally { setBeginningEnrollment(false) }
+  }
+
   if (loading) {
     return <div className="loading-screen">Preparing your ACA learning space…</div>
   }
@@ -532,7 +557,16 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {operationsView ? (reviewMode ? <Suspense fallback={<div className="loading-screen">Opening Academy operations…</div>}><AcademyControlCenter accessToken={session.access_token} onSignOut={signOut} /></Suspense> : <main className="access-shell"><section className="auth-card"><h1>Owner access required</h1><p>Enrollment administration is available to the Academy owner.</p><a href="/learn/">Return to your learner portal</a></section></main>) : workbookKey && portalData.enrollment && !needsOnboarding ? (
+      {operationsView ? (reviewMode ? <Suspense fallback={<div className="loading-screen">Opening Academy operations…</div>}><AcademyControlCenter accessToken={session.access_token} onSignOut={signOut} /></Suspense> : <main className="access-shell"><section className="auth-card"><h1>Owner access required</h1><p>Enrollment administration is available to the Academy owner.</p><a href="/learn/">Return to your learner portal</a></section></main>) : portalData.enrollment?.status === 'pending' && portalData.enrollment.learner_start_pending ? (
+        <main className="auth-shell"><section className="auth-card">
+          <p className="eyebrow">AI Confidence Academy</p>
+          <h1>Your Phase One access is ready</h1>
+          <p>Begin when you are ready. Your lesson schedule starts only after you select Begin Phase One.</p>
+          <button type="button" disabled={beginningEnrollment} onClick={() => void beginEnrollment()}>
+            {beginningEnrollment ? 'Opening your welcome…' : 'Begin Phase One'}
+          </button>
+        </section></main>
+      ) : workbookKey && portalData.enrollment && !needsOnboarding ? (
         <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
           apiBase={workbookApiBase} backHref={returnLesson ? `/learn/?lesson=${encodeURIComponent(returnLesson.page_id)}` : '/learn/#my-workbooks'} backLabel={returnLesson ? `Back to Lesson ${returnLesson.page_id}` : 'My Workbooks'} />
       ) : needsOnboarding ? (

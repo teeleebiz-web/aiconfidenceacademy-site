@@ -64,6 +64,8 @@ jobs:
         run: bash operations/lesson-study-db-check.sh
       - name: Verify independent calendars and first-opening boundaries
         run: bash operations/lesson-calendar-db-check.sh
+      - name: Verify staged learner start and invitation timing
+        run: bash operations/learner-start-db-check.sh
   verify:
     runs-on: ubuntu-latest
     steps:
