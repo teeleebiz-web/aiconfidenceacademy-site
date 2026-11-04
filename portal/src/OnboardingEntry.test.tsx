@@ -7,6 +7,7 @@ const api = vi.hoisted(() => ({
   rpc: vi.fn(), signMedia: vi.fn(), owner: false, enrollment: true,
   progress: [] as unknown[], mediaError: null as { message: string } | null,
   completedAt: null as string | null, completionError: false, accessStatus: 'active', lessonMediaError: false,
+  status: 'active', staged: false, beginError: false,
 }))
 
 vi.mock('./lib/supabase', () => {
@@ -35,7 +36,7 @@ vi.mock('./lib/supabase', () => {
       const result = Promise.resolve({ data: table === 'lesson_progress' ? api.progress : rows[table] ?? [], error: null })
       const query = {
         select: () => query, eq: () => query, in: () => query, order: () => query, limit: () => query,
-        maybeSingle: async () => ({ data: table === 'enrollments' ? (api.enrollment ? { ...enrollment, onboarding_completed_at: api.completedAt } : null)
+        maybeSingle: async () => ({ data: table === 'enrollments' ? (api.enrollment ? { ...enrollment, status: api.status, learner_start_pending: api.staged, onboarding_completed_at: api.completedAt } : null)
           : table === 'profiles' ? { first_name: 'Learner' } : null, error: null }),
         then: result.then.bind(result),
       }
@@ -57,6 +58,7 @@ beforeEach(() => {
   localStorage.clear()
   api.owner = false; api.enrollment = true; api.progress = []; api.mediaError = null
   api.completedAt = null; api.completionError = false; api.accessStatus = 'active'; api.lessonMediaError = false
+  api.status = 'active'; api.staged = false; api.beginError = false
   window.history.replaceState(null, '', '/learn/')
   vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
   api.signMedia.mockReset()
@@ -66,6 +68,11 @@ beforeEach(() => {
   })
   api.rpc.mockReset()
   api.rpc.mockImplementation(async (name: string) => {
+    if (name === 'begin_aca_learner_enrollment') {
+      if (api.beginError) return { data: null, error: { message: 'Unavailable' } }
+      api.status = 'active'; api.staged = false
+      return { data: '2026-11-04T15:00:00Z', error: null }
+    }
     if (name === 'manage_lesson_study_session') return { data: [{access_status:'active',study_state:'running',active_seconds:0,remaining_seconds:7200,study_token:'fixture',limit_at:null,study_mode:'budget'}], error:null }
     if (name === 'get_learner_workbooks') return { data: [{page_id:'1.1',title:'Workbook'}], error:null }
     if (name === 'is_aca_curriculum_owner') return { data: api.owner, error: null }
@@ -79,6 +86,42 @@ beforeEach(() => {
 })
 
 afterEach(() => { vi.restoreAllMocks() })
+
+it('keeps staged access waiting across reloads until an explicit Begin, then opens the founder welcome', async () => {
+  api.status = 'pending'; api.staged = true
+  const first = render(<App />)
+  expect(await screen.findByRole('button', { name: 'Begin Phase One' })).toBeTruthy()
+  expect(api.signMedia).not.toHaveBeenCalled()
+  expect(api.rpc.mock.calls.map(([name]) => name)).toEqual(['is_aca_curriculum_owner'])
+  first.unmount()
+  render(<App />)
+  const begin = await screen.findByRole('button', { name: 'Begin Phase One' })
+  expect(api.rpc.mock.calls.some(([name]) => name === 'begin_aca_learner_enrollment')).toBe(false)
+  await userEvent.setup().click(begin)
+  expect(await screen.findByRole('heading', { name: 'Welcome to the Academy' })).toBeTruthy()
+  expect(api.rpc).toHaveBeenCalledWith('begin_aca_learner_enrollment', { p_enrollment_id: 'onboarding-enrollment' })
+  expect(api.signMedia).toHaveBeenCalledWith('aca-learning-media', academyWelcomeVideoPath, 3600)
+  expect(api.rpc.mock.calls.some(([name]) => name === 'touch_lesson_access' || name === 'manage_lesson_study_session' || name === 'complete_aca_onboarding')).toBe(false)
+})
+
+it('keeps the program staged when Begin fails', async () => {
+  api.status = 'pending'; api.staged = true; api.beginError = true
+  render(<App />)
+  await userEvent.setup().click(await screen.findByRole('button', { name: 'Begin Phase One' }))
+  expect((await screen.findByRole('alert')).textContent).toContain('Your program could not be started')
+  expect(screen.getByRole('button', { name: 'Begin Phase One' }).hasAttribute('disabled')).toBe(false)
+  expect(api.status).toBe('pending')
+  expect(api.signMedia).not.toHaveBeenCalled()
+})
+
+it('does not offer activation to an ordinary unpaid pending enrollment', async () => {
+  api.status = 'pending'; api.staged = false
+  render(<App />)
+  await screen.findByRole('button', { name: 'Sign out' })
+  expect(screen.queryByRole('button', { name: 'Begin Phase One' })).toBeNull()
+  expect(screen.queryByRole('heading', { name: 'Welcome to the Academy' })).toBeNull()
+  expect(api.signMedia).not.toHaveBeenCalled()
+})
 
 it('opens the exact founder film, then the existing ChatGPT guide, then Lesson 1.1', async () => {
   const user = userEvent.setup()

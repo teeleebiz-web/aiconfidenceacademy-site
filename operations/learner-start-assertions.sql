@@ -1,0 +1,60 @@
+begin;
+do $$
+declare
+ learner uuid:=gen_random_uuid(); stranger uuid:=gen_random_uuid(); course uuid:=gen_random_uuid();
+ enrollment uuid:=gen_random_uuid(); trial_user uuid:=gen_random_uuid(); grant_id uuid:=gen_random_uuid();
+ begun timestamptz; again timestamptz; result jsonb; trial_enrollment uuid; refused boolean;
+begin
+ insert into auth.users values(learner,'learner@example.invalid'),(stranger,'other@example.invalid'),(trial_user,'trial@example.invalid');
+ insert into public.profiles values(learner,'active'),(stranger,'active'),(trial_user,'active');
+ insert into public.courses values(course,'phase-one-chatgpt-foundations',1,'published');
+ insert into public.enrollments(id,learner_id,course_id,status,starts_at,learner_start_pending)
+ values(enrollment,learner,course,'pending',null,true);
+ assert (select starts_at is null and status='pending' and onboarding_completed_at is null from public.enrollments where id=enrollment),'Staging must not start anything';
+ perform set_config('fixture.user',stranger::text,true);
+ refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
+ assert refused,'Another learner cannot begin this enrollment';
+ perform set_config('fixture.user','',true);
+ refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
+ assert refused,'Anonymous access cannot begin';
+ perform set_config('fixture.user',learner::text,true);
+ update public.enrollments set learner_start_pending=false where id=enrollment;
+ refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
+ assert refused,'Unapproved pending enrollment cannot grant itself access';
+ update public.enrollments set learner_start_pending=true,status='paused' where id=enrollment;
+ refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
+ assert refused,'Begin cannot restore paused access';
+ update public.enrollments set status='pending' where id=enrollment;
+ insert into public.aca_installment_plans values(enrollment,'past_due',now()-interval '1 minute');
+ refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
+ assert refused,'Begin preserves payment restrictions';
+ delete from public.aca_installment_plans where enrollment_id=enrollment;
+ update public.profiles set account_status='suspended' where id=learner;
+ refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
+ assert refused,'Begin preserves account restrictions';
+ update public.profiles set account_status='active' where id=learner;
+ update public.enrollments set access_expires_at=now()-interval '1 second' where id=enrollment;
+ refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
+ assert refused,'Begin preserves explicit owner expiry';
+ update public.enrollments set access_expires_at=null where id=enrollment;
+ begun:=public.begin_aca_learner_enrollment(enrollment);
+ assert begun=now(),'Only explicit Begin starts the calendar now';
+ assert (select status='active' and not learner_start_pending and onboarding_completed_at is null from public.enrollments where id=enrollment),'Begin enters the introduction, without completing it';
+ update public.enrollments set starts_at=now()-interval '1 hour',onboarding_completed_at=now() where id=enrollment;
+ again:=public.begin_aca_learner_enrollment(enrollment);
+ assert again=now()-interval '1 hour','Duplicate Begin must not reset the calendar or work';
+ assert not has_function_privilege('anon','public.begin_aca_learner_enrollment(uuid)','execute'),'Anonymous role has no Begin execution grant';
+ assert not has_table_privilege('authenticated','public.enrollments','update'),'Learner cannot set its own start permission';
+ insert into public.aca_trial_grants(id,code_hash,allowed_email,course_id,starts_at,expires_at,status)
+ values(grant_id,'synthetic-only','trial@example.invalid',course,now()-interval '2 days',now()+interval '7 days','ready');
+ assert not exists(select 1 from public.enrollments where learner_id=trial_user),'Staged invitation has no learner schedule';
+ result:=public.aca_redeem_trial('synthetic-only','trial@example.invalid',trial_user);
+ trial_enrollment:=(result->>'enrollment_id')::uuid;
+ assert (select starts_at=now() and onboarding_completed_at is null from public.enrollments where id=trial_enrollment),'First invitation opening starts at redemption, then the introduction';
+ result:=public.aca_redeem_trial('synthetic-only','trial@example.invalid',trial_user);
+ assert (result->>'duplicate')::boolean and (result->>'enrollment_id')::uuid=trial_enrollment,'Reopening an invitation resumes the same enrollment';
+ assert (select starts_at=now() from public.enrollments where id=trial_enrollment),'Reopening cannot reset timing';
+ assert not has_function_privilege('authenticated','public.aca_redeem_trial(text,text,uuid)','execute'),'Raw invitation redemption remains service-only';
+end $$;
+rollback;
+select 'Staging, explicit start, ownership, restrictions, introduction and invitation timing passed; synthetic rows rolled back.' as result;

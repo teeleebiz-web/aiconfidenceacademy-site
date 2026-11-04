@@ -63,6 +63,24 @@ session is not evidence of owner permission, and navigation does not change it.
 
 ## Enrollment administration
 
+### Staged learner review - November 4, 2026
+
+Preparation does not activate an enrollment. Explicitly staged Phase One review
+access has status `pending`, no `starts_at`, and the service-controlled
+`learner_start_pending` flag. Sign-in and reload show **Begin Phase One** without
+loading curriculum or starting a lesson. Only that deliberate action calls the
+ownership-checked `begin_aca_learner_enrollment` RPC, sets the start time once and
+opens the existing founder welcome, ChatGPT orientation and first-lesson sequence.
+Ordinary unpaid pending records cannot opt into this control. Existing active
+learners and paid-enrollment activation keep their established behavior.
+
+New trial invitations still allocate no enrollment when prepared or mailed.
+Their first redemption anchors the lesson calendar to the later of the
+owner-selected start and actual redemption, preserving the owner-set expiry.
+Repeat invitations resume existing access and cannot restart the calendar.
+Verification must leave staged real learner accounts waiting; exercise Begin
+only with synthetic fixtures unless the founder explicitly authorizes a start.
+
 ### Independent availability monitoring (October 27, 2026)
 
 The backend exposes `GET` and `HEAD /api/health` on
