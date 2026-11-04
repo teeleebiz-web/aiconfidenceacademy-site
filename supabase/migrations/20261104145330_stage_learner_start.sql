@@ -68,8 +68,7 @@ declare g public.aca_trial_grants;c public.courses;e uuid;existing public.enroll
  if c.phase_number=2 then insert into public.aca_phase_two_memberships(enrollment_id,learner_id,course_id,cohort_id) values(e,p_user,g.course_id,g.cohort_id);end if;
  update public.aca_trial_grants set status='redeemed',enrollment_id=e,updated_at=now() where id=g.id;
  return jsonb_build_object('enrollment_id',e,'grant_id',g.id,'duplicate',false);
-end $function$
+end $function$;
 
 revoke all on function public.aca_redeem_trial(text,text,uuid) from public,anon,authenticated;
 grant execute on function public.aca_redeem_trial(text,text,uuid) to service_role;
-
