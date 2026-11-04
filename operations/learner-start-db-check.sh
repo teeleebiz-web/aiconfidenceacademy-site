@@ -11,4 +11,7 @@ else
   migration_path="${migrations[0]}"
 fi
 psql -X -v ON_ERROR_STOP=1 -f "$migration_path"
+visibility_migrations=(supabase/migrations/*_staged_course_visibility.sql)
+[ "${#visibility_migrations[@]}" -eq 1 ]
+psql -X -v ON_ERROR_STOP=1 -f "${visibility_migrations[0]}"
 psql -X -v ON_ERROR_STOP=1 -f operations/learner-start-assertions.sql

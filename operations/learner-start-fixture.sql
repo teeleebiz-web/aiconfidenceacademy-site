@@ -24,3 +24,11 @@ $$;
 grant usage on schema auth to authenticated,anon;
 grant execute on function auth.uid() to authenticated,anon;
 grant select on public.enrollments to authenticated;
+alter table public.enrollments enable row level security;
+create policy own_enrollment on public.enrollments for select to authenticated using(learner_id=(select auth.uid()));
+alter table public.courses enable row level security;
+grant select on public.courses to authenticated;
+create policy active_course on public.courses for select to authenticated using(
+ status='published' and exists(select 1 from public.enrollments e where e.course_id=courses.id
+ and e.learner_id=(select auth.uid()) and e.status in ('active','completed')
+ and (e.starts_at is null or e.starts_at<=now()) and (e.access_expires_at is null or e.access_expires_at>now())));

@@ -8,10 +8,19 @@ begin
  insert into auth.users values(learner,'learner@example.invalid'),(stranger,'other@example.invalid'),(trial_user,'trial@example.invalid');
  insert into public.profiles values(learner,'active'),(stranger,'active'),(trial_user,'active');
  insert into public.courses values(course,'phase-one-chatgpt-foundations',1,'published');
+ insert into public.courses values(gen_random_uuid(),'unrelated-course',1,'published');
  insert into public.enrollments(id,learner_id,course_id,status,starts_at,learner_start_pending)
  values(enrollment,learner,course,'pending',null,true);
  assert (select starts_at is null and status='pending' and onboarding_completed_at is null from public.enrollments where id=enrollment),'Staging must not start anything';
+ perform set_config('fixture.user',learner::text,true);
+ execute 'set local role authenticated';
+ assert (select count(*)=1 from public.courses),'Staged learner sees only its assigned course listing';
+ assert (select count(*)=1 from public.enrollments where id=enrollment),'Staged enrollment remains readable through RLS';
+ execute 'reset role';
  perform set_config('fixture.user',stranger::text,true);
+ execute 'set local role authenticated';
+ assert (select count(*)=0 from public.courses),'Another learner cannot see the staged course';
+ execute 'reset role';
  refused:=false;begin perform public.begin_aca_learner_enrollment(enrollment);exception when insufficient_privilege then refused:=true;end;
  assert refused,'Another learner cannot begin this enrollment';
  perform set_config('fixture.user','',true);
