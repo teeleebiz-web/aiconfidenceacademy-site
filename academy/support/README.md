@@ -16,15 +16,15 @@ content, workbook data, timers or publication states are changed. Unmatched
 questions link to the existing support-case route. The existing feedback form
 remains available for learning reports. Standard matching happens locally.
 
-The direct learner guidance page is `/learn/?view=ask-aca`. It reuses the same
-`AcademyGuide` component and answer catalog as Help & feedback, with no course
-selection, enrollment lookup or lesson start. Signed-out learners see an Ask ACA
-sign-in screen. Password sign-in stays on the page. The existing `/learn/` email
-callback returns to Ask ACA in the same browser through a one-hour navigation
-hint containing no account data or authorization. Owner callbacks retain their
-priority; explicit learner, trial and owner destinations remain separate. The
-floating support panel links to the dedicated page in a new tab and is hidden
-on the dedicated view. AI activation is a separate, still-pending decision.
+Terrence corrected the entry requirement: Ask ACA is a normal public website
+page at `/ask/`, available from the primary navigation and Resources. It requires
+no account, email link, enrollment or additional authorization. Questions are
+matched locally against the existing public `knowledge.mjs` catalog; this page
+makes no model request, sends no email and does not read account records. The
+added Ask ACA sign-in flow and callback hints have been removed. Previously
+shared `/learn/?view=ask-aca` addresses redirect to the public page. Learner Help
+& feedback links there; existing course and owner authentication stay intact.
+The public preview serves Ask ACA alongside the other public website pages.
 
 `assistant.mjs` provides optional semantic matching through the Responses API.
 Activation requires server-only `OPENAI_API_KEY`, an explicitly selected

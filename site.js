@@ -1,6 +1,11 @@
 (() => {
   const button = document.querySelector('.menu-button');
   const navigation = document.querySelector('#site-navigation');
+  if (navigation && !navigation.querySelector('a[href="/ask/"]')) {
+    const ask = document.createElement('a'); ask.href = '/ask/'; ask.textContent = 'Ask ACA';
+    const enrollment = navigation.querySelector('a[href="/enroll"],a[href="/enroll/"]');
+    navigation.insertBefore(ask, enrollment);
+  }
   if (button && navigation) {
     button.addEventListener('click', () => {
       const isOpen = navigation.classList.toggle('open');

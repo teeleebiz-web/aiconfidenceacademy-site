@@ -4,7 +4,7 @@ const path = 'library/index.html'
 let source = await readFile(path, 'utf8')
 const marker = /<!-- ACA resources start -->[\s\S]*?<!-- ACA resources end -->/g
 source = source.replace(marker, '')
-const entry = `<!-- ACA resources start --><section class="aca-resource-entry" aria-labelledby="resource-entry-title"><div><p class="section-kicker">Books &amp; Resources</p><h2 id="resource-entry-title">AI Updates &amp; Guidance</h2><p>Keep up with changes in AI, check the original source, and consider what is useful for your own work.</p></div><a class="button button-gold" href="/library/ai-updates/">Explore AI updates →</a></section><!-- ACA resources end -->`
+const entry = `<!-- ACA resources start --><section class="aca-resource-entry" aria-labelledby="resource-entry-title"><div><p class="section-kicker">Books &amp; Resources</p><h2 id="resource-entry-title">AI Updates &amp; Guidance</h2><p>Keep up with changes in AI, check the original source, and consider what is useful for your own work.</p></div><a class="button button-gold" href="/library/ai-updates/">Explore AI updates →</a><a class="button button-outline" href="/ask/">Ask ACA →</a></section><!-- ACA resources end -->`
 source = source.replace('<section class="library-toolbar', entry + '<section class="library-toolbar')
 if (!source.includes('/assets/ai-guidance.css')) source = source.replace('</head>', '<link rel="stylesheet" href="/assets/ai-guidance.css?v=20261107"/></head>')
 await writeFile(path, source)
@@ -19,3 +19,10 @@ html = html.replace(/<title>.*?<\/title>/, '<title>AI Updates &amp; Guidance | A
   .replace('</body>', '<script type="module" src="/assets/ai-guidance.js?v=20261107"></script></body>')
 await mkdir('library/ai-updates', { recursive: true })
 await writeFile('library/ai-updates/index.html', html)
+
+const askBody = `<section class="aca-ask-page" aria-labelledby="ask-title"><p class="section-kicker">AI Confidence Academy</p><h1 id="ask-title">Ask ACA</h1><p>Have a question, concern, or problem? Start here.</p><form id="ask-aca-form"><label for="ask-aca-question">Your question</label><textarea id="ask-aca-question" required maxlength="600" placeholder="For example: My video will not play." aria-describedby="ask-aca-note"></textarea><p id="ask-aca-note">Leave out passwords, payment details, and private information.</p><button class="button button-gold" type="submit" disabled>Find an answer</button></form><div id="ask-aca-results" aria-live="polite"></div><p class="aca-ask-source">Answers come from ACA’s published guidance.</p><p>Need more help? <a href="/contact/?section=request">Contact ACA support →</a></p><noscript><p>Enable JavaScript to find an answer, or <a href="/faq/">read the Academy FAQ</a>.</p></noscript></section>`
+let askHtml = (shell[1] + askBody + shell[2]).replace(/<title>.*?<\/title>/, '<title>Ask ACA | AI Confidence Academy</title>')
+  .replace('</head>', '<link rel="stylesheet" href="/assets/ask-aca.css"/></head>')
+  .replace('</body>', '<script type="module" src="/assets/ask-aca.js"></script></body>')
+await mkdir('ask', {recursive:true})
+await writeFile('ask/index.html', askHtml)

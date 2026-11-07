@@ -346,15 +346,13 @@ Phase Two's maintained source baseline is commit `b1b91386e53d8a217ec4342d3b8ec3
 Verification for this candidate: public section selection and legacy links, isolated workbook view, owner navigation/focus, and the retained Phase Two source regression suite. Browser acceptance covers public preview views at desktop and mobile widths. Protected learner and owner routes use synthetic test fixtures; this does not claim a live enrolled lesson was opened.
 
 
-### Ask ACA direct entry — November 7, 2026
+### Ask ACA public entry — November 7, 2026
 
-Terrence requested a direct link to Ask ACA and continued implementation. The
-review candidate now provides `/learn/?view=ask-aca`, backed by `AskAcaEntry.tsx`
-and the existing `AcademyGuide`. This route authenticates without loading a
-course, opening a lesson, starting an allowance or fetching enrollment records.
-The established email callback uses a short-lived, same-browser return hint;
-password sign-in remains on the page. It preserves owner and trial routing.
-Tests cover anonymous gating, approved-source answers, sign-out, stale session
-responses, callback return and existing destinations. Live email delivery and
-signed-in browser use remain separate acceptance checks. Optional paid AI
-matching is not activated. PR 113 remains the review/release boundary.
+Terrence clarified that asking a question must require no sign-in, email link
+or special access. The current review candidate uses the normal public website
+page `/ask/`, linked from the primary navigation and Books & Resources. It uses
+the same published answer catalog, matches questions in the browser and makes
+no model, email, enrollment or lesson request. The added Ask ACA authentication
+flow and return hints are removed; the old query route redirects to `/ask/`.
+The public preview includes this page. Existing learner and owner authentication
+are unchanged. PR 113 remains the review/release boundary.
