@@ -3,6 +3,7 @@
   const navigation = document.querySelector('#site-navigation');
   if (navigation && !navigation.querySelector('a[href="/ask/"]')) {
     const ask = document.createElement('a'); ask.href = '/ask/'; ask.textContent = 'Ask ACA';
+    if (/^\/ask\/?$/.test(location.pathname)) { navigation.querySelectorAll('a.active').forEach(link => link.classList.remove('active')); ask.className = 'active'; ask.setAttribute('aria-current', 'page'); }
     const enrollment = navigation.querySelector('a[href="/enroll"],a[href="/enroll/"]');
     navigation.insertBefore(ask, enrollment);
   }

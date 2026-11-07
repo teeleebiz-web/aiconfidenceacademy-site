@@ -51,3 +51,11 @@ it('keeps the overview available for a missing or invalid destination', async ()
   expect(document.querySelectorAll('[hidden]')).toHaveLength(0)
   expect(document.querySelector('.aca-view-navigation')).toBeNull()
 })
+
+it('adds Ask ACA as the active public navigation destination', async () => {
+  history.replaceState({}, '', '/ask/')
+  document.body.innerHTML='<nav id="site-navigation"><a href="/library" class="active">Resources</a><a href="/enroll">Enroll</a></nav><main><h1>Ask ACA</h1></main>'
+  await load()
+  expect(document.querySelector('a[aria-current="page"]').getAttribute('href')).toBe('/ask/')
+  expect(document.querySelector('a[href="/library"]').classList.contains('active')).toBe(false)
+})
