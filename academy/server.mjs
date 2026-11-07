@@ -5,7 +5,9 @@ import { readFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
+import { handleAssistant } from './support/assistant.mjs'
 import { handleSupport } from './support/api.mjs'
+import { handleUpdates } from './support/updates.mjs'
 import { handleWorkbook } from './workbook/api.mjs'
 import { handleLearnerMedia } from './learner-media.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
@@ -54,6 +56,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
+    if (requestPath === '/api/resources/updates') { await handleUpdates(req, res); return }
     if (requestPath === '/api/health') { await availability(req, res); return }
     if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin
@@ -69,6 +72,8 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
       }
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
       if (requestPath === '/api/operations/maintenance') { await recordAutomationRun(req, res, enrollmentAutomation, 'operations-monitor', handleOperationalMaintenance); return }
+      if (requestPath === '/api/support/assist') { await handleAssistant(req, res, enrollmentAutomation || {db}); return }
+      if (requestPath === '/api/support/ask') { await handleAssistant(req, res, enrollmentAutomation || {db}, {publicAccess:true}); return }
       if (requestPath.startsWith('/api/support/') || requestPath === '/api/operations/support') { await handleSupport(req, res, enrollmentAutomation || {db}, {reviewerCheck:workbookReviewerCheck}); return }
       if (requestPath === '/api/operations/control-center') {
         await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return

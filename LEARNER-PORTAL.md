@@ -333,3 +333,37 @@ The first-opening window is 24 elapsed hours after ordinary release. Already-ope
 `private.aca_lesson_calendar` is shared by both access paths, workbook release visibility, Phase Two notice candidates and owner diagnostics. Historical cohort metadata may remain attached for compatibility but no longer determines release timing. New Phase Two checkout retains the course-publication and enrollment-date gate; the course stays draft until separately authorized. Legacy already-created Checkout sessions with cohort metadata remain fulfillable.
 
 Candidate only until the current continuity record confirms release. `operations/lesson-calendar-db-check.sh` runs PostgreSQL calendar, DST, first-opening, resume, final-boundary, saved-work and ownership checks using synthetic data. Its minimal fixture does not cover the full Supabase owner/trial schema; complete isolated Supabase acceptance before production. No curriculum/media, price, installment date or backup change is authorized by this calendar correction.
+
+
+## Direct navigation standard — November 7, 2026
+
+Tabs and links used for navigation open a separate page or replace the selected panel. They must not scroll through stacked sections. Place the selected heading and controls comfortably in the viewport immediately; preserve normal reading scroll, browser Back, accessibility skip links, learner work and study-time rules.
+
+The assistance/resources review branch applies this to public section links through `site.js` (`?section=...`, including legacy hash bookmarks), three AI guidance views under Resources, Phase One My Workbooks, owner section navigation and compact-screen learner detail views. Inputs and their handlers are retained in public focused views. Invalid destinations retain the overview.
+
+Phase Two's maintained source baseline is commit `b1b91386e53d8a217ec4342d3b8ec323adb44bbd` on `phase-two-curriculum-strengthening`. Its unchanged Vite build reproduced the existing `index-D2LwPTTN.js` and `index-Bj4AawGd.css` exactly. Apply `portal/patches/phase-two-direct-navigation.patch` to that baseline to reproduce the navigation-only controller correction and regression test. Rebuild with `vite build --config portal/vite.config.ts`: the corrected entry is `index-PM6hlVKZ.js`; CSS and other assets remain unchanged. The original entry stays available for rollback. The patch keys the existing instant page-start helper to view, workbook journey and lesson destination; saving, metadata refresh and study timer updates do not reset the view.
+
+Verification for this candidate: public section selection and legacy links, isolated workbook view, owner navigation/focus, and the retained Phase Two source regression suite. Browser acceptance covers public preview views at desktop and mobile widths. Protected learner and owner routes use synthetic test fixtures; this does not claim a live enrolled lesson was opened.
+
+
+### Ask ACA public entry — November 7, 2026
+
+Terrence clarified that asking a question must require no sign-in, email link
+or special access. The current review candidate uses the normal public website
+page `/ask/`, linked from the primary navigation and Books & Resources. It uses
+the same published answer catalog, matches questions in the browser and makes
+no model, email, enrollment or lesson request. The added Ask ACA authentication
+flow and return hints are removed; the old query route redirects to `/ask/`.
+The public preview includes this page. Existing learner and owner authentication
+are unchanged. PR 113 remains the review/release boundary.
+
+### Ask ACA AI activation — November 7, 2026
+
+Terrence approved the existing OpenAI credits for approximately 50 learners.
+Public Ask ACA now sends questions to the dedicated public support endpoint after
+its visible OpenAI disclosure; course sign-in remains unchanged. AI selects only
+published guidance, and failures use local answers. Both support endpoints share
+a service-only atomic $20 conservative monthly allowance (2,000 reserved attempts).
+The key is server-only. Automatic credit purchases are off; the additional
+subscription-credit offer is unclaimed. No autonomous repairs or account changes
+are enabled. Current verification/release status is on PR 113.

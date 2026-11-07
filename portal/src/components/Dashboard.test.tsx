@@ -128,3 +128,11 @@ describe('Dashboard', () => {
     expect(screen.getByLabelText('3% complete')).toBeTruthy()
   })
 })
+
+ it('opens My Workbooks as its own view with only released workbook links', () => {
+   render(<Dashboard enrollment={enrollment} journeys={[journey]} lessons={[lesson]} progress={[]} introductions={[introduction]} learnerName="Learner" workbookHome workbooks={[{page_id:'1.1',title:'Released practice'}]} onOpenLesson={()=>undefined} onOpenIntroduction={()=>undefined} />)
+   expect(screen.getByRole('heading',{level:1,name:'My Workbooks'})).toBeTruthy()
+   expect(screen.getByRole('link',{name:'Journey 1 Workbook'}).getAttribute('href')).toContain('lesson=1.1')
+   expect(screen.queryByRole('button',{name:/open lesson/i})).toBeNull()
+   expect(screen.queryByText(/welcome, learner/i)).toBeNull()
+ })

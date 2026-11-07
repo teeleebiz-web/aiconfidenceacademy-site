@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { extname, resolve, sep } from 'node:path'
 
 const publicSections = new Set([
-  'about', 'accessibility', 'ai-learning-disclaimer', 'assets', 'contact',
+  'ask', 'about', 'accessibility', 'ai-learning-disclaimer', 'assets', 'contact',
   'enroll', 'explore', 'faq', 'library', 'privacy', 'programs', 'reflections',
   'refund-policy', 'terms', 'videos',
 ])

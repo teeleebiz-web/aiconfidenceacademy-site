@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { controlCenterPath, isControlCenterEntry } from './controlCenterRoute'
 
+const AskAca = lazy(() => import('./AskAcaEntry').then(module => ({ default: module.AskAcaEntry })))
 const LearnerPortal = lazy(() => import('./App').then(module => ({ default: module.App })))
 const ControlCenter = lazy(() => import('./ControlCenterEntry').then(module => ({ default: module.ControlCenterEntry })))
 const TrialAccess = lazy(() => import('./TrialAccessEntry').then(module => ({ default: module.TrialAccessEntry })))
@@ -9,7 +10,8 @@ const LearnerEntry = lazy(() => import('./LearnerEntry').then(module => ({ defau
 export function PortalEntry() {
   const incomingUrl = new URL(window.location.href)
   const trialAccess = /^\/learn\/?$/.test(incomingUrl.pathname) && incomingUrl.searchParams.get('view')==='trial-access'
-  const controlCenter = isControlCenterEntry(incomingUrl, window.localStorage)
+  const askAca = /^\/learn\/?$/.test(incomingUrl.pathname) && incomingUrl.searchParams.get('view') === 'ask-aca'
+  const controlCenter = !askAca && isControlCenterEntry(incomingUrl, window.localStorage)
   const entryAddress = incomingUrl.href
   useEffect(() => {
     if (!controlCenter) return
@@ -24,8 +26,9 @@ export function PortalEntry() {
   const specificLearnerEntry = ['phase-one', 'phase-two'].includes(incomingUrl.searchParams.get('course') || '')
     || ['phase-one', 'phase-two'].includes(incomingUrl.searchParams.get('review') || '')
     || incomingUrl.searchParams.has('lesson') || incomingUrl.searchParams.has('workbook')
-    || incomingUrl.searchParams.get('view') === 'trial'
+    || ['trial', 'workbooks'].includes(incomingUrl.searchParams.get('view') || '')
+    || incomingUrl.hash === '#my-workbooks'
   return <Suspense fallback={<div className="loading-screen">{controlCenter ? 'Opening Academy control center…' : 'Preparing your ACA learning space…'}</div>}>
-    {trialAccess ? <TrialAccess /> : controlCenter ? <ControlCenter /> : specificLearnerEntry ? <LearnerPortal /> : <LearnerEntry />}
+    {trialAccess ? <TrialAccess /> : askAca ? <AskAca /> : controlCenter ? <ControlCenter /> : specificLearnerEntry ? <LearnerPortal /> : <LearnerEntry />}
   </Suspense>
 }

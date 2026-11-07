@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { PortalEntry } from './PortalEntry'
 import { controlCenterReturnKey } from './controlCenterRoute'
 
+vi.mock('./AskAcaEntry', () => ({ AskAcaEntry: () => <a href="/ask/">Public Ask ACA</a> }))
 vi.mock('./App', () => ({ App: () => <h1>Existing learner view</h1> }))
 vi.mock('./LearnerEntry', () => ({ LearnerEntry: () => <h1>Shared learner entry</h1> }))
 vi.mock('./ControlCenterEntry', () => ({ ControlCenterEntry: () => <h1>Owner entry</h1> }))
@@ -18,7 +19,7 @@ it.each(['/learn/', '/learn/#access_token=synthetic', '/learn/?code=synthetic'])
     expect(await screen.findByRole('heading', { name: 'Shared learner entry' })).toBeTruthy()
   },
 )
-it.each(['/learn/?course=phase-one', '/learn/?review=phase-one&view=curriculum', '/learn/?lesson=5.2', '/learn/?workbook=journey-one', '/learn/?view=trial'])(
+it.each(['/learn/?course=phase-one', '/learn/?review=phase-one&view=curriculum', '/learn/?lesson=5.2', '/learn/?workbook=journey-one', '/learn/?view=trial', '/learn/?view=workbooks', '/learn/#my-workbooks'])(
   'preserves existing specific learner links %s', async path => {
     window.history.replaceState({}, '', path)
     render(<PortalEntry />)
@@ -37,4 +38,11 @@ it('preserves the existing same-browser owner callback without loading learner s
   expect(await screen.findByRole('heading', { name: 'Owner entry' })).toBeTruthy()
   expect(window.location.pathname).toBe('/control-center/')
   expect(screen.queryByRole('heading', { name: 'Shared learner entry' })).toBeNull()
+})
+
+it('sends the old Ask ACA address to public help instead of authentication or a course', async () => {
+  window.history.replaceState({}, '', '/learn/?view=ask-aca')
+  render(<PortalEntry />)
+  expect(await screen.findByRole('link',{name:'Public Ask ACA'})).toHaveProperty('href',location.origin+'/ask/')
+  expect(screen.queryByRole('heading',{name:'Existing learner view'})).toBeNull()
 })

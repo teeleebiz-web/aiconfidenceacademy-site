@@ -19,6 +19,9 @@ async function request(root, route, method = 'GET') {
 test('review preview serves public pages but refuses learner and API paths', async () => {
   const root = await mkdtemp(join(tmpdir(), 'aca-review-'))
   try {
+    await mkdir(join(root, 'ask'), { recursive: true })
+    await writeFile(join(root, 'ask/index.html'), '<h1>Ask ACA</h1>')
+    assert.match((await request(root, 'ask/')).body, /Ask ACA/)
     await mkdir(join(root, 'explore'), { recursive: true })
     await mkdir(join(root, 'assets'), { recursive: true })
     await mkdir(join(root, 'academy'), { recursive: true })

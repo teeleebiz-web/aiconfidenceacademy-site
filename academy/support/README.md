@@ -1,5 +1,77 @@
 # ACA operational support and policy source
 
+## November 7 assistance and Resources increment — PR 113
+
+Terrence authorized building the recovered learner assistance, operational
+assistance and current AI information capabilities, placing the information
+under the existing Books & Resources tab. The review branch is
+`aca-assistance-resources-20261107`; this section records implementation, not
+a claim that the branch has been merged or the paid model has been activated.
+
+The existing learner Help & feedback panel now opens Ask ACA first. It finds
+approved support answers and supplemental practice, prompting, verification
+and resource guidance from this module's single `knowledge.mjs` source. The
+supplemental material points to already-public Academy guidance; no lesson
+content, workbook data, timers or publication states are changed. Unmatched
+questions link to the existing support-case route. The existing feedback form
+remains available for learning reports. Standard matching happens locally.
+
+Terrence corrected the entry requirement: Ask ACA is a normal public website
+page at `/ask/`, available from the primary navigation and Resources. It requires
+no account, email link, enrollment or additional authorization. The public page
+now posts to `/api/support/ask` on the existing checkout backend, after displaying
+that the question goes to OpenAI. No account record, workbook or lesson is read.
+The existing signed-in `/api/support/assist` route retains its authentication.
+Old `/learn/?view=ask-aca` addresses still redirect to `/ask/`.
+
+Terrence authorized using the existing API credit balance for an initial audience
+of 50. The dedicated key is held server-side; GPT-6 Luna is the only enabled model.
+The additional ChatGPT credit benefit remains unclaimed by his direction.
+Automatic API credit reload was turned off and verified on November 7. No new
+credits were purchased and no ChatGPT plan change was made.
+
+The model chooses at most three approved source IDs. The server and public client
+return the Academy's published wording and source URLs. This is AI-assisted
+support matching, not freeform tutoring or autonomous account administration.
+Only the question (maximum 600 characters) and public guidance catalog are sent.
+Obvious credentials, email and payment identifiers fall back to local matching;
+this filter is not a guarantee that arbitrary text contains no private information.
+Requests use `store:false`; this is not a promise of zero provider retention.
+
+`assistant-budget.sql` is applied as `aca_assistant_monthly_allowance`. Its
+service-only atomic reservation shares a $20 conservative monthly allowance
+between public and signed-in requests: each attempt reserves one cent, including
+failures, with at most 2,000 attempts per UTC calendar month. This is not reported
+provider spend. GPT-6 Luna, standard service, a 20,000-byte request ceiling and
+256 output-token ceiling keep each request below the reservation at the verified
+November 7 pricing, including cache writes. Recheck pricing before changing the
+model or limits. Existing ten-request/15-minute per-identity/IP and global limits
+also apply. The budget stores month and reserved cents only, never questions or
+identities. Missing quota service, exhausted allowance, refusals and timeouts
+fall back to the standard guidance; no automatic retry spends further credit.
+`assistant-budget.test.sql` verifies the exact boundary and permissions with all
+fixture data rolled back. Frontend tests cover no-sign-in requests, approved-only
+rendering, network fallback and duplicate-submit prevention. The initial real
+provider test returned the approved media guidance. Final deployment evidence
+and the exact continuation point are recorded on PR 113.
+
+The Resources entry opens `/library/ai-updates/`. Its read-only endpoint fetches
+dated headlines from fixed OpenAI and Google RSS sources, validates source
+hosts, limits feed sizes, uses a 15-minute per-instance cache and shows failures
+or no recent items separately. Anthropic's official news is a direct source link.
+No model credential or paid service is needed for these feeds. Publication dates
+and collection times are distinct; no continuous real-time guarantee is made.
+
+Local validation: TypeScript, 166 portal tests, 231 Academy/backend tests,
+122 recovery tests and the site build passed. The existing optional live
+invitation fixture stayed skipped. Unit tests now reject unmocked fetch calls
+by default after the full run exposed a placeholder-host request. Synthetic
+model responses test grounding, consent, auth, rate-limit failure and refusal;
+they do not constitute live provider acceptance. The first Resources preview
+served actual dated OpenAI and Google items. Final preview/CI evidence belongs
+on PR 113. No enrollment, payment, case email, curriculum or production setting
+was changed for these checks.
+
 ## November 2 full Academy enrollment release
 
 Terrence explicitly confirmed public launch readiness for either phase, including

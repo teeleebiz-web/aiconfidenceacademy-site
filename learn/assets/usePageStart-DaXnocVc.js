@@ -1,0 +1,1 @@
+import{i as e,n as t}from"./jsx-runtime-Cltr0gcK.js";var n=e(t(),1);function r(e){(0,n.useLayoutEffect)(()=>{if(e===null)return;let t=document.querySelector(`main h1`);t&&(t.tabIndex=-1,t.focus({preventScroll:!0})),window.scrollTo({top:0,left:0,behavior:`instant`})},[e])}export{r as t};
