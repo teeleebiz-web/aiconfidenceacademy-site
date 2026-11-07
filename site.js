@@ -121,9 +121,6 @@
         </div>
       </div>`;
     enrollmentPage.before(phaseTwo);
-    if (['#interest-list', '#updates-signup'].includes(window.location.hash)) {
-      window.requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView());
-    }
   }
 
   const form = document.querySelector('form[name="aca-interest-list"]');
@@ -201,4 +198,79 @@
       }
     }
   });
+})();
+
+// Section destinations are separate URL views, never animated anchor jumps.
+(() => {
+  const destinations = {
+    '/explore/': ['begin', 'everyday', 'verify', 'quick-answers', 'deeper-thoughts', 'topics', 'books', 'expressions', 'field-notes'],
+    '/programs/phase-one/': ['everyday-example'],
+    '/programs/phase-two/': ['business-example', 'practical-outcomes'],
+    '/videos/': ['ai-and-academy', 'explore-chatgpt'],
+    '/enroll/': ['interest-list', 'updates-signup'],
+    '/contact/': ['request', 'automatic-help'],
+    '/privacy/': ['requests', 'communications'],
+    '/terms/': ['payments'],
+    '/library/ai-updates/': ['provider-announcements', 'practical-guidance', 'official-sources'],
+  };
+  const path = value => value.replace(/\/index\.html$/, '/').replace(/\/?$/, '/');
+  function destinationUrl(value) {
+    const url = new URL(value, location.href);
+    if (url.origin !== location.origin) return null;
+    const section = url.hash.slice(1);
+    if (!destinations[path(url.pathname)]?.includes(section)) return null;
+    url.searchParams.set('section', section); url.hash = '';
+    return url;
+  }
+  document.querySelectorAll('a[href]').forEach(link => {
+    const url = destinationUrl(link.href);
+    if (url) link.href = url.href;
+  });
+  // Later support results also use the same direct-view routes.
+  document.addEventListener('click', event => {
+    const link = event.target.closest?.('a[href]');
+    if (!link) return;
+    const url = destinationUrl(link.href);
+    if (url) link.href = url.href;
+  });
+  const current = destinationUrl(location.href) || new URL(location.href);
+  const route = path(current.pathname), allowed = destinations[route];
+  const selected = current.searchParams.get('section') || (route === '/library/ai-updates/' ? 'provider-announcements' : null);
+  if (!selected || !allowed?.includes(selected)) return;
+  const main = document.querySelector('main');
+  const target = document.getElementById(selected);
+  if (!main || !target || !main.contains(target)) return;
+  // A form/heading destination retains its containing section and controls.
+  const panel = target.matches('section, article') ? target : target.closest('section');
+  if (!panel || !main.contains(panel)) return;
+  if (current.href !== location.href) history.replaceState(history.state, '', current.href);
+  main.classList.add('aca-focused-view');
+  const style = document.createElement('style');
+  style.textContent = `html{scroll-behavior:auto!important}.aca-focused-view [hidden]{display:none!important}.aca-view-navigation{max-width:1200px;margin:0 auto;padding:24px 32px 12px;color:#102d4f}.aca-view-navigation a{display:inline-block;padding:10px 14px;color:inherit;text-decoration:underline;text-underline-offset:4px}.aca-view-navigation a[aria-current=page]{background:#102d4f;color:#fffdf9;border-radius:6px}.aca-view-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.aca-focused-view{min-height:65vh}.aca-focused-view>.section-pad,.aca-focused-view>.aca-guidance-section{padding-top:24px}.aca-focused-view .hub-path{margin-top:0}.aca-view-navigation a:focus-visible{outline:3px solid #b48632;outline-offset:2px}@media(max-width:700px){.aca-view-navigation{padding:16px 18px 8px}.aca-view-navigation a{padding:10px}}`;
+  document.head.append(style);
+  // Retain the original DOM and its event handlers; only sibling views are hidden.
+  for (let node = panel; node !== main; node = node.parentElement) {
+    for (const sibling of node.parentElement.children) if (sibling !== node) sibling.hidden = true;
+  }
+  const navigation = document.createElement('nav');
+  navigation.className = 'aca-view-navigation'; navigation.setAttribute('aria-label', 'Section navigation');
+  const back = document.createElement('a');
+  const home = new URL(current.href); home.searchParams.delete('section'); home.hash = '';
+  back.href = route === '/library/ai-updates/' ? '/library/' : home.href;
+  back.textContent = route === '/library/ai-updates/' ? '← Books & Resources' : '← Back to overview';
+  navigation.append(back);
+  if (route === '/library/ai-updates/') {
+    const tabs = document.createElement('div'); tabs.className = 'aca-view-tabs';
+    for (const [id, label] of [['provider-announcements', 'Latest updates'], ['practical-guidance', 'Practical guidance'], ['official-sources', 'Official sources']]) {
+      const link = document.createElement('a'), url = new URL(current.href);
+      url.searchParams.set('section', id); url.hash = ''; link.href = url.href; link.textContent = label;
+      if (id === selected) link.setAttribute('aria-current', 'page');
+      tabs.append(link);
+    }
+    navigation.append(tabs);
+  }
+  main.prepend(navigation);
+  const heading = panel.querySelector('h1,h2,h3');
+  if (heading) { heading.setAttribute('role', 'heading'); heading.setAttribute('aria-level', '1'); heading.tabIndex = -1; heading.focus({ preventScroll: true }); document.title = `${heading.textContent.trim()} | AI Confidence Academy`; }
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 })();

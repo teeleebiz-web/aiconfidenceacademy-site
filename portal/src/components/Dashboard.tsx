@@ -10,6 +10,7 @@ type DashboardProps = {
   reviewMode?: boolean
   accessState?: LearnerLessonAccess | null
   workbooks?: Array<{page_id: string; title: string}>
+  workbookHome?: boolean
   onOpenLesson: (lesson: Lesson) => void
   onOpenIntroduction: (introduction: JourneyIntroduction) => void
 }
@@ -24,6 +25,7 @@ export function Dashboard({
   reviewMode = false,
   accessState = null,
   workbooks = [],
+  workbookHome = false,
   onOpenLesson,
   onOpenIntroduction,
 }: DashboardProps) {
@@ -33,6 +35,8 @@ export function Dashboard({
   const progressPercent = total ? Math.round((completed / total) * 100) : 0
   const draftLessons = lessons.filter((lesson) => lesson.status === 'draft').length
   const workbookJourneys = [...new Map(workbooks.map(item => [Number(item.page_id.split('.')[0]), item])).entries()]
+
+  if (workbookHome) return <main className="portal-main"><section className="course-panel"><a href="/learn/?course=phase-one">← Learning home</a><h1>My Workbooks</h1>{workbookJourneys.length ? <div className="workbook-links">{workbookJourneys.map(([journey,item])=><a className="primary-link" key={journey} href={`/learn/?workbook=journey-${['one','two','three','four','five','six'][journey-1]}&lesson=${encodeURIComponent(item.page_id)}`}>Journey {journey} Workbook</a>)}</div> : <p>No released workbooks are available yet.</p>}</section></main>
 
   return (
     <main className="portal-main">

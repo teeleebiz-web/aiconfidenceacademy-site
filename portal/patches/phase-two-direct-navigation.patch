@@ -1,0 +1,44 @@
+diff --git a/portal/src/phaseTwo/PhaseTwoLearnerHome.test.tsx b/portal/src/phaseTwo/PhaseTwoLearnerHome.test.tsx
+index 94a371b..721e51a 100644
+--- a/portal/src/phaseTwo/PhaseTwoLearnerHome.test.tsx
++++ b/portal/src/phaseTwo/PhaseTwoLearnerHome.test.tsx
+@@ -156,3 +156,18 @@ describe('Phase Two live schedule state', () => {
+     expect(api.open).not.toHaveBeenCalled()
+   })
+ })
++
++it('starts each selected view at the top without opening a lesson', async () => {
++  const scroll = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})
++  const user = userEvent.setup()
++  render(<PhaseTwoLearnerHome enrollmentId="enrollment-1" />)
++  await screen.findByRole('button', { name: 'Begin lesson' })
++  for (const name of ['My Project Record', 'Your lessons']) {
++    scroll.mockClear()
++    await user.click(screen.getByRole('button', { name }))
++    expect(scroll).toHaveBeenCalledWith({top:0,left:0,behavior:'instant'})
++    expect(document.activeElement).toBe(screen.getByRole('heading', {name:'AI Professional and Builder Pathway'}))
++  }
++  expect(api.open).not.toHaveBeenCalled()
++  scroll.mockRestore()
++})
+diff --git a/portal/src/phaseTwo/PhaseTwoLearnerHome.tsx b/portal/src/phaseTwo/PhaseTwoLearnerHome.tsx
+index d71db39..a3c0ed8 100644
+--- a/portal/src/phaseTwo/PhaseTwoLearnerHome.tsx
++++ b/portal/src/phaseTwo/PhaseTwoLearnerHome.tsx
+@@ -10,6 +10,7 @@ import { LessonStudySession } from '../components/LessonStudySession'
+ import { PhaseTwoLessonExperience } from './PhaseTwoLessonExperience'
+ import { validProducedLesson } from './PhaseTwoProducedLessonReview'
+ import './phaseTwoLearnerHome.css'
++import { usePageStart } from '../lib/usePageStart'
+ 
+ type View = 'overview' | 'lesson' | 'project' | 'workbook'
+ const sections = [
+@@ -36,6 +37,8 @@ export function PhaseTwoLearnerHome({ enrollmentId }: { enrollmentId: string })
+   const [workbookJourney, setWorkbookJourney] = useState(1)
+   const [workbookSource, setWorkbookSource] = useState<string | null>(null)
+ 
++  usePageStart(status === 'ready' ? `phase-two:${view}:${view === 'workbook' ? workbookJourney : opened?.page_id || ''}` : null)
++
+   useEffect(() => {
+     let alive = true
+     setStatus('loading')

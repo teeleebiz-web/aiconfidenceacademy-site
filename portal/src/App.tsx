@@ -476,11 +476,14 @@ export function App() {
     && completedOnboardingId !== onboardingEnrollment.id
     && (reviewMode ? !workbookKey : !onboardingEnrollment.onboarding_completed_at)
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
-  usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment ? 'curriculum' : 'access')
+  const workbookHome = params.get('view') === 'workbooks' || window.location.hash === '#my-workbooks'
+  usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment ? workbookHome ? 'workbooks' : 'curriculum' : 'access')
 
   useEffect(() => {
     if (!loading && !workbookKey && !selectedLesson && window.location.hash === '#my-workbooks') {
-      document.getElementById('my-workbooks')?.scrollIntoView({ block: 'start' })
+      const destination = new URL(window.location.href)
+      destination.hash = ''; destination.searchParams.set('view', 'workbooks'); destination.searchParams.set('course', 'phase-one')
+      window.history.replaceState(null, '', destination)
     }
   }, [loading, workbookKey, selectedLesson, workbooks.length])
 
@@ -611,6 +614,7 @@ export function App() {
         </LessonStudySession>
       ) : portalData.enrollment ? (
         <Dashboard
+          workbookHome={workbookHome}
           enrollment={portalData.enrollment}
           journeys={visiblePortalData.journeys}
           lessons={visiblePortalData.lessons}

@@ -6,3 +6,6 @@
 
 .cc-history-actions{display:flex;gap:12px;margin-top:20px}.cc-history-browser{max-width:1000px;width:100%}.cc-history-record{padding:16px 0;border-bottom:1px solid #dce2e6}.cc-history-record summary{cursor:pointer;font-size:14px}.cc-history-record summary small{display:block;margin-top:6px;color:#66788a}.cc-history-record dl{display:grid;grid-template-columns:170px 1fr;gap:8px;font-size:12px}.cc-history-record dd{margin:0;overflow-wrap:anywhere;white-space:pre-wrap}.cc-history-record pre{white-space:pre-wrap}.cc-history-search input{width:100%}.cc-history-page{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:16px}
 .cc-support-inbox label{display:grid;gap:.5rem;margin:1rem 0;font-weight:600}.cc-support-inbox select,.cc-support-inbox textarea{font:inherit;color:var(--cc-ink,#102d4f);background:#fffdf9;border:1px solid #b9c1c8;border-radius:8px;padding:.8rem;max-width:100%;width:100%;box-sizing:border-box}.cc-support-inbox textarea{min-height:150px;resize:vertical}.cc-support-inbox .cc-message p{overflow-wrap:anywhere}
+
+/* A selected record replaces the main view when there is no room for a side panel. */
+@media(max-width:1150px){.cc-with-inspector .cc-main{display:none}.cc-with-inspector .cc-inspector{grid-row:1;min-height:65vh}}
