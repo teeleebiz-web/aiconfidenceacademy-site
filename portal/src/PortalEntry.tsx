@@ -1,6 +1,8 @@
 import { lazy, Suspense, useEffect } from 'react'
+import { askAcaReturnKey, isAskAcaEntry } from './askAcaRoute'
 import { controlCenterPath, isControlCenterEntry } from './controlCenterRoute'
 
+const AskAca = lazy(() => import('./AskAcaEntry').then(module => ({ default: module.AskAcaEntry })))
 const LearnerPortal = lazy(() => import('./App').then(module => ({ default: module.App })))
 const ControlCenter = lazy(() => import('./ControlCenterEntry').then(module => ({ default: module.ControlCenterEntry })))
 const TrialAccess = lazy(() => import('./TrialAccessEntry').then(module => ({ default: module.TrialAccessEntry })))
@@ -9,16 +11,26 @@ const LearnerEntry = lazy(() => import('./LearnerEntry').then(module => ({ defau
 export function PortalEntry() {
   const incomingUrl = new URL(window.location.href)
   const trialAccess = /^\/learn\/?$/.test(incomingUrl.pathname) && incomingUrl.searchParams.get('view')==='trial-access'
-  const controlCenter = isControlCenterEntry(incomingUrl, window.localStorage)
+  const explicitAsk = incomingUrl.searchParams.get('view') === 'ask-aca' && /^\/learn\/?$/.test(incomingUrl.pathname)
+  const controlCenter = !explicitAsk && isControlCenterEntry(incomingUrl, window.localStorage)
+  const askAca = !controlCenter && isAskAcaEntry(incomingUrl, window.localStorage)
   const entryAddress = incomingUrl.href
   useEffect(() => {
+    if (askAca) {
+      const address = new URL(entryAddress)
+      address.searchParams.set('view', 'ask-aca')
+      window.history.replaceState(null, '', address)
+      window.localStorage.removeItem(askAcaReturnKey)
+      return
+    }
     if (!controlCenter) return
+    window.localStorage.removeItem(askAcaReturnKey)
     const ownerAddress = new URL(entryAddress)
     if (ownerAddress.pathname === controlCenterPath) return
     ownerAddress.pathname = controlCenterPath
     ownerAddress.searchParams.delete('view')
     window.history.replaceState(null, '', ownerAddress)
-  }, [controlCenter, entryAddress])
+  }, [controlCenter, askAca, entryAddress])
   // Keep existing phase, owner review, lesson, workbook and legacy trial links.
   // Only the shared homepage/sign-in entry needs enrollment-based selection.
   const specificLearnerEntry = ['phase-one', 'phase-two'].includes(incomingUrl.searchParams.get('course') || '')
@@ -27,6 +39,6 @@ export function PortalEntry() {
     || ['trial', 'workbooks'].includes(incomingUrl.searchParams.get('view') || '')
     || incomingUrl.hash === '#my-workbooks'
   return <Suspense fallback={<div className="loading-screen">{controlCenter ? 'Opening Academy control center…' : 'Preparing your ACA learning space…'}</div>}>
-    {trialAccess ? <TrialAccess /> : controlCenter ? <ControlCenter /> : specificLearnerEntry ? <LearnerPortal /> : <LearnerEntry />}
+    {trialAccess ? <TrialAccess /> : askAca ? <AskAca /> : controlCenter ? <ControlCenter /> : specificLearnerEntry ? <LearnerPortal /> : <LearnerEntry />}
   </Suspense>
 }

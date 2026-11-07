@@ -344,3 +344,17 @@ The assistance/resources review branch applies this to public section links thro
 Phase Two's maintained source baseline is commit `b1b91386e53d8a217ec4342d3b8ec323adb44bbd` on `phase-two-curriculum-strengthening`. Its unchanged Vite build reproduced the existing `index-D2LwPTTN.js` and `index-Bj4AawGd.css` exactly. Apply `portal/patches/phase-two-direct-navigation.patch` to that baseline to reproduce the navigation-only controller correction and regression test. Rebuild with `vite build --config portal/vite.config.ts`: the corrected entry is `index-PM6hlVKZ.js`; CSS and other assets remain unchanged. The original entry stays available for rollback. The patch keys the existing instant page-start helper to view, workbook journey and lesson destination; saving, metadata refresh and study timer updates do not reset the view.
 
 Verification for this candidate: public section selection and legacy links, isolated workbook view, owner navigation/focus, and the retained Phase Two source regression suite. Browser acceptance covers public preview views at desktop and mobile widths. Protected learner and owner routes use synthetic test fixtures; this does not claim a live enrolled lesson was opened.
+
+
+### Ask ACA direct entry — November 7, 2026
+
+Terrence requested a direct link to Ask ACA and continued implementation. The
+review candidate now provides `/learn/?view=ask-aca`, backed by `AskAcaEntry.tsx`
+and the existing `AcademyGuide`. This route authenticates without loading a
+course, opening a lesson, starting an allowance or fetching enrollment records.
+The established email callback uses a short-lived, same-browser return hint;
+password sign-in remains on the page. It preserves owner and trial routing.
+Tests cover anonymous gating, approved-source answers, sign-out, stale session
+responses, callback return and existing destinations. Live email delivery and
+signed-in browser use remain separate acceptance checks. Optional paid AI
+matching is not activated. PR 113 remains the review/release boundary.
