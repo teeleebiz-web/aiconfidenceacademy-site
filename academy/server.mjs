@@ -6,6 +6,7 @@ import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 import { handleSupport } from './support/api.mjs'
+import { handleUpdates } from './support/updates.mjs'
 import { handleWorkbook } from './workbook/api.mjs'
 import { handleLearnerMedia } from './learner-media.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
@@ -54,6 +55,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
+    if (requestPath === '/api/resources/updates') { await handleUpdates(req, res); return }
     if (requestPath === '/api/health') { await availability(req, res); return }
     if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
       const origin = req.headers.origin

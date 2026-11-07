@@ -7,11 +7,13 @@ import { lessonReleaseMessage } from '../academy/email/lesson-release-message.mj
 import { formatAcademyEmailFrom } from '../academy/email/sender.mjs'
 import { servePublicPreview } from '../academy/public-preview.mjs'
 import { routedRequestUrl } from '../academy/site-routing.mjs'
+import { handleUpdates } from '../academy/support/updates.mjs'
 
 let server
 export default function handler(request, response) {
   const path = request.query?.__aca_path
     ?? new URL(request.url, 'http://localhost').searchParams.get('__aca_path')
+  if (new URL(routedRequestUrl(request, path), 'http://localhost').pathname === '/api/resources/updates') return handleUpdates(request, response)
   if (process.env.VERCEL_ENV === 'preview' && (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY)) {
     return servePublicPreview(request, response, path)
   }
