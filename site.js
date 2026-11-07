@@ -203,7 +203,7 @@
 // Section destinations are separate URL views, never animated anchor jumps.
 (() => {
   const destinations = {
-    '/explore/': ['begin', 'everyday', 'verify', 'quick-answers', 'deeper-thoughts', 'topics', 'books', 'expressions', 'field-notes'],
+    '/explore/': ['begin', 'everyday', 'verify', 'quick-answers', 'deeper-thoughts', 'topics', 'expressions', 'field-notes'],
     '/programs/phase-one/': ['everyday-example'],
     '/programs/phase-two/': ['business-example', 'practical-outcomes'],
     '/videos/': ['ai-and-academy', 'explore-chatgpt'],

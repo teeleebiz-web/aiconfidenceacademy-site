@@ -24,7 +24,8 @@ export function PortalEntry() {
   const specificLearnerEntry = ['phase-one', 'phase-two'].includes(incomingUrl.searchParams.get('course') || '')
     || ['phase-one', 'phase-two'].includes(incomingUrl.searchParams.get('review') || '')
     || incomingUrl.searchParams.has('lesson') || incomingUrl.searchParams.has('workbook')
-    || incomingUrl.searchParams.get('view') === 'trial'
+    || ['trial', 'workbooks'].includes(incomingUrl.searchParams.get('view') || '')
+    || incomingUrl.hash === '#my-workbooks'
   return <Suspense fallback={<div className="loading-screen">{controlCenter ? 'Opening Academy control center…' : 'Preparing your ACA learning space…'}</div>}>
     {trialAccess ? <TrialAccess /> : controlCenter ? <ControlCenter /> : specificLearnerEntry ? <LearnerPortal /> : <LearnerEntry />}
   </Suspense>

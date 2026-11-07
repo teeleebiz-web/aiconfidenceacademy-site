@@ -115,8 +115,17 @@ it('retains workbook answers while background access checks change its exit to M
   fireEvent.change(input,{target:{value:'Continuing my workbook'}})
   api.expired=true
   act(()=>window.dispatchEvent(new Event('focus')))
-  await waitFor(()=>expect(screen.getByRole('link',{name:/My Workbooks/}).getAttribute('href')).toBe('/learn/#my-workbooks'))
+  await waitFor(()=>expect(screen.getByRole('link',{name:/My Workbooks/}).getAttribute('href')).toBe('/learn/?course=phase-one&view=workbooks'))
   expect(screen.getByRole('textbox',{name:'Answer'})).toBe(input)
   expect((input as HTMLTextAreaElement).value).toBe('Continuing my workbook')
   expect((screen.getByRole('button',{name:'Unavailable'}) as HTMLButtonElement).disabled).toBe(true)
 })
+
+ it('opens a legacy workbook-home link directly and normalizes its address', async () => {
+   window.history.replaceState(null, '', '/learn/#my-workbooks')
+   render(<App />)
+   expect(await screen.findByRole('heading', {name:'My Workbooks',level:1})).toBeTruthy()
+   expect(screen.queryByRole('button',{name:/open lesson/i})).toBeNull()
+   expect(window.location.hash).toBe('')
+   expect(new URLSearchParams(window.location.search).get('view')).toBe('workbooks')
+ })

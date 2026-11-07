@@ -18,7 +18,7 @@ it.each(['/learn/', '/learn/#access_token=synthetic', '/learn/?code=synthetic'])
     expect(await screen.findByRole('heading', { name: 'Shared learner entry' })).toBeTruthy()
   },
 )
-it.each(['/learn/?course=phase-one', '/learn/?review=phase-one&view=curriculum', '/learn/?lesson=5.2', '/learn/?workbook=journey-one', '/learn/?view=trial'])(
+it.each(['/learn/?course=phase-one', '/learn/?review=phase-one&view=curriculum', '/learn/?lesson=5.2', '/learn/?workbook=journey-one', '/learn/?view=trial', '/learn/?view=workbooks', '/learn/#my-workbooks'])(
   'preserves existing specific learner links %s', async path => {
     window.history.replaceState({}, '', path)
     render(<PortalEntry />)
