@@ -2,7 +2,7 @@ import {test} from 'node:test'
 import assert from 'node:assert/strict'
 import {handleAssistant,selectGuidance} from './assistant.mjs'
 import {answers,findGuidance} from './knowledge.mjs'
-const config={enabled:true,apiKey:'test-only-key-not-a-credential',model:'test-model'}
+const config={enabled:true,apiKey:'test-only-key-not-a-credential',model:'gpt-6-luna'}
 const db={auth:{getUser:async()=>({data:{user:{id:'learner'}}})},rpc:async()=>({data:true})}
 const modelResponse=ids=>new Response(JSON.stringify({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({ids})}]}]}))
 async function request({method='POST',headers={'x-aca-access-token':'test-token'},body={question:'How can I verify this?',topic:'all',consent:true},database=db,assistant=config,fetcher=async()=>modelResponse(['verify'])}={}){
@@ -45,4 +45,28 @@ test('source matching keeps policy and learning scopes distinct and unsupported 
  assert.equal(findGuidance('verify','support').length,0)
  assert.equal(findGuidance('zzzxxy').length,0)
  assert.equal(findGuidance('check an AI answer','learning')[0].id,'verify')
+})
+
+test('public assistance requires no identity and reserves the shared allowance before calling AI',async()=>{
+ const events=[];let status,result
+ await handleAssistant({method:'POST',headers:{'content-type':'application/json','x-vercel-forwarded-for':'192.0.2.1'},body:{question:'How do I check a result?',topic:'all',consent:true}},
+ {writeHead:s=>{status=s},end:v=>{result=JSON.parse(v)}},
+ {assistant:config,db:{rpc:async(name,args)=>{events.push(name);assert.ok(!JSON.stringify(args||{}).includes('192.0.2.1'));return {data:true}}}},
+ {publicAccess:true,fetcher:async()=>{events.push('model');return modelResponse(['verify'])}})
+ assert.equal(status,200);assert.equal(result.mode,'assisted')
+ assert.deepEqual(events,['aca_trial_rate_limit','aca_trial_rate_limit','aca_assistant_reserve','model'])
+})
+test('exhausted or failed allowance prevents paid requests, and unpriced models stay disabled',async()=>{
+ let calls=0
+ for(const budget of [{data:false},{error:{message:'unavailable'}}]){
+  const r=await request({database:{...db,rpc:async name=>name==='aca_assistant_reserve'?budget:{data:true}},fetcher:async()=>{calls++;return modelResponse(['verify'])}})
+  assert.equal(r.result.mode,'standard')
+ }
+ const r=await request({assistant:{...config,model:'expensive-model'},fetcher:async()=>{calls++;return modelResponse(['verify'])}})
+ assert.equal(r.result.mode,'standard');assert.equal(calls,0)
+})
+test('public endpoint rejects form posts and never exposes the key',async()=>{
+ let status,result
+ await handleAssistant({method:'POST',headers:{'content-type':'text/plain'},body:{}},{writeHead:s=>{status=s},end:v=>{result=v}},{assistant:config,db},{publicAccess:true})
+ assert.equal(status,415);assert.ok(!result.includes(config.apiKey))
 })

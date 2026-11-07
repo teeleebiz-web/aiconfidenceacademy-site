@@ -167,3 +167,18 @@ test('direct trial access is publicly reachable with origin checks and no genera
   assert.equal((await fetch(url)).status,405)
  }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve))}
 })
+
+test('public Ask ACA bypasses sign-in while retaining origin checks and protected routes',async()=>{
+ const server=createAcademyServer({password:'test-only-long-construction-password',root:tmpdir(),courseId:'test-course',db:{}})
+ server.listen(0,'127.0.0.1');await once(server,'listening')
+ const base=`http://127.0.0.1:${server.address().port}`
+ try{
+  const options={method:'POST',headers:{Origin:'https://aiconfidenceacademy.org','Content-Type':'application/json'},body:JSON.stringify({question:'video',topic:'all',consent:true})}
+  const response=await fetch(base+'/api/support/ask',options)
+  assert.equal(response.status,200);assert.equal(response.headers.get('access-control-allow-origin'),'https://aiconfidenceacademy.org')
+  assert.equal((await response.json()).mode,'standard')
+  assert.equal((await fetch(base+'/api/support/ask',{...options,headers:{...options.headers,Origin:'https://outside.example'}})).status,403)
+  assert.equal((await fetch(base+'/api/support/assist',options)).status,401)
+  assert.equal((await fetch(base+'/api/academy/phase-one')).status,401)
+ }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve))}
+})

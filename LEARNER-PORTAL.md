@@ -356,3 +356,14 @@ no model, email, enrollment or lesson request. The added Ask ACA authentication
 flow and return hints are removed; the old query route redirects to `/ask/`.
 The public preview includes this page. Existing learner and owner authentication
 are unchanged. PR 113 remains the review/release boundary.
+
+### Ask ACA AI activation — November 7, 2026
+
+Terrence approved the existing OpenAI credits for approximately 50 learners.
+Public Ask ACA now sends questions to the dedicated public support endpoint after
+its visible OpenAI disclosure; course sign-in remains unchanged. AI selects only
+published guidance, and failures use local answers. Both support endpoints share
+a service-only atomic $20 conservative monthly allowance (2,000 reserved attempts).
+The key is server-only. Automatic credit purchases are off; the additional
+subscription-credit offer is unclaimed. No autonomous repairs or account changes
+are enabled. Current verification/release status is on PR 113.

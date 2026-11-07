@@ -73,6 +73,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
       if (requestPath === '/api/operations/maintenance') { await recordAutomationRun(req, res, enrollmentAutomation, 'operations-monitor', handleOperationalMaintenance); return }
       if (requestPath === '/api/support/assist') { await handleAssistant(req, res, enrollmentAutomation || {db}); return }
+      if (requestPath === '/api/support/ask') { await handleAssistant(req, res, enrollmentAutomation || {db}, {publicAccess:true}); return }
       if (requestPath.startsWith('/api/support/') || requestPath === '/api/operations/support') { await handleSupport(req, res, enrollmentAutomation || {db}, {reviewerCheck:workbookReviewerCheck}); return }
       if (requestPath === '/api/operations/control-center') {
         await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return
