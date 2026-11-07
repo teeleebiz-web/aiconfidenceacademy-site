@@ -1,5 +1,59 @@
 # ACA operational support and policy source
 
+## November 7 assistance and Resources increment — PR 113
+
+Terrence authorized building the recovered learner assistance, operational
+assistance and current AI information capabilities, placing the information
+under the existing Books & Resources tab. The review branch is
+`aca-assistance-resources-20261107`; this section records implementation, not
+a claim that the branch has been merged or the paid model has been activated.
+
+The existing learner Help & feedback panel now opens Ask ACA first. It finds
+approved support answers and supplemental practice, prompting, verification
+and resource guidance from this module's single `knowledge.mjs` source. The
+supplemental material points to already-public Academy guidance; no lesson
+content, workbook data, timers or publication states are changed. Unmatched
+questions link to the existing support-case route. The existing feedback form
+remains available for learning reports. Standard matching happens locally.
+
+`assistant.mjs` provides optional semantic matching through the Responses API.
+Activation requires server-only `OPENAI_API_KEY`, an explicitly selected
+`ACA_ASSISTANT_MODEL`, and `ACA_ASSISTANT_ENABLED=true`. These were not configured
+by this change. Before activation, agree the spending limit and configure the
+provider's spending controls, then verify a real controlled request. The model
+may select at most three approved IDs; the server returns the Academy's exact
+wording and source URLs. This is not freeform tutoring or autonomous account
+administration. Never describe it as those completed capabilities.
+
+Model matching requires verified sign-in and the learner's explicit opt-in.
+Only the question (maximum 600 characters) and public guidance catalog are sent;
+account details, workbooks and access tokens are excluded. Obvious credential,
+email and payment identifiers fall back to local-source matching. This filter
+is not a guarantee that arbitrary text contains no private information. No
+conversation body is stored by ACA; provider requests use `store:false`, which
+is not a promise of zero provider retention. Existing service-only atomic rate
+limits allow at most ten calls per user and ten globally per 15-minute UTC
+bucket. This is a request ceiling, not a dollar budget. Provider refusal, timeout,
+quota denial and malformed output return standard source guidance. Questions
+and provider error bodies must never be placed in logs or notifications.
+
+The Resources entry opens `/library/ai-updates/`. Its read-only endpoint fetches
+dated headlines from fixed OpenAI and Google RSS sources, validates source
+hosts, limits feed sizes, uses a 15-minute per-instance cache and shows failures
+or no recent items separately. Anthropic's official news is a direct source link.
+No model credential or paid service is needed for these feeds. Publication dates
+and collection times are distinct; no continuous real-time guarantee is made.
+
+Local validation: TypeScript, 166 portal tests, 231 Academy/backend tests,
+122 recovery tests and the site build passed. The existing optional live
+invitation fixture stayed skipped. Unit tests now reject unmocked fetch calls
+by default after the full run exposed a placeholder-host request. Synthetic
+model responses test grounding, consent, auth, rate-limit failure and refusal;
+they do not constitute live provider acceptance. The first Resources preview
+served actual dated OpenAI and Google items. Final preview/CI evidence belongs
+on PR 113. No enrollment, payment, case email, curriculum or production setting
+was changed for these checks.
+
 ## November 2 full Academy enrollment release
 
 Terrence explicitly confirmed public launch readiness for either phase, including

@@ -1,5 +1,22 @@
 # ACA storage and configuration recovery
 
+## November 7 owner guidance increment — PR 113
+
+The existing Control Center System activity view now includes Operations
+guidance. It derives recommendations from the already-authorized snapshot:
+open diagnostic incidents, collector freshness, verified backup age and open
+incidents, sampled delivery failures, and the latest loaded run for each job.
+Each suggestion states its evidence, next check and recovery verification.
+Snapshots older than two minutes or with invalid dates must be refreshed before
+incident-specific advice is shown. A clean loaded sample is not a global health
+certificate. Recommendations run locally; no owner or learner data is sent to
+an AI provider. The panel does not execute repairs, resend messages or change
+access. Existing controlled backup retry remains the only applicable bounded
+repair mechanism; this increment does not create a general repair agent.
+
+Source and activation boundaries are recorded in `academy/support/README.md`
+and review PR 113. The branch is a candidate, not a production-release claim.
+
 Continue from the existing Enrollment and Backend Continuity Mandate. Database
 restoration was proved separately on October 18. The temporary recovery project
 has been removed. Do not recreate that billed project for these local checks.

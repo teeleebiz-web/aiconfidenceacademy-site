@@ -8,7 +8,7 @@ async function load() {
   refresh.disabled = true
   status.textContent = 'Checking the available sources…'
   try {
-    const response = await fetch(endpoint, { signal: AbortSignal.timeout(18000), cache: 'no-store', credentials: 'omit' })
+    const response = await fetch(endpoint, { signal: AbortSignal.timeout(18000), cache: 'no-store', credentials: 'same-origin' })
     if (!response.ok) throw Error('unavailable')
     const data = await response.json()
     list.replaceChildren()
@@ -21,8 +21,9 @@ async function load() {
       card.append(node('small', `${item.source} · Published ${date(item.published)}`), heading, node('p', 'Read the announcement, then check availability and relevance to your own task.'), node('small', `Collected ${date(item.collectedAt)}`))
       list.append(card)
     }
-    const unavailable = data.sources.filter(s => s.status !== 'ok').map(s => s.label)
-    status.textContent = `${data.items.length ? 'Headlines checked' : 'No dated headlines available'} ${new Date(data.checkedAt).toLocaleString()}.${unavailable.length ? ` Unavailable: ${unavailable.join(', ')}. Use the source links below.` : ''}`
+    const unavailable = data.sources.filter(s => s.status === 'unavailable').map(s => s.label)
+    const empty = data.sources.filter(s => s.status === 'no_recent_items').map(s => s.label)
+    status.textContent = `${data.items.length ? 'Headlines checked' : 'No dated headlines available'} ${new Date(data.checkedAt).toLocaleString()}.${unavailable.length ? ` Unavailable: ${unavailable.join(', ')}. Use the source links below.` : ''}${empty.length ? ` No recent dated items: ${empty.join(', ')}.` : ''}`
   } catch {
     list.replaceChildren()
     status.textContent = 'Headlines are temporarily unavailable. You can still read the guidance and open the official sources below.'

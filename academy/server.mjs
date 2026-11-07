@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises'
 import { resolve, extname, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
+import { handleAssistant } from './support/assistant.mjs'
 import { handleSupport } from './support/api.mjs'
 import { handleUpdates } from './support/updates.mjs'
 import { handleWorkbook } from './workbook/api.mjs'
@@ -71,6 +72,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
       }
       if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
       if (requestPath === '/api/operations/maintenance') { await recordAutomationRun(req, res, enrollmentAutomation, 'operations-monitor', handleOperationalMaintenance); return }
+      if (requestPath === '/api/support/assist') { await handleAssistant(req, res, enrollmentAutomation || {db}); return }
       if (requestPath.startsWith('/api/support/') || requestPath === '/api/operations/support') { await handleSupport(req, res, enrollmentAutomation || {db}, {reviewerCheck:workbookReviewerCheck}); return }
       if (requestPath === '/api/operations/control-center') {
         await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return

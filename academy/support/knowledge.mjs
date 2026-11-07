@@ -14,6 +14,19 @@ export const answers = [
  {id:'updates',title:'How do I stop optional emails?',words:['unsubscribe','newsletter','updates','marketing','emails'],answer:'Use the unsubscribe control in an optional ACA updates email. Optional news preferences are separate from necessary enrollment, payment, account, and support messages. An unsubscribe does not cancel your enrollment or an installment obligation.',url:'/privacy/#communications'},
 ]
 const normalize = value => String(value||'').toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()
+// Supplemental public learning guidance. This does not replace or reveal lessons.
+// Keep the existing support answer array unchanged for Contact and FAQ consumers.
+export const learningGuidance = [
+ {id:'practice',title:'Choose a small task to practise',words:['practice','practise','beginner','begin','start','idea','ideas','suggest','suggestion','recommend','recommendation','overwhelmed','confused'],answer:'Start with a modest, useful task. Ask an AI assistant for three ways to explain an idea to a friend. Tell it what you are trying to do and who the explanation is for. Read the options, keep what fits, change what does not, and check factual claims before using them. Leave out private information.',url:'/explore/what-an-ai-assistant-does/'},
+ {id:'prompt',title:'Make your request clearer',words:['prompt','prompts','ask','instruction','instructions','question','explain','draft','rewrite'],answer:'Tell the assistant what you are trying to do and who the answer is for. Ask for a draft, explanation, comparison, or possible next step. Read its response and tell it what needs changing. A useful request begins a conversation in which you ask, inspect, correct, and decide.',url:'/explore/what-an-ai-assistant-does/'},
+ {id:'verify',title:'Check an AI answer before using it',words:['verify','verification','accuracy','accurate','trust','check','false','wrong','hallucination','source','sources'],answer:'Ask: What do I know? What does the answer claim? What could be missing? Who might be affected? What needs a source or another person’s expertise? Check claims against dependable information. A second confident answer from the same tool is not independent confirmation. For consequential choices, seek the appropriate qualified source or person.',url:'/explore/ai-assists-humans-verify/'},
+ {id:'ai-resources',title:'Find current AI information',words:['news','latest','new feature','new features','ai updates','current','resources','tools','tool','chatgpt','claude','gemini'],answer:'Open AI Updates & Guidance under Books & Resources for dated provider announcements and official source links. Confirm the product, plan, country, device, and release date before assuming a feature is available to you. Try a small task and check the result before depending on it.',url:'/library/ai-updates/'},
+]
+export function findGuidance(question, topic='all') {
+ const q=normalize(question); if(!q)return []
+ const records=topic==='learning'?learningGuidance:topic==='support'?answers:[...answers,...learningGuidance]
+ return records.map(a=>({a,score:a.words.reduce((n,w)=>n+((' '+q+' ').includes(' '+normalize(w)+' ')?normalize(w).split(' ').length+1:0),0)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.a)
+}
 export function findAnswers(question){
  const q=normalize(question); if(!q)return []
  return answers.map(a=>({a,score:a.words.reduce((n,w)=>n+((' '+q+' ').includes(' '+normalize(w)+' ')?normalize(w).split(' ').length+1:0),0)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.a)
