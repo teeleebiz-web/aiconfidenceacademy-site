@@ -7,7 +7,7 @@
   "preview_urls": false,
   "routes": [],
   "send_metrics": false,
-  "triggers": { "crons": ["*/15 * * * *"] },
-  "vars": { "ACA_TIMER_ENABLED": "false" },
+  "triggers": { "crons": ["*/15 * * * *", "17 18 * * *"] },
+  "vars": { "ACA_TIMER_ENABLED": "false", "ACA_BACKUP_TIMER_ENABLED": "false" },
   "observability": { "enabled": true, "head_sampling_rate": 1 }
 }

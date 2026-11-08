@@ -73,6 +73,8 @@ jobs:
         run: bash operations/support-investigation-db-check.sh
       - name: Verify coding ledger permissions and shared spending limit
         run: bash operations/support-code-db-check.sh
+      - name: Verify daily backup claim races and installment alert recovery
+        run: bash operations/schedule-recovery-db-check.sh
   code-isolation:
     runs-on: ubuntu-latest
     timeout-minutes: 15

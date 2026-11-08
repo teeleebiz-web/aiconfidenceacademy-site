@@ -1,5 +1,6 @@
-// This Worker holds only the dedicated repository Actions credential. It cannot
-// select another repository, workflow, ref, mode, or public request destination.
+import { backupCron, backupTick } from './backup-timer.mjs'
+// This Worker holds only the dedicated repository Actions credential. Both
+// allowed workflows and main are fixed in source; there is no public trigger.
 const workflow = 'https://api.github.com/repos/teeleebiz-web/aiconfidenceacademy-site/actions/workflows/incident-diagnostics.yml'
 export const timerCron = '*/15 * * * *'
 const busy = new Set(['queued', 'in_progress', 'waiting', 'requested', 'pending'])
@@ -60,7 +61,10 @@ export async function tick(controller, env, { request = fetch, now = Date.now, l
 }
 
 export default {
-  async scheduled(controller, env) { await tick(controller, env) },
+  async scheduled(controller, env) {
+    if (controller?.cron === backupCron) return backupTick(controller, env)
+    return tick(controller, env)
+  },
   // Defense in depth if someone accidentally adds an HTTP route in the account.
   async fetch() { return new Response('Not found', { status: 404 }) },
 }

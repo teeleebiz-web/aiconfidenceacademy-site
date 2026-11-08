@@ -63,6 +63,7 @@ export async function dispatchOperationalAlerts(config, now = new Date()) {
   if (!trusted.size) throw new Error('No trusted alert recipients')
   let reconciliationFailed = false
   try { checked(await config.db.rpc('aca_reconcile_backup_alerts')) } catch { reconciliationFailed = true }
+  try { checked(await config.db.rpc('aca_reconcile_installment_alerts')) } catch { reconciliationFailed = true }
   const alerts = checked(await config.db.rpc('aca_claim_operational_alerts'))
   const result = { submitted: 0, retry: 0, review: 0 }
   for (const alert of alerts) {

@@ -13,7 +13,18 @@ function fixture() {
   const policy = { id: true, enabled: true, activated_at: '2026-10-26T00:00:00Z', keep_daily: 7, prune_enabled: false, credential_expires_at: '2026-11-01T00:00:00Z' }
   const rows = [], deletions = []
   let backups = 0, reconciled = 0, failStart = false, failFinish = false, failReconcile = false
-  const db = { async rpc(name) { assert.equal(name, 'aca_reconcile_backup_alerts'); assert.equal(rows[0].status, 'completed'); assert.ok(rows[0].result.retention); reconciled++; return failReconcile ? { error: Error('private RPC error') } : { data: { resolved: 1, queued: 1 } } }, from(table) {
+  const db = { async rpc(name, args) {
+    if (name === 'aca_claim_daily_backup') {
+      if (failStart) return { error: Error('private claim error') }
+      const scheduledSlot = '2026-10-26T18:17:00Z'
+      const old = rows.find(r => r.result?.scheduledSlot === scheduledSlot)
+      if (old) return { data: { id: old.id, claimed: false, scheduledSlot } }
+      const row = { id: randomUUID(), job: backupJob, started_at: '2026-10-26T19:00:00Z', status: 'running',
+        result: { format: backupFormat, workflowRunId: args.p_workflow_run_id, workflowAttempt: args.p_workflow_attempt, scheduledSlot } }
+      rows.unshift(row)
+      return { data: { id: row.id, claimed: true, scheduledSlot } }
+    }
+    assert.equal(name, 'aca_reconcile_backup_alerts'); assert.equal(rows[0].status, 'completed'); assert.ok(rows[0].result.retention); reconciled++; return failReconcile ? { error: Error('private RPC error') } : { data: { resolved: 1, queued: 1 } } }, from(table) {
     if (table === 'aca_backup_automation') return { select() { return this }, eq() { return this }, async single() { return { data: policy } } }
     assert.equal(table, 'aca_automation_runs')
     let insert, update, id
@@ -37,6 +48,22 @@ test('disabled automation does not read source files, record a run, or delete co
   const c = fixture(); c.policy.enabled = false
   assert.deepEqual(await automaticBackup(c.options), { automatedBackup: false, held: 'not-activated' })
   assert.equal(c.backups, 0); assert.equal(c.rows.length, 0); assert.equal(c.deletions.length, 0)
+})
+test('second timer/native dispatch does not copy, prune, retry or record another daily run', async () => {
+  const c = fixture()
+  await automaticBackup(c.options)
+  c.options.env.GITHUB_RUN_ID = '67890'
+  c.options.env.GITHUB_EVENT_NAME = 'workflow_dispatch'
+  assert.deepEqual(await automaticBackup(c.options), { automatedBackup: false, held: 'daily-slot-already-started' })
+  assert.equal(c.backups, 1); assert.equal(c.rows.length, 1); assert.equal(c.deletions.length, 0)
+})
+test('a failed daily copy consumes its claim and cannot get another full attempt', async () => {
+  const c = fixture(); let calls = 0
+  c.options.runBackup = async () => { calls++; throw Error('non-retryable fixture failure') }
+  await assert.rejects(automaticBackup(c.options), /needs review/)
+  assert.equal(c.rows[0].status, 'failed')
+  assert.equal((await automaticBackup(c.options)).held, 'daily-slot-already-started')
+  assert.equal(calls, 1)
 })
 test('forks, non-main branches, untrusted events and absent workflow identity fail before live work', async () => {
   for (const [k, v] of [['GITHUB_REPOSITORY', 'attacker/repo'], ['GITHUB_REF', 'refs/heads/other'], ['GITHUB_EVENT_NAME', 'pull_request'], ['GITHUB_RUN_ID', ''], ['GITHUB_RUN_ATTEMPT', 'no']]) {
