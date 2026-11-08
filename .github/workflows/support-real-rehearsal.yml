@@ -1,0 +1,33 @@
+name: ACA isolated regression preservation rehearsal
+on:
+  push:
+    branches: [aca-agent/support-preserve-test-20261108]
+permissions:
+  contents: read
+jobs:
+  validate-test-draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: docker pull node:24-bookworm
+      - name: Verify real proposal in isolation and publish only a test draft
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node operations/support-real-candidate-check.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: isolated-real-model-evidence
+          path: support-real-test-result.json
+          retention-days: 7

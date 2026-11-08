@@ -1,0 +1,21 @@
+{
+  "proposal": {
+    "outcome": "candidate",
+    "edits": [
+      {
+        "path": "portal/src/lib/usePageStart.ts",
+        "before": "window.scrollTo({ top: 123, left: 0, behavior: 'instant' })",
+        "after": "window.scrollTo({ top: 0, left: 0, behavior: 'instant' })"
+      }
+    ],
+    "test": {
+      "path": "portal/src/agent-regression.test.tsx",
+      "content": "import { afterEach, describe, expect, it, vi } from 'vitest'\nimport { cleanup, render } from '@testing-library/react'\nimport { usePageStart } from './lib/usePageStart'\n\nfunction PageStartProbe({ destination }: { destination: string | null }) {\n  usePageStart(destination)\n  return <main><h1>Destination</h1></main>\n}\n\nafterEach(() => {\n  cleanup()\n  vi.restoreAllMocks()\n})\n\ndescribe('usePageStart', () => {\n  it('scrolls to the top when navigating to a destination', () => {\n    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {})\n\n    render(<PageStartProbe destination=\"/academy/phase-one/\" />)\n\n    expect(scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'instant' })\n  })\n})\n"
+    },
+    "kind": "navigation"
+  },
+  "base_sha": "9e316d82cb2ea8752ac507fade8a56cfd0ae5e87",
+  "job_id": "c22752a4-dfd0-4f85-a77c-accfe0893d6d",
+  "fixtureBranch": "aca-agent/support-preserve-fixture-20261108",
+  "packetHash": "3033ade787f64898a7d810e20ca283bcf7ece03ce89ad6f26693e7a1e63096b5"
+}
