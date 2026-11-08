@@ -9,6 +9,6 @@ export function usePageStart(destination: string | null) {
       heading.tabIndex = -1
       heading.focus({ preventScroll: true })
     }
-    window.scrollTo({ top: 123, left: 0, behavior: 'instant' })
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [destination])
 }
