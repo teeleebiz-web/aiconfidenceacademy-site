@@ -11,7 +11,7 @@ const repository='teeleebiz-web/aiconfidenceacademy-site'
 const checked=r=>{if(r?.error)throw Error('Coding ledger unavailable');return r.data}
 export function workerContext(env){
  if(env.GITHUB_REPOSITORY!==repository||env.GITHUB_REF!=='refs/heads/main'||!['workflow_run','workflow_dispatch'].includes(env.GITHUB_EVENT_NAME)||!/^\d+$/.test(env.GITHUB_RUN_ID||'')||!validSha(env.GITHUB_SHA))throw Error('Untrusted coding runner')
- if(env.GITHUB_EVENT_NAME==='workflow_run'&&(env.ACA_PARENT_BRANCH!=='main'||env.ACA_PARENT_RESULT!=='success'))throw Error('Untrusted diagnostic result')
+ if(env.GITHUB_EVENT_NAME==='workflow_run'&&(env.ACA_PARENT_BRANCH!=='main'||!['success','failure'].includes(env.ACA_PARENT_RESULT)))throw Error('Untrusted diagnostic result')
  return env.GITHUB_SHA
 }
 // All commands are fixed by trusted source. Model text is never a shell command.

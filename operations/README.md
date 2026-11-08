@@ -25,8 +25,10 @@ were $0.10/M input and $0.50/M output tokens, far below this conservative
 reservation. Reservations remain consumed after ambiguous failures. Model or
 price changes require re-verifying this bound before changing the allowlist.
 
-One newly investigated case generation is claimed per successful existing
-diagnostic workflow completion. Older reports are not backfilled. The lease,
+One newly investigated case generation is claimed per completed existing
+diagnostic workflow (success or failure). Eligibility requires the durable
+support investigation/report, so a separate StatusCake failure does not strand
+already-investigated support work. Cancelled or untrusted runs are rejected. Older reports are not backfilled. The lease,
 unique generation and durable reservation prevent repeat paid attempts. The
 new workflow has no separate schedule. Existing support acknowledgments remain
 unchanged; this worker sends no message, starts no enrollment and performs no

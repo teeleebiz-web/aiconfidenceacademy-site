@@ -3,9 +3,10 @@ import assert from 'node:assert/strict'
 import {workerContext,dockerArguments,runCodeWorker,publishCandidate,checkCodeReadiness} from './code-worker.mjs'
 const sha='a'.repeat(40),job={job_id:'00000000-0000-4000-8000-000000000001',claim_token:'00000000-0000-4000-8000-000000000002',base_sha:sha}
 const env={GITHUB_REPOSITORY:'teeleebiz-web/aiconfidenceacademy-site',GITHUB_REF:'refs/heads/main',GITHUB_EVENT_NAME:'workflow_run',GITHUB_RUN_ID:'123',GITHUB_SHA:sha,ACA_PARENT_BRANCH:'main',ACA_PARENT_RESULT:'success',ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY:'fixture-private',GITHUB_TOKEN:'fixture-repo'}
-test('only trusted main diagnostic completions can execute coding work',()=>{
+test('only trusted main diagnostic completions can execute coding work, even after a provider failure',()=>{
  assert.equal(workerContext(env),sha)
- for(const patch of [{GITHUB_REF:'refs/heads/evil'},{ACA_PARENT_BRANCH:'evil'},{ACA_PARENT_RESULT:'failure'},{GITHUB_EVENT_NAME:'pull_request'},{GITHUB_SHA:'x'}])assert.throws(()=>workerContext({...env,...patch}))
+ assert.equal(workerContext({...env,ACA_PARENT_RESULT:'failure'}),sha) // Durable database evidence, not provider availability, controls eligibility.
+ for(const patch of [{GITHUB_REF:'refs/heads/evil'},{ACA_PARENT_BRANCH:'evil'},{ACA_PARENT_RESULT:'cancelled'},{GITHUB_EVENT_NAME:'pull_request'},{GITHUB_SHA:'x'}])assert.throws(()=>workerContext({...env,...patch}))
 })
 test('sandbox has no network, credentials, docker socket or privileges',()=>{
  const args=dockerArguments({workspace:'/tmp/safe',dependencies:'/tmp/deps',name:'aca-code-fixture',script:'npm test',uid:1001,gid:1001})
