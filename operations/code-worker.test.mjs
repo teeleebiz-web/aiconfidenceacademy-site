@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {workerContext,dockerArguments,runCodeWorker} from './code-worker.mjs'
+import {workerContext,dockerArguments,runCodeWorker,publishCandidate} from './code-worker.mjs'
 const sha='a'.repeat(40),job={job_id:'00000000-0000-4000-8000-000000000001',claim_token:'00000000-0000-4000-8000-000000000002',base_sha:sha}
 const env={GITHUB_REPOSITORY:'teeleebiz-web/aiconfidenceacademy-site',GITHUB_REF:'refs/heads/main',GITHUB_EVENT_NAME:'workflow_run',GITHUB_RUN_ID:'123',GITHUB_SHA:sha,ACA_PARENT_BRANCH:'main',ACA_PARENT_RESULT:'success',ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY:'fixture-private',GITHUB_TOKEN:'fixture-repo'}
 test('only trusted main diagnostic completions can execute coding work',()=>{
@@ -32,4 +32,23 @@ test('policy or generation change after tests prevents repository writes',async(
  let published=false
  await assert.rejects(()=>runCodeWorker({env,db,fetcher:async()=>new Response(JSON.stringify({proposal:{outcome:'candidate'}})),runTests:async()=>({before:true,after:true}),publish:async()=>{published=true}}))
  assert.equal(published,false)
+})
+
+test('publisher blocks automatic preview deployment and writes only a draft',async()=>{
+ const {mkdtemp,readFile,writeFile,mkdir,rm}=await import('node:fs/promises')
+ const {tmpdir}=await import('node:os'),{join,dirname}=await import('node:path')
+ const root=await mkdtemp(join(tmpdir(),'aca-publish-'))
+ try{
+  for(const path of ['portal/src/lib/usePageStart.ts','portal/src/components/AcademyShell.tsx']){await mkdir(dirname(join(root,path)),{recursive:true});await writeFile(join(root,path),await readFile(path,'utf8'))}
+  const proposal={kind:'navigation',outcome:'candidate',edits:[{path:'portal/src/lib/usePageStart.ts',before:'top: 0, left: 0',after:'top: 0, left: 1'}],test:{path:'portal/src/agent-regression.test.tsx',content:'// Synthetic publisher fixture, never executed or published.'}}
+  const calls=[],github=async(path,method='GET',body)=>{calls.push({path,method,body});if(path==='/git/ref/heads/main')return {object:{sha}};if(path==='/git/commits/'+sha)return {tree:{sha}};if(path==='/pulls')return {number:123};return {sha}}
+  await writeFile(join(root,'vercel.json'),'{}')
+  await assert.rejects(()=>publishCandidate({root,job,proposal,github}),/deployment is not blocked/)
+  assert.equal(calls.length,0)
+  await writeFile(join(root,'vercel.json'),JSON.stringify({git:{deploymentEnabled:{'aca-agent/**':false}}}))
+  assert.deepEqual(await publishCandidate({root,job,proposal,github}),{branch:'aca-agent/'+job.job_id,pr:123})
+  assert.equal(calls.find(c=>c.path==='/pulls').body.draft,true)
+  assert.deepEqual(calls.filter(c=>c.method==='POST').map(c=>c.path),['/git/trees','/git/commits','/git/refs','/pulls','/actions/workflows/portal-ci.yml/dispatches'])
+  assert.ok(calls.find(c=>c.path==='/git/trees').body.tree.every(e=>['portal/src/lib/usePageStart.ts','portal/src/agent-regression.test.tsx'].includes(e.path)))
+ }finally{await rm(root,{recursive:true,force:true})}
 })

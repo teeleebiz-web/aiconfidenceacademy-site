@@ -38,7 +38,10 @@ capabilities, a read-only root and CPU/memory/process/time limits. The regressio
 must fail on the unchanged source; then type checking, all portal, backend and
 operations tests must pass with the candidate. Trusted host code can publish
 only the validated source replacements and regression to `aca-agent/<job-id>`
-and open a draft PR. A separate credential-free CI workflow is dispatched.
+and open a draft PR. Vercel deployment is disabled for `aca-agent/**`; the
+publisher checks that guard before creating any branch, so unreviewed candidate
+code cannot inherit preview credentials. A separate credential-free CI workflow
+is dispatched.
 A blocked PR permission retains a branch and records `branch_ready`; it never
 falls back to a privileged model environment. Main advancement invalidates the
 candidate. The owner inbox displays status and a safe draft link.
@@ -53,7 +56,9 @@ Validation and release: `support-code-db-check.sh` uses a disposable PostgreSQL
 and proves reproduction, repair and isolation without a real case or paid API.
 Apply the additive schema disabled, release tested code, verify the private route
 and runner, then record activation. Never run fixture SQL against production.
-Current implementation is on `aca-isolated-code-worker-20261108`; final CI,
+Migration `20261108041155_support_isolated_coding` was applied disabled on
+November 8 after PostgreSQL 17 acceptance; readback confirmed zero jobs and no
+public execution permission. Current implementation is on `aca-isolated-code-worker-20261108`; final CI,
 migration and activation evidence belongs in its PR before completion is claimed.
 
 ## November 8 support-triggered investigation — PR 114

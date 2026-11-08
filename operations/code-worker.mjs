@@ -70,6 +70,8 @@ export async function testCandidate({root,proposal,run=command}){
  }finally{await rm(directory,{recursive:true,force:true})}
 }
 export async function publishCandidate({root,job,proposal,github}){
+ const deployment=JSON.parse(await readFile(join(root,'vercel.json'),'utf8')).git?.deploymentEnabled
+ if(!deployment||Object.keys(deployment).length!==1||deployment['aca-agent/**']!==false)throw Error('Automated branch deployment is not blocked')
  const current=await github('/git/ref/heads/main')
  if(current.object?.sha!==job.base_sha)throw Error('Source changed; candidate requires new investigation')
  const sources=await sourcesFrom(root,proposal.kind)
