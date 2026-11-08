@@ -1,5 +1,25 @@
 # ACA storage and configuration recovery
 
+## November 8 approved Node 24 runtime alignment
+
+Terrence authorized matching production hosting to the existing Node 24 checks
+following the email-review corrections. Baseline release:
+`9ce204ee043faf0e7d6bd758561783691e960ad9` (PR #120).
+
+The checkout project's setting already selects Node 24, but the root manifest's
+`>=22` range overrode it and allowed Vercel to choose Node 26. Set the root
+`engines.node` to `24.x` in both package.json and its lockfile. This retains
+automatic Node 24 security/patch updates while preventing an untested major
+upgrade. Dependencies, application code, workflow schedules, database, payments,
+learner state and the duplicate-project build guard remain unchanged.
+
+Acceptance: clean Node 24 CI installation, existing application/database/isolation
+checks, successful checkout deployment with Node 24 build/runtime evidence,
+HTTP health and owner API access-protection checks. The release PR carries the
+exact revision and deployment receipt. No live enrollment, payment, email or
+backup test is part of this runtime correction. Rollback uses the previous
+checkout deployment; it does not require a data migration.
+
 ## November 8 email-review corrections
 
 Terrence's continuation authorizes the three issues identified in the email
