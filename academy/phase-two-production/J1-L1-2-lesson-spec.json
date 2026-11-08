@@ -1,0 +1,103 @@
+{
+  "curriculum": "ACA Phase Two Six-Week Curriculum Master v2.0",
+  "journey": 1,
+  "lesson": "1.2",
+  "title": "Find the Need and Establish the Evidence",
+  "status": "instructional-production-source-not-live",
+  "predecessor": "1.1",
+  "successor": "1.3",
+  "lesson_minutes": 60,
+  "access_window_minutes": 120,
+  "instructor": {
+    "voice_id": "ac277b338cf64d8b9686784c43c563da",
+    "voice_label": "Rika - IA",
+    "look_id": "eb90c2b7050142ea461979fa0215e161",
+    "max_width_px": 640
+  },
+  "presentation": {
+    "guided_audio_chapters": [
+      "Begin with a person, not a product",
+      "The symptom and the possible causes",
+      "What counts as evidence?",
+      "Ask fairly, then choose provisionally"
+    ],
+    "demonstrations": [
+      {
+        "id": "01-symptom",
+        "title": "See the symptom",
+        "example_is_fictional": true
+      },
+      {
+        "id": "02-causes",
+        "title": "Compare three causes",
+        "example_is_fictional": true
+      },
+      {
+        "id": "03-questions",
+        "title": "Improve the questions",
+        "example_is_fictional": true
+      },
+      {
+        "id": "04-decision",
+        "title": "Save a provisional decision",
+        "example_is_fictional": true
+      }
+    ],
+    "caption_placement": "separate_strip_below_video",
+    "native_captions": "available_optional",
+    "tab_video_behavior": "play_selected_video_on_explicit_tab_click",
+    "transcripts": true
+  },
+  "applied_work": {
+    "carry_forward_project": true,
+    "paths": [
+      "A",
+      "B"
+    ],
+    "fields_for_each_need": [
+      "person",
+      "symptom",
+      "possible_cause",
+      "evidence_type",
+      "evidence_source",
+      "unanswered_question"
+    ],
+    "candidate_count": 3,
+    "evidence_labels": [
+      "observed",
+      "reported",
+      "assumed",
+      "simulated"
+    ],
+    "selected_need": [
+      "person",
+      "situation",
+      "need",
+      "barrier",
+      "desired_result",
+      "neutral_questions",
+      "disconfirming_evidence",
+      "verification_source"
+    ],
+    "neutral_question_count": 5,
+    "prompt": "Help distinguish symptoms, possible causes and assumptions in these notes. Suggest five neutral questions to test the need. Do not present audience preferences as established facts. Notes: [sanitized project notes].",
+    "ai_workflow": [
+      "Learner opens chosen AI tool on phone, tablet, or computer",
+      "Learner pastes the approved prompt with sanitized notes",
+      "Learner checks five proposed questions for leading assumptions",
+      "Learner revises questions, brings analysis back to Academy",
+      "Learner records provisional choice, uncertainty and conditions to change it"
+    ],
+    "save_method": "append_to_existing_project_record",
+    "no_fake_save": true
+  },
+  "completion_checks": [
+    "Distinguish symptom from possible cause",
+    "Compare three possible needs",
+    "Label reported/observed/assumed/simulated evidence",
+    "Develop five neutral questions",
+    "Name what evidence would change provisional selection",
+    "Explain why an AI-suggested tool is not proof of demand"
+  ],
+  "implementation_notes": "New lesson retains all 1.1 project evidence; do not overwrite. Original course published state remains unchanged until approved media, authenticated integration and founder review."
+}
