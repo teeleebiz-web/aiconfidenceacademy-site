@@ -21,7 +21,9 @@ try{
  const proposal={kind:'navigation',outcome:'candidate',edits:[{path,before:'top: 123, left: 0',after:'top: 0, left: 0'}],test:{path:'portal/src/agent-regression.test.tsx',content:`
 import {render,cleanup} from '@testing-library/react'
 import {afterEach,expect,it,vi} from 'vitest'
+// @ts-expect-error Node built-in used only in this container-boundary fixture.
 import {writeFileSync,existsSync} from 'node:fs'
+declare const process:{env:Record<string,string|undefined>}
 import {usePageStart} from './lib/usePageStart'
 afterEach(cleanup)
 function Page(){usePageStart('fixture');return <main><h1>Fixture</h1></main>}
