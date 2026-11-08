@@ -123,4 +123,16 @@ export async function runCodeWorker({env=process.env,root=process.cwd(),fetcher=
   return {status}
  }catch{await finish('failed').catch(()=>{});throw Error('Coding worker stopped; production was not changed')}
 }
-if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))runCodeWorker().then(result=>console.log(result.idle?'No new eligible coding work.':`Coding result: ${result.status}; production recovery unverified.`)).catch(()=>{console.error('Coding worker stopped safely; inspect private status.');process.exitCode=1})
+export async function checkCodeReadiness(env=process.env,fetcher=fetch){
+ if(!env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY)throw Error('Coding credential unavailable')
+ const response=await fetcher('https://checkout.aiconfidenceacademy.org/api/operations/code-worker',{method:'GET',redirect:'error',signal:AbortSignal.timeout(10000),headers:{Authorization:'Bearer '+env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY}})
+ if(!response.ok)throw Error('Coding readiness unavailable')
+ const {boundedBody}=await import('../academy/support/code-agent.mjs')
+ const result=JSON.parse(await boundedBody(response,1024))
+ if(result.ready!==true||typeof result.enabled!=='boolean')throw Error('Coding configuration unavailable')
+ return result
+}
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))checkCodeReadiness().then(async readiness=>{
+ console.log('Private coding connection verified; model configuration ready; policy '+(readiness.enabled?'enabled.':'disabled.'))
+ return runCodeWorker()
+}).then(result=>console.log(result.idle?'No new eligible coding work.':`Coding result: ${result.status}; production recovery unverified.`)).catch(()=>{console.error('Coding worker stopped safely; inspect private status.');process.exitCode=1})

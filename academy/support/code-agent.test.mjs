@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {proposeCode,workerAuthorized} from './code-agent.mjs'
+import {proposeCode,workerAuthorized,handleCodeAgent} from './code-agent.mjs'
 const id='00000000-0000-4000-8000-000000000001',token='00000000-0000-4000-8000-000000000002',sha='a'.repeat(40)
 const config={assistant:{enabled:true,apiKey:'fixture-not-a-real-provider-key',model:'gpt-6-luna'},jobId:id,claimToken:token,baseSha:sha}
 const none={outcome:'no_change',edits:[],test:{path:'',content:''}}
@@ -40,4 +40,14 @@ test('ambiguous provider failure consumes one reservation without retry',async()
  const db={rpc:async name=>name==='aca_code_job_context'?{data:[{category:'sign-in',technical_text:'I am stuck',diagnosis:'no_shared_outage'}]}:(reserved++,{data:true})}
  await assert.rejects(()=>proposeCode({...config,db},{fetcher:async url=>{if(url.includes('api.openai.com')){calls++;throw Error('timeout')}return new Response('source')}}))
  assert.equal(calls,1);assert.equal(reserved,1)
+})
+
+test('private readiness exposes no key and never reserves allowance',async()=>{
+ const key='fixture-'.repeat(6),read=[]
+ const db={from:name=>{read.push(name);return {select:()=>({eq:()=>({single:async()=>({data:{enabled:false}})})})}},rpc:()=>{throw Error('No paid operation expected')}}
+ const call=async authorization=>{let status,value;await handleCodeAgent({method:'GET',headers:{authorization}},{writeHead:s=>{status=s},end:v=>{value=JSON.parse(v)}},{...config,db,codeWorkerKey:key});return {status,value}}
+ assert.deepEqual(await call('Bearer '+key),{status:200,value:{ready:true,enabled:false}})
+ assert.deepEqual(read,['aca_support_code_settings'])
+ assert.equal((await call('Bearer wrong')).status,401)
+ assert.deepEqual(read,['aca_support_code_settings'])
 })

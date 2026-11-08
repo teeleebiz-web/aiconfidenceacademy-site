@@ -42,6 +42,10 @@ and open a draft PR. Vercel deployment is disabled for `aca-agent/**`; the
 publisher checks that guard before creating any branch, so unreviewed candidate
 code cannot inherit preview credentials. A separate credential-free CI workflow
 is dispatched.
+GitHub's combined "create and approve pull requests" repository setting was enabled
+on November 8 for the explicitly authorized draft capability. Default workflow
+permissions remain read-only. The worker implements no review-approval or merge
+operation; its repository writes are restricted by the trusted publisher.
 A blocked PR permission retains a branch and records `branch_ready`; it never
 falls back to a privileged model environment. Main advancement invalidates the
 candidate. The owner inbox displays status and a safe draft link.
@@ -55,7 +59,10 @@ Validation and release: `support-code-db-check.sh` uses a disposable PostgreSQL
 17 database; `code-isolation-check.mjs` creates a local synthetic navigation defect
 and proves reproduction, repair and isolation without a real case or paid API.
 Apply the additive schema disabled, release tested code, verify the private route
-and runner, then record activation. Never run fixture SQL against production.
+and runner, then record activation. An authenticated readiness GET checks the existing
+runner/backend credential, database policy and model configuration without
+creating a support case or calling the paid model. This is connection evidence,
+not proof of a live model-generated repair. Never run fixture SQL against production.
 Migration `20261108041155_support_isolated_coding` was applied disabled on
 November 8 after PostgreSQL 17 acceptance; readback confirmed zero jobs and no
 public execution permission. Current implementation is on `aca-isolated-code-worker-20261108`; final CI,

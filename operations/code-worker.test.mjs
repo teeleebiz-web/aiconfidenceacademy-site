@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {workerContext,dockerArguments,runCodeWorker,publishCandidate} from './code-worker.mjs'
+import {workerContext,dockerArguments,runCodeWorker,publishCandidate,checkCodeReadiness} from './code-worker.mjs'
 const sha='a'.repeat(40),job={job_id:'00000000-0000-4000-8000-000000000001',claim_token:'00000000-0000-4000-8000-000000000002',base_sha:sha}
 const env={GITHUB_REPOSITORY:'teeleebiz-web/aiconfidenceacademy-site',GITHUB_REF:'refs/heads/main',GITHUB_EVENT_NAME:'workflow_run',GITHUB_RUN_ID:'123',GITHUB_SHA:sha,ACA_PARENT_BRANCH:'main',ACA_PARENT_RESULT:'success',ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY:'fixture-private',GITHUB_TOKEN:'fixture-repo'}
 test('only trusted main diagnostic completions can execute coding work',()=>{
@@ -51,4 +51,12 @@ test('publisher blocks automatic preview deployment and writes only a draft',asy
   assert.deepEqual(calls.filter(c=>c.method==='POST').map(c=>c.path),['/git/trees','/git/commits','/git/refs','/pulls','/actions/workflows/portal-ci.yml/dispatches'])
   assert.ok(calls.find(c=>c.path==='/git/trees').body.tree.every(e=>['portal/src/lib/usePageStart.ts','portal/src/agent-regression.test.tsx'].includes(e.path)))
  }finally{await rm(root,{recursive:true,force:true})}
+})
+
+test('live readiness authenticates without a case or paid model request',async()=>{
+ const requests=[]
+ const result=await checkCodeReadiness(env,async(url,options)=>{requests.push({url,options});return new Response(JSON.stringify({ready:true,enabled:false}))})
+ assert.deepEqual(result,{ready:true,enabled:false})
+ assert.equal(requests.length,1);assert.equal(requests[0].options.method,'GET');assert.equal(requests[0].options.body,undefined)
+ for(const response of [new Response('{}',{status:401}),new Response('{"ready":false,"enabled":false}')])await assert.rejects(()=>checkCodeReadiness(env,async()=>response))
 })

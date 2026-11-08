@@ -48,8 +48,13 @@ export async function proposeCode({db,assistant,jobId,claimToken,baseSha},{fetch
 }
 export async function handleCodeAgent(req,res,config,options={}){
  if(!workerAuthorized(req,config?.codeWorkerKey))return reply(res,401,{error:'Worker authentication required.'})
- if(req.method!=='POST')return reply(res,405,{error:'Method not allowed.'})
+ if(!['GET','POST'].includes(req.method))return reply(res,405,{error:'Method not allowed.'})
  try{
+  if(req.method==='GET'){
+   const policy=checked(await config.db.from('aca_support_code_settings').select('enabled').eq('id',true).single())
+   const ready=config.assistant?.enabled===true&&config.assistant.model===codeModel&&typeof config.assistant.apiKey==='string'&&config.assistant.apiKey.length>=20
+   return reply(res,200,{ready,enabled:policy?.enabled===true})
+  }
   let raw='';if(req.body!==undefined)raw=typeof req.body==='string'?req.body:JSON.stringify(req.body);else for await(const part of req){raw+=part;if(Buffer.byteLength(raw)>1024)throw Error('Too large')}
   if(Buffer.byteLength(raw)>1024)throw Error('Too large')
   const v=JSON.parse(raw)
