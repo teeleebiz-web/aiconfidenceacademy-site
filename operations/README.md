@@ -1,13 +1,13 @@
 # ACA storage and configuration recovery
 
-## November 8 support-triggered investigation candidate
+## November 8 support-triggered investigation — PR 114
 
 Terrence authorized resuming the operational agent workflow: reported problems
 must initiate investigation, approved repair, coding-agent involvement when
 needed and verified recovery. This increment connects the first two steps and
 does **not** claim that the broader repair agent is complete.
 
-`support-investigation-schema.sql` is an additive, disabled-by-default candidate.
+`support-investigation-schema.sql` is the additive, disabled-by-default schema.
 After activation, inserting a new requester message in an existing technical or
 sign-in case atomically queues that case. Repeated messages share one case job;
 new generations preserve follow-ups arriving during a claim. No historical cases
@@ -35,7 +35,16 @@ embedded PostgreSQL acceptance pass; desktop/mobile owner-inbox preview with
 synthetic data. `support-investigation-db-check.sh` adds PostgreSQL 17 CI checks
 for permissions, disabled policy, no backlog, exclusive claims, follow-ups,
 lease expiry, bounded retries and preserved evidence. Never run its fixtures on
-ACA production. Exact CI and release evidence belongs in this increment's PR.
+ACA production. PostgreSQL 17 acceptance/concurrency and the full repository checks passed on
+`cb59357bc4ea8b09219663842dcf532062da245a` (workflow run 42442749261).
+The corresponding Vercel backend preview reached READY.
+
+The schema was applied as migration `20261108032954_support_investigation_intake`
+on November 8 with policy disabled. Readback confirmed zero queued jobs, zero
+disabled claims, and execute access restricted to service_role. The migration
+file records the version issued by Supabase; CLI generation was unavailable in
+this session. Production worker/portal release and activation are not established
+by that schema application; final evidence is recorded in PR 114.
 
 Deployment sequence: apply the tested schema through the established migration
 workflow, preserving disabled policy; release the tested runner/backend/portal;
