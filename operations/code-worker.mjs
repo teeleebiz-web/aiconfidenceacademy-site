@@ -19,7 +19,7 @@ export async function command(file,args,{cwd,timeout=180000,env=process.env}={})
  return new Promise((resolveResult,reject)=>{
   const child=spawn(file,args,{cwd,env,stdio:['ignore','pipe','pipe']}),chunks=[];let bytes=0,timedOut=false
   const timer=setTimeout(()=>{timedOut=true;child.kill('SIGKILL')},timeout)
-  const receive=b=>{bytes+=b.length;if(bytes<=32768)chunks.push(b)}
+  const receive=b=>{chunks.push(b);bytes+=b.length;while(bytes>32768&&chunks.length){const excess=bytes-32768,first=chunks[0];if(first.length<=excess){bytes-=chunks.shift().length}else{chunks[0]=first.subarray(excess);bytes-=excess}}}
   child.stdout.on('data',receive);child.stderr.on('data',receive)
   child.on('error',e=>{clearTimeout(timer);reject(e)})
   child.on('close',code=>{clearTimeout(timer);resolveResult({code,timedOut,output:Buffer.concat(chunks).toString('utf8')})})
@@ -56,7 +56,7 @@ export async function testCandidate({root,proposal,run=command}){
    try{return await run('docker',dockerArguments({workspace,dependencies:await realpath(resolve(root,'node_modules')),name,script,uid:process.getuid(),gid:process.getgid()}),{cwd:root,timeout:240000})}
    finally{await run('docker',['rm','-f',name],{cwd:root,timeout:10000}).catch(()=>{})}
   }
-  const regression='node node_modules/vitest/vitest.mjs run --config portal/vitest.config.ts --configLoader runner --no-cache portal/src/agent-regression.test.tsx --reporter=json --outputFile=/tmp/result.json; result=$?; cat /tmp/result.json; exit "$result"'
+  const regression='node node_modules/vitest/vitest.mjs run --config portal/vitest.config.ts --configLoader runner --no-cache --maxWorkers 2 portal/src/agent-regression.test.tsx --reporter=json --outputFile=/tmp/result.json; result=$?; cat /tmp/result.json; exit "$result"'
   const original=await invoke(regression)
   // A process crash, timeout or transform/import error is not a reproduction.
   const jsonStart=original.output.indexOf('{"numTotalTestSuites"')
@@ -64,7 +64,7 @@ export async function testCandidate({root,proposal,run=command}){
   before=!original.timedOut&&original.code===1&&report?.numFailedTests>0&&report?.numTotalTests>0
   if(!before)return {before:false,after:false}
   for(const edit of clean.edits)await writeFile(join(workspace,edit.path),sources[edit.path].replace(edit.before,edit.after))
-  const repaired=await invoke('npm run typecheck && node node_modules/vitest/vitest.mjs run --config portal/vitest.config.ts --configLoader runner --no-cache && npm run test:academy && npm run test:recovery')
+  const repaired=await invoke('npm run typecheck && node node_modules/vitest/vitest.mjs run --config portal/vitest.config.ts --configLoader runner --no-cache --maxWorkers 2 && npm run test:academy -- --test-concurrency=1 && npm run test:recovery -- --test-concurrency=1')
   after=!repaired.timedOut&&repaired.code===0
   return {before,after}
  }finally{await rm(directory,{recursive:true,force:true})}

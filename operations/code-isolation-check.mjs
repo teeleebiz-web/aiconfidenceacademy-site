@@ -39,7 +39,7 @@ it('cannot access host credentials or mutate trusted sources',()=>{
 it('cannot reach the network',async()=>{await expect(fetch('https://example.com',{signal:AbortSignal.timeout(1000)})).rejects.toThrow()})
 `}}
  process.env.ACA_ISOLATION_SENTINEL='must-not-enter-container'
- const result=await testCandidate({root:fixture,proposal,run:async(...args)=>{const r=await command(...args);if(args[0]==='docker'&&args[1][0]==='run'&&r.code!==0)console.log(r.output);return r}})
+ const result=await testCandidate({root:fixture,proposal,run:async(...args)=>{const r=await command(...args);if(args[0]==='docker'&&args[1][0]==='run'&&r.code!==0)console.log(JSON.stringify({exit:r.code,timedOut:r.timedOut})+'\n'+r.output);return r}})
  assert.deepEqual(result,{before:true,after:true})
  console.log('Verified: baseline regression, repaired checks, read-only sources, no credentials and no network.')
 }finally{delete process.env.ACA_ISOLATION_SENTINEL;await command('git',['worktree','remove','--force',fixture],{cwd:root});await rm(dir,{recursive:true,force:true})}
