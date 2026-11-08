@@ -4,6 +4,7 @@ import {tmpdir} from 'node:os'
 import {resolve,join,dirname} from 'node:path'
 import {fileURLToPath} from 'node:url'
 import {spawn} from 'node:child_process'
+import {createHash} from 'node:crypto'
 import {codeSources,validateProposal,validId,validSha} from '../academy/support/code-policy.mjs'
 import {projectRef} from './recovery.mjs'
 
@@ -37,11 +38,23 @@ export function dockerArguments({workspace,dependencies,name,script,uid,gid}){
  if(!/^aca-code-[a-z0-9-]+$/.test(name))throw Error('Invalid container name')
  return ['run','--rm','--name',name,'--network','none','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--pids-limit','256','--memory','1536m','--cpus','2','--user',`${uid}:${gid}`,'--tmpfs','/tmp:rw,nosuid,nodev,size=256m','--mount',`type=bind,src=${workspace},dst=/workspace,readonly`,'--mount',`type=bind,src=${dependencies},dst=/workspace/node_modules,readonly`,'--workdir','/workspace','--env','HOME=/tmp','--env','CI=true','--env','VITE_SUPABASE_URL=https://example.invalid','--env','VITE_SUPABASE_ANON_KEY=fixture-only','node:24-bookworm','sh','-c',script]
 }
+// The model's canonical path remains a strict input contract. Only trusted code
+// chooses the saved filename, leaving all earlier regressions intact. The same
+// immutable base and proposal select the same filename for testing/publication.
+async function regressionPath(root,proposal){
+ const digest=createHash('sha256').update(JSON.stringify({edits:proposal.edits,test:proposal.test.content})).digest('hex')
+ for(let attempt=0;attempt<100;attempt++){
+  const path=`portal/src/agent-regression-${digest}${attempt?'-'+attempt:''}.test.tsx`
+  try{await lstat(join(root,path))}catch(e){if(e.code==='ENOENT')return path;throw e}
+ }
+ throw Error('No unused regression path available')
+}
 export async function testCandidate({root,proposal,run=command}){
  const sources=await sourcesFrom(root,proposal.kind)
  const clean={outcome:proposal.outcome,edits:proposal.edits,test:proposal.test}
  validateProposal(clean,sources,proposal.kind)
  if(clean.outcome!=='candidate')return {before:false,after:false}
+ const testPath=await regressionPath(root,clean)
  const directory=await mkdtemp(join(tmpdir(),'aca-code-')),workspace=join(directory,'workspace'),archive=join(directory,'source.tar')
  const name='aca-code-'+directory.split('/').at(-1).toLowerCase()
  let before=false,after=false
@@ -50,13 +63,12 @@ export async function testCandidate({root,proposal,run=command}){
   if((await run('git',['archive','--format=tar','-o',archive,'HEAD'],{cwd:root})).code!==0)throw Error('Source snapshot failed')
   if((await run('tar',['-xf',archive,'-C',workspace],{cwd:root})).code!==0)throw Error('Source extraction failed')
   await mkdir(join(workspace,'node_modules'),{recursive:true}) // Mountpoint must exist before the read-only source bind.
-  try{await lstat(join(workspace,proposal.test.path));throw Error('Regression path already exists')}catch(e){if(e.code!=='ENOENT')throw e}
-  await writeFile(join(workspace,proposal.test.path),proposal.test.content,{flag:'wx'})
+  await writeFile(join(workspace,testPath),clean.test.content,{flag:'wx'})
   const invoke=async script=>{
    try{return await run('docker',dockerArguments({workspace,dependencies:await realpath(resolve(root,'node_modules')),name,script,uid:process.getuid(),gid:process.getgid()}),{cwd:root,timeout:240000})}
    finally{await run('docker',['rm','-f',name],{cwd:root,timeout:10000}).catch(()=>{})}
   }
-  const regression='node node_modules/vitest/vitest.mjs run --config portal/vitest.config.ts --configLoader runner --no-cache --maxWorkers 2 portal/src/agent-regression.test.tsx --reporter=json --outputFile=/tmp/result.json; result=$?; cat /tmp/result.json; exit "$result"'
+  const regression=`node node_modules/vitest/vitest.mjs run --config portal/vitest.config.ts --configLoader runner --no-cache --maxWorkers 2 ${testPath} --reporter=json --outputFile=/tmp/result.json; result=$?; cat /tmp/result.json; exit "$result"`
   const original=await invoke(regression)
   // A process crash, timeout or transform/import error is not a reproduction.
   const jsonStart=original.output.indexOf('{"numTotalTestSuites"')
@@ -76,8 +88,9 @@ export async function publishCandidate({root,job,proposal,github}){
  if(current.object?.sha!==job.base_sha)throw Error('Source changed; candidate requires new investigation')
  const sources=await sourcesFrom(root,proposal.kind)
  validateProposal({outcome:proposal.outcome,edits:proposal.edits,test:proposal.test},sources,proposal.kind)
+ const testPath=await regressionPath(root,proposal)
  const base=await github('/git/commits/'+job.base_sha)
- const tree=await github('/git/trees','POST',{base_tree:base.tree.sha,tree:[...proposal.edits.map(e=>({path:e.path,mode:'100644',type:'blob',content:sources[e.path].replace(e.before,()=>e.after)})),{path:proposal.test.path,mode:'100644',type:'blob',content:proposal.test.content}]})
+ const tree=await github('/git/trees','POST',{base_tree:base.tree.sha,tree:[...proposal.edits.map(e=>({path:e.path,mode:'100644',type:'blob',content:sources[e.path].replace(e.before,()=>e.after)})),{path:testPath,mode:'100644',type:'blob',content:proposal.test.content}]})
  const commit=await github('/git/commits','POST',{message:'Prepare isolated technical repair candidate',tree:tree.sha,parents:[job.base_sha]})
  const branch='aca-agent/'+job.job_id
  await github('/git/refs','POST',{ref:'refs/heads/'+branch,sha:commit.sha})

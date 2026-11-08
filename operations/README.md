@@ -1,5 +1,54 @@
 # ACA storage and configuration recovery
 
+## November 8 regression filename correction — release authorized
+
+Terrence authorized correcting the regression filename collision, preserving
+earlier tests and rerunning isolated checks. The first real-model rehearsal
+(run `42455200770`, test-only PR #117) proved a candidate, but its follow-up
+`code-isolation` check in run `42455383347` stopped because the fixed
+`portal/src/agent-regression.test.tsx` filename already existed. PR #117 was
+closed without merging; the collision was a workflow defect, not a production
+learner outage.
+
+The correction keeps the strict model response path contract. Trusted worker
+code selects a content-derived filename in the same test directory and, when
+occupied, a bounded numeric suffix. Testing and publication use the same
+selection against the unchanged base. Earlier files remain untouched, snapshot
+creation uses exclusive writes, and exhaustion stops before repository writes.
+The isolation fixture now retains an existing legacy test and deliberately
+occupies the generated filename to exercise this failure case permanently.
+
+Validation on code revision `45f82ee8b85e75c599defc7cd664ab1764853099`:
+- Nine focused worker/policy tests passed, including repeated collisions and
+  safe exhaustion without repository mutation.
+- Run `42458857920` replayed the saved actual AI response without another model
+  request. Its regression assertion failed before the synthetic repair and all
+  isolated application checks passed afterward. Actual test-only draft #118
+  preserved both earlier tests byte-for-byte and saved the new test separately.
+  The receipt records candidate `909a6e6a36ae9f66e2e98c77ff49be81c3b1fc22`.
+  Test-only PR #118 was closed without merging after verification.
+- Follow-up CI run `42458998354` passed all three jobs: application verification,
+  PostgreSQL 17 acceptance and the previously failing container isolation check.
+  Application verification passed 187 portal tests (one existing skip), 243
+  backend tests, 136 operations tests, type checking and the build. The isolation
+  check independently confirmed preserved earlier tests, a new regression file,
+  baseline failure, repaired checks, no host credentials and no network.
+
+All injected defects and generated model tests are confined to `aca-agent/**`
+test branches and disposable Docker workspaces. They are not part of this
+correction's release diff. The isolated testing changed no live support record,
+database, email, enrollment, payment or production configuration.
+
+Terrence subsequently explicitly authorized releasing this tested correction
+through PR #119. Release-candidate CI `42459291776` passed all three jobs on
+`925762398b8d05fb6871e5b8d5e0a9c6f44860df`: 184 portal tests (one existing skip),
+243 backend tests, 136 operations tests, type checking, build, PostgreSQL 17
+acceptance and container isolation. This authorization changes only the repair
+workflow and its evidence record. PR #119 records the actual merge revision and
+post-release checks. Neither synthetic test draft is authorized for merging.
+Production recovery for a real learner and the wider incident-to-recovery
+acceptance remain separate work; releasing this correction does not close them.
+
 ## November 8 authorized isolated coding worker
 
 Terrence explicitly authorized the coding execution and draft repository-writing

@@ -51,7 +51,32 @@ test('publisher blocks automatic preview deployment and writes only a draft',asy
   assert.equal(calls.find(c=>c.path==='/pulls').body.draft,true)
   assert.ok(calls.find(c=>c.path==='/git/trees').body.tree[0].content.includes('/* $& literal */'))
   assert.deepEqual(calls.filter(c=>c.method==='POST').map(c=>c.path),['/git/trees','/git/commits','/git/refs','/pulls','/actions/workflows/portal-ci.yml/dispatches'])
-  assert.ok(calls.find(c=>c.path==='/git/trees').body.tree.every(e=>['portal/src/lib/usePageStart.ts','portal/src/agent-regression.test.tsx'].includes(e.path)))
+  const firstTree=calls.find(c=>c.path==='/git/trees').body.tree
+  assert.equal(firstTree.length,2)
+  const firstTest=firstTree[1]
+  assert.match(firstTest.path,/^portal\/src\/agent-regression-[a-f0-9]{64}\.test\.tsx$/)
+  assert.equal(firstTest.content,proposal.test.content)
+  // Simulate two earlier saved tests, including an exact generated-name
+  // collision. A later draft must retain both and publish a new test instead.
+  const prior='// Prior regression must remain byte-for-byte intact.'
+  await writeFile(join(root,proposal.test.path),prior)
+  await writeFile(join(root,firstTest.path),prior)
+  calls.length=0
+  await publishCandidate({root,job,proposal,github})
+  const nextTest=calls.find(c=>c.path==='/git/trees').body.tree[1]
+  assert.equal(nextTest.path,firstTest.path.replace('.test.tsx','-1.test.tsx'))
+  assert.equal(nextTest.content,proposal.test.content)
+  for(const path of [proposal.test.path,firstTest.path])assert.equal(await readFile(join(root,path),'utf8'),prior)
+  // A repeated collision is handled too; no occupied path is ever selected.
+  await writeFile(join(root,nextTest.path),prior)
+  calls.length=0
+  await publishCandidate({root,job,proposal,github})
+  assert.equal(calls.find(c=>c.path==='/git/trees').body.tree[1].path,firstTest.path.replace('.test.tsx','-2.test.tsx'))
+  // Bounded exhaustion stops before any repository mutation.
+  for(let i=2;i<100;i++)await writeFile(join(root,firstTest.path.replace('.test.tsx',`-${i}.test.tsx`)),prior)
+  calls.length=0
+  await assert.rejects(()=>publishCandidate({root,job,proposal,github}),/No unused regression path/)
+  assert.ok(calls.every(c=>c.method==='GET'))
  }finally{await rm(root,{recursive:true,force:true})}
 })
 
