@@ -26,6 +26,7 @@ export default function handler(request, response) {
       auth: { persistSession: false, autoRefreshToken: false },
     })
     const enrollmentAutomation = {
+          codeWorkerKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
           assistant: { enabled: process.env.ACA_ASSISTANT_ENABLED === 'true', apiKey: process.env.OPENAI_API_KEY, model: process.env.ACA_ASSISTANT_MODEL },
           stripe: process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null,
           webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,

@@ -1,5 +1,16 @@
 # ACA operational support and policy source
 
+## November 8 authorized coding continuation
+
+Support diagnostics are live (PR 114; first regular runner 42444064476 passed).
+Terrence subsequently authorized isolated coding execution and draft repository
+writes within the existing shared $20 monthly allowance. The coding worker
+prepares only bounded, tested drafts from fixed technical symptoms and public
+source. It does not merge repairs, close cases or claim production recovery.
+The backend retains the existing OpenAI key; untrusted candidate tests receive
+no credentials or network. See `operations/README.md` for the current authority,
+spending ledger, isolation checks, activation state and remaining recovery work.
+
 ## November 8 operational investigation candidate
 
 The next authorized automation increment attaches durable technical/sign-in
