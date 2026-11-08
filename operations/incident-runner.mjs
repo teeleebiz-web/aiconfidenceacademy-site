@@ -4,9 +4,10 @@ import {fileURLToPath} from 'node:url'
 import {coordinate,statusCakeReader,validatePolicy,validateMonitor,parseAlerts,probe,incidentFailureLabel} from './incident-diagnostics.mjs'
 import {incidentConfiguration,incidentStore} from './incident-store.mjs'
 import {projectRef} from './recovery.mjs'
+import {investigateSupport} from './support-investigation.mjs'
 
 const checked=result=>{if(result.error)throw new Error('Coordinator database operation failed');return result.data}
-export async function runIncidentCoordinator({env=process.env,makeStore=incidentStore,makeDb=createClient,run=coordinate,makeReader=statusCakeReader,check=probe}={}){
+export async function runIncidentCoordinator({env=process.env,makeStore=incidentStore,makeDb=createClient,run=coordinate,makeReader=statusCakeReader,check=probe,runSupport=investigateSupport}={}){
   if(env.GITHUB_REPOSITORY!=='teeleebiz-web/aiconfidenceacademy-site'||env.GITHUB_REF!=='refs/heads/main'||!['schedule','workflow_dispatch'].includes(env.GITHUB_EVENT_NAME)||!/^\d+$/.test(env.GITHUB_RUN_ID||''))throw new Error('Unreviewed coordinator execution context')
   const config=incidentConfiguration(env)
   try{
@@ -35,11 +36,17 @@ export async function runIncidentCoordinator({env=process.env,makeStore=incident
       }
       return {providerVerification:true}
     }
-    return await run({store,readProvider,
+    // Support diagnostics use the same outside runner and existing credentials.
+    // A StatusCake failure must not prevent the independent support queue pass.
+    let result, monitoringError
+    try{result=await run({store,readProvider,
       readPolicy,
       mirror:async report=>{checked(await db.rpc('aca_ingest_incident_report',{p_report:report}))},
       heartbeat:async value=>{checked(await db.from('aca_incident_coordinator').upsert({id:true,...value,workflow_run_id:env.GITHUB_RUN_ID},{onConflict:'id'}))},
-    })
+    })}catch(error){monitoringError=error}
+    const support=await runSupport({db,check})
+    if(monitoringError)throw monitoringError
+    return {...result,support,synchronized:result.synchronized&&support.pending===0}
   }finally{config.key.fill(0)}
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){

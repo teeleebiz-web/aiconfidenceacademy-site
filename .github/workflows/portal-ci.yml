@@ -66,6 +66,8 @@ jobs:
         run: bash operations/lesson-calendar-db-check.sh
       - name: Verify staged learner start and invitation timing
         run: bash operations/learner-start-db-check.sh
+      - name: Verify support investigation intake, claims, permissions and evidence
+        run: bash operations/support-investigation-db-check.sh
   verify:
     runs-on: ubuntu-latest
     steps:

@@ -28,7 +28,7 @@ jobs:
           node-version: 24
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Verify diagnostic guards without live credentials
-        run: node --test operations/incident-*.test.mjs
+        run: node --test operations/incident-*.test.mjs operations/support-investigation.test.mjs
       - name: Collect read-only evidence into private encrypted storage
         env:
           ACA_R2_PRIVATE_CONFIRMED: ce19c01b24230d06b8ba736cccd4414f/aca-private-backups
