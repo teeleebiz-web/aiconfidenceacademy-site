@@ -32,8 +32,16 @@ curriculum, enrollment, payment, invitation or owner-notification test is includ
   creates no email, and cannot resolve backup or other job alerts. The existing
   mail monitor calls it alongside the unchanged backup proof reconciler.
 
+Validation at revision `df34817670ab164790b5b303435c55402f567d64`: local checks
+passed (184 portal tests, one existing skip; 244 backend; 145 operations; types
+and build). CI run `42472154077` passed application verification, PostgreSQL 17
+including competing daily claims, and container isolation. Supabase applied
+the identical migration as version `20261108103946`; the repository filename
+now matches that recorded version. Activation and natural backup acceptance
+remain separate release checks.
+
 Release order: pass local and exact-commit CI (including the PostgreSQL race
-test); apply `20261108102857_aca_operations_schedule_recovery.sql`; release the
+test); apply `20261108103946_aca_operations_schedule_recovery.sql`; release the
 reviewed main revision; verify the checkout deployment and duplicate build skip;
 then update the existing Worker, preserving its secret and diagnostic activation,
 and activate `ACA_BACKUP_TIMER_ENABLED=true`. Both timer flags remain false in
