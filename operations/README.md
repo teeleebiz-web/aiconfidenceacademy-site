@@ -1,6 +1,6 @@
 # ACA storage and configuration recovery
 
-## November 8 regression filename correction — unreleased candidate
+## November 8 regression filename correction — release authorized
 
 Terrence authorized correcting the regression filename collision, preserving
 earlier tests and rerunning isolated checks. The first real-model rehearsal
@@ -36,12 +36,18 @@ Validation on code revision `45f82ee8b85e75c599defc7cd664ab1764853099`:
 
 All injected defects and generated model tests are confined to `aca-agent/**`
 test branches and disposable Docker workspaces. They are not part of this
-correction's release diff. No live support record, database, email, enrollment,
-payment or production configuration was changed. Main remains
-`d4e4c75d2b175035a156ce2be56f462f87d95962`. This correction is prepared for review,
-not released; production recovery and the wider incident-to-recovery acceptance
-remain separate work. The next decision is authorization to release the tested
-workflow correction, never to merge either synthetic test draft into main.
+correction's release diff. The isolated testing changed no live support record,
+database, email, enrollment, payment or production configuration.
+
+Terrence subsequently explicitly authorized releasing this tested correction
+through PR #119. Release-candidate CI `42459291776` passed all three jobs on
+`925762398b8d05fb6871e5b8d5e0a9c6f44860df`: 184 portal tests (one existing skip),
+243 backend tests, 136 operations tests, type checking, build, PostgreSQL 17
+acceptance and container isolation. This authorization changes only the repair
+workflow and its evidence record. PR #119 records the actual merge revision and
+post-release checks. Neither synthetic test draft is authorized for merging.
+Production recovery for a real learner and the wider incident-to-recovery
+acceptance remain separate work; releasing this correction does not close them.
 
 ## November 8 authorized isolated coding worker
 
