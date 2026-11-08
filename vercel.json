@@ -41,5 +41,10 @@
       "src": "^/(.*)$",
       "dest": "/api/site.mjs?__aca_path=$1"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "aca-agent/**": false
+    }
+  }
 }

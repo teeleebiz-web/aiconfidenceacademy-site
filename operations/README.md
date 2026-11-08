@@ -1,5 +1,75 @@
 # ACA storage and configuration recovery
 
+## November 8 authorized isolated coding worker
+
+Terrence explicitly authorized the coding execution and draft repository-writing
+component within the existing $20 monthly allowance. This is additive to the
+live support diagnostics, activated at 2026-11-08T03:40:47.283617Z. The first
+regular diagnostic run after activation, 42444064476, completed successfully
+on main 22d71bfe320201b66c3d6b2c8b70af74bd8ab0d7.
+
+The coding worker uses the existing GitHub runner for execution isolation and
+the existing backend OpenAI key for one bounded Responses request. This keeps
+the key out of the coding environment and avoids a new paid hosted workspace.
+Only fixed technical symptom labels, fixed diagnostic enums and allowlisted
+public code are sent to GPT-6 Luna. Private case text, identifiers and learner
+records stay in the backend. Recognized groups are sign-in, saved work, timer
+implementation, navigation and support-route defects. A report outside those
+groups or without a supported concrete defect produces no code change.
+
+Every model request first atomically reserves 25 cents in the same monthly
+`aca_assistant_budget` row used by Ask ACA; the combined cap remains 2,000 cents.
+Input is at most 96 KB, generated output at most 8,192 tokens, with no paid built-in
+tools or model retry. Reviewed official Luna default-tier prices on November 8
+were $0.10/M input and $0.50/M output tokens, far below this conservative
+reservation. Reservations remain consumed after ambiguous failures. Model or
+price changes require re-verifying this bound before changing the allowlist.
+
+One newly investigated case generation is claimed per completed existing
+diagnostic workflow (success or failure). Eligibility requires the durable
+support investigation/report, so a separate StatusCake failure does not strand
+already-investigated support work. Cancelled or untrusted runs are rejected. Older reports are not backfilled. The lease,
+unique generation and durable reservation prevent repeat paid attempts. The
+new workflow has no separate schedule. Existing support acknowledgments remain
+unchanged; this worker sends no message, starts no enrollment and performs no
+production repair. The kill switch is `aca_support_code_settings.enabled=false`.
+
+Candidate source and an identical new regression run in Docker with no network,
+no host credentials, no Git metadata, read-only source/dependencies, dropped
+capabilities, a read-only root and CPU/memory/process/time limits. The regression
+must fail on the unchanged source; then type checking, all portal, backend and
+operations tests must pass with the candidate. Trusted host code can publish
+only the validated source replacements and regression to `aca-agent/<job-id>`
+and open a draft PR. Vercel deployment is disabled for `aca-agent/**`; the
+publisher checks that guard before creating any branch, so unreviewed candidate
+code cannot inherit preview credentials. A separate credential-free CI workflow
+is dispatched.
+GitHub's combined "create and approve pull requests" repository setting was enabled
+on November 8 for the explicitly authorized draft capability. Default workflow
+permissions remain read-only. The worker implements no review-approval or merge
+operation; its repository writes are restricted by the trusted publisher.
+A blocked PR permission retains a branch and records `branch_ready`; it never
+falls back to a privileged model environment. Main advancement invalidates the
+candidate. The owner inbox displays status and a safe draft link.
+
+This does not authorize merging an AI-generated repair or changing live data,
+payments, access rules, credentials, or spending. A tested draft is not verified
+production recovery. The existing bounded backup retry remains the only approved
+automatic production repair. Full incident-to-recovery acceptance remains open.
+
+Validation and release: `support-code-db-check.sh` uses a disposable PostgreSQL
+17 database; `code-isolation-check.mjs` creates a local synthetic navigation defect
+and proves reproduction, repair and isolation without a real case or paid API.
+Apply the additive schema disabled, release tested code, verify the private route
+and runner, then record activation. An authenticated readiness GET checks the existing
+runner/backend credential, database policy and model configuration without
+creating a support case or calling the paid model. This is connection evidence,
+not proof of a live model-generated repair. Never run fixture SQL against production.
+Migration `20261108041155_support_isolated_coding` was applied disabled on
+November 8 after PostgreSQL 17 acceptance; readback confirmed zero jobs and no
+public execution permission. Current implementation is on `aca-isolated-code-worker-20261108`; final CI,
+migration and activation evidence belongs in its PR before completion is claimed.
+
 ## November 8 support-triggered investigation — PR 114
 
 Terrence authorized resuming the operational agent workflow: reported problems

@@ -1,0 +1,40 @@
+name: ACA isolated support coding
+on:
+  workflow_run:
+    workflows: [ACA private incident diagnostics]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: aca-isolated-support-coding
+  cancel-in-progress: false
+jobs:
+  prepare-test-draft:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || ((github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure') && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify trusted controls before credentials are attached
+        run: node --test academy/support/code-*.test.mjs operations/code-worker.test.mjs
+      - name: Prepare fixed isolated runtime
+        run: docker pull node:24-bookworm
+      - name: Investigate one new case and prepare a tested draft
+        env:
+          ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          ACA_PARENT_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          ACA_PARENT_RESULT: ${{ github.event.workflow_run.conclusion }}
+        run: node operations/code-worker.mjs

@@ -65,7 +65,12 @@ export async function handleSupport(req,res,config,{reviewerCheck}={}){
       if(!Array.isArray(investigations))throw Error('Invalid investigation snapshot')
      }catch{investigations=[];investigationUnavailable=true}
     }
-    return reply(res,200,{cases,messages,investigations,investigationUnavailable})
+    let coding=[],codingUnavailable=false
+    if(cases.length){try{
+     coding=checked(await db.rpc('aca_support_code_snapshot',{p_case_ids:cases.map(x=>x.id)}))
+     if(!Array.isArray(coding))throw Error('Invalid coding snapshot')
+    }catch{coding=[];codingUnavailable=true}}
+    return reply(res,200,{cases,messages,investigations,investigationUnavailable,coding,codingUnavailable})
    }
    if(req.method!=='POST')return reply(res,405,{error:'Method not allowed.'})
    const v=await body(req);if(!uuid.test(v.caseId||'')||!uuid.test(v.requestId||''))throw fail(400,'Choose a valid case and request.')
