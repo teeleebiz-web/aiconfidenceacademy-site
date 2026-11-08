@@ -84,7 +84,7 @@ jobs:
         with:
           node-version: 24
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: docker pull node:24-bookworm-slim
+      - run: docker pull node:24-bookworm
       - name: Prove regression reproduction, repair and container isolation
         run: node operations/code-isolation-check.mjs
   verify:

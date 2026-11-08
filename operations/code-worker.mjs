@@ -35,7 +35,7 @@ async function sourcesFrom(root,kind){
 }
 export function dockerArguments({workspace,dependencies,name,script,uid,gid}){
  if(!/^aca-code-[a-z0-9-]+$/.test(name))throw Error('Invalid container name')
- return ['run','--rm','--name',name,'--network','none','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--pids-limit','256','--memory','1536m','--cpus','2','--user',`${uid}:${gid}`,'--tmpfs','/tmp:rw,nosuid,nodev,size=256m','--mount',`type=bind,src=${workspace},dst=/workspace,readonly`,'--mount',`type=bind,src=${dependencies},dst=/workspace/node_modules,readonly`,'--workdir','/workspace','--env','HOME=/tmp','--env','CI=true','--env','VITE_SUPABASE_URL=https://example.invalid','--env','VITE_SUPABASE_ANON_KEY=fixture-only','node:24-bookworm-slim','sh','-c',script]
+ return ['run','--rm','--name',name,'--network','none','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--pids-limit','256','--memory','1536m','--cpus','2','--user',`${uid}:${gid}`,'--tmpfs','/tmp:rw,nosuid,nodev,size=256m','--mount',`type=bind,src=${workspace},dst=/workspace,readonly`,'--mount',`type=bind,src=${dependencies},dst=/workspace/node_modules,readonly`,'--workdir','/workspace','--env','HOME=/tmp','--env','CI=true','--env','VITE_SUPABASE_URL=https://example.invalid','--env','VITE_SUPABASE_ANON_KEY=fixture-only','node:24-bookworm','sh','-c',script]
 }
 export async function testCandidate({root,proposal,run=command}){
  const sources=await sourcesFrom(root,proposal.kind)

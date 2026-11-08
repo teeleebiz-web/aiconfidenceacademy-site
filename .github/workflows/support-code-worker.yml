@@ -30,7 +30,7 @@ jobs:
       - name: Verify trusted controls before credentials are attached
         run: node --test academy/support/code-*.test.mjs operations/code-worker.test.mjs
       - name: Prepare fixed isolated runtime
-        run: docker pull node:24-bookworm-slim
+        run: docker pull node:24-bookworm
       - name: Investigate one new case and prepare a tested draft
         env:
           ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
