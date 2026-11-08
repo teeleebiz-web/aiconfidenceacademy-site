@@ -41,7 +41,7 @@ test('publisher blocks automatic preview deployment and writes only a draft',asy
  const root=await mkdtemp(join(tmpdir(),'aca-publish-'))
  try{
   for(const path of ['portal/src/lib/usePageStart.ts','portal/src/components/AcademyShell.tsx']){await mkdir(dirname(join(root,path)),{recursive:true});await writeFile(join(root,path),await readFile(path,'utf8'))}
-  const proposal={kind:'navigation',outcome:'candidate',edits:[{path:'portal/src/lib/usePageStart.ts',before:'top: 0, left: 0',after:'top: 0, left: 1'}],test:{path:'portal/src/agent-regression.test.tsx',content:'// Synthetic publisher fixture, never executed or published.'}}
+  const proposal={kind:'navigation',outcome:'candidate',edits:[{path:'portal/src/lib/usePageStart.ts',before:'top: 0, left: 0',after:'top: 0, left: 1 /* $& literal */'}],test:{path:'portal/src/agent-regression.test.tsx',content:'// Synthetic publisher fixture, never executed or published.'}}
   const calls=[],github=async(path,method='GET',body)=>{calls.push({path,method,body});if(path==='/git/ref/heads/main')return {object:{sha}};if(path==='/git/commits/'+sha)return {tree:{sha}};if(path==='/pulls')return {number:123};return {sha}}
   await writeFile(join(root,'vercel.json'),'{}')
   await assert.rejects(()=>publishCandidate({root,job,proposal,github}),/deployment is not blocked/)
@@ -49,6 +49,7 @@ test('publisher blocks automatic preview deployment and writes only a draft',asy
   await writeFile(join(root,'vercel.json'),JSON.stringify({git:{deploymentEnabled:{'aca-agent/**':false}}}))
   assert.deepEqual(await publishCandidate({root,job,proposal,github}),{branch:'aca-agent/'+job.job_id,pr:123})
   assert.equal(calls.find(c=>c.path==='/pulls').body.draft,true)
+  assert.ok(calls.find(c=>c.path==='/git/trees').body.tree[0].content.includes('/* $& literal */'))
   assert.deepEqual(calls.filter(c=>c.method==='POST').map(c=>c.path),['/git/trees','/git/commits','/git/refs','/pulls','/actions/workflows/portal-ci.yml/dispatches'])
   assert.ok(calls.find(c=>c.path==='/git/trees').body.tree.every(e=>['portal/src/lib/usePageStart.ts','portal/src/agent-regression.test.tsx'].includes(e.path)))
  }finally{await rm(root,{recursive:true,force:true})}

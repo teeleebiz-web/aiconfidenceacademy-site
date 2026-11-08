@@ -63,7 +63,7 @@ export async function testCandidate({root,proposal,run=command}){
   let report;try{report=JSON.parse(original.output.slice(jsonStart))}catch{}
   before=!original.timedOut&&original.code===1&&report?.numFailedTests>0&&report?.numTotalTests>0
   if(!before)return {before:false,after:false}
-  for(const edit of clean.edits)await writeFile(join(workspace,edit.path),sources[edit.path].replace(edit.before,edit.after))
+  for(const edit of clean.edits)await writeFile(join(workspace,edit.path),sources[edit.path].replace(edit.before,()=>edit.after))
   const repaired=await invoke('npm run typecheck && node node_modules/vitest/vitest.mjs run --config portal/vitest.config.ts --configLoader runner --no-cache --maxWorkers 2 && npm run test:academy -- --test-concurrency=1 && npm run test:recovery -- --test-concurrency=1')
   after=!repaired.timedOut&&repaired.code===0
   return {before,after}
@@ -77,7 +77,7 @@ export async function publishCandidate({root,job,proposal,github}){
  const sources=await sourcesFrom(root,proposal.kind)
  validateProposal({outcome:proposal.outcome,edits:proposal.edits,test:proposal.test},sources,proposal.kind)
  const base=await github('/git/commits/'+job.base_sha)
- const tree=await github('/git/trees','POST',{base_tree:base.tree.sha,tree:[...proposal.edits.map(e=>({path:e.path,mode:'100644',type:'blob',content:sources[e.path].replace(e.before,e.after)})),{path:proposal.test.path,mode:'100644',type:'blob',content:proposal.test.content}]})
+ const tree=await github('/git/trees','POST',{base_tree:base.tree.sha,tree:[...proposal.edits.map(e=>({path:e.path,mode:'100644',type:'blob',content:sources[e.path].replace(e.before,()=>e.after)})),{path:proposal.test.path,mode:'100644',type:'blob',content:proposal.test.content}]})
  const commit=await github('/git/commits','POST',{message:'Prepare isolated technical repair candidate',tree:tree.sha,parents:[job.base_sha]})
  const branch='aca-agent/'+job.job_id
  await github('/git/refs','POST',{ref:'refs/heads/'+branch,sha:commit.sha})
