@@ -49,6 +49,7 @@ export async function testCandidate({root,proposal,run=command}){
   await mkdir(workspace)
   if((await run('git',['archive','--format=tar','-o',archive,'HEAD'],{cwd:root})).code!==0)throw Error('Source snapshot failed')
   if((await run('tar',['-xf',archive,'-C',workspace],{cwd:root})).code!==0)throw Error('Source extraction failed')
+  await mkdir(join(workspace,'node_modules'),{recursive:true}) // Mountpoint must exist before the read-only source bind.
   try{await lstat(join(workspace,proposal.test.path));throw Error('Regression path already exists')}catch(e){if(e.code!=='ENOENT')throw e}
   await writeFile(join(workspace,proposal.test.path),proposal.test.content,{flag:'wx'})
   const invoke=async script=>{
