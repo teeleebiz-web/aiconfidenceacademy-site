@@ -15,6 +15,7 @@ function fixture() {
       if (name === 'aca_backup_proof') return { data: args.p_result?.restoredWithOriginalHashesVerified === true && args.p_result?.fileCount > 0 }
       if (name === 'aca_support_alert_recipients') return { data: [{ email: 'owner@example.test' }] }
       if (name === 'aca_reconcile_backup_alerts') return { data: { resolved: 0, queued: 0 } }
+      if (name === 'aca_reconcile_installment_alerts') return { data: { resolved: 0 } }
       assert.equal(name, 'aca_claim_operational_alerts')
       const rows = tables.aca_operational_alerts.filter(a => a.status === 'queued' && Date.parse(a.next_attempt_at) <= +now || a.status === 'sending' && Date.parse(a.claim_expires_at) < +now).slice(0, 5)
       for (const a of rows) Object.assign(a, { status: 'sending', attempts: a.attempts + 1, first_attempt_at: a.first_attempt_at || now.toISOString(), claim_token: randomUUID(), claim_expires_at: new Date(+now + 300000).toISOString() })
@@ -66,6 +67,14 @@ function fixture() {
 const issue = { job: 'installment-maintenance', reason: 'job_failed', occurredAt: '2026-10-17T09:05:00Z' }
 const response = () => ({ writeHead(status, headers) { this.status = status; this.headers = headers }, end(v) { this.body = JSON.parse(v) } })
 const cron = { method: 'GET', headers: { authorization: 'Bearer secret' } }
+
+test('installment reconciliation failure remains visible without blocking warning delivery', async () => {
+  const c = fixture(); await queueOperationalAlert(c.config, issue)
+  const rpc = c.config.db.rpc.bind(c.config.db)
+  c.config.db.rpc = async (name, args) => name === 'aca_reconcile_installment_alerts' ? { error: Error('private') } : rpc(name, args)
+  const r = await dispatchOperationalAlerts(c.config, c.now)
+  assert.equal(r.review, 1); assert.equal(r.submitted, 1)
+})
 
 test('backup delivery verification is clearly labeled, owner-only and deduplicated without a false incident', async () => {
   const c = fixture()

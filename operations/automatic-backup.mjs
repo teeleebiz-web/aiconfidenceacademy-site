@@ -48,8 +48,15 @@ export async function automaticBackup({ env = process.env, now = () => new Date(
     if (!policy?.enabled) return { automatedBackup: false, held: 'not-activated' }
     if (!policy.activated_at || !Number.isInteger(policy.keep_daily) || policy.keep_daily < 7 || policy.keep_daily > 30 || (policy.credential_expires_at && !Number.isFinite(Date.parse(policy.credential_expires_at)))) throw new Error('Invalid activation policy')
     stage = 'activity-start'
-    run = checked(await db.from('aca_automation_runs').insert({ job: backupJob, started_at: now().toISOString(), status: 'running', result: identity }).select('id').single())
-    if (!run?.id) throw new Error('No backup activity reference')
+    // Native cron and the independent timer share one durable daily claim. A
+    // lost response or failed run never authorizes a second full backup attempt.
+    const claim = checked(await db.rpc('aca_claim_daily_backup', {
+      p_workflow_run_id: identity.workflowRunId, p_workflow_attempt: identity.workflowAttempt,
+    }))
+    if (!claim?.id || typeof claim.claimed !== 'boolean' || !Number.isFinite(Date.parse(claim.scheduledSlot))) throw new Error('No backup activity reference')
+    if (!claim.claimed) return { automatedBackup: false, held: 'daily-slot-already-started' }
+    run = { id: claim.id }
+    identity.scheduledSlot = claim.scheduledSlot
     stage = 'credential-preflight'
     if (policy.credential_expires_at && Date.parse(policy.credential_expires_at) <= +now() + 3600000) throw backupFailure('credential_or_access', 'configuration')
     stage = 'backup-and-recovery'

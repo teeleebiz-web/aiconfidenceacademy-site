@@ -1,5 +1,54 @@
 # ACA storage and configuration recovery
 
+## November 8 email-review corrections
+
+Terrence's continuation authorizes the three issues identified in the email
+review: duplicate Vercel build costs, delayed daily backup starts, and the stale
+installment missing-run alert. Source baseline is main
+`f337624c05bd8313464473c58b3727c5e7ee2b61`. No billing-plan, spend-limit,
+curriculum, enrollment, payment, invitation or owner-notification test is included.
+
+- `vercel-build-guard.mjs`, selected by `vercel.json`, skips only project
+  `prj_5yh03dxBKjVnAwihiKKoN8WSdmEW`. The checkout project and unknown project IDs
+  continue building. Existing deployments and rollback history are retained.
+  This prevents new duplicate build/storage usage; it does not remove historical
+  storage charges or establish a new billing cap.
+- The existing private Cloudflare Worker gains one independently gated daily
+  trigger, `17 18 * * *` (01:17 Bangkok). `backup-timer.mjs` can dispatch only
+  `automatic-storage-backup.yml` on main. Its Actions credential is unchanged;
+  it receives no database, backup, storage or email secret. The original GitHub
+  daily schedule remains a fallback. This addresses observed scheduler delay:
+  run `42418002940` was created at 21:53 UTC although scheduled for 18:17 UTC;
+  its actual verified backup took about six minutes.
+- `aca_claim_daily_backup` atomically records one automatic start per daily
+  18:17 UTC slot before source work. Racing triggers, lost responses, workflow
+  reruns and failed starts cannot authorize another full copy in that slot.
+  Existing pre-migration activity also consumes the slot. The separately
+  approved bounded source-read retry, seven-copy retention, original manual
+  baseline and separate manual backup workflow remain unchanged.
+- `aca_reconcile_installment_alerts` resolves only a delivered `run_missing`
+  installment warning after a later completed installment run with numeric
+  zero failure counters. It preserves the original warning/delivery history,
+  creates no email, and cannot resolve backup or other job alerts. The existing
+  mail monitor calls it alongside the unchanged backup proof reconciler.
+
+Release order: pass local and exact-commit CI (including the PostgreSQL race
+test); apply `20261108102857_aca_operations_schedule_recovery.sql`; release the
+reviewed main revision; verify the checkout deployment and duplicate build skip;
+then update the existing Worker, preserving its secret and diagnostic activation,
+and activate `ACA_BACKUP_TIMER_ENABLED=true`. Both timer flags remain false in
+the repository's safe default configuration. Reconcile the historical installment
+warning using the new RPC without dispatching email. Do not run a live full backup
+as a test: confirm the next natural daily tick and verified recovery separately.
+
+Validation: focused JS tests, disposable SQL acceptance, workerd fixture dispatch,
+full `npm run check`, and `schedule-recovery-db-check.sh` in PostgreSQL 17 CI.
+The SQL fixture is for a new disposable database only, never the live project.
+Rollback: set only `ACA_BACKUP_TIMER_ENABLED=false` and remove only the daily
+Worker cron while preserving the 15-minute collector. The native backup cron and
+database claim stay safe. Reverting the duplicate project's ignore guard restores
+its builds. No rollback requires deletion of backup or alert history.
+
 ## November 8 regression filename correction — release authorized
 
 Terrence authorized correcting the regression filename collision, preserving
@@ -732,7 +781,8 @@ collector run. `incident-timer.mjs` dispatches only `incident-diagnostics.yml` i
 this repository, on `main`, in `collect` mode, every 15 minutes. The Worker reads
 the most recent 20 runs of that exact workflow and skips dispatch while any is
 active. The existing collector concurrency group serializes a racing native
-trigger. This timer does not trigger backups or repairs.
+trigger. The November 8 extension above adds the separately gated daily backup
+workflow. The 15-minute tick still dispatches only diagnostics and never repairs.
 
 The Wrangler configuration is the deployment source of truth. `workers_dev` and
 preview URLs are disabled, there are no routes or data-service bindings, and
@@ -759,7 +809,8 @@ before expiry; a missing or expired token must stop dispatch, not widen access.
 Before deployment, verify the selected Cloudflare account, Workers Free plan,
 account-wide usage and available cron capacity. Published free limits are
 100,000 requests/day, five cron triggers/account and 10 ms CPU/invocation.
-The configured timer has 96 planned invocations/day and at most two GitHub
+The original diagnostic timer has 96 planned invocations/day; the daily backup
+extension adds one, for 97 total. Each makes at most two GitHub
 requests/invocation. It has no storage, AI or paid-service bindings. No paid
 upgrade is authorized. Existing native GitHub ticks can add collector runs if
 that service resumes scheduling; busy detection reduces overlaps but is not a
@@ -778,7 +829,8 @@ Use only fixtures in local scheduled tests. Never place a real token in a local
 development file. Review CI before deploying the disabled configuration with
 `npx wrangler deploy --config operations/incident-timer.wrangler.json`. Only
 after private secret setup and account verification, activate with the explicit
-non-secret override `--var ACA_TIMER_ENABLED:true`. A later ordinary deployment
+non-secret override `--var ACA_TIMER_ENABLED:true`. The separately authorized
+daily backup also requires `--var ACA_BACKUP_TIMER_ENABLED:true`. A later ordinary deployment
 returns to the checked-in disabled default. Keep the selected account explicit
 with `CLOUDFLARE_ACCOUNT_ID` in the authenticated deployment environment.
 
