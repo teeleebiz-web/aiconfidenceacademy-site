@@ -17,3 +17,11 @@ test('provider verification proves fixed identities and endpoints without activa
  assert.deepEqual(result,{providerVerification:true});assert.equal(reads,4);assert.equal(checks,2);assert.equal(policy.enabled,false)
  await assert.rejects(()=>runIncidentCoordinator({env:{...env,ACA_INCIDENT_MODE:'verify-provider',GITHUB_EVENT_NAME:'schedule'},makeStore:()=>({}),makeDb:()=>({})}),/controlled run/)
 })
+test('normal collection connects support investigation even when monitoring fails',async()=>{
+ let support=0
+ const options={env,makeStore:()=>({}),makeDb:()=>({}),run:async()=>({held:false,synchronized:true}),runSupport:async()=>{support++;return {claimed:1,recorded:1,pending:0}}}
+ const result=await runIncidentCoordinator(options);assert.equal(result.synchronized,true);assert.equal(support,1)
+ await assert.rejects(()=>runIncidentCoordinator({...options,run:async()=>{throw Error('Monitoring unavailable')}}),/Monitoring unavailable/)
+ assert.equal(support,2)
+ const pending=await runIncidentCoordinator({...options,runSupport:async()=>({pending:1})});assert.equal(pending.synchronized,false)
+})

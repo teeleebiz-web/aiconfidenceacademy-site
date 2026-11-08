@@ -56,7 +56,16 @@ export async function handleSupport(req,res,config,{reviewerCheck}={}){
    if(req.method==='GET'){
     const cases=checked(await db.from('aca_support_cases').select('id,email,name,category,subject,status,created_at,updated_at').order('updated_at',{ascending:false}).limit(100))
     const messages=cases.length?checked(await db.from('aca_support_messages').select('id,case_id,author,body,created_at').in('case_id',cases.map(x=>x.id)).order('created_at')):[]
-    return reply(res,200,{cases,messages})
+    // Optional additive diagnostic read: a held rollout or unavailable diagnostic
+    // table must not hide the existing support inbox or its message history.
+    let investigations=[],investigationUnavailable=false
+    if(cases.length){
+     try{
+      investigations=checked(await db.rpc('aca_support_investigation_snapshot',{p_case_ids:cases.map(x=>x.id)}))
+      if(!Array.isArray(investigations))throw Error('Invalid investigation snapshot')
+     }catch{investigations=[];investigationUnavailable=true}
+    }
+    return reply(res,200,{cases,messages,investigations,investigationUnavailable})
    }
    if(req.method!=='POST')return reply(res,405,{error:'Method not allowed.'})
    const v=await body(req);if(!uuid.test(v.caseId||'')||!uuid.test(v.requestId||''))throw fail(400,'Choose a valid case and request.')

@@ -1,5 +1,67 @@
 # ACA storage and configuration recovery
 
+## November 8 support-triggered investigation — PR 114
+
+Terrence authorized resuming the operational agent workflow: reported problems
+must initiate investigation, approved repair, coding-agent involvement when
+needed and verified recovery. This increment connects the first two steps and
+does **not** claim that the broader repair agent is complete.
+
+`support-investigation-schema.sql` is the additive, disabled-by-default schema.
+After activation, inserting a new requester message in an existing technical or
+sign-in case atomically queues that case. Repeated messages share one case job;
+new generations preserve follow-ups arriving during a claim. No historical cases
+are backfilled, no learner account starts, and no message is sent by this worker.
+Other case categories retain their current decision boundaries.
+
+The existing outside `incident-runner.mjs` claims at most five cases, checks the
+two existing fixed addresses twice with a 16-second separation, and records
+typed private evidence. Cases in a batch share those probes. Database leases
+exclude concurrent processing; abandoned read-only attempts stop after three.
+StatusCake failure does not suppress the support pass. An outage of Supabase
+holds the queue until it returns; independent monitoring and its encrypted R2
+evidence remain unchanged. The support route itself still depends on Supabase.
+
+The existing owner inbox displays collection state and evidence. It does not
+expose claim capabilities, logs, account details or evidence to the requester.
+A passing homepage/readiness probe never verifies the reported user action and
+never resolves the case. The worker cannot dispatch repairs, change credentials,
+reset access, send email, replay payments, invoke a model or spend API credits.
+The approved backup retry remains governed by its existing runner and provenance
+checks; a support report cannot manufacture qualifying backup failure evidence.
+
+Validation: credential-free JS tests; full portal/backend/recovery checks; an
+embedded PostgreSQL acceptance pass; desktop/mobile owner-inbox preview with
+synthetic data. `support-investigation-db-check.sh` adds PostgreSQL 17 CI checks
+for permissions, disabled policy, no backlog, exclusive claims, follow-ups,
+lease expiry, bounded retries and preserved evidence. Never run its fixtures on
+ACA production. PostgreSQL 17 acceptance/concurrency and the full repository checks passed on
+`cb59357bc4ea8b09219663842dcf532062da245a` (workflow run 42442749261).
+The corresponding Vercel backend preview reached READY.
+
+The schema was applied as migration `20261108032954_support_investigation_intake`
+on November 8 with policy disabled. Readback confirmed zero queued jobs, zero
+disabled claims, and execute access restricted to service_role. The migration
+file records the version issued by Supabase; CLI generation was unavailable in
+this session. Production worker/portal release and activation are not established
+by that schema application; final evidence is recorded in PR 114.
+
+Deployment sequence: apply the tested schema through the established migration
+workflow, preserving disabled policy; release the tested runner/backend/portal;
+then explicitly record activation with a current timestamp. Rollback sets only
+`aca_support_investigation_settings.enabled=false`. No new schedule, provider,
+secret or paid environment is needed. Do not delete queued work or evidence.
+
+Continuation: connect incident reasoning and the coding-agent execution path,
+using the existing OpenAI selection and budget constraints. The current key is
+configured only in the backend; do not export it into this runner. A hosted
+coding workspace and delegated repository-write credentials are not activated
+by this increment. New execution/cost/access decisions require Terrence's
+authorization. Source: main `71b9a9134de9895c7c0d74a465d91b4eb2b0da71`, current
+operating-state record, November 7 PR 113 release and November 8 instruction.
+The older protected continuity-mandate file could not be recovered in this
+session; it was not treated as reviewed or used to invent additional authority.
+
 ## November 7 owner guidance increment — PR 113
 
 The existing Control Center System activity view now includes Operations

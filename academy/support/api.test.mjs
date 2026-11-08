@@ -54,3 +54,14 @@ test('Vercel parsed request bodies work without a second stream read',async()=>{
  const db=database(),req={url:'/api/support/cases',method:'POST',headers:{},body:input(),[Symbol.asyncIterator](){throw Error('stream already consumed')}}
  const result=await run({db},req);assert.equal(result.status,200);assert.equal(db.tables.aca_support_cases.length,1)
 })
+test('investigation evidence is owner-only and diagnostic failure does not hide cases',async()=>{
+ const db=database(),v=input();await run({db},request('/api/support/cases','POST',v))
+ const options={reviewerCheck:async()=>true},headers={'x-aca-access-token':'owner'}
+ const failed=await run({db},request('/api/operations/support','GET',null,headers),options)
+ assert.equal(failed.status,200);assert.equal(failed.body.cases.length,1);assert.equal(failed.body.investigationUnavailable,true)
+ db.rpc=async(name,args)=>{assert.equal(name,'aca_support_investigation_snapshot');assert.deepEqual(args.p_case_ids,[v.requestId]);return {data:[{case_id:v.requestId,status:'queued',report:null}]}}
+ const owner=await run({db},request('/api/operations/support','GET',null,headers),options)
+ assert.equal(owner.body.investigations[0].status,'queued');assert.equal(owner.body.investigationUnavailable,false)
+ const denied=await run({db},request('/api/operations/support','GET',null,headers),{reviewerCheck:async()=>false})
+ assert.equal(denied.status,403)
+})

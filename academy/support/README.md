@@ -1,5 +1,19 @@
 # ACA operational support and policy source
 
+## November 8 operational investigation candidate
+
+The next authorized automation increment attaches durable technical/sign-in
+investigation to new requester messages in the existing support route. The
+schema defaults off, never backfills historical cases, and preserves follow-up
+generations under exclusive bounded worker claims. The existing external
+diagnostic runner performs fixed website/backend checks and stores private
+evidence. The owner inbox shows that evidence without asserting a repair or
+resolving the reported learner problem. A diagnostic-read failure does not hide
+the support case or message history. See `operations/README.md` for exact limits,
+validation, release order and the remaining agent integration. This candidate
+does not activate AI repair, account changes, new email, new spending or a new
+schedule. PR 113's released Ask ACA and shared $20 allowance remain unchanged.
+
 ## November 7 assistance and Resources increment — PR 113
 
 Terrence authorized building the recovered learner assistance, operational
