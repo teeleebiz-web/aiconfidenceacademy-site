@@ -53,10 +53,27 @@ begin
    update public.aca_installment_plans set status='paused';
    select * into r from public.manage_lesson_study_session(case when i=1 then e1 else e2 end,case when i=1 then l1 else l2 end,'heartbeat',r.study_token);
    if r.access_status<>'expired' or r.remaining_seconds<>0 then raise exception 'Paused payment did not restrict teaching'; end if;
-   update public.aca_installment_plans set status='grace',grace_until=clock_timestamp()+interval '0.5 seconds';
-   select * into r from public.manage_lesson_study_session(case when i=1 then e1 else e2 end,case when i=1 then l1 else l2 end,'start');
-   if i=1 and (select status from public.lesson_access_windows where enrollment_id=e1 and lesson_id=l1)<>'active' then
-     raise exception 'Fractional payment cutoff permanently consumed unused study eligibility'; end if;
+   if i=1 then
+     update public.aca_installment_plans set status='grace',grace_until=clock_timestamp()+interval '0.5 seconds';
+     select * into r from public.manage_lesson_study_session(e1,l1,'start');
+     if (select status from public.lesson_access_windows where enrollment_id=e1 and lesson_id=l1)<>'active' then
+       raise exception 'Fractional payment cutoff permanently consumed unused study eligibility'; end if;
+   else
+     -- Phase Two's compatibility reader floors remaining seconds against now().
+     -- Anchor to that same transaction clock: clock_timestamp()+0.5 makes the
+     -- expected result depend on whether this fixture took half a second.
+     update public.aca_installment_plans set status='grace',grace_until=now()+interval '0.5 seconds';
+     select * into r from public.aca_phase_two_access_status(e2,l2);
+     if r.access_status<>'closed' or r.remaining_seconds<>0 then
+       raise exception 'Phase Two fractional payment boundary remained open'; end if;
+     blocked:=false;
+     begin perform public.open_aca_phase_two_lesson(e2,l2);
+     exception when others then
+       if sqlerrm<>'This lesson is unavailable; saved project work remains available' then raise; end if;
+       blocked:=true;
+     end;
+     if not blocked then raise exception 'Phase Two opened after its whole-second payment cutoff'; end if;
+   end if;
    update public.aca_installment_plans set status='active';
    select * into r from public.manage_lesson_study_session(case when i=1 then e1 else e2 end,case when i=1 then l1 else l2 end,'start');
    if r.access_status<>'active' or r.remaining_seconds<5395 then raise exception 'Current payment did not restore unused study time'; end if;
