@@ -1,0 +1,217 @@
+name: ACA one-time homepage founder insertion into revised Anna welcome
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/aca-founder-anna-homepage-once.yml'
+permissions:
+  contents: write
+concurrency:
+  group: aca-founder-anna-homepage-one-time
+  cancel-in-progress: false
+jobs:
+  assemble:
+    if: github.event.head_commit.message == 'Run ACA founder insert into revised Anna homepage welcome'
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Check out only the approved homepage welcome sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 2
+          sparse-checkout: |
+            index.html
+            assets/home-introduction.js
+            assets/videos/aca-introduction
+            .github/workflows/aca-founder-anna-homepage-once.yml
+          sparse-checkout-cone-mode: false
+      - name: Validate current approved revised Anna source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "8870ebb6a2d83edc8b321dd3668537d42675c2ae"
+          test -f assets/videos/aca-introduction/film.m3u8
+          test -f assets/videos/aca-introduction/part-24.m4s
+          grep -q 'home-welcome-title' index.html
+          grep -q 'assets/videos/aca-introduction/film.m3u8' index.html
+          command -v ffmpeg
+          command -v ffprobe
+          ffmpeg -version | head -1
+          SOURCE_DURATION="$(ffprobe -v error -show_entries format=duration -of csv=p=0 assets/videos/aca-introduction/film.m3u8)"
+          python3 - "$SOURCE_DURATION" <<'PY'
+          import sys
+          d=float(sys.argv[1])
+          assert abs(d-242.48)<0.5, f"Latest revised Anna film expected 242.48s, got {d}"
+          print("Approved November 13 Anna-enhanced homepage film confirmed",d)
+          PY
+      - name: Acquire and inspect the already rendered Terrence founder introduction
+        shell: bash
+        env:
+          FOUNDER_URL: 'https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/e13b66794a39fa288ce349b4dfe6c995.mp4?Expires=1795423943&Signature=wOqYZHw07dMVk9XowpSL8dqx5WBlHpl8W6PryBaIa3dqQpt14RmcJIY~OG7yGrFR4eCUDpNoZY3SCU9j28YfwMhGq-m67RwdMBLs-HpVEclZ5u9qzLzdRiPHOmsO6NE84aa0Xg4ftQ5Pc92WysUGOEgJfDqBF0w9~7uOWm2-FPEtG8b2TWZ6aaNAI~NQ-7h4gH6vNkZg0UxvAFqvWCMQYpxH4ezGumf9DR9tdE~Uy2EsEimJtew~EN0Xjc6HuT6mrf9A6qL9ifMcj7N4DuyZNtt0txsGoMzCBOEKybv9TQ2Z-uwQkkpxQFVkaAJYbBElWX8aA8LBiOswQy62SndZcg__&Key-Pair-Id=K3TSZ3KU01LY58'
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/aca-founder-welcome
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 15 "$FOUNDER_URL" -o /tmp/aca-founder-welcome/founder.mp4
+          python3 - <<'PY'
+          import json,subprocess
+          path="/tmp/aca-founder-welcome/founder.mp4"
+          d=json.loads(subprocess.check_output(["ffprobe","-v","error","-show_entries","stream=codec_type,width,height:format=duration","-of","json",path],text=True))
+          vids=[s for s in d["streams"] if s["codec_type"]=="video"]
+          aud=[s for s in d["streams"] if s["codec_type"]=="audio"]
+          duration=float(d["format"]["duration"])
+          assert len(vids)==1 and len(aud)>0, d
+          assert (vids[0]["width"],vids[0]["height"])==(1920,1080), vids
+          assert abs(duration-89.7045)<0.4, duration
+          print("Verified approved Terrence source:",round(duration,3),"seconds, 1920x1080, audio present")
+          PY
+      - name: Integrate Terrence after opening card, preserve all revised Anna scenes and final card
+        shell: bash
+        run: |
+          set -euo pipefail
+          TMP=/tmp/aca-founder-welcome
+          SOURCE=assets/videos/aca-introduction
+          mkdir -p "$TMP/hls"
+          ffmpeg -hide_banner -loglevel error -i "$SOURCE/film.m3u8" -map 0:v:0 -map 0:a:0 \
+            -c:v copy -af "asetpts=N/SR/TB" -c:a aac -ar 48000 -ac 2 -b:a 160k \
+            -movflags +faststart -y "$TMP/revised-anna-original.mp4"
+          ffmpeg -v error -i "$TMP/revised-anna-original.mp4" -f null -
+
+          # Preserve the approved original opening card (first three seconds).
+          # Terrence follows as the first presenter. The remainder of the
+          # November 13 revised movie stays in its original order, including
+          # both enhanced Anna turns and its existing closing card.
+          python3 - "$TMP" <<'PY'
+          import pathlib,subprocess,sys
+          root=pathlib.Path(sys.argv[1])
+          founder=root/"founder.mp4"
+          dur=float(subprocess.check_output(["ffprobe","-v","error","-show_entries","format=duration","-of","csv=p=0",str(founder)],text=True))
+          opening=3.0
+          hold=0.80
+          fade=0.60
+          founder_with_hold=dur+hold
+          second_offset=opening+founder_with_hold-2*fade
+          f=f"""
+          [0:v]trim=start=0:end={opening:.3f},setpts=PTS-STARTPTS,fps=25,scale=1920:1080,setsar=1,format=yuv420p,settb=AVTB[openingv];
+          [0:a]atrim=start=0:end={opening:.3f},asetpts=PTS-STARTPTS,aresample=48000[openinga];
+          [1:v]fps=25,scale=1920:1080,setsar=1,format=yuv420p,tpad=stop_mode=clone:stop_duration={hold:.3f},trim=duration={founder_with_hold:.3f},setpts=PTS-STARTPTS,settb=AVTB[founderv];
+          [1:a]aresample=48000,apad=pad_dur={hold:.3f},atrim=duration={founder_with_hold:.3f},asetpts=PTS-STARTPTS[foundera];
+          [0:v]trim=start={opening:.3f},setpts=PTS-STARTPTS,fps=25,scale=1920:1080,setsar=1,format=yuv420p,settb=AVTB[remainingv];
+          [0:a]atrim=start={opening:.3f},asetpts=PTS-STARTPTS,aresample=48000[remaininga];
+          [openingv][founderv]xfade=transition=fade:duration={fade:.3f}:offset={opening-fade:.3f}[firstv];
+          [openinga][foundera]acrossfade=d={fade:.3f}:c1=tri:c2=tri[firsta];
+          [firstv][remainingv]xfade=transition=fade:duration={fade:.3f}:offset={second_offset:.3f}[v];
+          [firsta][remaininga]acrossfade=d={fade:.3f}:c1=tri:c2=tri[a]
+          """
+          (root/"join.txt").write_text(f)
+          (root/"timing.txt").write_text(f"{dur} {opening} {hold} {fade}")
+          print(f"Opening card: 0-{opening}s. Founder: {dur:.3f}s. Final speaker transition begins {second_offset:.3f}s.")
+          PY
+
+          # One fast, lightweight opening fragment of approximately two seconds
+          # followed by 4s and 10s fragments makes prebuffering responsive.
+          ffmpeg -hide_banner -loglevel error \
+            -i "$TMP/revised-anna-original.mp4" -i "$TMP/founder.mp4" \
+            -filter_complex_script "$TMP/join.txt" -map "[v]" -map "[a]" \
+            -c:v libx264 -preset fast -crf 20 -profile:v high -level:v 4.1 \
+            -pix_fmt yuv420p -r 25 -g 250 -keyint_min 250 -sc_threshold 0 \
+            -force_key_frames "$(python3 - <<'PY'
+          print(",".join(map(str,[2,6]+list(range(16,416,10)))))
+          PY
+          )" \
+            -c:a aac -ar 48000 -ac 2 -b:a 160k \
+            -movflags +faststart -y "$TMP/new-founder-anna-film.mp4"
+
+          ffmpeg -hide_banner -loglevel error -i "$TMP/new-founder-anna-film.mp4" -c copy \
+            -f hls -hls_time 2 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_fmp4_init_filename init.mp4 \
+            -hls_segment_filename "$TMP/hls/part-%02d.m4s" "$TMP/hls/film.m3u8"
+          ffmpeg -v error -i "$TMP/hls/film.m3u8" -f null -
+          python3 - "$TMP" <<'PY'
+          import pathlib,subprocess,sys
+          root=pathlib.Path(sys.argv[1])
+          getdur=lambda path: float(subprocess.check_output(["ffprobe","-v","error","-show_entries","format=duration","-of","csv=p=0",str(path)],text=True))
+          before=getdur(root/"revised-anna-original.mp4")
+          after=getdur(root/"hls/film.m3u8")
+          founder,opening,hold,fade=map(float,(root/"timing.txt").read_text().split())
+          expected=before+founder+hold-2*fade
+          assert abs(after-expected)<0.45, (before,founder,after,expected)
+          assert 331.2<after<332.4,after
+          playlist=(root/"hls/film.m3u8").read_text()
+          assert playlist.startswith("#EXTM3U") and "#EXT-X-ENDLIST" in playlist
+          extinfs=[float(x.partition(":")[2].rstrip(",")) for x in playlist.splitlines() if x.startswith("#EXTINF:")]
+          assert 1.7<=extinfs[0]<=2.3, extinfs[:4]
+          assert 3.5<=extinfs[1]<=4.5, extinfs[:4]
+          first=next((root/"hls").glob("part-00.m4s"))
+          assert first.stat().st_size < 1000000, first.stat().st_size
+          print("MEDIA ACCEPTANCE PASSED: duration",round(after,2),"sec; first two segment durations",extinfs[:2],"; opening segment bytes",first.stat().st_size)
+          PY
+          rm -f "$SOURCE"/part-*.m4s "$SOURCE"/init.mp4 "$SOURCE"/film.m3u8
+          cp "$TMP/hls/film.m3u8" "$TMP/hls/init.mp4" "$TMP/hls"/part-*.m4s "$SOURCE/"
+      - name: Prepare first-play preload for prompt start
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("index.html")
+          h=p.read_text()
+          old='preload="none" poster="/assets/videos/aca-introduction-poster.webp"'
+          new='preload="auto" poster="/assets/videos/aca-introduction-poster.webp"'
+          assert h.count(old)==1,h.count(old)
+          h=h.replace(old,new,1)
+          oldsrc='/assets/videos/aca-introduction/film.m3u8"'
+          newsrc='/assets/videos/aca-introduction/film.m3u8?v=20261116-founder-new-anna"'
+          assert h.count(oldsrc)==1,h.count(oldsrc)
+          h=h.replace(oldsrc,newsrc,1)
+          p.write_text(h)
+          p=Path("assets/home-introduction.js")
+          js=p.read_text()
+          assert "autoStartLoad: false" in js
+          p.write_text("""(() => {
+            document.querySelectorAll('#academy-introduction video, #website-welcome video').forEach((video) => {
+              if (video.dataset.resetToOpening === 'true') {
+                video.addEventListener('ended', () => {
+                  video.pause();
+                  video.currentTime = 0;
+                });
+              }
+              if (video.canPlayType('application/vnd.apple.mpegurl')) return;
+              if (!window.Hls || !window.Hls.isSupported()) return;
+              const source = video.querySelector('source')?.getAttribute('src');
+              if (!source) return;
+              const homepageWelcome = Boolean(video.closest('#academy-introduction'));
+              const hls = new window.Hls(homepageWelcome
+                ? { autoStartLoad: true, startFragPrefetch: true, maxBufferLength: 8, maxMaxBufferLength: 12, maxBufferSize: 12 * 1024 * 1024 }
+                : { autoStartLoad: false, maxBufferLength: 30 });
+              hls.loadSource(source);
+              hls.attachMedia(video);
+              if (!homepageWelcome) {
+                video.addEventListener('play', () => hls.startLoad(), { once: true });
+              }
+            });
+          })();
+          """)
+          PY
+          node --check assets/home-introduction.js
+          grep -q 'preload="auto" poster="/assets/videos/aca-introduction-poster.webp"' index.html
+          grep -q 'autoStartLoad: true' assets/home-introduction.js
+      - name: Confirm restricted file scope and publish completed media
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ACA homepage video integration"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html assets/home-introduction.js assets/videos/aca-introduction
+          git rm .github/workflows/aca-founder-anna-homepage-once.yml
+          python3 - <<'PY'
+          import subprocess
+          f=subprocess.check_output(["git","diff","--cached","--name-only"],text=True).splitlines()
+          assert f
+          allowed={"index.html","assets/home-introduction.js",".github/workflows/aca-founder-anna-homepage-once.yml"}
+          assert all(x in allowed or x.startswith("assets/videos/aca-introduction/") for x in f),f
+          assert {"index.html","assets/home-introduction.js","assets/videos/aca-introduction/film.m3u8"}.issubset(set(f)),f
+          print("Scoped acceptance passed:",len(f),"homepage welcome-only files.")
+          PY
+          git commit -m "Place Terrence founder introduction ahead of revised Anna ACA welcome"
+          git push origin HEAD:main
+          echo "ACA_FOUNDER_ANNA_HOME_PAGE_PUBLISHED=1"
