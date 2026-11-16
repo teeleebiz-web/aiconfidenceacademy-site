@@ -29,9 +29,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          if ! command -v ffprobe >/dev/null 2>&1 || ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
           command -v ffprobe
           command -v ffmpeg
-          ffmpeg -version | head -1
+          ffmpeg -version | sed -n '1p'
       - name: Insert approved Terrence clip after the existing opening card and retain the entire revised Anna film
         shell: bash
         env:
