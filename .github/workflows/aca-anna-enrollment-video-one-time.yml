@@ -1,0 +1,167 @@
+name: One-time Anna enrollment video integration
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  integrate-anna:
+    if: github.event.head_commit.message == 'ACA Anna enrollment video one-time import'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      VIDEO_URL: 'https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/0d06e35f9cb1a2c9073427036009b834.mp4?Expires=1795434627&Signature=lJ6z2291d8~C0aIBUGoSHi6i5wi~AX0Bp5QZDaucdmu3SCizD2hBdemwt~j1sdXzjnUj54SbOmMFpC0SMojPH8mMCMMXI8ac~d6IEQlY9GEKwHaz7sGR~Qb1opu1G4AIZqR2j9e99-LVwfyukmkt27N2YjzqHyTP-cEmK7FgEMp9dS0VEBkk3y6qCsflkwWQFJusci0-wLJkuDhnL4lw30k7opK-2-LDDi~EKw8iscLKQF8~q5WMxcR-kPQLHLGvI~GTuIOcYwJ0naevtvQVjhQ7qJ2sSoNd0TL1uE9LL7oCGGaHoJms~ZUHBdQJLaa1OGQKQyHwwktII78mfe~uUw__&Key-Pair-Id=K3TSZ3KU01LY58'
+    steps:
+      - name: Check out current approved website
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+
+      - name: Install video tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+          command -v ffprobe
+          command -v ffmpeg
+          fc-list | grep -q DejaVu
+
+      - name: Prepare approved Anna film and two Academy cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          TMP="$(mktemp -d)"
+          OUT="assets/videos/anna-enrollment"
+          mkdir -p "$OUT"
+          curl --fail --location --retry 3 --retry-delay 2 --silent --show-error "$VIDEO_URL" -o "$TMP/anna-original.mp4"
+          test "$(stat -c%s "$TMP/anna-original.mp4")" -gt 1000000
+          ffprobe -v error -select_streams a:0 -show_entries stream=codec_type -of default=noprint_wrappers=1 "$TMP/anna-original.mp4" | grep -qx 'codec_type=audio'
+          SOURCE_DURATION="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$TMP/anna-original.mp4")"
+          python3 - "$SOURCE_DURATION" <<'PY'
+          import sys
+          d=float(sys.argv[1])
+          assert 211.0 < d < 213.0, f"Unexpected approved-video duration: {d}"
+          PY
+
+          # A restrained Academy-blue-and-cream opening frame, shown for 0.8 seconds.
+          ffmpeg -hide_banner -loglevel error -y -f lavfi -i "color=c=0xf8f4eb:s=1920x1080:r=1:d=1" -i aca-official-seal.png \
+            -filter_complex "[1:v]scale=255:-1[seal];[0:v][seal]overlay=x=(main_w-overlay_w)/2:y=170:shortest=1,drawbox=x=540:y=535:w=840:h=3:color=0xb58b40:t=fill,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='Enrollment Overview':fontcolor=0x102d4f:fontsize=90:x=(w-text_w)/2:y=575,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='with Anna':fontcolor=0x526779:fontsize=35:x=(w-text_w)/2:y=715" \
+            -frames:v 1 -update 1 "$TMP/open.png"
+
+          # The final words finish in the unaltered approved film. Hold its last image 2.5 seconds.
+          ffmpeg -hide_banner -loglevel error -y -sseof -0.14 -i "$TMP/anna-original.mp4" -frames:v 1 -update 1 "$TMP/last.png"
+
+          # A modest Academy closing frame, held on-screen before returning to the opening card.
+          ffmpeg -hide_banner -loglevel error -y -f lavfi -i "color=c=0xf8f4eb:s=1920x1080:r=1:d=1" -i aca-official-seal.png \
+            -filter_complex "[1:v]scale=255:-1[seal];[0:v][seal]overlay=x=(main_w-overlay_w)/2:y=170:shortest=1,drawbox=x=540:y=535:w=840:h=3:color=0xb58b40:t=fill,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf:text='Thank you.':fontcolor=0x102d4f:fontsize=100:x=(w-text_w)/2:y=570,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='We look forward to seeing you inside.':fontcolor=0x526779:fontsize=34:x=(w-text_w)/2:y=718" \
+            -frames:v 1 -update 1 "$TMP/closing.png"
+
+          # Preserve Anna's approved speaking footage and audio as the central, untouched source.
+          # Add only the 0.8s opening, 2.5s silent final-frame hold, and 4s closing card.
+          ffmpeg -hide_banner -loglevel error -y \
+            -loop 1 -framerate 30 -t 0.8 -i "$TMP/open.png" \
+            -i "$TMP/anna-original.mp4" \
+            -loop 1 -framerate 30 -t 2.5 -i "$TMP/last.png" \
+            -loop 1 -framerate 30 -t 4 -i "$TMP/closing.png" \
+            -filter_complex "[0:v]scale=1920:1080,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v0];[1:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v1];[2:v]scale=1920:1080,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v2];[3:v]scale=1920:1080,setsar=1,fps=30,format=yuv420p,setpts=PTS-STARTPTS[v3];anullsrc=r=48000:cl=stereo,atrim=duration=0.8,asetpts=PTS-STARTPTS[a0];[1:a:0]aresample=48000:async=1,aformat=sample_fmts=fltp:channel_layouts=stereo,asetpts=PTS-STARTPTS[a1];anullsrc=r=48000:cl=stereo,atrim=duration=2.5,asetpts=PTS-STARTPTS[a2];anullsrc=r=48000:cl=stereo,atrim=duration=4,asetpts=PTS-STARTPTS[a3];[v0][a0][v1][a1][v2][a2][v3][a3]concat=n=4:v=1:a=1[v][a]" \
+            -map "[v]" -map "[a]" -c:v libx264 -preset fast -crf 21 -pix_fmt yuv420p -r 30 -g 240 -keyint_min 240 -sc_threshold 0 -force_key_frames "expr:gte(t,n_forced*8)" -c:a aac -ar 48000 -ac 2 -b:a 160k -movflags +faststart "$TMP/complete.mp4"
+
+          ffmpeg -hide_banner -loglevel error -y -i "$TMP/complete.mp4" -c copy -f hls -hls_time 8 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_fmp4_init_filename init.mp4 -hls_segment_filename "$OUT/part%03d.m4s" "$OUT/film.m3u8"
+          ffmpeg -hide_banner -loglevel error -y -i "$TMP/open.png" -vf scale=960:540 -frames:v 1 -c:v libwebp -quality 85 "$OUT/poster.webp"
+          ffmpeg -hide_banner -loglevel error -i "$OUT/film.m3u8" -f null -
+          ACTUAL_DURATION="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$OUT/film.m3u8")"
+          python3 - "$ACTUAL_DURATION" <<'PY'
+          import sys
+          d=float(sys.argv[1])
+          assert 218.0 < d < 222.0, f"Unexpected final-video duration: {d}"
+          print(f"Final presentation length: {d:.2f}s")
+          PY
+
+      - name: Replace only Anna enrollment iframe with native Academy player
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > assets/anna-enrollment-player.js <<'JS'
+          (() => {
+            const video = document.querySelector('#anna-enrollment-orientation video');
+            if (!video) return;
+
+            let resetTimer = null;
+            video.addEventListener('ended', () => {
+              if (resetTimer !== null) return;
+              resetTimer = window.setTimeout(() => {
+                video.pause();
+                video.currentTime = 0;
+                resetTimer = null;
+              }, 1800);
+            });
+            video.addEventListener('seeking', () => {
+              if (resetTimer !== null) {
+                window.clearTimeout(resetTimer);
+                resetTimer = null;
+              }
+            });
+
+            const src = video.querySelector('source')?.getAttribute('src');
+            if (!src) return;
+            video.preload = 'auto';
+            if (video.canPlayType('application/vnd.apple.mpegurl')) {
+              video.load();
+              return;
+            }
+            if (!window.Hls || !window.Hls.isSupported()) return;
+            const hls = new window.Hls({
+              autoStartLoad: true,
+              startFragPrefetch: true,
+              maxBufferLength: 24,
+              maxMaxBufferLength: 32
+            });
+            hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));
+            hls.attachMedia(video);
+          })();
+          JS
+          sed -i 's/^          //' assets/anna-enrollment-player.js
+
+          python3 <<'PY'
+          from pathlib import Path
+          page=Path("enroll/index.html")
+          before=page.read_text()
+          start='<section id="anna-enrollment-orientation"'
+          stop='<section id="interest-list"'
+          assert before.count(start)==1 and before.count(stop)==1
+          i=before.index(start)
+          j=before.index(stop,i)
+          old_section=before[i:j]
+          assert "app.heygen.com/embeds/0d06e35f9cb1a2c9073427036009b834" in old_section
+          assert old_section.count("<iframe")==1
+
+          new_section='''<section id="anna-enrollment-orientation" class="section-pad" aria-labelledby="anna-enrollment-title" style="max-width:1060px;margin:0 auto;padding:20px 20px 38px"><h2 id="anna-enrollment-title" style="margin:0 0 18px;font:400 clamp(24px,2.5vw,32px)/1.25 Georgia,serif;color:#102d4f">Enrollment Overview with Anna</h2><div style="overflow:hidden;border:1px solid #d9d2c4;border-radius:12px;box-shadow:0 14px 36px rgba(16,45,79,.12);background:#f8f4eb"><video controls playsinline preload="auto" poster="/assets/videos/anna-enrollment/poster.webp" width="1920" height="1080" data-reset-to-opening="true" aria-label="Anna explains enrollment options and policies at AI Confidence Academy" style="display:block;width:100%;height:auto;aspect-ratio:16/9"><source src="/assets/videos/anna-enrollment/film.m3u8" type="application/vnd.apple.mpegurl"/>Your browser does not support this video.</video></div></section>'''
+          suffix='<script src="/site.js?v=20261102-both-phases" defer></script></body></html>'
+          assert before.count(suffix)==1
+          changed=before[:i]+new_section+before[j:]
+          scripts='<script src="/assets/vendor/hls-1.7.3.light.min.js" defer></script><script src="/assets/anna-enrollment-player.js" defer></script>'
+          changed=changed.replace(suffix,scripts+suffix)
+          assert changed.count("anna-enrollment-orientation")==2
+          assert changed.replace(new_section,old_section).replace(scripts,"")==before
+          page.write_text(changed)
+          print("Confirmed: the only HTML changes are the Anna player section and its dedicated playback scripts.")
+          PY
+
+      - name: Commit scoped media and remove one-time importer
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ACA enrollment video publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add enroll/index.html assets/anna-enrollment-player.js assets/videos/anna-enrollment
+          git rm .github/workflows/aca-anna-enrollment-video-one-time.yml
+          git diff --cached --name-only
+          git commit -m "Publish Anna enrollment video with opening and ending cards"
+          git push origin HEAD:main
