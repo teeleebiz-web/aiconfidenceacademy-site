@@ -68,6 +68,15 @@ jobs:
           print('APPROVED SOURCE: existing Our Story 309.0s, Terrence 3.0..169.12, Jeff starts 169.12; recreated Terrence 166.491s 1080p.')
           PY
 
+          # Baseline: distinguish pre-existing fragmented-HLS decode errors from
+          # any errors introduced by the new cut.
+          if ffmpeg -hide_banner -loglevel error -xerror -i "$SOURCE/film.m3u8" -f null - >/dev/null 2>"$TMP/baseline-error.log"; then
+            echo "ACA_ORIGINAL_OUR_STORY_STRICT_DECODE=PASS"
+          else
+            echo "ACA_ORIGINAL_OUR_STORY_STRICT_DECODE=FAIL (pre-existing source issue)"
+            tail -n 20 "$TMP/baseline-error.log"
+          fi
+
           # Preserve the existing first 3 seconds of its original opening card.
           # Only those original card frames are re-packaged for the new stream.
           ffmpeg -hide_banner -loglevel error -i "$SOURCE/film.m3u8" -t 3 \
