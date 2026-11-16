@@ -1,4 +1,4 @@
-name: ACA Our Story approved founder avatar replacement
+name: ACA Our Story approved founder avatar replacement (final media packaging)
 on:
   push:
     branches: [main]
