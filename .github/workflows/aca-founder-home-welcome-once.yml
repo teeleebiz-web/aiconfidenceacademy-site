@@ -130,7 +130,7 @@ jobs:
           cp "$TMP/hls"/part-*.m4s "$SOURCE/"
 
           cat > assets/home-introduction.js <<'JS'
-(() => {
+          (() => {
             document.querySelectorAll('#academy-introduction video, #website-welcome video').forEach((video) => {
               const source = video.querySelector('source');
               if (!source) return;
