@@ -1,0 +1,171 @@
+name: ACA Our Story recreated founder avatar only
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/aca-our-story-recreated-avatar-once.yml'
+permissions:
+  contents: write
+concurrency:
+  group: aca-our-story-recreated-only
+  cancel-in-progress: false
+jobs:
+  swap:
+    if: github.event.head_commit.message == 'Run ACA Our Story recreated founder avatar only'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout ONLY the existing Our Story video and one-time workflow
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 2
+          sparse-checkout: |
+            assets/videos/founders-shared-welcome
+            .github/workflows/aca-our-story-recreated-avatar-once.yml
+          sparse-checkout-cone-mode: false
+      - name: Prepare FFmpeg
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -version | sed -n '1p'
+      - name: Replace only Terrence image track in Our Story; Jeff and final card remain byte-for-byte original
+        shell: bash
+        env:
+          RECREATED_FOUNDER_URL: 'https://files2.heygen.ai/aws_pacific/avatar_tmp/2a66eb7bf096465e8cfbd33e2c75dd54/acef491661b4cd3c3b0d219a05485dac.mp4?Expires=1795425182&Signature=w~qTLTUvgyCGFVgI9Hb84cxHU5ak1~F7OaGWCllIN7En5HbelSO4xZ297ghVOWkPLTBMySFLxWzItismv00FjHK6h~-KakvmEn1ieWDazGlVvr9gStlrmf2IxlY0EzaVZjfpjOn3D-~lOaIDsfIXqRw6BPAdHCxTSdFE~upYPKeXqiyBuFshLMxnlKRkemrouBaN3JNDQAOaLEUcopdjDEmMsGL6Wop7BPlTstLdjBjM~iPCuUSsS3B7wJ9UL6nUxk1vk9H282hkmc5UlvnzsrGTvAhl7seIe-T0K-V5xBSDkhOZfe2vapYmUiAcLAHIirf3QXgVvXltsk6AK7F77Q__&Key-Pair-Id=K3TSZ3KU01LY58'
+        run: |
+          set -euo pipefail
+          SOURCE="assets/videos/founders-shared-welcome"
+          TMP="$(mktemp -d)"
+          mkdir -p "$TMP/hls"
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 "$RECREATED_FOUNDER_URL" -o "$TMP/terrence-recreated.mp4"
+
+          # Assert the unmodified founder-and-Jeff source before any change.
+          python3 - "$SOURCE" "$TMP/terrence-recreated.mp4" <<'PY'
+          import pathlib,subprocess,sys,re,json
+          source=pathlib.Path(sys.argv[1]); fresh=pathlib.Path(sys.argv[2])
+          expected_sha='2373ce3dbb12c19cbad74b7c2c51bb44c085e841'
+          actual=subprocess.check_output(['git','hash-object',str(source/'film.m3u8')],text=True).strip()
+          assert actual==expected_sha, f'Source was changed since review: {actual}; no replacement authorized'
+          manifest=(source/'film.m3u8').read_text()
+          names=[l for l in manifest.splitlines() if re.fullmatch(r'part[0-9][0-9]\.m4s',l)]
+          assert names==[f'part{i:02d}.m4s' for i in range(32)], names
+          durations=[float(m) for m in re.findall(r'#EXTINF:([0-9.]+)',manifest)]
+          assert len(durations)==32 and abs(sum(durations)-309.0)<.2, (len(durations),sum(durations))
+          assert abs(sum(durations[:17])-169.12)<.2, sum(durations[:17])
+          assert len(list(source.glob('part*.m4s')))==32
+          for file in ['init-open.mp4','init.mp4','init-end.mp4','part17.m4s','part30.m4s','part31.m4s','poster.webp']:
+              assert (source/file).exists(),file
+          p=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','stream=codec_type,width,height:format=duration','-of','json',str(fresh)],text=True))
+          dur=float(p['format']['duration'])
+          vids=[s for s in p['streams'] if s.get('codec_type')=='video']
+          auds=[s for s in p['streams'] if s.get('codec_type')=='audio']
+          assert abs(dur-166.491)<.25,dur
+          assert len(vids)==1 and auds and (vids[0]['width'],vids[0]['height'])==(1920,1080),p
+          print('APPROVED SOURCE: existing Our Story 309.0s, Terrence 3.0..169.12, Jeff starts 169.12; recreated Terrence 166.491s 1080p.')
+          PY
+
+          # Preserve the existing first 3 seconds of its original opening card.
+          # Only those original card frames are re-packaged for the new stream.
+          ffmpeg -hide_banner -loglevel error -i "$SOURCE/film.m3u8" -t 3 \
+            -map 0:v:0 -map 0:a:0 \
+            -vf "scale=1280:720,setsar=1,fps=25,format=yuv420p" \
+            -af "aresample=48000:async=1" \
+            -c:v libx264 -preset fast -crf 18 -profile:v high -level:v 3.1 \
+            -pix_fmt yuv420p -r 25 -g 200 -sc_threshold 0 \
+            -c:a aac -b:a 160k -ac 2 -ar 48000 -movflags +faststart -y "$TMP/original-opening-card.mp4"
+
+          # Render ONLY the already-approved 166.491-second recreated Terrence
+          # video. Preserve his original recorded narration, without script/TTS changes.
+          ffmpeg -hide_banner -loglevel error -i "$TMP/terrence-recreated.mp4" \
+            -map 0:v:0 -map 0:a:0 \
+            -vf "scale=1280:720,setsar=1,fps=25,format=yuv420p" \
+            -af "aresample=48000:async=1" \
+            -c:v libx264 -preset fast -crf 18 -profile:v high -level:v 3.1 \
+            -pix_fmt yuv420p -r 25 -g 200 -keyint_min 200 -sc_threshold 0 \
+            -force_key_frames "expr:gte(t,n_forced*8)" \
+            -c:a aac -b:a 160k -ac 2 -ar 48000 \
+            -movflags +faststart -y "$TMP/recreated-terrence-normalized.mp4"
+
+          # Create efficient streamable clips in a temp directory; original Jeff,
+          # ending, poster, site page, player and homepage are never overwritten.
+          ffmpeg -hide_banner -loglevel error -i "$TMP/original-opening-card.mp4" -c copy \
+            -f hls -hls_time 4 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_fmp4_init_filename "init-recreated-opening.mp4" \
+            -hls_segment_filename "$TMP/hls/recreated-opening-%02d.m4s" "$TMP/hls/opening.m3u8"
+          ffmpeg -hide_banner -loglevel error -i "$TMP/recreated-terrence-normalized.mp4" -c copy \
+            -f hls -hls_time 8 -hls_playlist_type vod -hls_segment_type fmp4 \
+            -hls_fmp4_init_filename "init-recreated-founder.mp4" \
+            -hls_segment_filename "$TMP/hls/recreated-founder-%03d.m4s" "$TMP/hls/founder.m3u8"
+
+          # Keep every original Jeff fragment and its original init.mp4 untouched.
+          # Keep the original end-card fragment and init-end.mp4 untouched.
+          python3 - "$SOURCE" "$TMP/hls" <<'PY'
+          import pathlib,re,sys,os
+          source=pathlib.Path(sys.argv[1]); out=pathlib.Path(sys.argv[2])
+          def entries(path):
+              lines=path.read_text().splitlines(); result=[]
+              for i,line in enumerate(lines[:-1]):
+                  if line.startswith('#EXTINF:'):
+                      result.append((line,lines[i+1]))
+              return result
+          old=entries(source/'film.m3u8')
+          opening=entries(out/'opening.m3u8')
+          founder=entries(out/'founder.m3u8')
+          assert len(old)==32 and len(opening)==1 and 18<=len(founder)<=24,(len(old),len(opening),len(founder))
+          assert opening[0][1]=='recreated-opening-00.m4s'
+          assert all(x[1].startswith('recreated-founder-') for x in founder)
+          original_jeff=old[17:31]
+          original_ending=old[31:]
+          assert [y for _,y in original_jeff]==[f'part{i:02d}.m4s' for i in range(17,31)]
+          assert original_ending[0][1]=='part31.m4s'
+          combined=['#EXTM3U','#EXT-X-VERSION:7','#EXT-X-TARGETDURATION:15','#EXT-X-MEDIA-SEQUENCE:0','#EXT-X-PLAYLIST-TYPE:VOD']
+          def part(init,clip_entries):
+              combined.append(f'#EXT-X-MAP:URI="{init}"')
+              for tag,file in clip_entries:combined.extend((tag,file))
+          part('init-recreated-opening.mp4',opening)
+          combined.append('#EXT-X-DISCONTINUITY')
+          part('init-recreated-founder.mp4',founder)
+          combined.append('#EXT-X-DISCONTINUITY')
+          part('init.mp4',original_jeff)
+          combined.append('#EXT-X-DISCONTINUITY')
+          part('init-end.mp4',original_ending)
+          combined.append('#EXT-X-ENDLIST')
+          (out/'film.m3u8').write_text('\n'.join(combined)+'\n')
+          for file in ['init.mp4','init-end.mp4']+[f'part{i:02d}.m4s' for i in range(17,32)]:
+              (out/file).symlink_to((source/file).resolve())
+          extinfs=[float(tag.split(':')[1].split(',')[0]) for tag,_ in opening+founder+original_jeff+original_ending]
+          assert 309.0<=sum(extinfs)<310.5, sum(extinfs)
+          assert 2.9<=extinfs[0]<=3.1 and 2.0-0.0001<=extinfs[-1]<=2.0001
+          print('NEW PLAYLIST: duration',sum(extinfs),'s, founder scene',sum(float(t.split(':')[1].split(',')[0]) for t,_ in founder),'s; opening 3s and ending 2s; 15 untouched Jeff/ending fragments')
+          PY
+
+          # Decode all frames and sound including both HLS discontinuity handoffs.
+          ffmpeg -hide_banner -loglevel error -xerror -i "$TMP/hls/film.m3u8" -f null -
+          ffprobe -v error -show_entries format=duration -of default=nw=1 "$TMP/hls/film.m3u8"
+
+          # Stage exactly the new opener/new Terrence HLS pieces and manifest;
+          # do not change even one byte of Jeff, the ending card or the website.
+          cp "$TMP/hls/film.m3u8" "$SOURCE/film.m3u8"
+          cp "$TMP/hls/init-recreated-opening.mp4" "$TMP/hls/init-recreated-founder.mp4" "$SOURCE/"
+          cp "$TMP/hls"/recreated-opening-*.m4s "$TMP/hls"/recreated-founder-*.m4s "$SOURCE/"
+          git config user.name "ACA Our Story media replacement"
+          git config user.email "actions@users.noreply.github.com"
+          git add "$SOURCE/film.m3u8" "$SOURCE/init-recreated-opening.mp4" "$SOURCE/init-recreated-founder.mp4"
+          git add "$SOURCE"/recreated-opening-*.m4s "$SOURCE"/recreated-founder-*.m4s
+          git rm .github/workflows/aca-our-story-recreated-avatar-once.yml
+          python3 - <<'PY'
+          import subprocess
+          names=subprocess.check_output(['git','diff','--cached','--name-only'],text=True).splitlines()
+          other='.github/workflows/aca-our-story-recreated-avatar-once.yml'
+          approved=lambda p: p==other or p=='assets/videos/founders-shared-welcome/film.m3u8' or p.startswith('assets/videos/founders-shared-welcome/init-recreated-') or p.startswith('assets/videos/founders-shared-welcome/recreated-')
+          assert names and all(map(approved,names)),names
+          assert 'assets/videos/founders-shared-welcome/film.m3u8' in names
+          print('APPROVED FILE SCOPE:',len(names),'names; all other pages/media unchanged.')
+          PY
+          git commit -m "Swap recreated Terrence avatar into Our Story while preserving Jeff and original cards"
+          git push origin HEAD:main
+          echo "ACA_OUR_STORY_RECREATED_AVATAR_PUBLISHED=1"
