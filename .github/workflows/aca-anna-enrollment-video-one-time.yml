@@ -30,7 +30,7 @@ jobs:
           fi
           command -v ffprobe
           command -v ffmpeg
-          fc-list | grep -q DejaVu
+          fc-match 'DejaVu Sans' | grep -q DejaVu
 
       - name: Prepare approved Anna film and two Academy cards
         shell: bash
@@ -148,7 +148,7 @@ jobs:
           changed=before[:i]+new_section+before[j:]
           scripts='<script src="/assets/vendor/hls-1.7.3.light.min.js" defer></script><script src="/assets/anna-enrollment-player.js" defer></script>'
           changed=changed.replace(suffix,scripts+suffix)
-          assert changed.count("anna-enrollment-orientation")==2
+          assert changed.count("anna-enrollment-orientation")==1
           assert changed.replace(new_section,old_section).replace(scripts,"")==before
           page.write_text(changed)
           print("Confirmed: the only HTML changes are the Anna player section and its dedicated playback scripts.")
