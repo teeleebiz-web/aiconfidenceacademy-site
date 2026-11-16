@@ -38,7 +38,7 @@ print(','.join(map(str,[0,3]+list(range(11,321,8)))))
 PY
 )"
 ffmpeg -hide_banner -loglevel error -xerror -i "$SOURCE/film.m3u8" -i "$TMP/founder.mp4" -filter_complex_script "$TMP/film-filter.txt" -map "[v]" -map "[a]" -c:v libx264 -preset veryfast -crf 18 -profile:v high -level:v 3.1 -pix_fmt yuv420p -r 25 -g 200 -keyint_min 25 -sc_threshold 0 -force_key_frames "$KEYS" -c:a aac -b:a 160k -ac 2 -ar 48000 -movflags +faststart -y "$TMP/film.mp4"
-ffmpeg -hide_banner -loglevel error -i "$TMP/film.mp4" -c copy -f hls -hls_time 8 -hls_playlist_type vod -hls_segment_type fmp4 -hls_fmp4_init_filename "init-recreated-story.mp4" -hls_segment_filename "$TMP/hls/recreated-story-%03d.m4s" "$TMP/hls/film.m3u8"
+ffmpeg -hide_banner -loglevel error -i "$TMP/film.mp4" -c copy -f hls -hls_time 2.5 -hls_playlist_type vod -hls_segment_type fmp4 -hls_fmp4_init_filename "init-recreated-story.mp4" -hls_segment_filename "$TMP/hls/recreated-story-%03d.m4s" "$TMP/hls/film.m3u8"
 ffmpeg -hide_banner -loglevel error -xerror -i "$TMP/hls/film.m3u8" -f null -
 python3 - "$TMP/hls/film.m3u8" <<'PY'
 import pathlib,re,sys
