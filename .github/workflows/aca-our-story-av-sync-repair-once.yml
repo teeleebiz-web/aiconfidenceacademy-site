@@ -1,4 +1,4 @@
-name: Repair Our Story presenter sync (one-millisecond A/V verification)
+name: Repair Our Story original Jeff audio plus video frame verification
 on:
   push:
     branches: [main]
