@@ -18,9 +18,16 @@
     }
   });
 
-  const src = video.querySelector('source')?.getAttribute('src');
-  if (!src) return;
+  // Prefer the standard MP4 on phones and other compatible devices.
   video.preload = 'auto';
+  if (video.canPlayType('video/mp4')) {
+    video.load();
+    return;
+  }
+  // Original HLS remains as fallback for devices without MP4 support.
+  const hlsSource = video.querySelector('source[type="application/vnd.apple.mpegurl"]');
+  const src = hlsSource?.getAttribute('src');
+  if (!src) return;
   if (video.canPlayType('application/vnd.apple.mpegurl')) {
     video.load();
     return;
