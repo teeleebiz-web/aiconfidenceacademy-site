@@ -1,4 +1,4 @@
-name: Repair Our Story presenter audio and video sync (four-point audio QA)
+name: Repair Our Story presenter sync (one-millisecond A/V verification)
 on:
   push:
     branches: [main]
