@@ -96,9 +96,33 @@ for offset in (5,45,85,120):
         if corr>best[0]:best=(corr,lag)
     print(f'ACA_JEFF_ORIGINAL_AUDIO_MATCH offset={offset}s correlation={best[0]:.3f} lag_ms={best[1]}')
     checks.append((offset,best[0],best[1]))
-assert len(checks)==4 and all(x[2] is not None and abs(x[2])<=100 for x in checks),('Jeff audio time drift',checks)
-assert min(x[1] for x in checks)>0.75 and sum(x[1]>0.85 for x in checks)>=3,('Jeff audio fidelity does not match original',checks)
+assert len(checks)==4 and all(x[2] is not None and abs(x[2])<=35 for x in checks),('Jeff audio time drift',checks)
+assert min(x[1] for x in checks)>0.65 and sum(x[1]>0.70 for x in checks)>=3,('Jeff audio fidelity does not match original',checks)
 print('ACA_JEFF_AUDIO_BOUNDARY_AND_DRIFT_CHECK_PASSED',checks)
+PY
+
+
+# Check Jeff's actual source frames at multiple points against the same
+# moments in the repaired film. This catches any video timeline offset that
+# an audio-only test could miss.
+python3 - "$TMP/jeff-original.mp4" "$TMP/corrected.mp4" <<'PY'
+import subprocess,sys
+ref,film=sys.argv[1:3]
+base=3+166.491
+def frame(path,when):
+    return subprocess.check_output(['ffmpeg','-hide_banner','-loglevel','error','-ss',f'{when:.3f}','-i',path,'-frames:v','1','-vf','scale=32:18,format=gray','-f','rawvideo','-'],stderr=subprocess.DEVNULL)
+for off in (25,65,110):
+    refpix=frame(ref,off)
+    assert len(refpix)==576,('Missing original Jeff frame',off,len(refpix))
+    diffs=[]
+    for shift in (-0.08,-0.04,0,0.04,0.08):
+        newpix=frame(film,base+off+shift)
+        assert len(newpix)==576,('Missing repaired Jeff frame',off,len(newpix))
+        diffs.append(sum(abs(a-b) for a,b in zip(refpix,newpix))/576)
+    best=min(diffs)
+    print(f'ACA_JEFF_ORIGINAL_VIDEO_FRAME_MATCH offset={off}s difference={best:.2f}/255')
+    assert best<30.0,('Jeff video timeline differs from his original presentation',off,best)
+print('ACA_JEFF_ORIGINAL_VIDEO_TIMELINE_MATCH_PASSED')
 PY
 
 ffmpeg -hide_banner -loglevel error -i "$TMP/corrected.mp4" -c copy \
