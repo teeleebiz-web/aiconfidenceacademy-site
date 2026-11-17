@@ -86,7 +86,7 @@ for offset in (5,45,85,120):
     av=sum(a)/len(a);a=[x-av for x in a]; aa=sum(x*x for x in a)
     if aa<250000: continue
     best=(-2,None)
-    for lag in range(-180,181,10):
+    for lag in range(-180,181,1):
         start=BASE+offset*1000+lag
         b=list(n[start:start+5000:2])
         if len(b)!=len(a):continue
@@ -97,7 +97,7 @@ for offset in (5,45,85,120):
     print(f'ACA_JEFF_ORIGINAL_AUDIO_MATCH offset={offset}s correlation={best[0]:.3f} lag_ms={best[1]}')
     checks.append((offset,best[0],best[1]))
 assert len(checks)==4 and all(x[2] is not None and abs(x[2])<=100 for x in checks),('Jeff audio time drift',checks)
-assert min(x[1] for x in checks)>0.38 and sum(x[1]>0.72 for x in checks)>=2,('Jeff audio fidelity does not match original',checks)
+assert min(x[1] for x in checks)>0.75 and sum(x[1]>0.85 for x in checks)>=3,('Jeff audio fidelity does not match original',checks)
 print('ACA_JEFF_AUDIO_BOUNDARY_AND_DRIFT_CHECK_PASSED',checks)
 PY
 
