@@ -1,0 +1,155 @@
+name: One-time Anna enrollment mobile playback fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  anna-mobile-mp4:
+    if: github.event.head_commit.message == 'ACA Anna mobile MP4 one-time repair'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out approved ACA site
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+
+      - name: Verify tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
+
+      - name: Build iPhone-compatible 720p progressive MP4 from the already-approved completed film
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC="assets/videos/anna-enrollment/film.m3u8"
+          OUT="assets/videos/anna-enrollment/film-mobile.mp4"
+          test -s "$SRC"
+          echo "Approved existing master video metadata:"
+          ffprobe -v error -show_entries stream=codec_name,profile,width,height,level,pix_fmt -of compact "$SRC" | head -n 4
+          ffmpeg -hide_banner -loglevel error -stats -y -i "$SRC" \
+            -map 0:v:0 -map 0:a:0 \
+            -vf "scale=1280:720:flags=lanczos,setsar=1,fps=30,format=yuv420p" \
+            -c:v libx264 -preset fast -crf 21 -profile:v main -level:v 3.1 \
+            -maxrate 2600k -bufsize 5200k -g 60 -keyint_min 60 -sc_threshold 0 \
+            -c:a copy -movflags +faststart -max_muxing_queue_size 2048 \
+            "$OUT"
+          ffmpeg -hide_banner -loglevel error -i "$OUT" -f null -
+          python3 - <<'PY'
+          import json,os,subprocess
+          def probe(path):
+              data=subprocess.check_output(["ffprobe","-v","error","-show_format","-show_streams","-of","json",path])
+              return json.loads(data)
+          origin=probe("assets/videos/anna-enrollment/film.m3u8")
+          out=probe("assets/videos/anna-enrollment/film-mobile.mp4")
+          vs=[s for s in out["streams"] if s["codec_type"]=="video"]
+          aus=[s for s in out["streams"] if s["codec_type"]=="audio"]
+          assert len(vs)==1 and len(aus)>=1, "Missing video or audio stream"
+          v=vs[0]; a=aus[0]
+          assert v["codec_name"]=="h264" and v["width"]==1280 and v["height"]==720
+          assert v["pix_fmt"]=="yuv420p" and v["level"]<=31 and v["profile"]=="Main", v
+          assert a["codec_name"]=="aac", a
+          origduration=float(origin["format"]["duration"])
+          newduration=float(out["format"]["duration"])
+          assert abs(origduration-newduration)<.35,(origduration,newduration)
+          size=os.path.getsize("assets/videos/anna-enrollment/film-mobile.mp4")
+          assert 2_000_000<size<95_000_000,size
+          with open("assets/videos/anna-enrollment/film-mobile.mp4","rb") as f:
+              start=f.read(40000)
+          assert b"ftyp" in start[:20] and b"moov" in start, "MP4 metadata must be front-loaded for prompt phone playback"
+          print(f"ACCEPTED: h264 Main@3.1 1280x720, AAC, faststart, duration={newduration:.2f}s, bytes={size}")
+          PY
+
+      - name: Switch only Anna enrollment video to MP4-first with original HLS as fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          page=Path("enroll/index.html")
+          old=page.read_text()
+          src='<source src="/assets/videos/anna-enrollment/film.m3u8" type="application/vnd.apple.mpegurl"/>'
+          replacement='<source src="/assets/videos/anna-enrollment/film-mobile.mp4" type="video/mp4"/>'+src
+          assert old.count(src)==1,"Anna HLS source must occur exactly once"
+          assert old.count('id="anna-enrollment-orientation"')==1
+          assert old.count('Enrollment Overview with Anna')==1
+          assert old.count('data-reset-to-opening="true"')==1
+          assert not 'film-mobile.mp4' in old
+          changed=old.replace(src,replacement)
+          assert changed.replace(replacement,src)==old, "Unrelated HTML change detected"
+          page.write_text(changed)
+          script=Path("assets/anna-enrollment-player.js")
+          prior=script.read_text()
+          target="""  const src = video.querySelector('source')?.getAttribute('src');
+          if (!src) return;
+          video.preload = 'auto';
+          if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.load();
+            return;
+          }
+          if (!window.Hls || !window.Hls.isSupported()) return;
+          const hls = new window.Hls({
+            autoStartLoad: true,
+            startFragPrefetch: true,
+            maxBufferLength: 24,
+            maxMaxBufferLength: 32
+          });
+          hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));
+          hls.attachMedia(video);"""
+          replacement_js="""  // Use the progressive MP4 where the device supports it. This avoids
+          // the native fragmented-HLS startup issue on some phones.
+          video.preload = 'auto';
+          if (video.canPlayType('video/mp4')) {
+            video.load();
+            return;
+          }
+          // Keep the original HLS edition available for unusual non-MP4 clients.
+          const hlsSource = video.querySelector('source[type="application/vnd.apple.mpegurl"]');
+          const src = hlsSource?.getAttribute('src');
+          if (!src) return;
+          if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.load();
+            return;
+          }
+          if (!window.Hls || !window.Hls.isSupported()) return;
+          const hls = new window.Hls({
+            autoStartLoad: true,
+            startFragPrefetch: true,
+            maxBufferLength: 24,
+            maxMaxBufferLength: 32
+          });
+          hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));
+          hls.attachMedia(video);"""
+          assert prior.count(target)==1, "Playback logic changed unexpectedly; do not edit"
+          updated=prior.replace(target,replacement_js)
+          assert updated.replace(replacement_js,target)==prior,"Unrelated JavaScript change detected"
+          assert updated.count("video.addEventListener('ended'")==1
+          assert updated.count("video.currentTime = 0")==1
+          script.write_text(updated)
+          print("ACCEPTED: the only page change is MP4-first source for Anna. The original HLS fallback, poster, title, full video and reset behavior are preserved.")
+          PY
+
+      - name: Commit only Anna mobile compatibility correction and remove one-time workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ACA video compatibility"
+          git config user.email "actions@users.noreply.github.com"
+          git add enroll/index.html assets/anna-enrollment-player.js assets/videos/anna-enrollment/film-mobile.mp4
+          git rm .github/workflows/aca-anna-mobile-one-time-fix.yml
+          git diff --cached --name-only
+          git diff --cached --name-only | grep -q '^enroll/index.html$'
+          git diff --cached --name-only | grep -q '^assets/videos/anna-enrollment/film-mobile.mp4$'
+          git commit -m "Fix Anna enrollment video playback on phones with MP4 fallback"
+          git push origin HEAD:main
