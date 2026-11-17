@@ -43,10 +43,10 @@ cat > "$TMP/filter.txt" <<'FILTER'
 [0:a]atrim=start=0:end=3,asetpts=PTS-STARTPTS,aresample=48000:async=1[a0];
 [1:v]setpts=PTS-STARTPTS,fps=25,scale=1280:720,setsar=1,format=yuv420p[v1];
 [1:a]asetpts=PTS-STARTPTS,aresample=48000:async=1[a1];
-[2:v]setpts=PTS-(171.12/TB),trim=start=0:end=137.88,fps=25,scale=1280:720,setsar=1,format=yuv420p[v2];
-[2:a]asetpts=PTS-(171.12/TB),atrim=start=0:end=137.88,aresample=48000:async=1[a2];
-[3:v]setpts=PTS-(309.0/TB),trim=start=0:end=2.0,fps=25,scale=1280:720,setsar=1,format=yuv420p[v3];
-[3:a]asetpts=PTS-(309.0/TB),atrim=start=0:end=2.0,aresample=48000:async=1[a3];
+[2:v]trim=start=0:end=137.88,setpts=PTS-STARTPTS,fps=25,scale=1280:720,setsar=1,format=yuv420p[v2];
+[2:a]atrim=start=0:end=137.88,asetpts=PTS-STARTPTS,aresample=48000:async=1[a2];
+[3:v]trim=start=0:end=2.0,setpts=PTS-STARTPTS,fps=25,scale=1280:720,setsar=1,format=yuv420p[v3];
+[3:a]atrim=start=0:end=2.0,asetpts=PTS-STARTPTS,aresample=48000:async=1[a3];
 [v0][a0][v1][a1][v2][a2][v3][a3]concat=n=4:v=1:a=1[v][a]
 FILTER
 KEYS="$(python3 - <<'PY'
@@ -67,7 +67,7 @@ ffmpeg -hide_banner -loglevel error -xerror -i "$TMP/corrected.mp4" -f null -
 # Verify Jeff's OWN original audio against the repaired output at early, middle
 # and late points of his performance; this detects both voice bleed and drift.
 ffmpeg -hide_banner -loglevel error -i "$TMP/jeff-original.mp4" \
-  -map 0:a:0 -af "asetpts=PTS-(171.12/TB),atrim=start=0:end=137.88" \
+  -map 0:a:0 -af "atrim=start=0:end=137.88,asetpts=PTS-STARTPTS" \
   -ac 1 -ar 1000 -f s16le -y "$TMP/jeff-reference.s16"
 ffmpeg -hide_banner -loglevel error -i "$TMP/corrected.mp4" \
   -map 0:a:0 -ac 1 -ar 1000 -f s16le -y "$TMP/final-audio.s16"
