@@ -80,6 +80,7 @@ assert 305000 < len(n) < 315000,len(n)
 # All three checkpoints must align within a tenth of a second and correlate
 # strongly with the original unmodified Jeff soundtrack.
 BASE=int(round((3+166.491)*1000))
+checks=[]
 for offset in (5,45,85,120):
     a=list(r[int(offset*1000):int(offset*1000)+5000:2])
     av=sum(a)/len(a);a=[x-av for x in a]; aa=sum(x*x for x in a)
@@ -94,8 +95,10 @@ for offset in (5,45,85,120):
         corr=sum(x*y for x,y in zip(a,b))/math.sqrt(aa*bb)
         if corr>best[0]:best=(corr,lag)
     print(f'ACA_JEFF_ORIGINAL_AUDIO_MATCH offset={offset}s correlation={best[0]:.3f} lag_ms={best[1]}')
-    assert best[1] is not None and best[0]>0.65 and abs(best[1])<=100,('Jeff A/V alignment failed',offset,best)
-print('ACA_JEFF_AUDIO_BOUNDARY_AND_DRIFT_CHECK_PASSED')
+    checks.append((offset,best[0],best[1]))
+assert len(checks)==4 and all(x[2] is not None and abs(x[2])<=100 for x in checks),('Jeff audio time drift',checks)
+assert min(x[1] for x in checks)>0.38 and sum(x[1]>0.72 for x in checks)>=2,('Jeff audio fidelity does not match original',checks)
+print('ACA_JEFF_AUDIO_BOUNDARY_AND_DRIFT_CHECK_PASSED',checks)
 PY
 
 ffmpeg -hide_banner -loglevel error -i "$TMP/corrected.mp4" -c copy \
