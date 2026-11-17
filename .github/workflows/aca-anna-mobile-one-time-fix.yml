@@ -91,49 +91,39 @@ jobs:
           page.write_text(changed)
           script=Path("assets/anna-enrollment-player.js")
           prior=script.read_text()
-          target="""  const src = video.querySelector('source')?.getAttribute('src');
-          if (!src) return;
-          video.preload = 'auto';
-          if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.load();
-            return;
-          }
-          if (!window.Hls || !window.Hls.isSupported()) return;
-          const hls = new window.Hls({
-            autoStartLoad: true,
-            startFragPrefetch: true,
-            maxBufferLength: 24,
-            maxMaxBufferLength: 32
-          });
-          hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));
-          hls.attachMedia(video);"""
-          replacement_js="""  // Use the progressive MP4 where the device supports it. This avoids
-          // the native fragmented-HLS startup issue on some phones.
-          video.preload = 'auto';
-          if (video.canPlayType('video/mp4')) {
-            video.load();
-            return;
-          }
-          // Keep the original HLS edition available for unusual non-MP4 clients.
-          const hlsSource = video.querySelector('source[type="application/vnd.apple.mpegurl"]');
-          const src = hlsSource?.getAttribute('src');
-          if (!src) return;
-          if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.load();
-            return;
-          }
-          if (!window.Hls || !window.Hls.isSupported()) return;
-          const hls = new window.Hls({
-            autoStartLoad: true,
-            startFragPrefetch: true,
-            maxBufferLength: 24,
-            maxMaxBufferLength: 32
-          });
-          hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));
-          hls.attachMedia(video);"""
-          assert prior.count(target)==1, "Playback logic changed unexpectedly; do not edit"
-          updated=prior.replace(target,replacement_js)
-          assert updated.replace(replacement_js,target)==prior,"Unrelated JavaScript change detected"
+          head="  const src = video.querySelector('source')?.getAttribute('src');"
+          tail="  hls.attachMedia(video);"
+          assert prior.count(head)==1 and prior.count(tail)==1,"Expected original Anna playback code not found"
+          first=prior.index(head)
+          last=prior.index(tail,first)+len(tail)
+          target=prior[first:last]
+          replacement_js="\n".join([
+            "  // Prefer the standard MP4 on phones and other compatible devices.",
+            "  video.preload = 'auto';",
+            "  if (video.canPlayType('video/mp4')) {",
+            "    video.load();",
+            "    return;",
+            "  }",
+            "  // Original HLS remains as fallback for devices without MP4 support.",
+            '  const hlsSource = video.querySelector(\'source[type="application/vnd.apple.mpegurl"]\');',
+            "  const src = hlsSource?.getAttribute('src');",
+            "  if (!src) return;",
+            "  if (video.canPlayType('application/vnd.apple.mpegurl')) {",
+            "    video.load();",
+            "    return;",
+            "  }",
+            "  if (!window.Hls || !window.Hls.isSupported()) return;",
+            "  const hls = new window.Hls({",
+            "    autoStartLoad: true,",
+            "    startFragPrefetch: true,",
+            "    maxBufferLength: 24,",
+            "    maxMaxBufferLength: 32",
+            "  });",
+            "  hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));",
+            "  hls.attachMedia(video);"
+          ])
+          updated=prior[:first]+replacement_js+prior[last:]
+          assert updated[:first]==prior[:first] and updated.endswith(prior[last:]),"Unrelated script change detected"
           assert updated.count("video.addEventListener('ended'")==1
           assert updated.count("video.currentTime = 0")==1
           script.write_text(updated)
