@@ -1,4 +1,4 @@
-name: Repair Our Story presenter audio and video sync
+name: Repair Our Story presenter audio and video sync (normalized source)
 on:
   push:
     branches: [main]
