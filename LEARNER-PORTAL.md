@@ -427,7 +427,8 @@ is enabled and auto_release_enabled is true. No support case, trial, invitation
 or charge was created to exercise this installation. Publication evidence is
 separate from proof that an assistant repaired a real learner's problem.
 
-The approved welcome is NOT uploaded yet. The runner rendered 78,414,881 bytes,
+At that checkpoint, the approved welcome was not uploaded (superseded by the
+verified dashboard-correction result below). The runner rendered 78,414,881 bytes,
 verified decode and original AAC narration, and preserved the 44,355,028-byte
 original as a private rollback copy. Standard and TUS uploads both returned 413;
 the 200 MiB bucket limit is not sufficient to explain the rejection, so inspect
@@ -457,13 +458,20 @@ protection is enabled; the dashboard confirms ENABLED and the security advisor
 no longer reports leaked-password protection disabled. Other sign-in settings
 were preserved.
 
-Welcome publication attempt 2 completed its upload (78,416,986 bytes), then failed
-its immediate readback. The original 44,355,028-byte rollback object remains.
-The publication runner now bypasses stale download caches and can verify a prior
-completed upload by rebuilding from the fingerprinted original. It refuses to
-overwrite live bytes matching neither the original nor the approved render.
-Three credential-free recovery/safety tests pass. Consult the publication ledger
-and latest workflow result for completion; an uploaded object alone is not proof.
+The welcome replacement is now VERIFIED. Workflow 44730791650 succeeded at
+11:54 UTC (19:54 Manila). The 78,416,986-byte existing live object exactly matched
+the rebuilt approved render: SHA-256
+e484c51eeee4523d3f325bee5115f06bd63d6d2a53ee7934538b1978ac6a2122.
+The publication ledger records verified_at 2026-11-20T11:54:23.158Z. The original
+44,355,028-byte rollback object and byte-identical narration remain preserved.
+The runner now bypasses stale download caches and can verify a completed upload
+without replacing it again. Its conservative alternative comparison checks every
+frame and exact timing/narration before accepting an equivalent encoder output;
+that alternative was not needed for the final exact-hash success. Four focused
+recovery/safety tests pass. The synthetic FFmpeg check accepted identical frames
+and rejected a different encoding below the strict threshold. All three groups
+in portal CI 44730791547 passed for source revision
+067d02cf8d9139fd2b5b12c45fcbc224fdee768f. No authenticated learner playback is claimed.
 
 Repository settings remain inaccessible in the signed-out GitHub browser.
 Automatic approval review rejected opening GitHub sign-in because the explicit
