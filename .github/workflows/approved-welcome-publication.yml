@@ -1,0 +1,29 @@
+name: Publish approved Academy welcome
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/approved-welcome-publication.mjs'
+      - '.github/workflows/approved-welcome-publication.yml'
+permissions:
+  contents: read
+concurrency:
+  group: aca-approved-welcome-publication
+  cancel-in-progress: false
+jobs:
+  publish-approved-segment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: sudo apt-get update -qq && sudo apt-get install -y ffmpeg
+      - name: Publish the approved avatar into the existing welcome object
+        env:
+          ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
+        run: node operations/approved-welcome-publication.mjs
