@@ -367,3 +367,14 @@ a service-only atomic $20 conservative monthly allowance (2,000 reserved attempt
 The key is server-only. Automatic credit purchases are off; the additional
 subscription-credit offer is unclaimed. No autonomous repairs or account changes
 are enabled. Current verification/release status is on PR 113.
+
+
+## Owner navigation restored — November 20, 2026
+
+The public homepage includes an **Owner** navigation link to /control-center/.
+The shared site.js adds the same link to public page navigation when absent.
+The existing owner entry opens with email/password sign-in and verifies the
+server-controlled owner permission before opening the control center, where
+**Curriculum & releases** provides lesson and media inspection. This change
+restores the entry point. Authenticated owner curriculum review was not exercised
+with a live owner session during this navigation correction.

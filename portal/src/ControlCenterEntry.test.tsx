@@ -63,6 +63,8 @@ it('fails closed when owner authorization cannot be verified', async () => {
 it('preserves the control-center destination when requesting an email sign-in', async () => {
   render(<ControlCenterEntry />)
   const user = userEvent.setup()
+  expect(await screen.findByLabelText('Password')).toBeTruthy()
+  await user.click(screen.getByRole('button', { name: 'Use a one-time email link instead' }))
   await user.type(await screen.findByLabelText('Owner email'), 'owner@example.com')
   await user.click(screen.getByRole('button', { name: 'Send my sign-in link' }))
   await waitFor(() => expect(api.otp).toHaveBeenCalledWith({ email: 'owner@example.com', options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/learn/` } }))

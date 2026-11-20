@@ -10,7 +10,7 @@ export function SignIn({ onRequestLink, onPasswordSignIn, purpose = 'learner' }:
   const controlCenter = purpose === 'control-center'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [method, setMethod] = useState<'link' | 'password'>('link')
+  const [method, setMethod] = useState<'link' | 'password'>(controlCenter ? 'password' : 'link')
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [message, setMessage] = useState('')
 

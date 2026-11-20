@@ -7,6 +7,12 @@
     const enrollment = navigation.querySelector('a[href="/enroll"],a[href="/enroll/"]');
     navigation.insertBefore(ask, enrollment);
   }
+  if (navigation && !navigation.querySelector('a[href="/control-center/"]')) {
+    const owner = document.createElement('a');
+    owner.href = '/control-center/';
+    owner.textContent = 'Owner';
+    navigation.append(owner);
+  }
   if (button && navigation) {
     button.addEventListener('click', () => {
       const isOpen = navigation.classList.toggle('open');
