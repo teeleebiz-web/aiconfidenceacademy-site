@@ -69,7 +69,24 @@ try {
   // Check again immediately before the sole live replacement.
   if (hash(Buffer.from(await checked(await bucket.download(target)).arrayBuffer())) !== task.original_sha256) throw new Error('Live welcome changed during publication')
   stage = 'replace-approved-target'
-  checked(await bucket.update(target, bytes, { contentType: 'video/mp4', cacheControl: '0' }))
+  // The existing standard endpoint rejects bodies above its request limit.
+  // TUS transfers the same verified file in fixed 6 MiB chunks; no re-encoding.
+  const endpoint = 'https://ymmkodlifpxutynpjnxm.storage.supabase.co/storage/v1/upload/resumable'
+  const headers = { Authorization: `Bearer ${process.env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY}`, 'Tus-Resumable': '1.0.0', 'x-upsert': 'true' }
+  const uploadMetadata = Object.entries({ bucketName: 'aca-learning-media', objectName: target, contentType: 'video/mp4', cacheControl: '0' })
+    .map(([key,value]) => `${key} ${Buffer.from(value).toString('base64')}`).join(',')
+  const creation = await fetch(endpoint, { method: 'POST', redirect: 'error', signal: AbortSignal.timeout(60000),
+    headers: { ...headers, 'Upload-Length': String(bytes.length), 'Upload-Metadata': uploadMetadata } })
+  if (creation.status !== 201) throw new Error(`Private media operation failed (${creation.status})`)
+  const upload = new URL(creation.headers.get('location'), endpoint)
+  if (upload.origin !== new URL(endpoint).origin || !upload.pathname.startsWith('/storage/v1/upload/resumable/')) throw new Error('Invalid resumable upload destination')
+  for (let offset = 0; offset < bytes.length;) {
+    const end = Math.min(offset + 6 * 1024 * 1024, bytes.length)
+    const chunk = await fetch(upload, { method: 'PATCH', redirect: 'error', signal: AbortSignal.timeout(60000),
+      headers: { ...headers, 'Content-Type': 'application/offset+octet-stream', 'Upload-Offset': String(offset) }, body: bytes.subarray(offset,end) })
+    if (chunk.status !== 204 || Number(chunk.headers.get('upload-offset')) !== end) throw new Error(`Private media operation failed (${chunk.status})`)
+    offset = end
+  }
   stage = 'readback'
   const downloaded = Buffer.from(await checked(await bucket.download(target)).arrayBuffer())
   if (hash(downloaded) !== hash(bytes)) throw new Error('Welcome upload readback mismatch')
