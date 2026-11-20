@@ -7,6 +7,7 @@ import { Readable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
 import { createWriteStream } from 'node:fs'
 import { execFileSync } from 'node:child_process'
+import { pathToFileURL } from 'node:url'
 
 const publicationKey = 'academy-welcome-november-avatar-20261117'
 const target = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
@@ -16,20 +17,31 @@ function checked(result) {
   if (result.error) throw new Error(`Private media operation failed (${Number(result.error.statusCode) || 0})`)
   return result.data
 }
+export function liveWelcomeState(liveHash, originalHash, renderedHash) {
+  if (![liveHash, originalHash, renderedHash].every(value => /^[a-f0-9]{64}$/.test(value))) throw new Error('Invalid welcome fingerprint')
+  if (liveHash === renderedHash) return 'rendered'
+  if (liveHash === originalHash) return 'original'
+  throw new Error('Live welcome differs from both approved fingerprints')
+}
+
+export async function main() {
 const db = createClient('https://ymmkodlifpxutynpjnxm.supabase.co', process.env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
 })
 const task = checked(await db.from('aca_media_publications').select('*').eq('publication_key', publicationKey).single())
 const bucket = db.storage.from('aca-learning-media')
-const original = Buffer.from(await checked(await bucket.download(target)).arrayBuffer())
+const download = async path => Buffer.from(await checked(await bucket.download(path, { cacheNonce: `${Date.now()}-${process.hrtime.bigint()}` }, { cache: 'no-store' })).arrayBuffer())
+const live = await download(target)
 if (task.status === 'verified') {
-  if (hash(original) !== task.output_sha256) throw new Error('Published welcome changed after verification')
+  if (hash(live) !== task.output_sha256) throw new Error('Published welcome changed after verification')
   console.log('Approved welcome already published and verified.')
-  process.exit(0)
+  return
 }
-if (!['approved', 'failed', 'publishing'].includes(task.status) || hash(original) !== task.original_sha256) {
-  throw new Error('Welcome source differs from the approved original')
-}
+if (!['approved', 'failed', 'publishing'].includes(task.status)) throw new Error('Welcome publication is not authorized')
+// A completed upload can precede a failed readback. Rebuild only from the
+// fingerprinted original, then accept recovery only for the exact rendered bytes.
+const original = hash(live) === task.original_sha256 ? live : await download(backup)
+if (hash(original) !== task.original_sha256) throw new Error('Welcome source differs from the approved original')
 const url = new URL(task.source_url)
 if (url.protocol !== 'https:' || url.hostname !== 'files2.heygen.ai' || url.username || url.password) {
   throw new Error('Unexpected approved media source')
@@ -63,11 +75,14 @@ try {
   if (bytes.length > 200 * 1024 * 1024) throw new Error('Rendered welcome exceeds the existing storage limit')
   console.log(`Rendered welcome verified: ${bytes.length} bytes.`)
   stage = 'rollback-copy'
-  const previousBackup = await bucket.download(backup)
+  const previousBackup = await bucket.download(backup, { cacheNonce: String(Date.now()) }, { cache: 'no-store' })
   if (previousBackup.error) checked(await bucket.upload(backup, original, { contentType: 'video/mp4', upsert: false }))
   else if (hash(Buffer.from(await previousBackup.data.arrayBuffer())) !== task.original_sha256) throw new Error('Existing rollback copy does not match')
-  // Check again immediately before the sole live replacement.
-  if (hash(Buffer.from(await checked(await bucket.download(target)).arrayBuffer())) !== task.original_sha256) throw new Error('Live welcome changed during publication')
+  // Unknown live content is never overwritten. A prior completed upload can be
+  // verified without uploading again, even when its first readback was stale.
+  const state = liveWelcomeState(hash(await download(target)), task.original_sha256, hash(bytes))
+  checked(await db.from('aca_media_publications').update({ output_sha256: hash(bytes), updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
+  if (state === 'original') {
   stage = 'replace-approved-target'
   // The existing standard endpoint rejects bodies above its request limit.
   // TUS transfers the same verified file in fixed 6 MiB chunks; no re-encoding.
@@ -87,15 +102,19 @@ try {
     if (chunk.status !== 204 || Number(chunk.headers.get('upload-offset')) !== end) throw new Error(`Private media operation failed (${chunk.status})`)
     offset = end
   }
+  }
   stage = 'readback'
-  const downloaded = Buffer.from(await checked(await bucket.download(target)).arrayBuffer())
+  const downloaded = await download(target)
   if (hash(downloaded) !== hash(bytes)) throw new Error('Welcome upload readback mismatch')
   checked(await db.from('aca_media_publications').update({ status: 'verified', output_sha256: hash(bytes), verified_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
   console.log('Founder-approved welcome replacement uploaded and hash-verified. Original narration and rollback copy preserved.')
 } catch (error) {
   await db.from('aca_media_publications').update({ status: 'failed', updated_at: new Date().toISOString() }).eq('publication_key', publicationKey)
   console.error(`Publication stage: ${stage}; ${/^Private media operation failed \(\d+\)$/.test(error.message) ? error.message : 'render or verification failed'}`)
-  throw new Error('Approved welcome publication stopped; original remains protected.')
+  throw new Error('Approved welcome verification stopped; original rollback copy remains protected.')
 } finally {
   await rm(directory, { recursive: true, force: true })
 }
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main()

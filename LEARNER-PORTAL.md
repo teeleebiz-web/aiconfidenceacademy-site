@@ -447,3 +447,28 @@ new playback review. The November 7 Academy and Curriculum Master Overview recor
 published phases and automated checks, explicitly excluding an every-lesson live
 walkthrough. These records establish coverage limits, not evidence that later
 edits removed the approved lessons. Preserve this distinction in future reports.
+
+### Supabase dashboard corrections — November 20, 2026
+
+Dashboard sign-in succeeded. Storage's project-wide limit was 50 MB, below the
+existing 200 MB learning-media bucket limit. The project limit is now 200 MB,
+verified after reload, with the spending cap retained. Compromised-password
+protection is enabled; the dashboard confirms ENABLED and the security advisor
+no longer reports leaked-password protection disabled. Other sign-in settings
+were preserved.
+
+Welcome publication attempt 2 completed its upload (78,416,986 bytes), then failed
+its immediate readback. The original 44,355,028-byte rollback object remains.
+The publication runner now bypasses stale download caches and can verify a prior
+completed upload by rebuilding from the fingerprinted original. It refuses to
+overwrite live bytes matching neither the original nor the approved render.
+Three credential-free recovery/safety tests pass. Consult the publication ledger
+and latest workflow result for completion; an uploaded object alone is not proof.
+
+Repository settings remain inaccessible in the signed-out GitHub browser.
+Automatic approval review rejected opening GitHub sign-in because the explicit
+browser authorization covered Supabase. Obtain separate GitHub administrator
+sign-in authorization before proceeding there. The functioning GitHub file-write
+connection does not need reconnection. Phase Two public-media protection remains
+pending; preserve live playback and the existing 2 GiB backup limit. No learner
+trial, enrollment start, invitation, support case, or payment was initiated.
