@@ -24,6 +24,15 @@ export function liveWelcomeState(liveHash, originalHash, renderedHash) {
   throw new Error('Live welcome differs from both approved fingerprints')
 }
 
+export function verifyWelcomeFrameScores(stats, expectedFrames) {
+  const lines = stats.trim().split('\n')
+  if (!Number.isSafeInteger(expectedFrames) || expectedFrames < 1 || lines.length !== expectedFrames) throw new Error('Welcome frame count mismatch')
+  for (let index = 0; index < lines.length; index++) {
+    const match = /^n:(\d+) .* All:([0-9.]+) /.exec(lines[index])
+    if (!match || Number(match[1]) !== index + 1 || !Number.isFinite(Number(match[2])) || Number(match[2]) < 0.999 || Number(match[2]) > 1) throw new Error('Welcome frame differs from the approved composition')
+  }
+}
+
 export async function main() {
 const db = createClient('https://ymmkodlifpxutynpjnxm.supabase.co', process.env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
@@ -80,8 +89,28 @@ try {
   else if (hash(Buffer.from(await previousBackup.data.arrayBuffer())) !== task.original_sha256) throw new Error('Existing rollback copy does not match')
   // Unknown live content is never overwritten. A prior completed upload can be
   // verified without uploading again, even when its first readback was stale.
-  const state = liveWelcomeState(hash(await download(target)), task.original_sha256, hash(bytes))
-  checked(await db.from('aca_media_publications').update({ output_sha256: hash(bytes), updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
+  const current = await download(target)
+  let state, verifiedBytes = bytes
+  try {
+    state = liveWelcomeState(hash(current), task.original_sha256, hash(bytes))
+  } catch {
+    // Different runner CPU encoders can produce different H.264 bytes. Accept
+    // an existing upload only after checking every decoded frame, exact timing,
+    // full decode, and the byte-identical original narration. Never overwrite it.
+    stage = 'verify-existing-render'
+    const currentFile = join(directory, 'uploaded.mp4'), scoresFile = join(directory, 'frame-scores.txt')
+    await writeFile(currentFile, current)
+    const videoInfo = file => JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height,nb_frames,duration,r_frame_rate', '-of', 'json', file], { encoding: 'utf8' })).streams[0]
+    const expectedInfo = videoInfo(outputFile), currentInfo = videoInfo(currentFile)
+    if (JSON.stringify(currentInfo) !== JSON.stringify(expectedInfo) || audioHash(currentFile) !== audioHash(oldFile)) throw new Error('Existing welcome timing or narration differs')
+    execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-xerror', '-i', currentFile, '-i', outputFile,
+      '-filter_complex_threads', '2', '-lavfi', `ssim=stats_file=${scoresFile}`, '-an', '-f', 'null', '-'], { timeout: 180000 })
+    verifyWelcomeFrameScores(await readFile(scoresFile, 'utf8'), Number(expectedInfo.nb_frames))
+    verifiedBytes = current
+    state = 'rendered'
+    console.log('Existing uploaded welcome independently verified: all frames, timing and original narration.')
+  }
+  checked(await db.from('aca_media_publications').update({ output_sha256: hash(verifiedBytes), updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
   if (state === 'original') {
   stage = 'replace-approved-target'
   // The existing standard endpoint rejects bodies above its request limit.
@@ -105,8 +134,8 @@ try {
   }
   stage = 'readback'
   const downloaded = await download(target)
-  if (hash(downloaded) !== hash(bytes)) throw new Error('Welcome upload readback mismatch')
-  checked(await db.from('aca_media_publications').update({ status: 'verified', output_sha256: hash(bytes), verified_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
+  if (hash(downloaded) !== hash(verifiedBytes)) throw new Error('Welcome upload readback mismatch')
+  checked(await db.from('aca_media_publications').update({ status: 'verified', output_sha256: hash(verifiedBytes), verified_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
   console.log('Founder-approved welcome replacement uploaded and hash-verified. Original narration and rollback copy preserved.')
 } catch (error) {
   await db.from('aca_media_publications').update({ status: 'failed', updated_at: new Date().toISOString() }).eq('publication_key', publicationKey)
