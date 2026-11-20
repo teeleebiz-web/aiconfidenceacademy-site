@@ -1,10 +1,10 @@
 name: Publish approved Academy welcome
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
       - 'operations/approved-welcome-publication.mjs'
-      - '.github/workflows/approved-welcome-publication.yml'
 permissions:
   contents: read
 concurrency:

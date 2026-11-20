@@ -413,3 +413,37 @@ authentication configuration surface; database SQL is not that setting.
 The existing Owner link and password entry are installed. No authenticated owner
 or learner trial, charge, invitation, case, or assistant-recovery exercise was
 started during this correction. Terrence controls when those trials begin.
+
+
+### Confirmed publication and remaining access boundary
+
+Revision ab1753b12ab556988ea6426bea8ceae876be5ec5 installed the bounded support
+release workflow, deployment reconciliation and the Journey Two/Three dashboard
+entry correction. Portal CI 44725845475 completed successfully, including its
+database and credential-free container gates. Both Vercel project status checks
+reported success. The served /learn/ and /control-center/ HTML plus every newly
+referenced compiled file matched the released bytes. The existing coding setting
+is enabled and auto_release_enabled is true. No support case, trial, invitation
+or charge was created to exercise this installation. Publication evidence is
+separate from proof that an assistant repaired a real learner's problem.
+
+The approved welcome is NOT uploaded yet. The runner rendered 78,414,881 bytes,
+verified decode and original AAC narration, and preserved the 44,355,028-byte
+original as a private rollback copy. Standard and TUS uploads both returned 413;
+the 200 MiB bucket limit is not sufficient to explain the rejection, so inspect
+the project-wide Storage setting. The live object still has its October 6
+revision. Workflow 44725561276 failed safely; the service-only ledger says failed.
+After correcting the effective size limit, dispatch approved-welcome-publication
+for the same approved asset and require verified readback before reporting success.
+
+The Supabase dashboard is signed out in the available browser. Connected database
+SQL tools do not expose project Auth/Storage configuration. GitHub file writes
+work, but repository visibility settings require administrator UI access. Do not
+ask Terrence to reconnect functioning file/database connectors or paste credentials.
+
+Earlier completion records were scoped: ACA_Current_Work_Checkpoint.docx records
+36 lessons/six workbooks and 43 storage references while explicitly excluding a
+new playback review. The November 7 Academy and Curriculum Master Overview records
+published phases and automated checks, explicitly excluding an every-lesson live
+walkthrough. These records establish coverage limits, not evidence that later
+edits removed the approved lessons. Preserve this distinction in future reports.
