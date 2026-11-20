@@ -136,3 +136,16 @@ describe('Dashboard', () => {
    expect(screen.queryByRole('button',{name:/open lesson/i})).toBeNull()
    expect(screen.queryByText(/welcome, learner/i)).toBeNull()
  })
+
+it.each([2, 3])('opens Journey %s through its installed first lesson instead of an obsolete welcome', async (number) => {
+  const onOpenLesson = vi.fn()
+  const onOpenIntroduction = vi.fn()
+  const nextJourney = { ...journey, id: `journey-${number}`, journey_number: number }
+  const firstLesson = { ...lesson, id: `lesson-${number}`, journey_id: nextJourney.id, page_id: `${number}.1` }
+  render(<Dashboard enrollment={enrollment} journeys={[nextJourney]} lessons={[firstLesson]} progress={[]}
+    introductions={[{ ...introduction, journey_id: nextJourney.id, status: 'draft' }]}
+    learnerName="Learner" onOpenLesson={onOpenLesson} onOpenIntroduction={onOpenIntroduction} />)
+  await userEvent.click(screen.getByRole('button', { name: /Begin Journey/ }))
+  expect(onOpenLesson).toHaveBeenCalledWith(firstLesson)
+  expect(onOpenIntroduction).not.toHaveBeenCalled()
+})

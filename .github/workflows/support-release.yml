@@ -1,0 +1,64 @@
+name: ACA supported automatic repair release
+on:
+  workflow_run:
+    workflows: [ACA learner portal checks]
+    types: [completed]
+    branches: ['aca-agent/**']
+permissions:
+  contents: read
+concurrency:
+  group: aca-automatic-support-release
+  cancel-in-progress: false
+jobs:
+  release:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify trusted release controls
+        run: node --test operations/support-release.test.mjs
+      - name: Confirm the current bounded repair and isolated checks
+        id: plan
+        env:
+          ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          ACA_RELEASE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: node operations/support-release.mjs plan
+      - uses: actions/checkout@v4
+        if: steps.plan.outputs.source_sha != ''
+        with:
+          ref: ${{ steps.plan.outputs.source_sha }}
+          path: release-source
+          persist-credentials: false
+      - name: Build checked source without credentials or network
+        if: steps.plan.outputs.source_sha != ''
+        run: |
+          docker pull node:24-bookworm
+          mkdir -p /tmp/aca-support-output release-source/node_modules
+          docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 --memory 1536m --cpus 2 --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,nosuid,nodev,size=256m --mount "type=bind,src=$PWD/release-source,dst=/workspace,readonly" --mount "type=bind,src=$PWD/node_modules,dst=/workspace/node_modules,readonly" --mount type=bind,src=/tmp/aca-support-output,dst=/output --workdir /workspace --env HOME=/tmp node:24-bookworm node node_modules/vite/bin/vite.js build --config portal/vite.config.ts --configLoader runner --outDir /output/learn
+      - name: Publish only while the case, source and checks still match
+        if: steps.plan.outputs.source_sha != ''
+        env:
+          ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          ACA_RELEASE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: node operations/support-release.mjs publish
+      - name: Record an incomplete build without closing its case
+        if: failure() && steps.plan.outputs.source_sha != ''
+        env:
+          ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          ACA_RELEASE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: node operations/support-release.mjs failed

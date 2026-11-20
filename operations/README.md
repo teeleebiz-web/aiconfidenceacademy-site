@@ -1092,3 +1092,37 @@ Official references checked for this review:
 https://supabase.com/docs/guides/platform/clone-project
 https://vercel.com/docs/environment-variables/sensitive-environment-variables
 https://vercel.com/docs/cron-jobs/manage-cron-jobs
+
+
+## Supported automatic repair publication — November 20, 2026
+
+Terrence authorized completing the existing technical repair process. The added
+`support-release.yml` consumes the existing credential-free portal CI result for
+an `aca-agent/<job-id>` candidate. Trusted main-branch controls recheck the case
+generation, current main revision, paid reservation, reproduced regression and
+all three isolated CI jobs. Only the existing single-category source allowlist
+and one added regression are accepted. The release repeats its production build
+in a container without credentials or network; only expected compiled portal
+files are added. Publication uses a non-forced main update with the original base
+as parent. Stale source/case state prevents release. No new model allowance,
+financial/account authority, hosting service or repair category is introduced.
+
+The existing diagnostic-triggered worker reconciles published revisions against
+GitHub Pages, the checkout Vercel deployment, exact served file hashes and backend
+health. Failed deployments restore the previous tree only while main still equals
+that repair; later owner work is preserved. Uncertain publication remains visible.
+The owner support snapshot shows preparing, published, verified, rolled-back or
+needs-attention status. Publication verification alone never closes a requester
+case or claims that a private learner action recovered. That distinction remains
+unresolved for symptoms requiring an authenticated reproduction. No live support
+case or trial is started by installation; Terrence will initiate the assistant
+trial separately. Activation is controlled by `auto_release_enabled` alongside
+the existing enabled setting.
+
+The November approved pre-curriculum welcome uses its original storage path. Its
+publication runner binds the approved HeyGen file and original film to SHA-256
+fingerprints, preserves the original AAC narration and all other presenter frames,
+keeps a private rollback copy, and verifies the uploaded bytes. Large output uses
+Supabase's fixed 6 MiB resumable upload chunks, preserving rendered quality. The
+service-only publication ledger records actual completion, rather than treating
+a render or workflow start as installation.

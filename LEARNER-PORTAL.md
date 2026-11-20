@@ -378,3 +378,38 @@ server-controlled owner permission before opening the control center, where
 **Curriculum & releases** provides lesson and media inspection. This change
 restores the entry point. Authenticated owner curriculum review was not exercised
 with a live owner session during this navigation correction.
+
+
+## Readiness correction reconciliation — November 20, 2026
+
+The prior review combined actual defects, incomplete work and verification gaps.
+These are distinct. Journey Three's standalone welcome is explicitly obsolete
+under academy/AGENTS.md; no missing introduction should be recreated. Journey Two
+already starts with its approved 2.1 recording in the construction route. The
+learner dashboard now opens the corresponding first lesson through its existing
+access checks for Journeys Two/Three, avoiding a draft/duplicate entry.
+
+Journeys Four–Six retain their existing separate draft welcome records. The saved
+September working master explicitly describes unfinished recordings and a later
+founder review/recording decision. There is no evidence that their standalone
+welcomes were retired; do not generalize Journey Three's decision to them or
+produce replacement curriculum without that decision. All installed .1 lessons
+remain unchanged. The draft status is not evidence that approved lessons vanished.
+
+The approved November founder welcome publication runs against its exact existing
+private object and records success only after upload/readback. Consult the
+service-only `aca_media_publications` ledger for the actual result.
+
+Phase Two direct asset files remain exposed through the public repository/Pages
+origin. Removing page links cannot protect those bytes or Git history. A complete
+correction requires private media delivery plus withdrawal of public repository
+access; preserve existing playback until that coordinated cutover can be made.
+Moving the roughly 1.05 GB Phase Two package into the existing private backup
+scope would exceed its approved 2 GiB bound (current private files roughly 1.65
+GB before this welcome update). Do not silently exceed the backup limit or remove
+existing backup coverage. Supabase leaked-password protection also requires its
+authentication configuration surface; database SQL is not that setting.
+
+The existing Owner link and password entry are installed. No authenticated owner
+or learner trial, charge, invitation, case, or assistant-recovery exercise was
+started during this correction. Terrence controls when those trials begin.

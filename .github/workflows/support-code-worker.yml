@@ -31,6 +31,11 @@ jobs:
         run: node --test academy/support/code-*.test.mjs operations/code-worker.test.mjs
       - name: Prepare fixed isolated runtime
         run: docker pull node:24-bookworm
+      - name: Reconcile released repairs against the served revision
+        env:
+          ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node operations/support-release-reconcile.mjs
       - name: Investigate one new case and prepare a tested draft
         env:
           ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}

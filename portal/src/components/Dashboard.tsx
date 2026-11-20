@@ -110,7 +110,8 @@ export function Dashboard({
 
         {journeys.map((journey) => {
           const journeyLessons = lessons.filter((lesson) => lesson.journey_id === journey.id)
-          const introduction = introductions.find((item) => item.journey_id === journey.id)
+          const introduction = [2, 3].includes(journey.journey_number) ? undefined : introductions.find((item) => item.journey_id === journey.id)
+          const firstLesson = journeyLessons.find((item) => item.page_id === `${journey.journey_number}.1`)
           const journeyCompleted = journeyLessons.filter((lesson) =>
             progress.some((item) => item.lesson_id === lesson.id && item.status === 'completed'),
           ).length
@@ -148,6 +149,11 @@ export function Dashboard({
                       <strong>{introduction.content.title}</strong>
                     </span>
                     <b>{reviewMode ? 'Review welcome' : 'Begin Journey'}</b>
+                  </button>
+                ) : firstLesson ? (
+                  <button className="journey-welcome-button" type="button" onClick={() => onOpenLesson(firstLesson)}>
+                    <span><small>Journey {journey.journey_number}</small><strong>{firstLesson.title}</strong></span>
+                    <b>{reviewMode ? 'Review journey' : 'Begin Journey'}</b>
                   </button>
                 ) : null}
                 <div className="lesson-list">

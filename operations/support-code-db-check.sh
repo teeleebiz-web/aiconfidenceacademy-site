@@ -5,6 +5,7 @@ export PGDATABASE=aca_support_code_fixture
 psql -X -v ON_ERROR_STOP=1 -f operations/support-code-fixture.sql
 psql -X -v ON_ERROR_STOP=1 -f operations/support-investigation-schema.sql
 psql -X -v ON_ERROR_STOP=1 -f operations/support-code-schema.sql
+psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20261120111500_automatic_support_release.sql
 psql -X -v ON_ERROR_STOP=1 -f operations/support-code-acceptance.sql
 # Two independently connected workers must claim only one paid job.
 psql -X -v ON_ERROR_STOP=1 <<'SQL'
