@@ -13,7 +13,7 @@ const target = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
 const backup = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01_before_november_avatar.mp4'
 const hash = bytes => createHash('sha256').update(bytes).digest('hex')
 function checked(result) {
-  if (result.error) throw new Error('Private media publication operation failed')
+  if (result.error) throw new Error(`Private media operation failed (${Number(result.error.statusCode) || 0})`)
   return result.data
 }
 const db = createClient('https://ymmkodlifpxutynpjnxm.supabase.co', process.env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY, {
@@ -35,6 +35,7 @@ if (url.protocol !== 'https:' || url.hostname !== 'files2.heygen.ai' || url.user
   throw new Error('Unexpected approved media source')
 }
 const directory = await mkdtemp(join(tmpdir(), 'aca-welcome-'))
+let stage = 'prepare'
 try {
   checked(await db.from('aca_media_publications').update({ status: 'publishing', updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
   const oldFile = join(directory, 'original.mp4')
@@ -60,19 +61,24 @@ try {
   execFileSync('ffmpeg', ['-nostdin', '-v', 'error', '-xerror', '-i', outputFile, '-f', 'null', '-'], { timeout: 180000 })
   const bytes = await readFile(outputFile)
   if (bytes.length > 200 * 1024 * 1024) throw new Error('Rendered welcome exceeds the existing storage limit')
+  console.log(`Rendered welcome verified: ${bytes.length} bytes.`)
+  stage = 'rollback-copy'
   const previousBackup = await bucket.download(backup)
   if (previousBackup.error) checked(await bucket.upload(backup, original, { contentType: 'video/mp4', upsert: false }))
   else if (hash(Buffer.from(await previousBackup.data.arrayBuffer())) !== task.original_sha256) throw new Error('Existing rollback copy does not match')
   // Check again immediately before the sole live replacement.
   if (hash(Buffer.from(await checked(await bucket.download(target)).arrayBuffer())) !== task.original_sha256) throw new Error('Live welcome changed during publication')
+  stage = 'replace-approved-target'
   checked(await bucket.update(target, bytes, { contentType: 'video/mp4', cacheControl: '0' }))
+  stage = 'readback'
   const downloaded = Buffer.from(await checked(await bucket.download(target)).arrayBuffer())
   if (hash(downloaded) !== hash(bytes)) throw new Error('Welcome upload readback mismatch')
   checked(await db.from('aca_media_publications').update({ status: 'verified', output_sha256: hash(bytes), verified_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq('publication_key', publicationKey))
   console.log('Founder-approved welcome replacement uploaded and hash-verified. Original narration and rollback copy preserved.')
 } catch (error) {
   await db.from('aca_media_publications').update({ status: 'failed', updated_at: new Date().toISOString() }).eq('publication_key', publicationKey)
-  throw new Error('Approved welcome publication stopped. Inspect the private publication ledger.')
+  console.error(`Publication stage: ${stage}; ${/^Private media operation failed \(\d+\)$/.test(error.message) ? error.message : 'render or verification failed'}`)
+  throw new Error('Approved welcome publication stopped; original remains protected.')
 } finally {
   await rm(directory, { recursive: true, force: true })
 }
