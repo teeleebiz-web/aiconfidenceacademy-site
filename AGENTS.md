@@ -15,4 +15,44 @@ At the beginning of every ACA work session, establish the current authorized tas
 - After a substantive authorized change, update the existing continuity reference with the date, actual revision, evidence, remaining work, and exact continuation point. Update relevant operating instructions when controls change. Keep one source of truth rather than creating another plan or duplicate asset.
 - Record the chosen course of action and why, and distinguish approved direction from activation authority. Status comments are progress updates: continue authorized work until completion or a concrete decision/access blocker requires Terrence. Do not end a working turn merely after making a statement.
 
+
+## Founder production standard — November 21, 2026
+
+Terrence's controlling direction is to build and operate a premium paid academy.
+Security, reliability, accessibility, polished presentation and a coherent learner
+experience are production requirements. Minimizing subscription costs is not the
+primary objective; recommend appropriate paid plans and services when they are
+needed to meet those requirements.
+
+- Act proactively: inspect the existing architecture, approved work and current
+  provider capabilities; identify dependencies, capacity limits, access risks and
+  operational failure modes before implementation or launch. Present a reasoned
+  recommendation instead of waiting for the founder to discover each defect.
+- Preserve the Academy's established purpose, approved curriculum, branding,
+  learner records and working flows. Improve the existing system; do not introduce
+  a duplicate system or propose migration without an evidenced need and an impact,
+  validation and rollback plan.
+- Evaluate the whole production path: payment, enrollment, email delivery,
+  authentication, authorized lesson/media/workbook access, saved work, timers,
+  completion, owner controls, accessibility and mobile usability.
+- Verify protection independently of successful display or playback: enforce
+  server-side authorization, least privilege and learner data isolation; keep
+  privileged credentials private; prevent public copies of paid material from
+  bypassing access controls; secure administrator accounts and release paths.
+- Require recoverable operations: separate payment/testing environments, tested
+  deployments and rollback, monitored failures, bounded automatic repair and
+  escalation, and independently recoverable database AND media backups. Verify
+  restoration and capacity before expanding the protected-media footprint.
+- Recommend necessary paid capabilities with their purpose, expected recurring
+  and usage costs, and alternatives. Willingness to spend is not blanket authority
+  to purchase, start a trial, accept new terms, expand limits or change hosting.
+  Existing authorization for ordinary defect repairs remains in force.
+- Report implemented controls separately from proposals and unverified claims.
+  Launch readiness requires documented evidence for the complete learner journey
+  and security/recovery boundaries; a green build or a working connection is not
+  proof of a premium, secure end-to-end service.
+
+This standard is standing project direction, not a claim that all these controls
+are already implemented or a promise that no incident can occur.
+
 The October 17, 2026 founder direction is to complete launch operations, security, policies, terms, refund disclosures, and automated support. It does not reopen approved curriculum.
