@@ -1,0 +1,38 @@
+.p2-guided-audio{margin:1.45rem clamp(1rem,3vw,2.1rem);padding:clamp(1rem,3vw,1.65rem);background:#f5f0e7;border:1px solid #dfd0b4;border-radius:15px;color:#173d59}
+.p2-guided-media-head{display:flex;align-items:flex-start;gap:1rem}
+.p2-guided-medallion{font-size:2rem;color:#d4b36b;display:grid;place-items:center;width:64px;height:64px;flex:none;background:#153b5e;border-radius:14px}
+.p2-guided-media-head .eyebrow{color:#9a702d;letter-spacing:.09em;font-size:.74rem;text-transform:uppercase;font-weight:800;margin:0 0 .35rem}
+.p2-guided-media-head h2{font:700 clamp(1.25rem,2.1vw,1.6rem) Georgia,serif;color:#123551;margin:.12rem 0 .55rem}
+.p2-guided-media-head p:last-child{font-size:.87rem;line-height:1.65;color:#4e6574;max-width:66ch}
+.p2-guided-audio audio{width:100%;max-width:640px;margin:1.1rem auto 1.4rem;display:block}
+.p2-guided-chapters-heading{font:700 1.08rem Georgia,serif;margin:0 0 .7rem;color:#123551}
+.p2-guided-chapters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}
+.p2-guided-chapters button{font:inherit;min-width:0;padding:.75rem;border:1px solid #d5c4a8;border-radius:9px;color:#1e455f;background:#fff;display:flex;align-items:flex-start;gap:.45rem;text-align:left;font-size:.8rem;line-height:1.45}
+.p2-guided-chapters button span{color:#9b7437;font-weight:800;font-size:.72rem}
+.p2-guided-chapters button strong{font-weight:750}
+.p2-guided-chapters button[aria-pressed=true]{background:#173d5e;color:#fff;border-color:#173d5e}
+.p2-guided-chapters button[aria-pressed=true] span{color:#f3cb8b}
+.p2-guided-transcript{margin:1.2rem 0 0;border-top:1px solid #e0d1b6;padding:.8rem 0 0;color:#40586c}
+.p2-guided-transcript summary{cursor:pointer;color:#153d5a;font-size:.91rem;font-weight:750}
+.p2-guided-transcript h3{font:700 1.05rem Georgia,serif;color:#173d59}
+.p2-guided-transcript p{line-height:1.75;font-size:.91rem}
+.p2-demo-clips{margin:1.45rem 0 1.75rem;background:#fffdf9;border:1px solid #d8c8ac;border-radius:17px;overflow:hidden;box-shadow:0 8px 24px rgba(12,44,76,.05)}
+.p2-demo-clips-header{padding:clamp(1rem,3vw,1.6rem);background:#102d4f}
+.p2-demo-clips-header .eyebrow{font-weight:800;letter-spacing:.1em;color:#d9ba80;font-size:.76rem;margin:0}
+.p2-demo-clips-header h3{font:700 clamp(1.35rem,2.5vw,1.75rem) Georgia,serif;color:#fff;margin:.3rem 0 .5rem}
+.p2-demo-clips-header p:last-child{font-size:.85rem;line-height:1.7;color:#e8eff4;margin:0;max-width:68ch}
+.p2-demo-clip-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.4rem;padding:.7rem;background:#f5ede0}
+.p2-demo-clip-tabs button{display:flex;align-items:center;gap:.5rem;font:inherit;font-size:.8rem;border:1px solid #e2d3bd;border-radius:9px;color:#214761;text-align:left;background:#fff;padding:.72rem .56rem;min-width:0;line-height:1.4}
+.p2-demo-clip-tabs button span{font-size:.72rem;font-weight:800;color:#a77936}
+.p2-demo-clip-tabs button[aria-pressed=true]{background:#194363;border-color:#194363;color:#fff}
+.p2-demo-clip-tabs button[aria-pressed=true] span{color:#f1d094}
+.p2-demo-clip-player{padding:1.25rem;text-align:center}
+.p2-demo-clip-player h4{color:#1b4260;font:700 1.17rem Georgia,serif;margin:.3rem 0 .9rem}
+.p2-demo-clip-player video{display:block;width:100%;max-width:640px;aspect-ratio:16/9;height:auto;object-fit:contain;background:#102d4f;margin:0 auto 1rem;border-radius:11px}
+.p2-demo-clip-player details{max-width:640px;margin:.5rem auto;border:1px solid #ded6c8;border-radius:9px;padding:.75rem 1rem;text-align:left;color:#476174}
+.p2-demo-clip-player summary{cursor:pointer;font-weight:750;color:#1c4863}
+.p2-demo-clip-player details p{font-size:.89rem;line-height:1.75}
+.p2-demo-case-note{font-size:.8rem;line-height:1.6;color:#556b79;margin:.85rem auto 0;max-width:60ch}
+.p2-guided-audio button:focus-visible,.p2-demo-clips button:focus-visible,.p2-guided-transcript summary:focus-visible{outline:3px solid #b48632;outline-offset:3px}
+@media(max-width:780px){.p2-guided-chapters,.p2-demo-clip-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.p2-guided-media-head{flex-direction:column}.p2-guided-chapters,.p2-demo-clip-tabs{grid-template-columns:1fr}.p2-demo-clip-player{padding:.8rem}}

@@ -17,12 +17,7 @@
       const controlCenter = /^\/control-center\/?$/.test(window.location.pathname)
         || ['enrollments', 'operations'].includes(params.get('view') || '')
       if (!controlCenter && params.get('view') !== 'ask-aca' && (params.get('review') === 'phase-two' || params.get('course') === 'phase-two')) {
-        const style = document.createElement('link')
-        style.rel = 'stylesheet'
-        style.href = '/learn/assets/index-Bj4AawGd.css'
-        document.head.appendChild(style)
-        const phaseTwoEntry = '/learn/assets/index-PM6hlVKZ.js'
-        await import(/* @vite-ignore */ phaseTwoEntry)
+        await import('./src/phaseTwoMain.tsx')
       } else {
         await import('./src/main.tsx')
       }

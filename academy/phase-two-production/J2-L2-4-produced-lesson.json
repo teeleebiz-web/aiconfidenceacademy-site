@@ -1,0 +1,197 @@
+{
+  "production_version": "2.4-owner-review-2026-10-10",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "2.4",
+  "primary_media": "audio",
+  "title": "Choose assistants, automation and agents",
+  "learner_promise": "Compare four ways to support your existing workflow, choose the least complex suitable pattern, and retain a bounded solution concept with human approval and a usable fallback.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Four support patterns and human authority",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Routine invoice reminder and disputed payment",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Comparison, bounded concept and feature check",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Sufficient support and retained human approval",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Compare no AI, assistant, rule-based automation and agent support for the same task.",
+    "Choose the least complex suitable pattern and explain why the other three are less suitable.",
+    "Separate support, recommendation, decision and approval.",
+    "Define allowed actions, prohibited actions, human checkpoints and monitoring.",
+    "Provide a stop and manual fallback route for missing or contradictory information.",
+    "Verify technical claims against current official documentation before adoption and save the updated concept."
+  ],
+  "teaching": [
+    {
+      "heading": "Compare one task under all four patterns",
+      "paragraphs": [
+        "Use the same input and reviewed result for each comparison. No AI may mean a person using a checklist, approved template or ordinary tool. An assistant responds to directed work; for your bounded concept, specify whether it only prepares a draft or recommendation. Automation follows defined triggers and rules. An agent may choose several actions within its permissions.",
+        "Record fit, limits, permissions and review effort for all four. A simple task may not need AI. Do not assume that an agent label grants any specific capability. Keep expected gains separate from observed results."
+      ],
+      "think_prompt": "Which exact part of your task needs flexible judgment, and which part already follows fixed rules?"
+    },
+    {
+      "heading": "Distinguish a routine reminder from an exception",
+      "paragraphs": [
+        "In the fictional case, the company allows a standard reminder only after confirming the invoice, unpaid status, recipient and absence of a dispute or payment arrangement. An ordinary checklist is the baseline. A fixed recurring path may suit ordinary automation; a varied draft may suit an assistant.",
+        "An unusual dispute changes the route. Preserve conflicting information and send the case to the accounts coordinator. Do not infer that a missing dispute flag proves no dispute exists. Do not grant sending, payment, balance-changing or refund authority merely because a system could perform those actions."
+      ],
+      "think_prompt": "What should stop if a customer says paid but the record says unpaid?"
+    },
+    {
+      "heading": "Make the authority boundary observable",
+      "paragraphs": [
+        "Support prepares information. A recommendation proposes an action with reasons. A decision selects the action. Approval permits it within the approver’s actual authority. Name the role and evidence required at each human checkpoint.",
+        "Specify allowed inputs and actions, prohibited actions and access, monitoring owner and review rhythm, stop conditions, and manual fallback. Written instructions must be matched by actual tool access and settings before adoption. Today’s comparison is planning evidence, not authorization to connect or deploy."
+      ],
+      "think_prompt": "Which action may the AI recommend while the authorized person retains the decision and approval?"
+    },
+    {
+      "heading": "Check the feature and update the concept",
+      "paragraphs": [
+        "Record the exact platform claim, official documentation title and URL, actual check date, supported behavior and limits. General documentation does not prove your account’s plan, connector, settings or tested behavior. If no platform is chosen, state that capabilities remain unverified and must be checked before adoption.",
+        "For an optional documentation example, Microsoft Learn describes Power Automate triggers, conditions and approval flows. These references establish general features; they do not establish a configured invoice system. Use your chosen platform’s current official documentation. Save the four-way comparison and updated concept in AI Solution Concept and working artifact."
+      ],
+      "think_prompt": "What is documented, what remains unverified, and what must be checked before your concept could be adopted?"
+    }
+  ],
+  "worked_case": {
+    "label": "A routine invoice reminder meets a payment dispute",
+    "setup": "FICTIONAL TRAINING EXAMPLE: A service company permits a standard reminder only when an invoice is seven days overdue, the unpaid balance and recipient are verified, and no dispute or payment arrangement is recorded. The accounts coordinator owns exception review and approval. A customer reports payment, but the record says unpaid. These are fictional company rules, not universal business requirements.",
+    "evidence_table": [
+      {
+        "claim": "This task requires an AI agent.",
+        "evidence": "The ordinary reminder has fixed rules. A checklist is the baseline; automation may suit repeated qualifying records.",
+        "action": "Compare all four patterns. Choose based on the narrow task, inputs, oversight and consequences."
+      },
+      {
+        "claim": "An assistant drafted it, so it can send it.",
+        "evidence": "Drafting and sending are separate actions. The bounded example grants drafting only.",
+        "action": "Keep recipient, balance and wording review with the accounts coordinator; do not grant sending authority."
+      },
+      {
+        "claim": "No dispute flag means the reminder can proceed.",
+        "evidence": "The customer reports payment, which contradicts unpaid status. Missing information does not resolve the conflict.",
+        "action": "Stop the routine path, preserve both records and refer investigation to the accounts coordinator."
+      },
+      {
+        "claim": "The agent recommends a refund, so the refund is approved.",
+        "evidence": "A recommendation supplies neither payment evidence nor approval from the authorized person.",
+        "action": "Retain human decision and approval. No balance change, payment or refund occurs in practice."
+      }
+    ],
+    "revised_example": "Proposed bounded concept: use a checklist for occasional reminders; consider fixed automation only for repeated verified records. An assistant may prepare a draft from supplied authorized facts. All reminder drafts remain in human review. Conflicting payment information stops the path and returns to the accounts coordinator for manual investigation. No sending, balance change or refund is authorized by this concept.",
+    "demonstration_steps": [
+      "Compare the same task under four patterns",
+      "Stop the reminder when the record conflicts",
+      "Make permissions and fallback specific",
+      "Save the comparison and updated concept"
+    ],
+    "question": "Which pattern is sufficient for the routine step, and who investigates and approves action when payment information conflicts?"
+  },
+  "application": [
+    {
+      "heading": "Compare four patterns against the same task",
+      "minutes": 8,
+      "instruction": "Continue your existing project. Use your current workflow and reviewed communication. Select one narrow step and define its input and human-reviewed result. Compare no AI, assistant, rule-based automation and agent support for fit, limits, permissions and review effort.",
+      "evidence": "Four-way comparison anchored to the existing workflow."
+    },
+    {
+      "heading": "Challenge the AI comparison and define boundaries",
+      "minutes": 9,
+      "instruction": "Use your own AI assistant with the approved comparison request and sanitized map. Accept, revise or reject a suggestion with reasons. Choose the least complex suitable pattern. Specify allowed and prohibited actions, human checkpoints, monitoring and a stop/manual route for missing or contradictory data.",
+      "evidence": "Defensible choice, corrected AI comparison and observable permission boundaries."
+    },
+    {
+      "heading": "Check technical claims and update the concept",
+      "minutes": 8,
+      "instruction": "Check any selected platform feature against its current official documentation. Record title, URL, actual check date, supported claim and configuration limits. If no platform is selected, record capabilities as unverified before adoption. Update the solution concept and save it with the comparison; do not connect accounts or deploy.",
+      "evidence": "Documentation status and bounded concept in the continuing Project Record."
+    }
+  ],
+  "approved_ai_request": "Compare no AI, assistant, rule-based automation and agent support for this workflow. Identify permissions, human approvals, monitoring, fallback and uncertainty. Do not propose live deployment. Workflow: [map].",
+  "responsibility_map_fields": [
+    "Narrow task, authorized input and reviewed result",
+    "Support versus recommendation versus decision versus approval",
+    "Allowed actions and prohibited actions/access",
+    "Checkpoint owner and required evidence",
+    "Monitoring owner and review rhythm",
+    "Missing/conflicting data stop route and manual fallback",
+    "Official documentation check and unverified capability limits"
+  ],
+  "verification": [
+    {
+      "heading": "Defend sufficient support",
+      "minutes": 3,
+      "prompt": "Explain why the chosen pattern meets the narrow need and why each of the other three is less suitable. Keep expected and observed improvements distinct."
+    },
+    {
+      "heading": "Show the stopped exception and human approval",
+      "minutes": 4,
+      "prompt": "In the fictional invoice case, explain what stops when payment information conflicts. Name the manual investigation owner. Show an adjustment AI may recommend but may not approve."
+    },
+    {
+      "heading": "Retain evidence and unresolved limits",
+      "minutes": 3,
+      "prompt": "Save the comparison and updated concept with permissions, checkpoints, monitoring, fallback and the official feature-check status. Mark unselected or unverified capabilities honestly."
+    }
+  ],
+  "completion_criteria": [
+    "All four support patterns compared against the same workflow step, input and result",
+    "Least complex suitable choice explained, with reasons the other three are less suitable",
+    "AI comparison reviewed with an accepted, revised or rejected suggestion explained",
+    "Support, recommendation, decision and approval kept distinct",
+    "Allowed and prohibited actions/access, named checkpoints, monitoring and manual fallback recorded",
+    "Missing or contradictory data produces a stop and usable human route",
+    "Technical capability claim checked against current official documentation or explicitly unverified before adoption",
+    "Updated solution concept saved without replacing earlier evidence or implying deployment approval"
+  ],
+  "handoff": "Carry your support comparison, bounded solution concept and human checkpoints into Lesson 2.5: Build a Bounded Working Prototype. The next lesson opens according to its release schedule.",
+  "editorial_notes": {
+    "status": "Founder-review draft; course, journey and lesson remain unpublished.",
+    "media": "Same approved landscape instructor and voice, four guided teaching chapters and four narrated fictional demonstrations. Founder playback acceptance remains separate.",
+    "source": "ACA_Phase_Two_Six_Week_Curriculum_Master.docx v2.0, October 4 2026, Lesson 2.4.",
+    "example_data": "Invoice age, company procedure, customer payment conflict and approval roles are fictional teaching data. Platform documentation was checked October 10 2026; no platform is connected or deployed."
+  },
+  "reference_sources": [
+    {
+      "title": "Microsoft Learn — Triggers",
+      "url": "https://learn.microsoft.com/en-us/power-automate/triggers-introduction",
+      "supports": "Triggers start flows; trigger conditions constrain runs.",
+      "checked_date": "2026-10-10"
+    },
+    {
+      "title": "Microsoft Learn — Conditions",
+      "url": "https://learn.microsoft.com/en-us/power-automate/use-expressions-in-conditions",
+      "supports": "Conditions choose paths from evaluated inputs.",
+      "checked_date": "2026-10-10"
+    },
+    {
+      "title": "Microsoft Learn — Approval flows",
+      "url": "https://learn.microsoft.com/en-us/power-automate/get-started-approvals",
+      "supports": "Approval workflows can request a human response.",
+      "checked_date": "2026-10-10"
+    },
+    {
+      "title": "Anthropic — Building effective agents",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents",
+      "supports": "Conceptual distinction between fixed workflows and dynamic agent steps; simplest sufficient approach. Historical tooling examples are not used as current capability claims.",
+      "checked_date": "2026-10-10"
+    }
+  ]
+}

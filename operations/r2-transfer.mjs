@@ -8,9 +8,10 @@ import { fileURLToPath } from 'node:url'
 import { S3Client, GetObjectCommand, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { inspect, loadKey, privateDestination, projectRef, promote, snapshotArtifacts } from './recovery.mjs'
 import { backupFailure, privateStoreFailure } from './backup-failure.mjs'
+import { encryptedSnapshotLimit } from './backup-limits.mjs'
 
 const transferFormat = 'aca-r2-transfer-v1'
-const defaultLimit = 2 * 1024 ** 3
+const defaultLimit = encryptedSnapshotLimit
 export const preservedManualBackup = 'aca-backups/71069015-2a6e-4578-bb35-b936ce364e87'
 const validName = name => /^(?:\d{8}\.bin|manifest\.bin|snapshot\.json)$/.test(name)
 const validPrefix = prefix => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(prefix)

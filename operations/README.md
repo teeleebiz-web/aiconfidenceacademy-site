@@ -1,5 +1,28 @@
 # ACA storage and configuration recovery
 
+## November 21 approved private-media capacity
+
+Terrence approved the proposed 4 GiB source/encrypted/retry bounds and continuation
+of the exact Phase Two media transfer followed by complete recovery verification.
+This supersedes historical 2 GiB capacity instructions below. Shared constants in
+`backup-limits.mjs` cover the manual/automatic copy, retry eligibility, R2 readback,
+standalone transfer defaults and retention reads. Private disk preflight requires
+12.5 GiB available after checkout/dependencies; it runs in CI and again before
+an approved migration. Retry frequency, cooldown and deadlines remain unchanged.
+
+Use the existing `ACA manual private Storage backup` workflow on reviewed main,
+with its existing verified destination and owner-custody inputs, and set
+`migrate_phase_two_media=true` only for the approved transfer. This default-false
+input uses the same backup concurrency lock. Recovery configuration and disk are
+checked before the 525 inventoried objects are copied. Every local hash is checked
+before any write; uploads refuse overwrite and destination readback must match.
+The existing full encrypted backup, download, decryption and original-hash restore
+then run. No media or hosting activation follows automatically. If interrupted,
+inspect the result and resume only with the same verified catalog; never assume
+an upload means a recoverable backup exists. Keep seven daily copies and the
+pinned original. No new subscription, bucket, credential or retention change is
+authorized by this capacity approval.
+
 ## November 8 approved Node 24 runtime alignment
 
 Terrence authorized matching production hosting to the existing Node 24 checks
@@ -1126,3 +1149,32 @@ keeps a private rollback copy, and verifies the uploaded bytes. Large output use
 Supabase's fixed 6 MiB resumable upload chunks, preserving rendered quality. The
 service-only publication ledger records actual completion, rather than treating
 a render or workflow start as installation.
+## Private Phase Two media migration — staged November 21, 2026
+
+See the current migration entry in `LEARNER-PORTAL.md`. Run
+`node operations/migrate-phase-two-media.mjs plan` in the existing private
+credential context for a read-only storage inventory and capacity comparison.
+`upload` additionally requires `ACA_PHASE_TWO_MEDIA_MIGRATION_APPROVED=true` and
+the actual enforced backup and retry limits to cover the entire collection plus
+64 MiB metadata allowance. `verify` downloads every catalogued destination and
+compares its original Git blob hash. All three use the existing source credential;
+never place it in a public file, command argument, browser, or log.
+
+The tool never changes source objects, publications, learner records or service
+plans, and never overwrites a destination. A partial transfer can be resumed only
+with matching existing bytes. Migration success alone is not activation evidence:
+the existing encrypted R2 backup and complete restore must also succeed. No
+capacity limit has been raised in this staged branch. The proposed 4 GiB bounds
+must be applied coherently to manual backup, retry checks, retention transfer
+checks and runner-disk preflight after the founder approves the change.
+
+The Vercel public artifact is controlled by `ACA_PUBLIC_SITE` together with
+`ACA_PRIVATE_PHASE_TWO_MEDIA`. Both default off. Public output contains only the
+approved pages, public marketing assets, and current portal build manifest files.
+The backend retains private metadata and the protected construction app. At domain
+cutover, set the GitHub repository variable `ACA_PUBLIC_SITE=true` along with the
+Vercel production flags. Automatic repairs then build the same private-media
+variant, retain exact public-file hash and backend-health checks, and stop
+requesting/checking disabled Pages builds (including rollback). The default
+remains the current Pages path until that explicit switch. Confirm that the
+independent monitor still diagnoses the same real service.

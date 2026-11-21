@@ -58,6 +58,16 @@ export default function handler(request, response) {
         }
     server = createAcademyServer({ password: process.env.ACA_CONSTRUCTION_PASSWORD,
       root: resolve('private-dist'), db, courseId: process.env.ACA_PHASE_ONE_COURSE_ID, enrollmentAutomation,
+      privatePhaseTwoMedia: process.env.ACA_PRIVATE_PHASE_TWO_MEDIA === 'true',
+      phaseTwoMediaAccessCheck: async (token, enrollmentId, lessonId) => {
+        const scoped = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+          auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+          global: { headers: { Authorization: `Bearer ${token}` } },
+        })
+        const result = await scoped.rpc('aca_phase_two_access_status', { p_enrollment_id: enrollmentId, p_lesson_id: lessonId })
+        if (result.error) throw new Error('Lesson access unavailable')
+        return result.data?.[0]
+      },
       workbookReviewerCheck: async token => {
         const scoped = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
           auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },

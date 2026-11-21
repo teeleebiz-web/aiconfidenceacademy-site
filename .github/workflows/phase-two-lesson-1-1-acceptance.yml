@@ -16,8 +16,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
       - name: Validate official lesson bundle syntax
-        run: node --check learn/assets/index-DN1Va1zq.js
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync } from 'node:fs'
+          import { execFileSync } from 'node:child_process'
+          const build = JSON.parse(readFileSync('learn/.vite/manifest.json', 'utf8'))
+          const entry = build['src/phaseTwoMain.tsx']?.file
+          if (!/^assets\/phaseTwoMain-[\w-]+\.js$/.test(entry || '')) throw new Error('Missing current Phase Two build')
+          execFileSync(process.execPath, ['--check', 'learn/' + entry], { stdio: 'inherit' })
+          JS
       - name: Run Lesson 1.1 media and integration acceptance checks
         run: node --test academy/phase-two-lesson-1-1-acceptance.test.mjs

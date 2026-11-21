@@ -97,7 +97,7 @@ async function outputFiles() {
   if (entries.length < 3 || entries.length > 100) throw new Error('Unexpected compiled support repair output count')
   return entries
 }
-export async function publishRelease({ db, github, plan, files }) {
+export async function publishRelease({ db, github, plan, files, publicSite = false }) {
   const current = await releaseContext(db, github, plan.runId)
   if (!current || JSON.stringify(current) !== JSON.stringify(plan)) throw new Error('Support release changed during the build')
   if (files.length < 3 || files.length > 100 || !files.every(file => permittedOutput(file.path) && typeof file.content === 'string' && Buffer.byteLength(file.content) <= 2 * 1024 * 1024)) throw new Error('Unapproved compiled output path')
@@ -110,7 +110,7 @@ export async function publishRelease({ db, github, plan, files }) {
   checked(await db.from('aca_support_releases').update({ status: 'published', updated_at: new Date().toISOString() }).eq('job_id', plan.jobId))
   // GITHUB_TOKEN commits need an explicit Pages build. Backend publication is
   // the existing Vercel Git integration. Neither change introduces a new host.
-  await github('/pages/builds', 'POST', {})
+  if (!publicSite) await github('/pages/builds', 'POST', {})
   await github('/actions/workflows/portal-ci.yml/dispatches', 'POST', { ref: 'main' })
   return commit.sha
 }
@@ -131,7 +131,7 @@ async function main() {
   const plan = JSON.parse(await readFile(planFile, 'utf8'))
   if (!plan) return
   try {
-    await publishRelease({ db, github, plan, files: await outputFiles() })
+    await publishRelease({ db, github, plan, files: await outputFiles(), publicSite: process.env.ACA_PUBLIC_SITE === 'true' })
     console.log('Supported technical repair published. Deployment reconciliation will verify the served revision.')
   } catch {
     await db.from('aca_support_releases').update({ status: 'needs_attention', updated_at: new Date().toISOString() }).eq('job_id', plan.jobId)

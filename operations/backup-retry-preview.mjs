@@ -1,4 +1,5 @@
 import { backupFailureEvidence } from './backup-failure.mjs'
+import { sourceSnapshotLimit, encryptedSnapshotLimit } from './backup-limits.mjs'
 
 // Proposed limits for review. No production runner imports this module.
 // A preview cannot grant execution authority, even for an eligible candidate.
@@ -8,8 +9,8 @@ export const proposedRetryLimits = Object.freeze({
   extraAttemptsPerBangkokDay: 1,
   cooldownMs: 5 * 60 * 1000,
   retryDeadlineMs: 10 * 60 * 1000,
-  maxSourceBytes: 2 * 1024 ** 3,
-  maxEncryptedBytes: 2 * 1024 ** 3,
+  maxSourceBytes: sourceSnapshotLimit,
+  maxEncryptedBytes: encryptedSnapshotLimit,
 })
 const integer = value => Number.isSafeInteger(value) && value >= 0
 const bangkokDay = time => new Date(time + 7 * 3600000).toISOString().slice(0, 10)

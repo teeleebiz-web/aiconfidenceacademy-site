@@ -7,6 +7,7 @@ import { manualBackup, manualRetryEvidence } from './manual-backup.mjs'
 import { mkdtemp, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { sourceSnapshotLimit, encryptedSnapshotLimit, requiredBackupDiskBytes } from './backup-limits.mjs'
 
 const saved = {liveAcaBackup:true,uploadedAndReadbackVerified:true,savedCopyDecryptionVerified:true,restoredWithOriginalHashesVerified:true,reference:'aca-backups/12345678-1234-4123-8123-123456789abc',fileCount:1,totalBytes:1,encryptedBytes:9}
 const time = Date.parse('2026-10-28T08:00:00Z')
@@ -17,7 +18,7 @@ async function captured(header = null) {
 async function fixture() {
  const error = await captured(); let clock=time, attempts=0, states=0, reservations=0; const outcomes=[]
  const state={policy_enabled:true,retry_enabled:true,credential_expires_at:'2026-11-01T00:00:00Z',run_valid:true,active_count:1,history_healthy:true,quota_day:'2026-10-28',run_attempts:0,day_attempts:0,unresolved_claims:0}
- const facts={stage:'source-snapshot',failedAt:time,privateStoreTouched:false,cleanupCompleted:true,sourceLimitBytes:2*1024**3,encryptedLimitBytes:2*1024**3,providerNotBefore:time}
+ const facts={stage:'source-snapshot',failedAt:time,privateStoreTouched:false,cleanupCompleted:true,sourceLimitBytes:sourceSnapshotLimit,encryptedLimitBytes:encryptedSnapshotLimit,providerNotBefore:time}
  const env={GITHUB_REPOSITORY:'teeleebiz-web/aiconfidenceacademy-site',GITHUB_REF:'refs/heads/main',GITHUB_RUN_ATTEMPT:'1',GITHUB_EVENT_NAME:'schedule',GITHUB_RUN_ID:'123'}
  const options={error,env,runId:'fixture',deadlineAt:time+1800000,enabled:true,now:()=>clock,sleep:async ms=>{clock+=ms},evidenceFor:()=>facts,
  db:{async rpc(name,args){if(name==='aca_backup_retry_state'){states++;return {data:{...state}}}if(name==='aca_reserve_backup_retry'){reservations++;return {data:{reserved:true,id:'claim',quota_day:state.quota_day}}}if(name==='aca_begin_backup_retry')return {data:{started:true,deadline_at:new Date(clock+600000).toISOString()}};outcomes.push(args.p_outcome);return {data:{recorded:true}}}},
@@ -54,7 +55,7 @@ test('reservation ambiguity or denial cannot run; failed child consumes the clai
 test('actual manual wrapper records cleanup and no private-store activity with real SDK backoff',async()=>{
  const env={ACA_BACKUP_OWNER_KEY_SAVED:'true',ACA_BACKUP_SOURCE_ACCESS_CONFIRMED:'true',ACA_BACKUP_KEY_BASE64:Buffer.alloc(32,7).toString('base64'),ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY:'fixture',ACA_R2_PRIVATE_CONFIRMED:`${'a'.repeat(32)}/aca-private-backups`,ACA_R2_ACCESS_KEY_ID:'fixture',ACA_R2_SECRET_ACCESS_KEY:'fixture'}
  let privateCalls=0
- await assert.rejects(manualBackup({env,now:()=>time,availableBytes:async()=>10n*1024n**3n,createStore:()=>{privateCalls++;throw Error()},createSource:(url,key,opts)=>createClient(url,key,{...opts,global:{fetch:backupSourceFetch(async()=>new Response('PRIVATE',{status:503,headers:{'retry-after':'600'}}),{captureRetry:true,now:()=>time})}})}),error=>{
+ await assert.rejects(manualBackup({env,now:()=>time,availableBytes:async()=>requiredBackupDiskBytes,createStore:()=>{privateCalls++;throw Error()},createSource:(url,key,opts)=>createClient(url,key,{...opts,global:{fetch:backupSourceFetch(async()=>new Response('PRIVATE',{status:503,headers:{'retry-after':'600'}}),{captureRetry:true,now:()=>time})}})}),error=>{
   const facts=manualRetryEvidence(error);assert.equal(facts.stage,'source-snapshot');assert.equal(facts.cleanupCompleted,true);assert.equal(facts.privateStoreTouched,false);assert.equal(facts.providerNotBefore,time+600000);return true
  });assert.equal(privateCalls,0)
  assert.equal(manualRetryEvidence(Object.assign(new Error(),{stage:'source-snapshot',cleanupCompleted:true})),null)

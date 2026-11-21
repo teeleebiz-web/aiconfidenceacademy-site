@@ -28,11 +28,13 @@ test('review preview serves public pages but refuses learner and API paths', asy
     await writeFile(join(root, 'explore/index.html'), '<h1>Explore ACA</h1>')
     await writeFile(join(root, 'assets/explore.css'), 'body { color: navy }')
     await writeFile(join(root, 'academy/secret.html'), 'protected')
+    await mkdir(join(root, 'assets/videos/phase-two-lesson-1-1'), { recursive: true })
+    await writeFile(join(root, 'assets/videos/phase-two-lesson-1-1/private.mp4'), 'paid-media')
     assert.match((await request(root, 'explore/')).body, /Explore ACA/)
     assert.equal((await request(root, 'explore')).status, 200)
     assert.equal((await request(root, 'assets/explore.css')).status, 200)
     assert.equal((await request(root, 'explore/', 'HEAD')).body, null)
-    for (const path of ['academy/secret.html', 'learn/', 'api/academy/phase-one', 'assets/../academy/secret.html']) {
+    for (const path of ['academy/secret.html', 'learn/', 'api/academy/phase-one', 'assets/../academy/secret.html', 'assets/videos/phase-two-lesson-1-1/private.mp4', 'assets/videos/%70hase-two-lesson-1-1/private.mp4']) {
       assert.equal((await request(root, path)).status, 404, path)
     }
     assert.equal((await request(root, 'explore/', 'POST')).status, 405)

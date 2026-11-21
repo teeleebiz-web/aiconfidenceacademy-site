@@ -176,7 +176,16 @@ export async function handleControlCenter(req, res, config) {
         const entries=[{label:'Instructor introduction',file:introduction,kind:'video'},
           ...(report.guided_audio?.file?[{label:'Guided instruction',file:report.guided_audio.file,kind:'audio'}]:[]),
           ...(report.demonstrations||[]).map((item,index)=>({label:`Demonstration ${index+1} · ${item.title}`,file:item.file,kind:'video'}))]
-        for(const item of entries){if(typeof item.file!=='string'||basename(item.file)!==item.file)continue;try{const file=await stat(join(config.root,folder,item.file));if(file.isFile())media.push({label:item.label,kind:item.kind,url:`${automation.appUrl.replace(/\/$/,'')}/${folder}/${encodeURIComponent(item.file)}`})}catch{ /* An absent asset is not represented as ready. */ }}
+        if (config.privatePhaseTwoMedia) {
+          const bundle = await signPhaseTwoMedia(db, lesson.page_id, 900)
+          for (const item of entries) {
+            const url = bundle.files[`/${folder}/${item.file}`]
+            if (!url) throw new Error('Private media missing from inventory')
+            media.push({label:item.label,kind:item.kind,url})
+          }
+        } else {
+          for(const item of entries){if(typeof item.file!=='string'||basename(item.file)!==item.file)continue;try{const file=await stat(join(config.root,folder,item.file));if(file.isFile())media.push({label:item.label,kind:item.kind,url:`${automation.appUrl.replace(/\/$/,'')}/${folder}/${encodeURIComponent(item.file)}`})}catch{ /* An absent asset is not represented as ready. */ }}
+        }
       } else {
         for(const [key,title,kind] of [['video_path','Lesson video','video'],['audio_path','Guided audio','audio']]){
           if(!lesson.content?.[key])continue
@@ -316,3 +325,4 @@ export async function recordAutomationRun(req,res,config,job,handler) {
   }
   res.writeHead(status,headers);res.end(payload)
 }
+import { signPhaseTwoMedia } from '../phase-two-media.mjs'
