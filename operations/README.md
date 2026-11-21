@@ -1206,3 +1206,26 @@ variant, retain exact public-file hash and backend-health checks, and stop
 requesting/checking disabled Pages builds (including rollback). The default
 remains the current Pages path until that explicit switch. Confirm that the
 independent monitor still diagnoses the same real service.
+
+
+## Verified 4 GiB recovery and runtime — November 22, 2026
+
+The November 21 capacity approval and completed private migration supersede the
+historical pending-capacity language above. The shared source/encrypted/retry
+bounds are 4 GiB, and disk preflight requires 13,421,772,800 available bytes.
+The seven daily copies, pinned original, single retry, five-minute cooldown,
+ten-minute retry deadline and 30-minute workflow limit remain unchanged.
+R2 artifact upload/readback and download overlap at most three transfers;
+a failure stops scheduling and waits for active writers before local cleanup.
+Source snapshot/encryption and retention deletion remain serial.
+
+The approved manual timing run 44926966979 on main
+`336c87cf47ad1799026be42d5bf69605775224e0` completed full saved-copy recovery
+in 6 minutes 35 seconds after 168 recovery tests passed. Its receipt verifies
+594 files, 2,778,189,927 source bytes and all original hashes; all four recovery
+flags are true. Migration was false because all approved files already existed.
+This leaves 3 minutes 25 seconds inside the existing retry deadline for the
+current inventory under the observed provider conditions. It is not evidence
+that an automatic retry was triggered, nor a guarantee under future latency.
+Do not rerun the migration or manufacture a production failure for this proof.
+See the dated receipt and remaining launch gates in `LEARNER-PORTAL.md`.

@@ -769,3 +769,53 @@ the same 594-file/full-restore receipt and completion comfortably inside ten
 minutes. Do not claim the runtime problem solved from fixture tests alone.
 Edge is disconnected; reconnection was requested once and remains the access
 blocker for dispatching that run and completing signed-in owner playback.
+
+
+## November 22, 2026 — live recovery timing verified
+
+Edge access was restored without reinstalling or reconnecting the browser.
+The approved manual backup ran on reviewed main
+`336c87cf47ad1799026be42d5bf69605775224e0`, with media migration disabled:
+https://github.com/teeleebiz-web/aiconfidenceacademy-site/actions/runs/44926966979
+Job 136915068844 passed all 168 recovery checks before the live operation.
+The backup/restore step ran from 16:54:15 to 17:00:50 UTC on November 21
+(00:54:15 to 01:00:50 Manila on November 22): 6 minutes 35 seconds.
+The complete workflow took 8 minutes 4 seconds, including setup. The live
+backup step is 6 minutes faster than the preceding 12-minute-35-second run
+and leaves 3 minutes 25 seconds inside the existing ten-minute retry deadline.
+This demonstrates runtime at the current collection size, not a guarantee of
+future provider latency or proof of a naturally triggered automatic retry.
+
+The receipt confirms all four recovery flags true, 594 files,
+2,778,189,927 original bytes and 2,778,444,848 encrypted artifact bytes.
+The saved copy is `aca-backups/2fc27b0d-1014-4399-b780-22511a85beeb`.
+Every file was uploaded/read back, downloaded, decrypted and restored with
+its original hash verified. No media migration, source overwrite, retention
+change, retry-limit change, hosting cutover or access activation occurred.
+
+Vercel production deployment `dpl_DnpxCQGenoF6bRrcfafDG13d5P3f` is READY on
+that same main revision. The checkout health endpoint returned 200 with
+`aca-backend` / `ok`; the public learner entry returned 200.
+The existing production Control Center opens with protected owner access.
+The separate protected preview opens successfully but requests an Academy
+sign-in. Its owner playback/caption check remains pending that sign-in:
+https://aiconfidenceacademy-site-mkvf-fxpvbuxhu.vercel.app/learn/?course=phase-two
+Do not transfer authentication storage or manufacture a user session.
+The preview sign-in tab and successful recovery run were left available.
+
+Next: finish signed-in owner playback/captions, then complete the remaining
+coordinated public-hosting and repository protection gates under the applicable
+explicit activation approval. Public originals still exist until cutover;
+this recovery result does not establish overall launch readiness.
+
+Owner sign-in continuation: Terrence explicitly asked Knowledge to perform the
+sign-in. The normal preview email-link request delivered successfully, but its
+return address was the live `/learn/` page. The current app correctly requests
+its own origin. Signed-in Supabase URL Configuration shows the live learner URL
+as Site URL and an empty redirect allowlist, explaining the fallback. The
+existing Supabase account sign-in was completed using its linked ChatGPT identity.
+The exact preview `/learn/` callback above is staged in Add new redirect URLs;
+no authentication settings have been saved. Browser action-time confirmation
+was requested for temporarily allowing that exact callback, with removal after
+testing. An existing-password sign-in is the alternative. No wildcard redirect,
+credential extraction, session transfer, new account or role grant was used.
