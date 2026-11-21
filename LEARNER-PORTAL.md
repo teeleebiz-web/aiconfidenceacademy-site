@@ -527,3 +527,35 @@ and authenticated roles remain denied direct access to the private function.
 A replay of all six actual Phase One workbook definitions through the repaired
 handler returns every stored page (32, 26, 24, 24, 24, 24). This replay is not
 a claim of a newly started learner session.
+
+#### Production verification of the November 21 repairs
+
+PR 122 merged as `511c6b68b9606bc3b0d79a8cb00628f775be3c10` after all
+three CI gates passed on final repair revision
+`37a75959ca74686d430db89f9484bc5c11279ff5` (run 44881237978). The additional
+Phase Two acceptance job passed (44881237994). Post-merge portal CI also passed
+all three jobs (44881643911). Local checks passed 187 portal, 247 backend and
+153 recovery tests; the optional live invitation test remained skipped.
+
+GitHub Pages deployment 44881643810 succeeded. Vercel production deployment
+`dpl_5J5jwh5ntpY6Stv2uDmFNgP3YDyx` became READY and owns the checkout domain.
+The served learning and control-center HTML plus all six new referenced scripts
+matched the committed bytes. Live health returned 200; anonymous owner and
+workbook requests still returned 401.
+
+The signed-in owner control center displays the corrected individual-enrollment
+calendar label. Every one of its 36 Phase Two lesson inspections was opened:
+all returned six media entries (introduction, guided audio, four demonstrations)
+and nonempty recorded outcomes. The revised 1.1–1.4, landscape 2.1 and wide
+6.1–6.6 introductions match the learner selection. Lesson 6.6's six media
+players loaded metadata with nonzero durations and no browser media errors.
+This verifies inspector rendering and metadata, not a full watch of every film
+or a newly enrolled learner's entire program. No learner timer was started.
+
+The next unresolved repair is private Phase Two media delivery and withdrawal
+of its public repository/Pages copies. The GitHub file connector works; the
+administrator browser is at GitHub sign-in. Account plan and Pages behavior
+must be checked before repository privacy changes. Do not break the live site,
+raise the existing backup transfer limit, or mark media protected prematurely.
+The current owner authorization covers defect corrections; the remaining
+administrator sign-in requires the account holder, not another repair approval.
