@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { extname, resolve, sep } from 'node:path'
+import { protectedLessonAsset } from './public-site.mjs'
 
 const publicSections = new Set([
   'ask', 'about', 'accessibility', 'ai-learning-disclaimer', 'assets', 'contact',
@@ -32,7 +33,7 @@ export async function servePublicPreview(request, response, route, root = resolv
   }
   const name = path === '/' ? 'index.html' : path.slice(1) + (path.endsWith('/') ? 'index.html' : !extname(path) ? '/index.html' : '')
   const first = name.split('/')[0]
-  if (!(rootFiles.has(name) || publicSections.has(first)) || !mime[extname(name)]) {
+  if (protectedLessonAsset(name) || !(rootFiles.has(name) || publicSections.has(first)) || !mime[extname(name)]) {
     response.writeHead(404); response.end(); return
   }
   const file = resolve(root, name)

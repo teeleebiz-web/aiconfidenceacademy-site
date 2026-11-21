@@ -34,6 +34,24 @@ test('construction gate refuses missing or short passwords', () => {
   assert.throws(() => createAcademyServer({ password: 'short' }), /24 characters/)
 })
 
+test('private Phase Two media uses learner authentication and rejects an unapproved origin', async () => {
+  let calls = 0
+  const server = createAcademyServer({ password:'test-only-long-construction-password', root:'.', courseId:'phase-one', privatePhaseTwoMedia:true,
+    enrollmentAutomation:{phaseTwoCourseId:'00000000-0000-4000-8000-000000000001'}, db:{auth:{getUser(){ calls++; throw new Error('unexpected') }}} })
+  server.listen(0,'127.0.0.1'); await once(server,'listening')
+  const url=`http://127.0.0.1:${server.address().port}/api/learner/phase-two-media/00000000-0000-4000-8000-000000000002`
+  try {
+    const missing=await fetch(url)
+    assert.equal(missing.status,401); assert.equal(missing.headers.get('www-authenticate'),null)
+    assert.equal((await fetch(url,{headers:{Origin:'https://unapproved.test','X-ACA-Access-Token':'session'}})).status,403)
+    const options=await fetch(url,{method:'OPTIONS',headers:{Origin:'https://aiconfidenceacademy.org'}})
+    assert.equal(options.status,204);assert.equal(options.headers.get('access-control-allow-origin'),'https://aiconfidenceacademy.org')
+    assert.equal(calls,0)
+    const publicCopy = await fetch(`http://127.0.0.1:${server.address().port}/assets/videos/phase-two-lesson-1-1/intro.mp4`)
+    assert.equal(publicCopy.status,404)
+  } finally { server.closeAllConnections(); await new Promise(resolve=>server.close(resolve)) }
+})
+
 test('Explore ChatGPT signs only its three approved videos after authentication', async () => {
   const signedPaths = []
   let unavailable = false

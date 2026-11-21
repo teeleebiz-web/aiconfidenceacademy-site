@@ -31,6 +31,24 @@
   ],
   "routes": [
     {
+      "src": "^/(.*)$",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000"
+      },
+      "continue": true
+    },
+    {
+      "src": "^/(learn|control-center)(/.*)?$",
+      "headers": { "X-Robots-Tag": "noindex, nofollow, noarchive" },
+      "continue": true
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
       "src": "^/api/bookstore/([^/]+)/?$",
       "dest": "/api/bookstore.mjs?route=$1"
     },

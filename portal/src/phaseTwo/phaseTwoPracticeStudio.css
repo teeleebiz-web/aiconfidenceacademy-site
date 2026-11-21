@@ -1,0 +1,40 @@
+.p2-practice-studio{background:#fffdf9;border:1px solid #ddcfb8;border-radius:18px;overflow:hidden;margin:1.4rem 0 2rem;box-shadow:0 14px 26px rgba(16,45,79,.045);color:#163d5c}
+.p2-practice-studio-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;background:#102d4f;color:#fff;padding:clamp(1.3rem,3vw,2rem)}
+.p2-practice-kicker,.p2-practice-studio-step-label{color:#e3bd79;font-size:.74rem;font-weight:850;letter-spacing:.09em;text-transform:uppercase;margin:0}
+.p2-practice-studio-header h2{font:700 clamp(1.5rem,2.7vw,2.05rem) Georgia,serif;margin:.45rem 0 .8rem;color:#fff}
+.p2-practice-studio-header p:not(.p2-practice-kicker){font-size:.89rem;line-height:1.65;color:#e5eaf0;max-width:68ch}
+.p2-practice-studio-header>span{white-space:nowrap;color:#173f60;background:#f0e0c0;border-radius:30px;font-size:.76rem;font-weight:850;padding:.4rem .7rem}
+.p2-practice-studio-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;background:#f4ecdd;padding:1rem}
+.p2-practice-studio-steps button{display:flex;align-items:center;gap:.6rem;min-width:0;font:inherit;font-size:.83rem;font-weight:750;text-align:left;line-height:1.35;color:#214a64;border:1px solid #e0d1bb;background:#fff;padding:.8rem;border-radius:9px}
+.p2-practice-studio-steps button strong{display:grid;place-items:center;flex:0 0 23px;height:23px;border-radius:50%;background:#f3e4c7;color:#977037;font-size:.75rem}
+.p2-practice-studio-steps button[aria-current=step]{background:#1c4267;color:#fff;border-color:#1c4267}
+.p2-practice-studio-steps button[aria-current=step] strong{background:#d4b36b;color:#102d4f}
+.p2-practice-studio-body{padding:clamp(1.15rem,3vw,2rem)}
+.p2-practice-studio-body .p2-practice-studio-step-label{color:#916b36}
+.p2-practice-studio-body h3{font:700 clamp(1.25rem,2.4vw,1.7rem) Georgia,serif;margin:.35rem 0 1.25rem;color:#183a56}
+.p2-practice-fields{display:grid;gap:1.1rem;max-width:900px}
+.p2-practice-fields>p{color:#4c6575;font-size:.91rem;line-height:1.7}
+.p2-practice-fields label{display:grid;gap:.45rem;color:#173e5c;font-size:.89rem;font-weight:750}
+.p2-practice-fields textarea,.p2-practice-fields input,.p2-practice-fields select{font:inherit;width:100%;box-sizing:border-box;padding:.8rem .95rem;border:1px solid #bdc7cd;border-radius:9px;background:white;color:#133b57;line-height:1.65;font-weight:450}
+.p2-practice-fields textarea:focus-visible,.p2-practice-fields input:focus-visible,.p2-practice-fields select:focus-visible,.p2-practice-studio button:focus-visible{outline:3px solid #b48632;outline-offset:3px}
+.p2-practice-capability{border:1px solid #e0d3bf;background:#fbf6ee;border-radius:12px;padding:1rem 1.2rem;display:grid;gap:.8rem}
+.p2-practice-capability>strong{color:#946f35;font-size:.84rem}
+.p2-practice-fields h4{font:700 1.2rem Georgia,serif;margin:.3rem 0;color:#193e59}
+.p2-practice-ai{border:1px solid #d4c09c;border-radius:14px;padding:1.2rem;background:#f8f2e8}
+.p2-practice-ai h4{margin:.1rem 0 .5rem}
+.p2-practice-ai>p{color:#536e7d;font-size:.86rem;line-height:1.65}
+.p2-practice-prompt{background:#fff;border-left:4px solid #b48632;border-radius:0 8px 8px 0;padding:.7rem 1rem;color:#274964;font-size:.91rem;line-height:1.7}
+.p2-practice-ai button,.p2-practice-save button{font:inherit;font-weight:750;background:#163d5e;color:#fff;border:0;border-radius:9px;padding:.8rem 1.1rem;margin-top:.8rem}
+.p2-practice-save button:disabled{opacity:.45;cursor:default}
+.p2-practice-summary{border:1px solid #d9e0e3;border-radius:13px;padding:1rem;background:#f7fafb}
+.p2-practice-summary pre{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;font:inherit;color:#3f5a6b;font-size:.82rem;max-height:320px;overflow:auto}
+.p2-practice-save{border-top:1px solid #eadfce;padding:.95rem 0}
+.p2-practice-save p{color:#4b6274;font-size:.84rem}
+.p2-practice-save small{display:block;margin-top:.65rem;color:#6b7a83;font-size:.76rem}
+.p2-practice-studio-footer{display:flex;align-items:center;justify-content:space-between;gap:.75rem;background:#f3e9d8;padding:1.1rem clamp(1rem,3vw,2rem)}
+.p2-practice-studio-footer button{font:inherit;font-weight:750;border-radius:8px;border:1px solid #173e5a;background:#fff;padding:.72rem .96rem;color:#173d59;white-space:nowrap}
+.p2-practice-studio-footer button:last-child{background:#173d59;color:white}
+.p2-practice-studio-footer button:disabled{opacity:.42;cursor:default}
+.p2-practice-studio-footer span{font-size:.8rem;color:#385a70;line-height:1.5}
+@media(max-width:760px){.p2-practice-studio-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.p2-practice-studio-header{flex-direction:column}}
+@media(max-width:450px){.p2-practice-studio-steps button{flex-direction:column;text-align:center}.p2-practice-studio-footer{flex-wrap:wrap}.p2-practice-studio-footer span{order:3;width:100%;text-align:center}}

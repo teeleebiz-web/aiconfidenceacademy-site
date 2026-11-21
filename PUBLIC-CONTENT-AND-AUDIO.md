@@ -4,7 +4,7 @@
 
 The public site gains `/explore/`, five readable articles, one sourced field note, three topic paths, and a dedicated page for each of the three catalog books. A short answer can lead to a deeper thought, a relevant book, or the guided program. All book formats remain clearly labeled as previews or planned. This branch does not create a purchase or download link.
 
-`content/public-hub.json` is the current editorial source. `content/build-public-hub.mjs` validates links and creates stable HTML pages during `npm run build:site`. Changes can be released in editions while earlier addresses remain intact. The page displays its reviewed date, not an automatic claim that an old article is current. The protected course content stays in the private curriculum system.
+`content/public-hub.json` is the current editorial source. Run `npm run build:content` explicitly for authorized editorial changes, review the generated diff, and commit the approved HTML. Deployment (`npm run build:site`) packages that committed HTML without regenerating or reverting later approved page edits. Changes can be released in editions while earlier addresses remain intact. The page displays its reviewed date, not an automatic claim that an old article is current. The protected course content stays in the private curriculum system.
 
 ## Editorial backend to build next
 
