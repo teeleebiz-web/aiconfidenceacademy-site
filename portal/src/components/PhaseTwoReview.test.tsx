@@ -80,19 +80,23 @@ const lessons = Array.from({ length: 36 }, (_, i) => {
   }
 })
 
-function configureTables() {
+function configureTables(courseStatus = 'draft', rowStatus = courseStatus) {
   api.from.mockImplementation((table: string) => {
+    const filters: Array<{ column: string; values: unknown[] }> = []
+    const course = { id: 'phase-two-course', code: 'phase-two-ai-professional-builder', status: courseStatus }
     const query = {
       select: () => query,
-      eq: () => query,
+      eq: (column: string, value: unknown) => { filters.push({ column, values: [value] }); return query },
+      in: (column: string, values: unknown[]) => { filters.push({ column, values }); return query },
       maybeSingle: async () => ({
-        data: table === 'courses'
-          ? { id: 'phase-two-draft', code: 'phase-two-ai-professional-builder', status: 'draft' }
+        data: table === 'courses' && filters.every(filter => filter.values.includes(course[filter.column as keyof typeof course]))
+          ? course
           : null,
         error: null,
       }),
       order: async () => ({
-        data: table === 'course_journeys' ? journeys : table === 'lessons' ? lessons : [],
+        data: (table === 'course_journeys' ? journeys : table === 'lessons' ? lessons : [])
+          .map(row => ({ ...row, status: rowStatus })),
         error: null,
       }),
     }
@@ -111,7 +115,7 @@ beforeEach(() => {
   configureTables()
 })
 
-describe('unpublished Phase Two founder review', () => {
+describe('protected Phase Two founder review', () => {
   it('requires sign-in and does not fetch protected curriculum for signed-out visitors', async () => {
     api.getSession.mockResolvedValue({ data: { session: null } })
     render(<PhaseTwoReview />)
@@ -124,6 +128,24 @@ describe('unpublished Phase Two founder review', () => {
     render(<PhaseTwoReview />)
     expect(await screen.findByRole('heading', { name: 'Access is not available' })).toBeTruthy()
     expect(api.from).not.toHaveBeenCalled()
+  })
+
+  it('keeps owner review available after the course, journeys and lessons are published', async () => {
+    configureTables('published')
+    render(<PhaseTwoReview />)
+    expect(await screen.findByRole('heading', { name: 'Synthetic lesson 1.1' })).toBeTruthy()
+    expect(api.rpc).toHaveBeenCalledExactlyOnceWith('is_aca_curriculum_owner')
+  })
+
+  it('rejects an archived course and inconsistent publication states', async () => {
+    configureTables('archived')
+    const view = render(<PhaseTwoReview />)
+    expect(await screen.findByRole('heading', { name: 'Your lesson could not load' })).toBeTruthy()
+    expect(api.from).toHaveBeenCalledTimes(1)
+    view.unmount()
+    configureTables('published', 'draft')
+    render(<PhaseTwoReview />)
+    expect(await screen.findByRole('heading', { name: 'Your lesson could not load' })).toBeTruthy()
   })
 
   it('opens the first learner lesson without development labels or a course inventory', async () => {

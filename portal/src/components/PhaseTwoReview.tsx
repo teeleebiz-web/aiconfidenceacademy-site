@@ -147,10 +147,10 @@ export function PhaseTwoReview() {
       const course = await supabase.from('courses')
         .select('id, code, status')
         .eq('code', courseCode)
-        .eq('status', 'draft')
+        .in('status', ['draft', 'published'])
         .maybeSingle()
       if (cancelled) return
-      if (course.error || !course.data) { setStatus('error'); return }
+      if (course.error || !course.data || !['draft', 'published'].includes(course.data.status)) { setStatus('error'); return }
 
       const [journeys, lessons] = await Promise.all([
         supabase.from('course_journeys')
@@ -167,7 +167,7 @@ export function PhaseTwoReview() {
         lessons: (lessons.data ?? []) as ReviewLesson[],
       }
       // Require every source teaching section and the full media allocation.
-      const validation = inspectPhaseTwoDraft(next.journeys, next.lessons)
+      const validation = inspectPhaseTwoDraft(next.journeys, next.lessons, course.data.status)
       if (!validation.ready) {
         setValidationIssues(validation.issues)
         setStatus('error')

@@ -1,5 +1,5 @@
 /**
- * Phase Two draft completeness contract — version 2.0.
+ * Phase Two owner-review completeness contract — version 2.0.
  *
  * Read-only checks used before showing the owner the curriculum as a complete
  * six-journey, 36-lesson build. These checks cannot publish or modify records.
@@ -46,8 +46,14 @@ const REQUIRED_FIELDS = [
 export function inspectPhaseTwoDraft(
   journeys: DraftIntegrityJourney[],
   lessons: DraftIntegrityLesson[],
+  expectedStatus: 'draft' | 'published' = 'draft',
 ): { ready: boolean; issues: string[] } {
   const issues: string[] = []
+  if (!['draft', 'published'].includes(expectedStatus)) {
+    return { ready: false, issues: ['Unsupported course publication state.'] }
+  }
+  const journeyState = expectedStatus === 'draft' ? 'an unpublished draft' : 'published'
+  const lessonState = expectedStatus === 'draft' ? 'unpublished draft' : 'published lesson'
   const orderedJourneys = [...journeys].sort((a,b) => a.journey_number - b.journey_number)
   const orderedLessons = [...lessons].sort((a,b) => a.course_position - b.course_position)
   if (journeys.length !== 6) issues.push('Expected six journeys.')
@@ -58,8 +64,8 @@ export function inspectPhaseTwoDraft(
 
   for (let journeyNumber = 1; journeyNumber <= 6; journeyNumber++) {
     const journey = orderedJourneys.find(j => j.journey_number === journeyNumber)
-    if (!journey || !journey.title.trim() || journey.status !== 'draft') {
-      issues.push('Journey ' + journeyNumber + ' is missing or not an unpublished draft.')
+    if (!journey || !journey.title.trim() || journey.status !== expectedStatus) {
+      issues.push('Journey ' + journeyNumber + ' is missing or not ' + journeyState + '.')
       continue
     }
     const members = orderedLessons.filter(l => l.journey_id === journey.id)
@@ -76,7 +82,7 @@ export function inspectPhaseTwoDraft(
       if (lesson.journey_position !== lessonNumber || lesson.course_position !== (journeyNumber - 1) * 6 + lessonNumber) {
         issues.push('Lesson ' + pageId + ' has an incorrect position.')
       }
-      if (lesson.status !== 'draft' || !lesson.title.trim()) issues.push('Lesson ' + pageId + ' is not a titled unpublished draft.')
+      if (lesson.status !== expectedStatus || !lesson.title.trim()) issues.push('Lesson ' + pageId + ' is not a titled ' + lessonState + '.')
       if (lesson.content.planned_media === 'video') videoCount++
       else if (lesson.content.planned_media === 'audio') audioCount++
       else issues.push('Lesson ' + pageId + ' has no designated primary media placeholder.')
