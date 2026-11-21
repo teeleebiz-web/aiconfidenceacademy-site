@@ -142,3 +142,11 @@ jobs:
           path: portal-entry-build/
           retention-days: 1
           if-no-files-found: error
+
+      # The existing release artifact above retains its current production flags.
+      # This separate build proves protected output cannot embed paid transcripts.
+      - name: Verify protected public output without live credentials
+        env:
+          ACA_PRIVATE_PHASE_TWO_MEDIA: 'true'
+          ACA_PUBLIC_SITE: 'true'
+        run: npm run build:site

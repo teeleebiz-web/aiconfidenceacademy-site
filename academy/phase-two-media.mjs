@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const inventory = JSON.parse(await readFile(new URL('../operations/phase-two-media-inventory.json', import.meta.url), 'utf8'))
+const introductions = JSON.parse(await readFile(new URL('./phase-two-introductions.json', import.meta.url), 'utf8'))
 
 export function phaseTwoMediaFiles(pageId) {
   if (!/^[1-6]\.[1-6]$/.test(pageId)) throw new Error('Invalid lesson')
@@ -24,7 +25,10 @@ export async function signPhaseTwoMedia(db, pageId, remainingSeconds, started = 
     return ['/' + file.path, item.signedUrl]
   }))
   // Conservative expiry: never add network latency to a learner's remaining time.
-  return { files: signed, expiresAt: new Date(started + ttl * 1000).toISOString() }
+  return { files: signed, expiresAt: new Date(started + ttl * 1000).toISOString(), introductions: {
+    ...(introductions.original[pageId] ? { original: introductions.original[pageId] } : {}),
+    ...(introductions.revised[pageId] ? { revised: introductions.revised[pageId] } : {}),
+  } }
 }
 
 // Read-only authorization: this endpoint never opens a lesson or starts a timer.

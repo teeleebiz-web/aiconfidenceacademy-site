@@ -2,9 +2,10 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { supabase } from '../lib/supabase'
 import { academyBackendOrigin } from '../lib/academyApi'
 
-export type MediaBundle = { files: Record<string, string>; expiresAt: string }
+export type MediaBundle = { files: Record<string, string>; expiresAt: string; introductions?: { original?: string; revised?: string } }
 export type PhaseTwoMediaAccess = {
   private: boolean
+  introductions?: MediaBundle['introductions']
   resolve: (url: string | undefined) => string | undefined
   json: (url: string) => Promise<any>
 }
@@ -18,7 +19,7 @@ export function privateMediaAccess(bundle: MediaBundle): PhaseTwoMediaAccess {
     if (!url) return undefined
     try { return bundle.files[new URL(url, window.location.origin).pathname] } catch { return undefined }
   }
-  return { private: true, resolve, json: async url => {
+  return { private: true, introductions: bundle.introductions, resolve, json: async url => {
     const signed = resolve(url)
     if (!signed) throw new Error('Media unavailable')
     const response = await fetch(signed, { cache: 'no-store' })
