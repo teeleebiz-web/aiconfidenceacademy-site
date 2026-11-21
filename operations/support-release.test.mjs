@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { permittedRepairFiles, permittedOutput, releaseContext } from './support-release.mjs'
-import { servedRevision, rollbackRelease } from './support-release-reconcile.mjs'
+import { servedRevision, rollbackRelease, reconcileReleases } from './support-release-reconcile.mjs'
 const sha='a'.repeat(40), next='b'.repeat(40), id='11111111-1111-4111-8111-111111111111'
 const regression={filename:`portal/src/agent-regression-${'c'.repeat(64)}.test.tsx`,status:'added'}
 test('only a single existing repair category and one new regression can be released',()=>{
@@ -41,4 +41,26 @@ test('automatic rollback preserves newer work and never force-pushes',async()=>{
  assert.equal(await rollbackRelease({releaseSha:next,baseSha:sha,github}),true)
  assert.deepEqual(calls.find(c=>c.method==='PATCH').body,{sha:'d'.repeat(40),force:false})
  assert.deepEqual(calls.find(c=>c.path==='/git/commits').body.parents,[next])
+})
+
+test('Vercel-hosted releases require exact served bytes but never depend on disabled Pages', async()=>{
+ const content='approved compiled bytes', hash=createHash('sha256').update(content).digest('hex')
+ const output=['learn/index.html','control-center/index.html','learn/assets/main-AbCd.js'].map(path=>({path,sha256:hash}))
+ const release={release_sha:next,job_id:id,verification:{output},created_at:new Date().toISOString()}
+ for(const matches of [true,false]){
+  const updates=[],calls=[]
+  const db={from(table){const q={select(){return q},in(){return q},not(){return q},order(){return q},limit:async()=>({data:[release]}),eq(){return q},single:async()=>({data:{base_sha:sha}}),update(value){updates.push(value);return q},then(resolve){return Promise.resolve({data:{}}).then(resolve)}};return q}}
+  const github=async path=>{calls.push(path);if(path.includes('/pages/'))throw Error('Pages must stay disabled');return{statuses:[{context:'Vercel',target_url:'https://vercel.com/aiconfidenceacademy-site-mkvf/release',state:'success'}]}}
+  const fetcher=async url=>url.includes('/api/health')?Response.json({service:'aca-backend',status:'ok'}):new Response(matches?content:'wrong revision')
+  await reconcileReleases({db,github,fetcher,publicSite:true})
+  assert.equal(updates.some(row=>row.status==='verified'),matches)
+  assert.ok(!calls.some(path=>path.includes('/pages/')))
+ }
+})
+test('Vercel rollback keeps Pages disabled and still preserves concurrent main changes',async()=>{
+ const calls=[]
+ const github=async(path,method,body)=>{calls.push({path,method,body});return path==='/git/ref/heads/main'?{object:{sha:next}}:path.startsWith('/git/commits/')?{tree:{sha}}:path==='/git/commits'?{sha:'d'.repeat(40)}:{}}
+ assert.equal(await rollbackRelease({releaseSha:next,baseSha:sha,github,publicSite:true}),true)
+ assert.ok(!calls.some(c=>c.path.includes('/pages/')))
+ assert.equal(calls.find(c=>c.method==='PATCH').body.force,false)
 })

@@ -25,16 +25,16 @@ export async function servedRevision(output, fetcher = fetch) {
   const body = await health.json()
   return body.service === 'aca-backend' && body.status === 'ok'
 }
-export async function rollbackRelease({ github, releaseSha, baseSha }) {
+export async function rollbackRelease({ github, releaseSha, baseSha, publicSite = false }) {
   if (!validSha(releaseSha) || !validSha(baseSha)) throw new Error('Invalid rollback revision')
   if ((await github('/git/ref/heads/main')).object.sha !== releaseSha) return false
   const base = await github(`/git/commits/${baseSha}`)
   const commit = await github('/git/commits', 'POST', { message: 'Restore previous Academy revision after automatic repair deployment failure', tree: base.tree.sha, parents: [releaseSha] })
   await github('/git/refs/heads/main', 'PATCH', { sha: commit.sha, force: false })
-  await github('/pages/builds', 'POST', {})
+  if (!publicSite) await github('/pages/builds', 'POST', {})
   return true
 }
-export async function reconcileReleases({ db, github, fetcher = fetch, now = Date.now() }) {
+export async function reconcileReleases({ db, github, fetcher = fetch, now = Date.now(), publicSite = false }) {
   const rows = checked(await db.from('aca_support_releases').select('*').in('status', ['published','needs_attention']).not('release_sha','is',null).order('created_at').limit(3))
   for (const release of rows) {
     try {
@@ -44,8 +44,8 @@ export async function reconcileReleases({ db, github, fetcher = fetch, now = Dat
       // is never treated as a successful publication or requester recovery.
       const states = await github(`/commits/${release.release_sha}/status`)
       const backend = states.statuses.find(item => item.context?.startsWith('Vercel') && item.target_url?.includes('aiconfidenceacademy-site-mkvf'))
-      const pages = await github('/pages/builds/latest')
-      const pagesReady = pages.commit === release.release_sha && pages.status === 'built'
+      const pages = publicSite ? null : await github('/pages/builds/latest')
+      const pagesReady = publicSite || (pages.commit === release.release_sha && pages.status === 'built')
       const backendReady = backend?.state === 'success'
       if (pagesReady && backendReady && await servedRevision(release.verification?.output,fetcher)) {
         checked(await db.from('aca_support_releases').update({ status:'verified', updated_at:new Date(now).toISOString() }).eq('job_id',release.job_id))
@@ -53,9 +53,9 @@ export async function reconcileReleases({ db, github, fetcher = fetch, now = Dat
         // Preserve the open case for its existing recovery/response process.
         continue
       }
-      const failed = backend?.state === 'failure' || backend?.state === 'error' || (pages.commit === release.release_sha && pages.status === 'errored')
+      const failed = backend?.state === 'failure' || backend?.state === 'error' || (pages?.commit === release.release_sha && pages.status === 'errored')
       if (failed) {
-        const restored = await rollbackRelease({ github, releaseSha:release.release_sha, baseSha:job.base_sha })
+        const restored = await rollbackRelease({ github, releaseSha:release.release_sha, baseSha:job.base_sha, publicSite })
         checked(await db.from('aca_support_releases').update({ status:restored?'rolled_back':'needs_attention',updated_at:new Date(now).toISOString() }).eq('job_id',release.job_id))
       } else if (now - Date.parse(release.created_at) > 30 * 60 * 1000) {
         checked(await db.from('aca_support_releases').update({ status:'needs_attention',updated_at:new Date(now).toISOString() }).eq('job_id',release.job_id))
@@ -69,5 +69,5 @@ export async function reconcileReleases({ db, github, fetcher = fetch, now = Dat
 }
 if (process.argv[1]?.endsWith('/support-release-reconcile.mjs')) {
   const { db, github } = makeClients(process.env,true)
-  reconcileReleases({db,github}).then(count => console.log(`Reconciled ${count} automatic repair publications; requester cases preserved.`)).catch(() => { console.error('Release reconciliation unavailable; no case was closed.'); process.exitCode=1 })
+  reconcileReleases({db,github,publicSite:process.env.ACA_PUBLIC_SITE==='true'}).then(count => console.log(`Reconciled ${count} automatic repair publications; requester cases preserved.`)).catch(() => { console.error('Release reconciliation unavailable; no case was closed.'); process.exitCode=1 })
 }

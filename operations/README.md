@@ -1148,6 +1148,10 @@ checks and runner-disk preflight after the founder approves the change.
 The Vercel public artifact is controlled by `ACA_PUBLIC_SITE` together with
 `ACA_PRIVATE_PHASE_TWO_MEDIA`. Both default off. Public output contains only the
 approved pages, public marketing assets, and current portal build manifest files.
-The backend retains private metadata and the protected construction app. Domain
-cutover must also update release verification to the new production host and
-confirm that the independent monitor still diagnoses the same real service.
+The backend retains private metadata and the protected construction app. At domain
+cutover, set the GitHub repository variable `ACA_PUBLIC_SITE=true` along with the
+Vercel production flags. Automatic repairs then build the same private-media
+variant, retain exact public-file hash and backend-health checks, and stop
+requesting/checking disabled Pages builds (including rollback). The default
+remains the current Pages path until that explicit switch. Confirm that the
+independent monitor still diagnoses the same real service.

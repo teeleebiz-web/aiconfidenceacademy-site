@@ -17,10 +17,13 @@ function publishedPhaseTwoBundle() {
   assert.ok(bootstrapName, 'Learner page should reference its built bootstrap');
   const bootstrap = readFileSync(resolve(import.meta.dirname, '../learn/assets', bootstrapName), 'utf8');
   assert.ok(bootstrap.includes('phase-two'), 'Keep the established Phase Two review route');
-  const phaseTwoEntry = bootstrap.match(/\/learn\/assets\/(index-[\w-]+\.js)/)?.[1];
-  assert.ok(phaseTwoEntry, 'Bootstrap should preserve the published Phase Two application');
-  assert.ok(existsSync(resolve(import.meta.dirname, '../learn/assets/index-CtQ8Sk9n.css')), 'Keep the published Phase Two styling');
-  return readFileSync(resolve(import.meta.dirname, '../learn/assets', phaseTwoEntry), 'utf8');
+  const build = JSON.parse(readFileSync(resolve(import.meta.dirname, '../learn/.vite/manifest.json'), 'utf8'));
+  const phaseTwoEntry = build['src/phaseTwoMain.tsx'];
+  assert.ok(phaseTwoEntry?.file?.startsWith('assets/phaseTwoMain-'), 'Manifest must identify the maintained Phase Two application');
+  assert.ok(bootstrap.includes(phaseTwoEntry.file.slice('assets/'.length)), 'Bootstrap must load the current Phase Two build');
+  assert.ok(phaseTwoEntry.css?.length > 0, 'Phase Two must include its styles');
+  for (const file of phaseTwoEntry.css) assert.ok(existsSync(resolve(import.meta.dirname, '../learn', file)), 'Current Phase Two styling must exist');
+  return readFileSync(resolve(import.meta.dirname, '../learn', phaseTwoEntry.file), 'utf8');
 }
 
 test('Lesson 1.1 guided audio and selectable chapters are consistent', () => {
@@ -56,10 +59,10 @@ test('Lesson 1.1 demonstrates the complete fictional evidence sequence with capt
 
 test('Selecting a demonstration starts its video immediately without losing replay controls', () => {
   const bundle = publishedPhaseTwoBundle();
-  assert.ok(bundle.includes('t.play().catch(()=>{})'), 'Tab selection should request playback');
+  assert.match(bundle, /[\w$]+\.play\(\)\.catch\(\(\)=>\{\}\)/, 'Tab selection should request playback');
   assert.match(bundle, /([\w$]+)\.src=[\w$]+\[[\w$]+\]\.url,\1\.load\(\),\1\.play\(\)\.catch/, 'Tab selection should load and play the chosen clip using the same player');
-  assert.ok(bundle.includes('preload:`auto`,src:e[0].url'), 'React must not reset the imperative source during a tab state update');
-  assert.match(bundle, /ref:[\w$]+,controls:!0/, 'Keep controls and a stable player');
+  assert.match(bundle, /preload:`auto`,src:[\w$]+\.url/, 'React must retain the selected clip when signed URLs renew');
+  assert.match(bundle, /ref:[\w$]+,crossOrigin:`anonymous`,controls:!0/, 'Keep controls, a stable player, and cross-origin captions');
   assert.ok(bundle.includes('p2-demo-caption-strip'), 'Keep captions below the video');
 });
 
@@ -67,7 +70,7 @@ test('Lesson 1.1 runtime bundle exposes all essential learning sections', () => 
   const bundle = publishedPhaseTwoBundle();
   for (const feature of ['p2-guided-chapters','Read the guided instruction transcript',
     'p2-demo-clip-tabs','kind:`captions`','p2-visual-lab',
-    'Your first professional AI responsibility map', 'p2-demo-caption-strip', 'kind:`metadata`', 'p2-practice-ai', 'Copy prompt', 'practice_prompt']) {
+    'Your first professional AI responsibility map', 'p2-demo-caption-strip', 'kind:`metadata`', 'p2-practice-ai', 'Copy prompt', 'p2-practice-prompt']) {
     assert.ok(bundle.includes(feature), `Learner application missing ${feature}`);
   }
 });

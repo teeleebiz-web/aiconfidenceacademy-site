@@ -11,6 +11,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   release:
+    env:
+      ACA_PUBLIC_SITE: ${{ vars.ACA_PUBLIC_SITE || 'false' }}
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -47,7 +49,7 @@ jobs:
         run: |
           docker pull node:24-bookworm
           mkdir -p /tmp/aca-support-output release-source/node_modules
-          docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 --memory 1536m --cpus 2 --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,nosuid,nodev,size=256m --mount "type=bind,src=$PWD/release-source,dst=/workspace,readonly" --mount "type=bind,src=$PWD/node_modules,dst=/workspace/node_modules,readonly" --mount type=bind,src=/tmp/aca-support-output,dst=/output --workdir /workspace --env HOME=/tmp node:24-bookworm node node_modules/vite/bin/vite.js build --config portal/vite.config.ts --configLoader runner --outDir /output/learn
+          docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges --pids-limit 256 --memory 1536m --cpus 2 --user "$(id -u):$(id -g)" --tmpfs /tmp:rw,nosuid,nodev,size=256m --mount "type=bind,src=$PWD/release-source,dst=/workspace,readonly" --mount "type=bind,src=$PWD/node_modules,dst=/workspace/node_modules,readonly" --mount type=bind,src=/tmp/aca-support-output,dst=/output --workdir /workspace --env HOME=/tmp --env "ACA_PRIVATE_PHASE_TWO_MEDIA=$ACA_PUBLIC_SITE" node:24-bookworm node node_modules/vite/bin/vite.js build --config portal/vite.config.ts --configLoader runner --outDir /output/learn
       - name: Publish only while the case, source and checks still match
         if: steps.plan.outputs.source_sha != ''
         env:

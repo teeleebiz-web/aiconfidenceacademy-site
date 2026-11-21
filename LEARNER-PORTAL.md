@@ -612,3 +612,22 @@ rollback deployment; never restore public paid-media delivery as a rollback.
 Local evidence is automated fixture/build evidence, not live learner playback.
 One opt-in live trial fixture remains skipped. Preview flags are scoped only to
 this repair branch. The Academy must not yet be described as launch-ready.
+
+Reviewable implementation: draft PR #123,
+https://github.com/teeleebiz-web/aiconfidenceacademy-site/pull/123.
+The branch preview at
+https://aiconfidenceacademy-site-mkvf-7fysqv8xc.vercel.app/
+built successfully on the existing paid Vercel project. Its home and learner
+entry returned 200; the former Lesson 1.1 public introduction path returned 404;
+the private-media endpoint without a token returned 401; backend health returned
+200. Browser review confirmed the home-to-programs navigation and both signed-out
+sign-in presentations. No sign-in email, purchase or learner timer was triggered.
+These observations do not verify authenticated private playback before migration.
+
+Local validation: 561 portal tests passed, with one opt-in live trial skipped;
+267 backend/media acceptance checks and 159 recovery/release checks passed.
+Type checking and both default and secure public builds passed. The old Lesson
+1.1 acceptance workflow now resolves the maintained application's build manifest
+instead of hard-coding a retired bundle. Release reconciliation supports the
+planned Vercel-only mode while still requiring exact served hashes and backend
+health; the matching GitHub repository variable remains unset pending cutover.

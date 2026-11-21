@@ -33,6 +33,7 @@ jobs:
         run: docker pull node:24-bookworm
       - name: Reconcile released repairs against the served revision
         env:
+          ACA_PUBLIC_SITE: ${{ vars.ACA_PUBLIC_SITE || 'false' }}
           ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
         run: node operations/support-release-reconcile.mjs
