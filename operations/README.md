@@ -29,6 +29,28 @@ an upload means a recoverable backup exists. Keep seven daily copies and the
 pinned original. No new subscription, bucket, credential or retention change is
 authorized by this capacity approval.
 
+## November 21 enlarged recovery proof and timing correction
+
+Manual run 44908917519 on main 71510cf completed the approved transfer and full
+recovery. It resumed eight existing files, uploaded 517 and verified all 525 Git
+hashes. Snapshot `aca-backups/ea568319-00f3-4c8e-a6ac-02b5b630b25c` has 594
+files / 2,778,189,927 original bytes / 2,778,444,848 encrypted artifact bytes.
+All saved-copy readback, decryption and original-hash restore flags were true.
+This manual receipt does not alter seven-copy daily retention or the original.
+
+The full backup portion took 12m35s. The normal 30-minute workflow fits, but the
+10-minute retry needs more headroom. R2 upload/readback and download now process
+at most three artifacts concurrently. There are no additional API attempts or
+bytes, no changed retry policy, and no concurrent retention deletes. First failure
+stops new work; all active streams settle before local cleanup or rejection.
+The completion record remains strictly after every successful upload/readback.
+
+After release, validate one full manual backup with migration false; require all
+594 hashes and measured full recovery inside the unchanged ten-minute retry
+budget. This runtime acceptance is still pending until the Edge connection can
+dispatch the existing workflow. Preserve the verified snapshot above regardless
+of whether the new timing acceptance passes.
+
 ## November 8 approved Node 24 runtime alignment
 
 Terrence authorized matching production hosting to the existing Node 24 checks

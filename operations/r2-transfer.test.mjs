@@ -9,10 +9,10 @@ import { backup, restoreLocal } from './recovery.mjs'
 import { downloadSnapshot, r2Configuration, r2Store, uploadSnapshot } from './r2-transfer.mjs'
 
 const data = randomBytes(128031)
-function source() { return { storage: {
+function source(count = 1) { return { storage: {
   async listBuckets() { return { data: [{ id: 'private-files', public: false }] } },
   from() { return {
-    async list() { return { data: [{ id: 'id', name: 'private.bin', updated_at: 'unchanged', metadata: { size: data.length } }] } },
+    async list() { return { data: Array.from({ length: count }, (_, i) => ({ id: 'id-' + i, name: i ? `private-${i}.bin` : 'private.bin', updated_at: 'unchanged', metadata: { size: data.length } })) } },
     async download() { return { data: new Blob([data]) } },
   } },
 } } }
@@ -29,9 +29,9 @@ function fakeStore() {
     async get(key) { calls.push(['get', key]); if (!objects.has(key)) throw new Error('PRIVATE_PROVIDER_CREDENTIAL'); return Readable.from([objects.get(key)]) },
   }
 }
-async function fixture(fn) {
+async function fixture(fn, count = 1) {
   const root = await mkdtemp(join(tmpdir(), 'aca-r2-test-')), key = randomBytes(32), snapshot = join(root, 'snapshot')
-  try { await backup({ client: source(), out: snapshot, key }); await fn({ root, snapshot, key, store: fakeStore() }) }
+  try { await backup({ client: source(count), out: snapshot, key }); await fn({ root, snapshot, key, store: fakeStore() }) }
   finally { await rm(root, { recursive: true, force: true }) }
 }
 
@@ -151,3 +151,92 @@ test('R2 credentials require the exact approved account and private-bucket confi
   assert.equal(r2Configuration({ ...env, ACA_R2_JURISDICTION: 'us' }).endpoint, `https://${account}.us.r2.cloudflarestorage.com`)
   for (const patch of [{ ACA_R2_PRIVATE_CONFIRMED: '' }, { ACA_R2_ACCOUNT_ID: 'attacker.test' }, { ACA_R2_BUCKET: '../other' }, { ACA_R2_JURISDICTION: 'other' }, { ACA_R2_MAX_SNAPSHOT_BYTES: 'Infinity' }, { ACA_R2_SECRET_ACCESS_KEY: '' }]) assert.throws(() => r2Configuration({ ...env, ...patch }))
 })
+
+
+test('upload concurrency is capped at three and completion waits for every readback', () => fixture(async ({ snapshot, key, store }) => {
+  const gate = Promise.withResolvers(), started = Promise.withResolvers()
+  const put = store.put.bind(store), get = store.get.bind(store)
+  let active = 0, peak = 0, starts = 0
+  const verified = new Set()
+  store.put = async (path, body, size) => {
+    if (path.endsWith('/complete.json')) assert.equal(verified.size, 8)
+    active++; peak = Math.max(peak, active)
+    try {
+      starts++
+      if (starts === 3) started.resolve()
+      if (starts <= 3) await gate.promise
+      await put(path, body, size)
+    } finally { active-- }
+  }
+  store.get = async path => {
+    const body = await get(path)
+    return Readable.from((async function* () {
+      active++; peak = Math.max(peak, active)
+      try { for await (const chunk of body) yield chunk; verified.add(path) }
+      finally { active-- }
+    })())
+  }
+  const work = uploadSnapshot({ snapshot, key, store })
+  await started.promise
+  assert.equal(starts, 3); assert.equal(active, 3)
+  gate.resolve()
+  const result = await work
+  assert.equal(result.fileCount, 6); assert.equal(peak, 3); assert.equal(active, 0)
+  const index = JSON.parse(store.objects.get(result.reference + '/complete.json'))
+  assert.deepEqual(index.files.map(f => f.name), [...index.files.map(f => f.name)].sort())
+  assert.equal(store.calls.filter(([action]) => action === 'put').length, 9)
+  assert.equal(store.calls.filter(([action]) => action === 'get').length, 9)
+}, 6))
+
+test('upload failure stops new work and waits for active streams before rejecting', () => fixture(async ({ snapshot, key, store }) => {
+  const gate = Promise.withResolvers(), started = Promise.withResolvers(), failed = Promise.withResolvers()
+  const put = store.put.bind(store)
+  let starts = 0, active = 0, settled = false
+  store.put = async (path, body, size) => {
+    const ordinal = ++starts; active++
+    if (starts === 3) started.resolve()
+    try {
+      await started.promise
+      if (ordinal === 1) { failed.resolve(); throw new Error('private provider failure') }
+      await gate.promise
+      await put(path, body, size)
+    } finally { active-- }
+  }
+  const work = uploadSnapshot({ snapshot, key, store }).finally(() => { settled = true })
+  const rejection = assert.rejects(work, /did not complete/)
+  await failed.promise
+  await new Promise(resolve => setImmediate(resolve))
+  assert.equal(settled, false); assert.equal(active, 2); assert.equal(starts, 3)
+  gate.resolve()
+  await rejection
+  assert.equal(active, 0); assert.equal(starts, 3)
+  assert.ok(![...store.objects.keys()].some(path => path.endsWith('/complete.json')))
+}, 6))
+
+test('download failure waits for the other streams before cleaning all partial output', () => fixture(async ({ root, snapshot, key, store }) => {
+  const { reference } = await uploadSnapshot({ snapshot, key, store })
+  const gate = Promise.withResolvers(), started = Promise.withResolvers(), corrupt = Promise.withResolvers()
+  const get = store.get.bind(store)
+  let active = 0, peak = 0, starts = 0, settled = false
+  store.get = async path => {
+    if (path.endsWith('/complete.json')) return get(path)
+    const ordinal = ++starts; active++; peak = Math.max(peak, active)
+    if (starts === 3) started.resolve()
+    return Readable.from((async function* () {
+      try {
+        await started.promise
+        if (ordinal === 1) { const changed = Buffer.from(store.objects.get(path)); changed[0] ^= 1; corrupt.resolve(); yield changed }
+        else { await gate.promise; yield store.objects.get(path) }
+      } finally { active-- }
+    })())
+  }
+  const work = downloadSnapshot({ reference, out: join(root, 'downloaded'), key, store }).finally(() => { settled = true })
+  const rejection = assert.rejects(work, /did not complete/)
+  await corrupt.promise
+  await new Promise(resolve => setImmediate(resolve))
+  assert.equal(settled, false); assert.equal(starts, 3)
+  gate.resolve()
+  await rejection
+  assert.equal(active, 0); assert.equal(peak, 3); assert.equal(starts, 3)
+  assert.deepEqual(await readdir(root), ['snapshot'])
+}, 6))

@@ -704,9 +704,13 @@ private, retains its 209,715,200-byte per-file limit and its original MIME types
 with audio/mp4, application/json and image/webp added. Anonymous requests to the
 new object's public and authenticated Storage routes returned no file bytes.
 The R2 upload is at `aca-backups/ea568319-00f3-4c8e-a6ac-02b5b630b25c`.
-At this record's preparation, the final download/decrypt/restore checks are still
-running. Do not treat the uploaded snapshot as a completed recovery receipt until
-the run's final four verification flags are true and its counts match.
+Full recovery completed successfully at 13:47:37 UTC (21:47 Manila) on November 21.
+All four flags are true: liveAcaBackup, uploadedAndReadbackVerified,
+savedCopyDecryptionVerified and restoredWithOriginalHashesVerified. The receipt
+confirms 594 files, 2,778,189,927 source bytes and 2,778,444,848 encrypted artifact
+bytes. The transfer resumed without overwrites: 517 new uploads and 525 exact Git
+hashes verified. The complete encrypted copy was downloaded, decrypted and
+restored to a fresh private directory with all original hashes verified.
 
 The protected public build also exposed 11 original introduction modules in
 JavaScript. All 15 original/revised introduction values now share one canonical
@@ -726,10 +730,42 @@ apply only to `repair/protected-introduction-delivery` on the existing project.
 The Edge connection became unavailable during the run. Live signed-in owner
 playback/captions therefore remain unverified; do not manufacture a user session.
 
-Remaining launch gates: record successful full recovery; release/review the
-transcript correction; reconnect Edge for authorized owner playback; complete
+Remaining launch gates: reconnect Edge for authorized owner playback; complete
 the existing Vercel public-route checks and approved hosting cutover; disable
 Pages and make the source repository private with appropriate branch protection.
 Public originals are still accessible until that coordinated cutover. No new
 subscription, repository-visibility change, domain change or production flag
 activation has been performed. The Academy is not yet launch-ready.
+
+## November 21, 2026 — recovery timing and transcript release
+
+PR #125 merged as `7bbd227a5821fc561c834a26289c11fec6212483` after CI
+44910608482 passed all 1,000 automated tests, SQL, isolation and the protected
+public build. Preview deployment `dpl_94TjkUPGzkK1979dKrri7Yp9rvMY` is READY:
+https://aiconfidenceacademy-site-mkvf-fxpvbuxhu.vercel.app/
+Its home, learner entry and backend health returned 200. The private media API
+without a session returned application JSON 401. The old paid-media path returned
+404; the canonical introduction source route returned 401 with no transcript.
+Downloaded entry and Phase Two JavaScript contained zero protected introduction
+fingerprints. This is HTTP/build evidence, not signed-in owner playback.
+
+The successful full backup took 12 minutes 35 seconds after migration finished.
+That fits the normal 30-minute job but exceeds the existing 10-minute retry
+deadline. The capacity increase alone therefore does not establish adequate retry
+runtime. Preserve the deadline, one extra attempt, five-minute cooldown and all
+byte bounds. The narrow transfer correction overlaps at most three R2 artifact
+operations; source reading/encryption and retention remain unchanged. Every file
+still gets uploaded and read back exactly once. Download still checks every
+ciphertext hash, authenticates/decrypts the manifest and restores original hashes.
+A failure stops scheduling, awaits all active streams and only then permits local
+cleanup. No completion marker can be published from a partial transfer.
+
+Local acceptance: all 168 recovery tests passed, including three concurrent
+transfers, completion ordering, no additional requests, stopped scheduling after
+failure and cleanup only after all writers settle. Live timing remains pending.
+After reviewed release, run the existing manual backup workflow on main with
+`migrate_phase_two_media=false`: the approved media is already present. Require
+the same 594-file/full-restore receipt and completion comfortably inside ten
+minutes. Do not claim the runtime problem solved from fixture tests alone.
+Edge is disconnected; reconnection was requested once and remains the access
+blocker for dispatching that run and completing signed-in owner playback.

@@ -16,6 +16,29 @@ export const preservedManualBackup = 'aca-backups/71069015-2a6e-4578-bb35-b936ce
 const validName = name => /^(?:\d{8}\.bin|manifest\.bin|snapshot\.json)$/.test(name)
 const validPrefix = prefix => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(prefix)
 
+// Fixed, small concurrency reduces per-object latency without adding requests,
+// retries or transfer bytes. On failure, stop scheduling and await every active
+// stream before the caller removes temporary files or publishes any result.
+const transferConcurrency = 3
+async function transferFiles(files, action) {
+  const results = new Array(files.length)
+  let next = 0, stopped = false, failure
+  async function worker() {
+    while (!stopped) {
+      const index = next++
+      if (index >= files.length) return
+      try { results[index] = await action(files[index]) }
+      catch (error) {
+        if (!stopped) { stopped = true; failure = error }
+        return
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(transferConcurrency, files.length) }, worker))
+  if (stopped) throw failure
+  return results
+}
+
 export function r2Configuration(env) {
   const account = env.ACA_R2_ACCOUNT_ID, bucket = env.ACA_R2_BUCKET
   if (!/^[0-9a-f]{32}$/.test(account ?? '') || !/^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$/.test(bucket ?? '')) throw new Error('R2 account and private bucket configuration are required')
@@ -74,15 +97,14 @@ export async function uploadSnapshot({ snapshot, key, store, maxBytes = defaultL
     const sizes = await Promise.all(artifacts.files.map(async f => ({ ...f, size: (await lstat(f.path)).size })))
     const totalBytes = sizes.reduce((sum, file) => sum + file.size, 0)
     if (totalBytes > maxBytes) throw new Error('Snapshot exceeds its explicit transfer limit')
-    const files = []
-    for (const file of sizes) {
+    const files = await transferFiles(sizes, async file => {
       const sha256 = await digest(createReadStream(file.path), file.size)
       const body = createReadStream(file.path)
       try { await store.put(`${reference}/${file.name}`, body, file.size) }
       finally { body.destroy() }
       if (await digest(await store.get(`${reference}/${file.name}`), file.size) !== sha256) throw backupFailure('integrity', 'integrity_check')
-      files.push({ name: file.name, size: file.size, sha256 })
-    }
+      return { name: file.name, size: file.size, sha256 }
+    })
     const completion = Buffer.from(JSON.stringify({ format: transferFormat, projectRef, reference, files, completedAt: new Date().toISOString() }))
     if (completion.length > 2 * 1024 ** 2) throw new Error('Completion record exceeds its limit')
     await store.put(`${reference}/complete.json`, completion, completion.length)
@@ -129,10 +151,10 @@ export async function downloadSnapshot({ reference, out, key, store, maxBytes = 
   try {
     const record = await completionRecord(store, reference, maxBytes)
     await mkdir(staging, { mode: 0o700 })
-    for (const f of record.files) {
+    await transferFiles(record.files, async f => {
       const hash = await digest(await store.get(`${reference}/${f.name}`), f.size, createWriteStream(join(staging, f.name), { flags: 'wx', mode: 0o600 }))
       if (hash !== f.sha256) throw backupFailure('integrity', 'integrity_check')
-    }
+    })
     const verified = await inspect({ snapshot: staging, key })
     const expected = (await snapshotArtifacts({ snapshot: staging, key })).files.map(f => f.name).sort()
     if (JSON.stringify(expected) !== JSON.stringify(record.files.map(f => f.name).sort())) throw new Error('Transport includes files outside the authenticated snapshot')

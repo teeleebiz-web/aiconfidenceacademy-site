@@ -145,7 +145,9 @@ test('altered encrypted readback is classified as integrity and cannot publish a
     assert.deepEqual(error.failure, { category: 'integrity', operation: 'integrity_check', retry_authorized: false })
     return true
   })
-  assert.equal(store.objects.size, 1)
+  // Already-active encrypted transfers may finish, but no fourth transfer or
+  // completion marker is allowed after a readback failure.
+  assert.ok(store.objects.size >= 1 && store.objects.size <= 3)
   assert.ok(![...store.objects.keys()].some(path => path.endsWith('/complete.json')))
 })
 
