@@ -215,24 +215,26 @@ test('upload failure stops new work and waits for active streams before rejectin
 
 test('download failure waits for the other streams before cleaning all partial output', () => fixture(async ({ root, snapshot, key, store }) => {
   const { reference } = await uploadSnapshot({ snapshot, key, store })
-  const gate = Promise.withResolvers(), started = Promise.withResolvers(), corrupt = Promise.withResolvers()
+  const gate = Promise.withResolvers(), started = Promise.withResolvers(), failed = Promise.withResolvers()
   const get = store.get.bind(store)
   let active = 0, peak = 0, starts = 0, settled = false
   store.get = async path => {
     if (path.endsWith('/complete.json')) return get(path)
     const ordinal = ++starts; active++; peak = Math.max(peak, active)
     if (starts === 3) started.resolve()
+    if (ordinal === 1) {
+      await started.promise
+      active--; failed.resolve()
+      throw new Error('private provider download failure')
+    }
     return Readable.from((async function* () {
-      try {
-        await started.promise
-        if (ordinal === 1) { const changed = Buffer.from(store.objects.get(path)); changed[0] ^= 1; corrupt.resolve(); yield changed }
-        else { await gate.promise; yield store.objects.get(path) }
-      } finally { active-- }
+      try { await gate.promise; yield store.objects.get(path) }
+      finally { active-- }
     })())
   }
   const work = downloadSnapshot({ reference, out: join(root, 'downloaded'), key, store }).finally(() => { settled = true })
   const rejection = assert.rejects(work, /did not complete/)
-  await corrupt.promise
+  await failed.promise
   await new Promise(resolve => setImmediate(resolve))
   assert.equal(settled, false); assert.equal(starts, 3)
   gate.resolve()
