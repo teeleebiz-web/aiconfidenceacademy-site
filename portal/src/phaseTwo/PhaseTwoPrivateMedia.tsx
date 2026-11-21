@@ -57,6 +57,11 @@ function ProtectedMedia({ lessonId, enrollmentId, children }: {
   const [attempt, setAttempt] = useState(0)
   const root = useRef<HTMLDivElement>(null)
   const positions = useRef(new Map<string, { time: number; playing: boolean }>())
+  const rememberPlayback = () => {
+    root.current?.querySelectorAll<HTMLMediaElement>('video,audio').forEach(media => {
+      if (media.getAttribute('src')) positions.current.set(media.getAttribute('aria-label') || '', { time: media.currentTime, playing: !media.paused })
+    })
+  }
   useEffect(() => {
     let cancelled = false, timer: ReturnType<typeof setTimeout> | undefined
     const controller = new AbortController()
@@ -67,14 +72,19 @@ function ProtectedMedia({ lessonId, enrollmentId, children }: {
         if (!lessonId) throw new Error('This lesson could not be identified. Return to your lessons and try again.')
         const next = await requestPhaseTwoMedia(lessonId, enrollmentId, controller.signal)
         if (cancelled || requestGeneration !== generation) return
-        root.current?.querySelectorAll<HTMLMediaElement>('video,audio').forEach(media => {
-          positions.current.set(media.getAttribute('aria-label') || '', { time: media.currentTime, playing: !media.paused })
-        })
+        rememberPlayback()
         setBundle(next); setError('')
         // Renew without opening a lesson, changing its clock, or remounting its work.
         timer = setTimeout(() => { void load() }, Math.max(1000, Date.parse(next.expiresAt) - Date.now() - 30000))
       } catch (e) {
-        if (!cancelled && requestGeneration === generation) { setBundle(null); setError(e instanceof Error ? e.message : 'Lesson media is unavailable.') }
+        if (!cancelled && requestGeneration === generation) {
+          rememberPlayback()
+          root.current?.querySelectorAll<HTMLMediaElement>('video,audio').forEach(media => media.pause())
+          // Remove access to every recording while keeping the mounted work form.
+          // A failed renewal must not discard a learner's unsaved project notes.
+          setBundle(current => current ? { ...current, files: {} } : null)
+          setError(e instanceof Error ? e.message : 'Lesson media is unavailable.')
+        }
       }
     }
     void load()
@@ -96,6 +106,7 @@ function ProtectedMedia({ lessonId, enrollmentId, children }: {
     if (Number.isFinite(previous.time)) media.currentTime = previous.time
     if (previous.playing) void media.play().catch(() => {})
   }}>
-    {bundle ? children(privateMediaAccess(bundle)) : error ? <section role="alert"><p>{error}</p><button type="button" onClick={() => setAttempt(value => value + 1)}>Try loading recordings again</button></section> : <p role="status">Loading your lesson recordings…</p>}
+    {error && <section role="alert"><p>{error}</p><button type="button" onClick={() => setAttempt(value => value + 1)}>Try loading recordings again</button></section>}
+    {bundle ? children(privateMediaAccess(bundle)) : !error && <p role="status">Loading your lesson recordings…</p>}
   </div>
 }

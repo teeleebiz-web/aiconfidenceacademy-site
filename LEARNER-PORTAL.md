@@ -631,3 +631,10 @@ Type checking and both default and secure public builds passed. The old Lesson
 instead of hard-coding a retired bundle. Release reconciliation supports the
 planned Vercel-only mode while still requiring exact served hashes and backend
 health; the matching GitHub repository variable remains unset pending cutover.
+
+Final failure-path review additionally verified that a failed signed-link renewal
+pauses playback and clears media URLs while retaining the mounted project form.
+An authorized retry restores recording access and playback position without
+discarding unsaved notes. All six private-media component regressions passed;
+type checking, default build, secure public build and its four boundary checks
+passed again for this correction. Sign-out still removes the protected subtree.

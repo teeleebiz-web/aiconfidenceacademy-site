@@ -63,3 +63,30 @@ it('rejects a late signed response after sign-out', async () => {
   expect(screen.queryByLabelText('Introduction')).toBeNull()
   expect(screen.getByRole('alert').textContent).toContain('Please sign in')
 })
+
+it('blocks recordings on renewal failure while preserving unsaved work through retry', async () => {
+  vi.useFakeTimers()
+  const pause = vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {})
+  vi.mocked(fetch)
+    .mockResolvedValueOnce({ ok: true, json: async () => bundle('one') } as Response)
+    .mockResolvedValueOnce({ ok: false } as Response)
+    .mockResolvedValueOnce({ ok: true, json: async () => bundle('retry') } as Response)
+  render(<PhaseTwoPrivateMedia lessonId="lesson">{access => <Player access={access} />}</PhaseTwoPrivateMedia>)
+  await act(async () => { await vi.advanceTimersByTimeAsync(0) })
+  fireEvent.change(screen.getByLabelText('Work in progress'), { target: { value: 'unsaved progress' } })
+  const video = screen.getByLabelText('Introduction') as HTMLVideoElement
+  video.currentTime = 44
+  await act(async () => { await vi.advanceTimersByTimeAsync(40001) })
+  expect(screen.getByRole('alert')).toBeTruthy()
+  expect(screen.getByLabelText('Work in progress')).toHaveProperty('value', 'unsaved progress')
+  expect(video.getAttribute('src')).toBeNull()
+  expect(pause).toHaveBeenCalled()
+  video.currentTime = 0
+  fireEvent.click(screen.getByRole('button', { name: 'Try loading recordings again' }))
+  await act(async () => { await vi.advanceTimersByTimeAsync(0) })
+  expect(screen.getByLabelText('Work in progress')).toHaveProperty('value', 'unsaved progress')
+  expect(video.getAttribute('src')).toBe('https://private.test/retry')
+  fireEvent.loadedMetadata(video)
+  expect(video.currentTime).toBe(44)
+  pause.mockRestore()
+})
