@@ -149,3 +149,14 @@ it.each([2, 3])('opens Journey %s through its installed first lesson instead of 
   expect(onOpenLesson).toHaveBeenCalledWith(firstLesson)
   expect(onOpenIntroduction).not.toHaveBeenCalled()
 })
+
+
+it('shows ended access and actual progress without claiming missed lessons were completed', () => {
+ render(<Dashboard enrollment={enrollment} journeys={[]} lessons={[]} progress={[]} introductions={[]} learnerName="Learner"
+  accessState={{current_lesson_id:null,current_journey_id:null,access_status:'access_ended',available_at:null,active_seconds:0,remaining_seconds:0,completed_lessons:1,total_lessons:36,released_lesson_ids:[]}}
+  workbooks={[{page_id:'1.1',title:'Released practice'}]} onOpenLesson={()=>undefined} onOpenIntroduction={()=>undefined} />)
+ expect(screen.getByRole('heading',{name:'Your lesson access period has ended'})).toBeTruthy()
+ expect(screen.getByLabelText('3% complete')).toBeTruthy()
+ expect(screen.queryByText('Phase One lessons complete')).toBeNull()
+ expect(screen.getByRole('link',{name:'Journey 1 Workbook'})).toBeTruthy()
+})

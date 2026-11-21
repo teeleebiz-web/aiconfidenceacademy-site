@@ -1,6 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { Readable } from 'node:stream'
+import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import {handleControlCenter,handleTrialAccept,handleTrialEntry,handleLearnerFeedback,diagnoseLessons,recordAutomationRun} from './control-center.mjs'
 const actor='00000000-0000-4000-8000-000000000001'
 const requestId='00000000-0000-4000-8000-000000000002'
@@ -204,4 +207,28 @@ test('backup status reaches only the verified owner and comes from service-side 
  assert.equal(c.calls.filter(x=>x.name==='aca_backup_status').length,1)
  const denied=fixture({owner:false}); await run(handleControlCenter,denied)
  assert.equal(denied.calls.length,0)
+})
+
+
+test('owner inspection resolves the current Phase Two introductions and nested outcomes', async () => {
+ const root=await mkdtemp(join(tmpdir(),'aca-inspector-'))
+ try {
+  for(const [page,variant] of [['1.1','-v2'],['1.4','-v2'],['2.1','-landscape'],['6.1','-wide'],['6.6','-wide'],['3.2','']]) {
+   const c=fixture(), suffix=page.replace('.','-'), folder=join(root,`assets/videos/phase-two-lesson-${suffix}`)
+   await mkdir(folder,{recursive:true})
+   const intro=`ACA-Phase-Two-Lesson-${suffix}-Introduction${variant}.mp4`
+   await writeFile(join(folder,intro),'synthetic')
+   await writeFile(join(folder,'guided.m4a'),'synthetic')
+   await writeFile(join(folder,'demo.mp4'),'synthetic')
+   await writeFile(join(folder,'production-report.json'),JSON.stringify({guided_audio:{file:'guided.m4a'},demonstrations:[{title:'Practice',file:'demo.mp4'}]}))
+   if(variant==='-v2') await writeFile(join(folder,'intro-v2-manifest.json'),JSON.stringify({lesson:page,intro_closing:"Let's begin.",instructor_voice_id:'ac277b338cf64d8b9686784c43c563da',video_file:intro,captions_file:intro.replace('.mp4','.vtt'),poster_file:'poster-v2.webp'}))
+   c.tables.courses[0].phase_number=2
+   c.tables.lessons=[{id:requestId,course_id:actor,page_id:page,title:'Synthetic lesson',content:{phase_two_production:{outcomes:['Assess evidence']}}}]
+   const r=await run(handleControlCenter,{...c,root},{url:`/api/operations/control-center?lesson=${requestId}`})
+   assert.equal(r.status,200)
+   assert.deepEqual(r.body.outcomes,['Assess evidence'])
+   assert.equal(r.body.media.length,3)
+   assert.ok(r.body.media.find(m=>m.label==='Instructor introduction').url.endsWith('/'+intro))
+  }
+ } finally {await rm(root,{recursive:true,force:true})}
 })

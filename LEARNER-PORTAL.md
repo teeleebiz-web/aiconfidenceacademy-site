@@ -480,3 +480,39 @@ sign-in authorization before proceeding there. The functioning GitHub file-write
 connection does not need reconnection. Phase Two public-media protection remains
 pending; preserve live playback and the existing 2 GiB backup limit. No learner
 trial, enrollment start, invitation, support case, or payment was initiated.
+
+### Launch defect repairs — November 21, 2026
+
+Terrence authorized correcting the launch defects, preserving the existing
+program and learner records. Phase One Journey Five had 24 stored workbook
+pages, but pages 13–24 used `page` instead of the renderer's `number` key.
+A guarded production update changed exactly one definition: all 24 pages now
+have their original page numbers, and removing the 12 added keys reproduces
+the original JSON exactly. The existing saved-response count and digest were
+unchanged. The API now normalizes legacy keys before field/access filtering
+and rejects ambiguous or duplicate numbers. Regression coverage saves and
+reopens pages 13, 17, 21 and 24, retains an earlier answer, and rejects unreleased
+pages. No enrollment, timer, invitation or payment was started for this repair.
+
+The owner lesson inspector now follows the learner's Phase Two introduction
+selection (validated revised manifests for 1.1–1.4, landscape 2.1, wide Journey
+Six) and reads outcomes from `phase_two_production.outcomes`. Its Phase Two
+calendar label now describes individual enrollment and Pacific-time releases.
+Tests cover revised, landscape, wide and ordinary introductions.
+
+The completion correction separates truly completed lessons from missed or
+expired lessons. Closed lessons still advance the existing calendar and retain
+released workbook access. When every lesson is closed but some were not
+completed, the existing `access_ended` response replaces the false completion
+claim. The migration changes only the derived read function, not learner rows.
+Its disposable PostgreSQL fixture covers missed, expired, mixed and complete
+courses, ownership and released workbook access. The dashboard explains ended
+access without calling it completion. Local type checking, portal/backend/
+recovery tests and the build passed; publication and production migration
+verification must be recorded after the remote gates pass.
+
+Phase Two public-media withdrawal remains a separate unfinished repair. Do not
+mark the Academy launch-ready from these corrections, expose private copies,
+disable GitHub Pages before checking account support, or exceed the existing
+2 GiB backup bound. Continue with repository privacy, private playback and
+backup verification before withdrawing the currently used public assets.

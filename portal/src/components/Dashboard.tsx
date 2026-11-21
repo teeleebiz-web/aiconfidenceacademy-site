@@ -94,7 +94,7 @@ export function Dashboard({
         {!reviewMode && journeys.length === 0 ? (
           <div className="journey-card learner-waiting-card" role="status">
             <div className="journey-copy">
-              <h3>{accessState?.access_status === 'course_completed' ? 'Phase One lessons complete' : 'Your next lesson is not open yet'}</h3>
+              <h3>{accessState?.access_status === 'course_completed' ? 'Phase One lessons complete' : accessState?.access_status === 'access_ended' ? 'Your lesson access period has ended' : 'Your next lesson is not open yet'}</h3>
               <p>
                 {accessState?.access_status === 'course_completed'
                   ? 'Your released workbook work remains available to review, print, or save.'

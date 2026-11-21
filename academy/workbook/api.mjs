@@ -13,6 +13,18 @@ const reply = (res, status, data) => {
   res.end(JSON.stringify(data))
 }
 const fault = (status, message) => Object.assign(new Error(message), { status })
+function normalizeWorkbook(content) {
+  const seen = new Set()
+  return { ...content, pages: content.pages.map(page => {
+    const number = page.number ?? page.page
+    if (!Number.isSafeInteger(number) || number < 1 || seen.has(number) ||
+        (page.number != null && page.page != null && page.number !== page.page) || !Array.isArray(page.blocks)) {
+      throw fault(503, 'Your workbook could not be opened. Please try again.')
+    }
+    seen.add(number)
+    return { ...page, number }
+  }) }
+}
 async function body(req) {
   // Vercel's /api handler can supply an already parsed request body.
   if (req.body !== undefined) {
@@ -85,7 +97,7 @@ export async function handleWorkbook(req, res, { db, courseId, ownerAuthenticate
     const identity = await workbookIdentity(req, db, courseId, ownerAuthenticated, workbookKey, reviewerCheck)
     const definition = await db.from('aca_workbook_definitions').select('content').eq('course_id', courseId).eq('workbook_key', workbookKey).maybeSingle()
     if (definition.error || !Array.isArray(definition.data?.content?.pages)) throw fault(503, 'Your workbook could not be opened. Please try again.')
-    const workbook = definition.data.content
+    const workbook = normalizeWorkbook(definition.data.content)
     const fieldPages = new Map()
     function fields(block, page) {
       if (block.type === 'field') fieldPages.set(block.id, page)

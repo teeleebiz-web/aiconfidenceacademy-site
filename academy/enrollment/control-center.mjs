@@ -162,7 +162,18 @@ export async function handleControlCenter(req, res, config) {
       if (course.phase_number===2 && /^[1-6]\.[1-6]$/.test(lesson.page_id) && config.root) {
         const suffix=lesson.page_id.replace('.','-'),folder=`assets/videos/phase-two-lesson-${suffix}`
         let report={};try{report=JSON.parse(await readFile(join(config.root,folder,'production-report.json'),'utf8'))}catch{ /* Report availability is displayed through the returned media list. */ }
-        const entries=[{label:'Instructor introduction',file:`ACA-Phase-Two-Lesson-${suffix}-Introduction.mp4`,kind:'video'},
+        // Match the introductions currently selected by the learner portal.
+        const stem=`ACA-Phase-Two-Lesson-${suffix}-Introduction`
+        let introduction=`${stem}${lesson.page_id.startsWith('6.')?'-wide':lesson.page_id==='2.1'?'-landscape':''}.mp4`
+        if (['1.1','1.2','1.3','1.4'].includes(lesson.page_id)) {
+          try {
+            const manifest=JSON.parse(await readFile(join(config.root,folder,'intro-v2-manifest.json'),'utf8'))
+            if(manifest.lesson===lesson.page_id && manifest.intro_closing==="Let's begin." &&
+              manifest.instructor_voice_id==='ac277b338cf64d8b9686784c43c563da' &&
+              manifest.video_file===`${stem}-v2.mp4` && manifest.captions_file===`${stem}-v2.vtt` && manifest.poster_file==='poster-v2.webp') introduction=manifest.video_file
+          } catch { /* The learner also falls back when the revised manifest is unavailable. */ }
+        }
+        const entries=[{label:'Instructor introduction',file:introduction,kind:'video'},
           ...(report.guided_audio?.file?[{label:'Guided instruction',file:report.guided_audio.file,kind:'audio'}]:[]),
           ...(report.demonstrations||[]).map((item,index)=>({label:`Demonstration ${index+1} · ${item.title}`,file:item.file,kind:'video'}))]
         for(const item of entries){if(typeof item.file!=='string'||basename(item.file)!==item.file)continue;try{const file=await stat(join(config.root,folder,item.file));if(file.isFile())media.push({label:item.label,kind:item.kind,url:`${automation.appUrl.replace(/\/$/,'')}/${folder}/${encodeURIComponent(item.file)}`})}catch{ /* An absent asset is not represented as ready. */ }}
@@ -173,7 +184,7 @@ export async function handleControlCenter(req, res, config) {
           media.push({label:title,kind,url:signed.signedUrl})
         }
       }
-      return reply(res,200,{title:lesson.title,page_id:lesson.page_id,phase_number:course.phase_number,media,outcomes:lesson.content?.outcomes||[]})
+      return reply(res,200,{title:lesson.title,page_id:lesson.page_id,phase_number:course.phase_number,media,outcomes:(course.phase_number===2?lesson.content?.phase_two_production?.outcomes:lesson.content?.outcomes)||[]})
     }
     const enrollmentId = url.searchParams.get('enrollment')
     if (enrollmentId) {
