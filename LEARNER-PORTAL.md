@@ -516,3 +516,14 @@ mark the Academy launch-ready from these corrections, expose private copies,
 disable GitHub Pages before checking account support, or exceed the existing
 2 GiB backup bound. Continue with repository privacy, private playback and
 backup verification before withdrawing the currently used public assets.
+
+The initial repair revision `7cfdf33f4654ab6761c7f172dcb216d1b0a9e177` passed
+all three portal CI jobs in run 44880839806, the Phase Two Lesson 1.1 acceptance
+run 44880839709, and the Vercel preview build. The completion function was then
+applied successfully under Supabase migration version `20261121073655`; the
+repository filename follows that recorded server version. The three existing
+lesson-window records retain their exact pre-repair digest, and both anonymous
+and authenticated roles remain denied direct access to the private function.
+A replay of all six actual Phase One workbook definitions through the repaired
+handler returns every stored page (32, 26, 24, 24, 24, 24). This replay is not
+a claim of a newly started learner session.
