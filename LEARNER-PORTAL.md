@@ -662,3 +662,28 @@ Live read-only preflight confirms 69 current private objects totaling
 restore/hash checks with that same collection, retained seven copies and
 preserved the original. Existing recovery credentials are recorded valid through
 October 25, 2027. The 525 additional objects remain pending this approved run.
+
+## November 21, 2026 — private transfer format correction
+
+PR #123 merged as `a9c4a751635eb398700999f4c37a50168ef299ea` after CI
+passed (562 portal checks, one opt-in skip; 267 backend and 162 recovery checks;
+SQL and isolation checks passed). Manual run 44907767786 verified the disk
+preflight with 91,668,598,784 available bytes, then stopped after eight exact
+objects (2,576,167 bytes). The existing private bucket allowed MP4 and captions
+but excluded the catalog's M4A audio (`audio/mp4`); WebP and JSON were also absent.
+No full backup was created by that failed run. Originals and production delivery
+flags were unchanged. Do not rerun that old revision.
+
+The migration now preflights every required format before uploads. With the
+existing explicit transfer approval, it uses the supported Storage API to append
+only missing exact catalog formats, preserving existing formats, the private
+setting and the 200 MiB file limit. It checks for configuration drift and verifies
+the settings readback before uploading. Read-only plan/verify modes never update
+settings. All source hashes still pass before the first settings or object write.
+Fixed local error messages identify the failure without printing provider bodies.
+
+Continuation: release this narrow correction after recovery tests and CI; dispatch
+a new manual transfer/backup run on that reviewed main. Resume by validating the
+eight existing objects; do not overwrite them. Require all 525 hashes and the
+complete 594-object, 2,778,189,927-byte encrypted backup/restore proof before any
+production delivery activation. The Academy is not yet launch-ready.

@@ -16,6 +16,12 @@ with its existing verified destination and owner-custody inputs, and set
 input uses the same backup concurrency lock. Recovery configuration and disk are
 checked before the 525 inventoried objects are copied. Every local hash is checked
 before any write; uploads refuse overwrite and destination readback must match.
+Every catalog MIME type is checked before upload. For this approved transfer only,
+the supported Storage API appends missing exact formats (audio/mp4, image/webp,
+application/json) to the existing private bucket. It preserves all existing
+formats and its 200 MiB file limit, detects settings drift and requires readback.
+Plan and verify modes never modify bucket settings. Unknown catalog formats or
+failed settings verification stop before object writes.
 The existing full encrypted backup, download, decryption and original-hash restore
 then run. No media or hosting activation follows automatically. If interrupted,
 inspect the result and resume only with the same verified catalog; never assume
