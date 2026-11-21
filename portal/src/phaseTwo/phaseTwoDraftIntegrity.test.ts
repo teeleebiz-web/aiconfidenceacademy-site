@@ -52,6 +52,24 @@ describe('Phase Two source integrity', () => {
     expect(result.issues).toEqual([])
   })
 
+  it('reviews a fully published course without relaxing the default draft contract', () => {
+    const published = copy()
+    published.journeys.forEach(row => { row.status = 'published' })
+    published.lessons.forEach(row => { row.status = 'published' })
+    expect(inspectPhaseTwoDraft(published.journeys, published.lessons, 'published')).toEqual({ ready: true, issues: [] })
+    expect(inspectPhaseTwoDraft(published.journeys, published.lessons).ready).toBe(false)
+    published.lessons[12].status = 'draft'
+    expect(inspectPhaseTwoDraft(published.journeys, published.lessons, 'published').ready).toBe(false)
+  })
+
+  it('retains source completeness checks for published owner review', () => {
+    const published = copy()
+    published.journeys.forEach(row => { row.status = 'published' })
+    published.lessons.forEach(row => { row.status = 'published' })
+    published.lessons[0].content.phase_two!.ai_request = ''
+    expect(inspectPhaseTwoDraft(published.journeys, published.lessons, 'published').issues).toContain('Lesson 1.1 lacks ai_request.')
+  })
+
   it('rejects an omitted lesson, missing teaching field, or mixed media allocation', () => {
     const missing=copy()
     missing.lessons=missing.lessons.filter(x=>x.page_id!=='3.5')

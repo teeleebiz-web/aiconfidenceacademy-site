@@ -819,3 +819,27 @@ no authentication settings have been saved. Browser action-time confirmation
 was requested for temporarily allowing that exact callback, with removal after
 testing. An existing-password sign-in is the alternative. No wildcard redirect,
 credential extraction, session transfer, new account or role grant was used.
+
+## November 22, 2026 — authenticated owner review publication mismatch
+
+Terrence approved the temporary exact preview `/learn/` callback. It was saved
+in Supabase without changing Site URL or adding wildcards. The generic learner
+entry sent a correctly routed email and the existing owner's normal email-link
+sign-in succeeded. The Phase Two-specific entry includes a query string and
+does not match that exact callback; use the generic entry for this temporary
+check. Remove the approved temporary callback after testing as agreed.
+
+The signed-in owner review then reproduced `Your lesson could not load`.
+Current database metadata confirms the course, all six journeys and all 36
+lessons are published (18 video / 18 audio). The owner-only review query and
+its completeness validator still required draft status. The new regression
+reproduced that precise failure before correction. Owner review now accepts
+only draft or published courses, with all child records required to match the
+course's state. The default draft validation contract remains strict, and
+all sequencing, teaching-source and media-allocation checks remain in force.
+Owner authorization and RLS run before curriculum queries as before. No
+publication, content, enrollment, payment or learner timer is changed.
+
+Local targeted validation: 55 tests passed and TypeScript checking passed.
+The source repair still requires full CI and authenticated playback in its
+updated protected deployment before claiming the browser check passed.
