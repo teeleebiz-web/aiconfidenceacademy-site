@@ -17,6 +17,11 @@ on:
         required: true
         default: false
         type: boolean
+      migrate_phase_two_media:
+        description: 'Copy the approved exact Phase Two media into private Storage before full recovery verification'
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -56,4 +61,9 @@ jobs:
           ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY: ${{ secrets.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY }}
           ACA_R2_ACCESS_KEY_ID: ${{ secrets.ACA_R2_ACCESS_KEY_ID }}
           ACA_R2_SECRET_ACCESS_KEY: ${{ secrets.ACA_R2_SECRET_ACCESS_KEY }}
-        run: node operations/manual-backup.mjs
+          ACA_PHASE_TWO_MEDIA_MIGRATION_APPROVED: ${{ inputs.migrate_phase_two_media }}
+        run: |
+          if [ "$ACA_PHASE_TWO_MEDIA_MIGRATION_APPROVED" = "true" ]; then
+            node operations/migrate-phase-two-media.mjs upload
+          fi
+          node operations/manual-backup.mjs

@@ -6,12 +6,13 @@ import { createClient } from '@supabase/supabase-js'
 import { backup, projectRef, restoreLocal } from './recovery.mjs'
 import { downloadSnapshot, r2Configuration, r2Store, uploadSnapshot } from './r2-transfer.mjs'
 import { backupFailure, backupFailureEvidence, backupSourceFetch, sourceRetryEvidence } from './backup-failure.mjs'
+import { sourceSnapshotLimit, requiredBackupDiskBytes } from './backup-limits.mjs'
 
 const attemptEvidence = new WeakMap()
 export const manualRetryEvidence = error => attemptEvidence.get(error) ?? null
 
 // Export the actual enforced bound so migration preflight cannot assume a larger one.
-export const sourceSnapshotLimit = 2 * 1024 ** 3
+export { sourceSnapshotLimit } from './backup-limits.mjs'
 const limit = sourceSnapshotLimit
 const safeReference = value => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value ?? '') ? value : null
 
@@ -54,6 +55,12 @@ async function diskBytes() {
   return disk.bavail * disk.bsize
 }
 
+export async function verifyBackupDisk(availableBytes = diskBytes) {
+  const available = BigInt(await availableBytes())
+  if (available < requiredBackupDiskBytes) throw new Error('Insufficient private temporary disk')
+  return { availableBytes: Number(available), requiredBytes: Number(requiredBackupDiskBytes) }
+}
+
 export async function manualBackup({ env = process.env, createSource = createClient, createStore = r2Store, availableBytes = diskBytes, now = Date.now } = {}) {
   let stage = 'configuration', root, key, reference = null, failed, failedAt, privateStoreTouched = false
   try {
@@ -61,7 +68,7 @@ export async function manualBackup({ env = process.env, createSource = createCli
     key = config.key
     stage = 'private-disk-preflight'
     // Two encrypted snapshots, one plaintext restore and overhead stay private.
-    if (BigInt(await availableBytes()) < BigInt(limit) * 3n + 512n * 1024n ** 2n) throw new Error('Insufficient private temporary disk')
+    await verifyBackupDisk(availableBytes)
     root = await mkdtemp(join(tmpdir(), 'aca-manual-backup-'))
     const snapshot = join(root, 'snapshot'), downloaded = join(root, 'downloaded'), restored = join(root, 'restored')
     const client = createSource(config.sourceUrl, config.sourceKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }, global: { fetch: backupSourceFetch(fetch, { captureRetry: true, now }) } })

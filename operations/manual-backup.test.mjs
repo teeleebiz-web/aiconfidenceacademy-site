@@ -3,7 +3,8 @@ import assert from 'node:assert/strict'
 import { randomBytes } from 'node:crypto'
 import { Readable } from 'node:stream'
 import { backup } from './recovery.mjs'
-import { manualBackup, manualConfiguration } from './manual-backup.mjs'
+import { manualBackup, manualConfiguration, verifyBackupDisk } from './manual-backup.mjs'
+import { sourceSnapshotLimit, requiredBackupDiskBytes } from './backup-limits.mjs'
 import { mkdtemp, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -15,7 +16,7 @@ const bytes = randomBytes(16391)
 function source({ oversized = false, count = {} } = {}) { return { storage: {
   async listBuckets() { return { data: [{ id: 'private-fixture', public: false }] } },
   from() { return {
-    async list() { return { data: [{ id: 'fixture', name: 'original.bin', updated_at: 'stable', metadata: { size: oversized ? 2 * 1024 ** 3 + 1 : bytes.length } }] } },
+    async list() { return { data: [{ id: 'fixture', name: 'original.bin', updated_at: 'stable', metadata: { size: oversized ? sourceSnapshotLimit + 1 : bytes.length } }] } },
     async download() { count.downloads = (count.downloads ?? 0) + 1; return { data: new Blob([bytes]) } },
   } },
 } } }
@@ -26,7 +27,7 @@ function memoryStore() {
     async get(path) { return Readable.from([objects.get(path)]) },
   }
 }
-const freeDisk = async () => 10n * 1024n ** 3n
+const freeDisk = async () => requiredBackupDiskBytes
 
 test('manual job verifies a saved encrypted copy against original hashes without source writes', async () => {
   const store = memoryStore()
@@ -58,7 +59,11 @@ test('owner custody, source authorization, canonical key and private destination
 })
 
 test('insufficient private disk stops before source access', async () => {
-  await assert.rejects(manualBackup({ env, availableBytes: async () => 1n, createSource() { assert.fail('No source access allowed') } }), error => error.stage === 'private-disk-preflight')
+  assert.equal(sourceSnapshotLimit, 4294967296)
+  assert.equal(requiredBackupDiskBytes, 13421772800n)
+  await assert.rejects(manualBackup({ env, availableBytes: async () => requiredBackupDiskBytes - 1n, createSource() { assert.fail('No source access allowed') } }), error => error.stage === 'private-disk-preflight')
+  assert.equal((await verifyBackupDisk(freeDisk)).requiredBytes, 13421772800)
+  assert.equal(manualConfiguration(env).r2.maxBytes, sourceSnapshotLimit)
 })
 
 test('configuration diagnostics identify the failed check without revealing credentials or opening a source', async () => {

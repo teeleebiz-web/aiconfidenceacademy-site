@@ -638,3 +638,27 @@ An authorized retry restores recording access and playback position without
 discarding unsaved notes. All six private-media component regressions passed;
 type checking, default build, secure public build and its four boundary checks
 passed again for this correction. Sign-out still removes the protected subtree.
+
+## November 21, 2026 — backup capacity approved
+
+Terrence explicitly approved increasing the coordinated backup limits to 4 GiB
+and continuing the private transfer and full recovery verification. This
+supersedes the pending-capacity approval above. `operations/backup-limits.mjs`
+now supplies the shared source, encrypted-transfer, retention-read and retry
+bounds. The disk preflight requires 13,421,772,800 available bytes (12.5 GiB).
+The existing retry count, five-minute cooldown, ten-minute retry deadline,
+30-minute workflow ceiling, seven daily copies and pinned original are preserved.
+
+The existing manual backup workflow has an explicit Phase Two transfer input,
+default false. An approved run validates recovery configuration and disk before
+copying, checks all source hashes before any write, refuses overwrites, verifies
+each destination, and then performs the existing full encrypted backup/restore.
+The same concurrency group excludes overlap with automatic backups. A successful
+copy alone never activates media, changes hosting or establishes launch readiness.
+Production media/hosting flags remain off until recovery and access checks pass.
+
+Live read-only preflight confirms 69 current private objects totaling
+1,729,388,971 bytes. The latest scheduled backup, run 44791318648, completed full
+restore/hash checks with that same collection, retained seven copies and
+preserved the original. Existing recovery credentials are recorded valid through
+October 25, 2027. The 525 additional objects remain pending this approved run.

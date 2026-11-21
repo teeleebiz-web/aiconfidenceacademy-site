@@ -55,4 +55,11 @@ needed to meet those requirements.
 This standard is standing project direction, not a claim that all these controls
 are already implemented or a promise that no incident can occur.
 
+Terrence explicitly approved the proposed increase from 2 GiB to 4 GiB on
+November 21, 2026, including matching source/encrypted/retry limits and the
+private-media transfer followed by full recovery verification. Do not request
+that approval again. Preserve encryption, seven daily copies, the pinned original,
+retry frequency/cooldown/deadlines and at least 12.5 GiB private temporary disk.
+This is not authorization for a new subscription or unlimited usage.
+
 The October 17, 2026 founder direction is to complete launch operations, security, policies, terms, refund disclosures, and automated support. It does not reopen approved curriculum.

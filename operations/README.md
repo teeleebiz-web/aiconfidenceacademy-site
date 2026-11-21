@@ -1,5 +1,28 @@
 # ACA storage and configuration recovery
 
+## November 21 approved private-media capacity
+
+Terrence approved the proposed 4 GiB source/encrypted/retry bounds and continuation
+of the exact Phase Two media transfer followed by complete recovery verification.
+This supersedes historical 2 GiB capacity instructions below. Shared constants in
+`backup-limits.mjs` cover the manual/automatic copy, retry eligibility, R2 readback,
+standalone transfer defaults and retention reads. Private disk preflight requires
+12.5 GiB available after checkout/dependencies; it runs in CI and again before
+an approved migration. Retry frequency, cooldown and deadlines remain unchanged.
+
+Use the existing `ACA manual private Storage backup` workflow on reviewed main,
+with its existing verified destination and owner-custody inputs, and set
+`migrate_phase_two_media=true` only for the approved transfer. This default-false
+input uses the same backup concurrency lock. Recovery configuration and disk are
+checked before the 525 inventoried objects are copied. Every local hash is checked
+before any write; uploads refuse overwrite and destination readback must match.
+The existing full encrypted backup, download, decryption and original-hash restore
+then run. No media or hosting activation follows automatically. If interrupted,
+inspect the result and resume only with the same verified catalog; never assume
+an upload means a recoverable backup exists. Keep seven daily copies and the
+pinned original. No new subscription, bucket, credential or retention change is
+authorized by this capacity approval.
+
 ## November 8 approved Node 24 runtime alignment
 
 Terrence authorized matching production hosting to the existing Node 24 checks

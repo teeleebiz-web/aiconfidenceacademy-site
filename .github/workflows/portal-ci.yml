@@ -104,6 +104,9 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
+      - name: Verify private backup disk capacity without live credentials
+        run: node --input-type=module -e "import { verifyBackupDisk } from './operations/manual-backup.mjs'; console.log(JSON.stringify(await verifyBackupDisk()))"
+
       - name: Type-check, test, and build
         run: npm run check
 
