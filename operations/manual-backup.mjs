@@ -10,7 +10,9 @@ import { backupFailure, backupFailureEvidence, backupSourceFetch, sourceRetryEvi
 const attemptEvidence = new WeakMap()
 export const manualRetryEvidence = error => attemptEvidence.get(error) ?? null
 
-const limit = 2 * 1024 ** 3
+// Export the actual enforced bound so migration preflight cannot assume a larger one.
+export const sourceSnapshotLimit = 2 * 1024 ** 3
+const limit = sourceSnapshotLimit
 const safeReference = value => /^aca-backups\/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value ?? '') ? value : null
 
 function configurationFailure(code, details = {}) {

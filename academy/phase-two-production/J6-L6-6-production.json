@@ -1,0 +1,191 @@
+{
+  "production_version": "1.0",
+  "approval_status": "founder_review_not_published",
+  "curriculum_version": "2.0",
+  "lesson_id": "6.6",
+  "primary_media": "video",
+  "title": "Submit the Portfolio and Execution Plan",
+  "learner_promise": "Assemble your verified six-journey evidence, explain a specific change in your work, and submit a checked portfolio with a practical 30-, 60-, and 90-day execution plan.",
+  "pacing": [
+    {
+      "key": "teaching",
+      "label": "Teaching",
+      "minutes": 15
+    },
+    {
+      "key": "worked_case",
+      "label": "Worked demonstration",
+      "minutes": 10
+    },
+    {
+      "key": "application",
+      "label": "Project application",
+      "minutes": 25
+    },
+    {
+      "key": "verification",
+      "label": "Verification",
+      "minutes": 10
+    }
+  ],
+  "outcomes": [
+    "Assemble all required retained evidence with meaningful references and honest status.",
+    "Explain growth through a changed decision, improved result, demonstration, and review response.",
+    "Plan thirty, sixty, and ninety days with actions, owners, permissions, and evidence checkpoints.",
+    "Check and submit the final package without inventing receipt, results, or a credential decision."
+  ],
+  "teaching": [
+    {
+      "heading": "Assemble the portfolio from retained evidence",
+      "paragraphs": [
+        "Use PROGRESS Closeout: portfolio, review, ownership, gaps, roadmap, evidence, support, and sustain. Point to the strongest existing work from all six journeys.",
+        "Use meaningful references to the current artifact, tests, revision, demonstration, responsible statement, positioning set, and continuation plan. Create a new version only for a necessary correction."
+      ],
+      "think_prompt": "Which required component is missing, outdated, or difficult to locate?"
+    },
+    {
+      "heading": "Review ownership, gaps, and the final demonstration",
+      "paragraphs": [
+        "Cite a changed decision and an improved result that your evidence shows. Explain human ownership, actual AI assistance, sources, privacy, and version history.",
+        "Deliver the final demonstration and retain actual questions and responses. Label rehearsal honestly; resolve remaining issues through focused revision in the weekend window."
+      ],
+      "think_prompt": "What changed decision and retained observation show your growth?"
+    },
+    {
+      "heading": "Plan thirty, sixty, and ninety days with evidence checkpoints",
+      "paragraphs": [
+        "Extend the Lesson 6.5 action into 30-, 60-, and 90-day stages. Each stage names action, owner or collaborator, permission, boundary, evidence checkpoint, and next decision.",
+        "Schedule a permitted bounded pilot, quality review, and conditional decision about wider use. Keep proposed activity distinct from completed results and use the backup when a dependency is unresolved."
+      ],
+      "think_prompt": "What evidence and permission must exist before the next stage?"
+    },
+    {
+      "heading": "Submit the checked package and continue responsibly",
+      "paragraphs": [
+        "Submit the checked index, artifact, responsible statement, positioning set, and continuation plan by Sunday of Week Six through the established Academy route. Saving notes does not confirm delivery or receipt.",
+        "An authorized Academy reviewer decides credentials using the governing rubric. Additional review time is administrative, not another teaching week. Continue with evidence, support, and responsible review."
+      ],
+      "think_prompt": "What actual reference confirms delivery, and what remains for the authorized reviewer?"
+    }
+  ],
+  "worked_case": {
+    "revised_example": "The corrected index links six retained journey results and all required final components. The reflection cites the separated human approval gate and retained retest. The proposed 30-day pilot depends on permission; the 60-day quality review uses actual observations; the 90-day decision about wider use remains conditional. The responsible statement and positioning set preserve fictional labels. Submission acknowledgment and credential decision remain unestablished until actually received.",
+    "demonstration_steps": [
+      "Locate the required retained evidence and current versions.",
+      "Explain a changed decision and show the ordinary and exception paths.",
+      "Record actual questions, gaps, and focused corrections.",
+      "Plan three stages with permission and evidence-led decisions.",
+      "Verify final files, use the established submission route, and retain actual acknowledgment."
+    ],
+    "question": "Why can a completed practice record demonstrate preparation without proving that the Academy received the files or awarded a credential?",
+    "label": "A bounded continuation with honest submission status",
+    "setup": "SUPPLIED FICTIONAL TRAINING CASE: The reviewed intake tabletop has retained complete-input, missing-date, absent-approval, revision, and demonstration evidence. Live delivery, measured savings, real organizational permission, and certification are not established. A proposed continuation schedules a permitted bounded pilot, quality review, and conditional decision about wider use. No pilot, reviewer response, or submission receipt is invented.",
+    "evidence_table": [
+      {
+        "claim": "All final components are ready",
+        "evidence": "Current six-journey index and final artifact/test/revision/demonstration references",
+        "action": "Locate each required item; mark missing evidence and make a focused correction."
+      },
+      {
+        "claim": "Growth is demonstrated",
+        "evidence": "Separated human approval gate, before/after revision, and retained tabletop retest",
+        "action": "Cite a specific decision and improved result; do not claim live savings."
+      },
+      {
+        "claim": "Wider use is planned",
+        "evidence": "Proposed pilot, quality review, permission dependency, and evidence checkpoint",
+        "action": "Keep the 30/60/90-day plan conditional; do not invent completed activity."
+      },
+      {
+        "claim": "The Academy received and certified the work",
+        "evidence": "Actual acknowledgment and authorized reviewer decision are not yet established",
+        "action": "Use the established submission route and retain actual status; AI does not decide certification."
+      }
+    ]
+  },
+  "application": [
+    {
+      "minutes": 7,
+      "heading": "Assemble the existing evidence index",
+      "instruction": "Locate all six journey results and required final components. Use meaningful current references. Mark missing items honestly; avoid extra copies or new versions of completed work.",
+      "evidence": "Six-journey index and current final-component references."
+    },
+    {
+      "minutes": 6,
+      "heading": "Explain growth and resolve the remaining issue",
+      "instruction": "Cite a changed decision and improved result. Deliver the final demonstration, record actual review questions or labeled rehearsal, and make a focused correction with affected retest where needed.",
+      "evidence": "Reflection, demonstration, question/response, and correction references."
+    },
+    {
+      "minutes": 8,
+      "heading": "Build the 30-, 60-, and 90-day execution plan",
+      "instruction": "Extend your Lesson 6.5 action. Name action, owner/collaborator, permission, boundary, evidence checkpoint, and next decision for each stage. Include support, backup, and sustained review.",
+      "evidence": "Practical three-stage plan with conditional expansion and real dependencies."
+    },
+    {
+      "minutes": 4,
+      "heading": "Verify and prepare the submission",
+      "instruction": "Check privacy-safe evidence, sources, version history, human decisions, and final files. Use the established Academy route by Sunday of Week Six; retain actual acknowledgment. Save closeout notes and workbook without treating saving as delivery.",
+      "evidence": "Checked final package, actual submission status, and saved closeout record."
+    }
+  ],
+  "approved_ai_request": "Check my portfolio index for missing required evidence and unsupported claims. Help organize practical 30-, 60- and 90-day actions with evidence checkpoints. Do not decide certification. Index and goals: [inputs].",
+  "responsibility_map_fields": [
+    "Six journey results and current final-component references",
+    "Growth reflection, ownership, and actual AI assistance",
+    "Final demonstration, questions, gaps, and focused revision",
+    "30-, 60-, and 90-day actions with owners and permissions",
+    "Evidence checkpoints, support, backup, and sustain decisions",
+    "Privacy-safe final files, actual delivery/receipt status, and reviewer authority"
+  ],
+  "verification": [
+    {
+      "minutes": 4,
+      "heading": "Apply the final completion check",
+      "prompt": "Completion requires all six journey results, a functioning bounded artifact, test and revision evidence, the demonstration and a defensible execution plan. Resolve missing evidence through focused revision."
+    },
+    {
+      "minutes": 3,
+      "heading": "Inspect the evidence and plan",
+      "prompt": "Confirm privacy-safe evidence, sources, version history, human decisions, and final files. Check actions, owners, permissions, evidence checkpoints, support, and conditional decisions across 30, 60, and 90 days."
+    },
+    {
+      "minutes": 3,
+      "heading": "Retain actual submission status",
+      "prompt": "Submit by Sunday of Week Six through the established Academy route. Retain the actual reference or acknowledgment; mark unavailable confirmation honestly. AI does not decide certification, and review time is administrative."
+    }
+  ],
+  "completion_criteria": [
+    "All six journey results and required final components have usable current evidence references.",
+    "The bounded artifact functions within its stated scope with retained test and revision evidence.",
+    "Growth reflection cites a changed decision and an improved result supported by actual work.",
+    "Final demonstration and actual review responses or clearly labeled rehearsal are retained.",
+    "Missing requirements receive focused revision and relevant retest; unresolved gaps remain visible.",
+    "The 30-, 60-, and 90-day plan names actions, owners/collaborators, permissions, boundaries, evidence checkpoints, and decisions.",
+    "Privacy-safe sources, versions, human decisions, responsible statement, positioning set, and final files are checked.",
+    "Submission uses the established Academy route by Sunday of Week Six; actual delivery and receipt status remain honest.",
+    "Credential decisions remain with the authorized Academy reviewer using the governing rubric."
+  ],
+  "handoff": "Continue independent work using the saved result and 30-, 60-, and 90-day evidence checkpoints. Additional Academy review time is administrative, not an extra teaching week or journey.",
+  "media_transcripts": {
+    "introduction": "Welcome back to the AI Confidence Academy. This is Journey Six, Lesson Six—the final lesson of Phase Two.\n\nWe want to thank you sincerely for coming along, learning with us, and allowing us to learn alongside you. Our goal throughout this journey has been to connect learning with practical work, thoughtful decisions, and human responsibility. We have brought those pieces together, and today we will bring this phase to completion.\n\nYou have explored opportunities, developed workflows, considered the people affected by your decisions, created useful work, and practiced testing and improving it. In Journey Six, we have focused on recognizing your capabilities, finishing your project, reviewing its quality, demonstrating your work, and choosing a realistic next opportunity.\n\nIn this final lesson, you will assemble your portfolio using the evidence you have already created. You will reflect on what changed in your thinking and your work, check the remaining requirements, and prepare your final submission.\n\nYou will also create a thirty-, sixty-, and ninety-day execution plan, giving your learning a practical direction beyond the Academy.\n\nThank you for the time, effort, and trust you have brought to ACA. Let us bring your work together and prepare you to carry it forward.\n\nOn behalf of the founders, your instructors, and the entire team here at the AI Confidence Academy, we want to thank you again for joining us in this experience and taking this journey with us. It has been a pleasure to learn alongside you.\n\nWe hope you leave feeling more confident, more capable, and ready to put what you have learned into practice. We are grateful that you chose ACA to be part of your learning.\n\nThank you sincerely for being here.",
+    "chapters": [
+      "You have reached the final lesson of Phase Two. Bring forward the work from all six journeys and the reviewed capstone from this week. A portfolio is an organized collection of evidence that shows what you did, how you made decisions, and what the result can support. It is not a collection of impressive claims. Its purpose is to let another person find and inspect the work behind your explanation.\n\nUse PROGRESS Closeout: portfolio, review, ownership, gaps, roadmap, evidence, support, and sustain. Portfolio means assemble the required work. Review means inspect its accuracy, quality, and readiness. Ownership means explain your contribution and decisions. Gaps means record what is missing or unresolved. Roadmap means plan practical next actions. Evidence means identify what each action will show. Support means name the people, resources, and permissions needed. Sustain means decide how you will keep the work useful and responsible over time.\n\nStart with the existing index and files. Locate a result from each of the six journeys. Retain the approved opportunity and strategy work, bounded workflow, people and adoption decisions, value and delivery work, operating and improvement evidence, and final demonstration and execution package. Use the requirements attached to your own completed lessons. Do not replace their actual evidence with a generic summary. Give each entry a meaningful name, current version, purpose, evidence reference, and status. A reviewer should be able to locate the item without guessing.\n\nAdd the functioning bounded artifact and its charter, test and revision evidence, final demonstration, responsible statement, positioning set, and continuation plan. These are the parts you have already developed. If one file supports several requirements, point to the relevant parts instead of making unnecessary copies. Keep the version history that explains a material correction. Do not make new versions of completed assignments merely to increase the size of the portfolio. Revise only when an actual gap, error, or review question requires a correction.\n\nOur supplied fictional intake case has a retained tabletop artifact, complete-input test, missing-date test, absent-approval test, and a revision that makes the human delivery gate visible. The index can point to those records and the demonstration. It cannot claim live customer delivery, measured savings, or organizational permission that the example never established. Its labels must say fictional. Your own work may have a different permitted setting; describe that setting accurately.\n\nOpen your current index now. Check whether all six journey results and the final required components can be found. Mark an absent item as missing. Name the focused correction needed, rather than writing a polished sentence that hides the absence. This is how the portfolio becomes useful to both you and its reviewer.",
+      "A complete-looking folder can still contain unsupported claims, private material, or unclear ownership. Review the actual final files and references. Check that sources are identifiable, the current version is clear, important tests can be found, and human decisions are explained. A link that opens the wrong draft does not establish the final result. A reference that another authorized reviewer cannot use needs an appropriate access or correction step.\n\nConfirm that the evidence is safe to share with its intended reviewer. Remove private inputs where they are not needed. Label fictional, sanitized, or recreated examples accurately. Keep any necessary permission visible. Do not upload confidential records into AI simply because you want a quick completeness check. A privacy-safe index can identify the evidence and its status without exposing the underlying material.\n\nWrite a short growth reflection with a changed decision and an improved result. Explain what you first did or believed, what evidence led you to change, what you changed, and what the retained work now shows. In our fictional case, the earlier design treated complete information as permission to deliver. The revision kept human approval separate and made the hold state visible in the tabletop. That is a specific design change. It is not proof of live savings or a claim that all future errors have been prevented. Your reflection must cite your own observation and evidence.\n\nExplain ownership honestly. Describe what AI drafted or suggested, what you inspected, and which choices you made. Do not erase AI assistance, and do not let AI assistance erase your judgment. Your ability to explain a decision in your own words is part of the evidence. An attractive output alone cannot show that you understand its purpose, limits, or review route.\n\nDeliver the final demonstration of the bounded artifact. Show the ordinary path and a meaningful exception, then point to the test, revision, and human approval boundary. Use the current artifact, not a disconnected slide that implies functionality you cannot show. Retain the demonstration reference and actual questions. If no reviewer has yet asked a question, state that honestly; prepare plausible rehearsal questions but label them as rehearsal. Do not invent an academy response or permission.\n\nUse the approved AI request to check the privacy-safe portfolio index for missing required evidence and unsupported claims. Inspect its suggestions against the actual records. AI may overlook a gap or invent a requirement. Record what you accepted, corrected, or rejected. It must not decide certification.\n\nIdentify any remaining issue and make a focused correction within the planned weekend window. Keep the before, after, and affected retest references where relevant. If evidence is still missing, record that status and the actual question for review. Your human review confirms that you inspected the package; it does not make a missing requirement complete or award a credential.",
+      "Carry forward the primary opportunity, backup, and thirty-day evidence-building action from Lesson Six Point Five. Extend that action into a practical thirty-, sixty-, and ninety-day plan. A plan describes what you intend to do and what evidence will guide the next decision. It is not a record of completed results. For each stage, name the action, owner or collaborator, needed permission, boundary, evidence checkpoint, and the decision that follows.\n\nAt thirty days, choose a bounded step that fits your actual setting. In the supplied fictional case, the proposed author first seeks permission from the responsible person for a limited internal pilot. The pilot would use only agreed safe inputs, a visible human delivery gate, and retained observations. The thirty-day checkpoint asks whether permission was obtained and what the permitted trial actually showed. No real person has been assigned, and no pilot has occurred in this teaching example. The owner must identify the real person and agreement in an actual project.\n\nIf permission is unavailable, do not proceed with live customer inputs. Use the backup from Lesson Five: a permitted fictional review that keeps the unresolved organizational dependency visible. The checkpoint should record what happened and what remains unknown. A delayed permission is not a reason to invent approval or quietly expand the scope.\n\nAt sixty days, schedule a quality review based on the evidence retained from the first stage. Compare ordinary inputs, known exceptions, human review decisions, and corrections with the agreed requirement. Name who may review the work and how you will retain their actual questions. Check usability, privacy, and responsibility as well as whether the artifact runs. If a required condition fails, narrow or pause the next step and revise the affected part. Do not assume the earlier prototype proves reliability in a new setting.\n\nAt ninety days, make a decision about wider use, continued bounded practice, revision, or stopping. Define the evidence needed before expansion. The fictional case requires relevant tests, a usable review route, the responsible person's permission, and an explanation of any new input or audience. Wider use remains conditional. The plan should not declare success in advance or promise clients, income, employment, or certification.\n\nFor your own plan, make the actions feasible. An owner is the person accountable for carrying out the step. A collaborator is someone whose participation is needed; their availability must be confirmed rather than assumed. Record unknown costs, resources, access, and permissions as dependencies to check. Name the support you will seek and the backup if it is unavailable.\n\nRead your three stages together. Does each stage use the evidence from the previous one? Is the next decision clear? Are the permissions obtained before the affected action? Save the plan in the existing capstone package. Your next ninety days should show responsible continued practice, with decisions that change when the evidence changes.",
+      "Bring the index and final files together for submission. The required package contains all six journey results, a functioning bounded artifact, test and revision evidence, the demonstration, and a defensible execution plan. Include the responsible statement and positioning set you prepared. Defensible means that you can explain the plan's actions, limits, dependencies, and evidence checkpoints using the work you actually retained.\n\nDo a final file check. Confirm that the index points to the intended current versions, sources and version history are available, privacy-safe labels are correct, and your human decisions are clear. Check the final demonstration and the responses to actual questions. Record any focused correction and affected retest. Avoid creating new versions of sound completed assignments merely to make the final package look fresh.\n\nUse the applied completion check from the master: completion requires all six journey results, a functioning bounded artifact, test and revision evidence, the demonstration, and a defensible execution plan. Resolve missing evidence through focused revision. If a component remains missing, say what it is. A checkbox or AI statement is not evidence that the component exists. The Academy's authorized reviewer uses the governing rubric for the credential decision. This lesson does not add a new rubric or let an AI tool award certification.\n\nSubmit the index, finished artifact, responsible statement, positioning set, and continuation plan by Sunday of Week Six using the established Academy submission route. Saving practice notes or workbook answers preserves your work; it does not send files to a reviewer or confirm that the Academy received them. Retain the actual submission reference or acknowledgment when available. If the destination is not yet confirmed, record that dependency and use the existing Academy support route to resolve it. Do not fabricate a receipt or review outcome.\n\nAdditional Academy review time is administrative. It is not an extra teaching week and does not create a Journey Seven. Use the planned weekend window for the remaining correction. Keep questions and any later reviewer decision separate from your own explanation of learning. You may be proud of your growth while still naming a limit or pending requirement.\n\nPlan to sustain the work after the course. Keep useful evidence and current instructions where you can find them. Decide when to review quality, who owns corrections, what support you need, and when to pause use. A change in inputs, audience, or permission may require a new bounded check. The thirty-, sixty-, and ninety-day checkpoints help you decide whether to continue, revise, or stop based on evidence.\n\nFinish your reflection in your own voice. Point to one changed decision and one improved result, then state the next action you own. Complete the connected workbook and save the closeout notes to your continuing Project Record. You have practiced using AI to assist your work while retaining human judgment. Continue with the verified result, the responsibilities you can explain, and the next decision your evidence can support."
+    ],
+    "demonstrations": [
+      "This supplied fictional example uses the existing intake tabletop and retained files. The portfolio index identifies six journey results and the final artifact, tests, revision, demonstration, responsible statement, positioning set, and continuation plan. Each entry points to a meaningful version and evidence reference. The missing pilot permission stays pending. The author does not create extra versions of completed assignments or describe fictional tests as live delivery. Your index must point to your actual retained work. A polished list does not replace missing evidence.",
+      "In the supplied fictional intake example, the original design treated complete information as permission to deliver. The revision separates the human approval gate and shows an explicit hold state. The reflection cites that changed decision and the retained tabletop retest. It does not claim measured savings or complete prevention of future errors. The final demonstration shows an ordinary path and absent approval, then explains AI assistance and human decisions. Rehearsal questions stay labeled as rehearsal. An actual reviewer response must be recorded as it happened. Your human check does not award certification.",
+      "This supplied continuation is a proposal, not completed activity. At thirty days, seek the responsible person’s permission for a bounded pilot using agreed safe inputs and retained observations. If permission is unavailable, use the permitted fictional-review backup. At sixty days, compare the retained evidence with the agreed requirement in a quality review. At ninety days, decide whether to continue, revise, stop, or consider wider use. Expansion requires relevant evidence and permission. Each stage names action, owner or collaborator, permission, boundary, evidence checkpoint, and next decision. No success, client, income, or certification is guaranteed.",
+      "Before submission, inspect the privacy-safe index, sources, version history, human decisions, and final files. Include all six journey results, the functioning bounded artifact, test and revision evidence, demonstration, responsible statement, positioning set, and execution plan. Correct a missing requirement through focused revision. Submit by Sunday of Week Six through the established Academy route and retain the actual acknowledgment when available. Saving workbook or practice notes does not send files or confirm receipt. Additional review time is administrative, not another teaching week. AI may identify gaps; the authorized Academy reviewer decides credentials using the governing rubric."
+    ]
+  },
+  "editorial_notes": {
+    "status": "Protected founder review; existing learner publication status remains draft.",
+    "media": "Same approved website recording in 1920×1080 landscape and saved Journey Six voice; four guided audio chapters and four captioned demonstrations.",
+    "source": "ACA_Phase_Two_Six_Week_Curriculum_Master.pdf v2.0, October 4, 2026, Journey Six Lesson 6.6, page 47.",
+    "example_data": "Supplied fictional tabletop and proposed continuation. No live outcome, permission, reviewer response, submission receipt, or credential is invented."
+  }
+}

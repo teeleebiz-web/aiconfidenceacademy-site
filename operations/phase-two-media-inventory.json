@@ -1,0 +1,2630 @@
+{
+  "sourceRevision": "b510125f2749c1d5b73550143f96e06d60905ae4",
+  "files": [
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-01-source.mp4",
+      "gitBlob": "ca0c720667b7ea4e0e8e4f1c74ddd06f7b352232",
+      "bytes": 605470
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-01-source.vtt",
+      "gitBlob": "c0ea48186e2ff1bfb29dfc09e9df588274da8da8",
+      "bytes": 609
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-02-draft.mp4",
+      "gitBlob": "2b9c2ad095246e9745415083772b7304e5a0ba22",
+      "bytes": 638034
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-02-draft.vtt",
+      "gitBlob": "dfeacb9fe56a98c5cae3103ac133b04be38d5824",
+      "bytes": 593
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-03-review.mp4",
+      "gitBlob": "3bb2fe1a30d47151ce5d2c534db7447cd08f4e85",
+      "bytes": 654285
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-03-review.vtt",
+      "gitBlob": "a00ba3e67ad0ae3a1b23a0c003dd93aec4c89f04",
+      "bytes": 710
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-04-correct.mp4",
+      "gitBlob": "910233caf6a5bec7d7fb86eb02f32d51516276af",
+      "bytes": 675883
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-04-correct.vtt",
+      "gitBlob": "9b64a356becfead658804955526b4edf9ab83e8e",
+      "bytes": 583
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-Guided-Instruction.m4a",
+      "gitBlob": "fd6c8cb32f1e2f53df3a2e5d5d67ce86521fa66c",
+      "bytes": 9070566
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-Introduction-v2.mp4",
+      "gitBlob": "bc3284d2c064164141d9b2c5a8f493c01bb46d83",
+      "bytes": 18275660
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-Introduction-v2.vtt",
+      "gitBlob": "43528c4967f127af2aea6c54fa9a31bb217ffd0a",
+      "bytes": 5002
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/ACA-Phase-Two-Lesson-1-1-Introduction.mp4",
+      "gitBlob": "facecf75cd560d62db6553165972149f606f6b3d",
+      "bytes": 19551556
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/guided-chapters.json",
+      "gitBlob": "257be642cab62df48f5816297e207e569688b6af",
+      "bytes": 10532
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/intro-v2-manifest.json",
+      "gitBlob": "6bf68d1357624567cfd0c2160da7361bd8d260b4",
+      "bytes": 648
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/media-manifest.json",
+      "gitBlob": "35ec91e564cc9e9b27fe1ac7e7e06ad3976ca805",
+      "bytes": 543
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/poster-v2.webp",
+      "gitBlob": "5463bad90a60ed9c81a9a84f00b00e148a0a1da0",
+      "bytes": 50452
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/poster.webp",
+      "gitBlob": "5463bad90a60ed9c81a9a84f00b00e148a0a1da0",
+      "bytes": 50452
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-1/production-report.json",
+      "gitBlob": "7369444fd18bb46fe4d01007f7c34ce9ba1c2f2a",
+      "bytes": 3371
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-01-symptom.mp4",
+      "gitBlob": "df0ec1b2f0b53990db819e121967661053558ee3",
+      "bytes": 419052
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-01-symptom.vtt",
+      "gitBlob": "74fb8238a74fb769abaa5f29184fa139c35eb90c",
+      "bytes": 491
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-02-causes.mp4",
+      "gitBlob": "6dccb092a0fa6c967d6a40f0acec5c375852d8c8",
+      "bytes": 526566
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-02-causes.vtt",
+      "gitBlob": "537e0918025e34ab17f61224f69cbc169623fa36",
+      "bytes": 589
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-03-questions.mp4",
+      "gitBlob": "e3f1a0d187506b8c377a891b0b883049a84aefd0",
+      "bytes": 501180
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-03-questions.vtt",
+      "gitBlob": "4a511a26fc30e186b7de0831e28a751fd2d86e14",
+      "bytes": 514
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-04-decision.mp4",
+      "gitBlob": "9f559484f2239211c5fb14497d5464dc5199ce8c",
+      "bytes": 502002
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-04-decision.vtt",
+      "gitBlob": "c198cec4a9c7c32cc84a4fa0bc520bdd1d71caf8",
+      "bytes": 550
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-Guided-Instruction.m4a",
+      "gitBlob": "b2c9209866d26ca3976508739de678732e40dd26",
+      "bytes": 8176327
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-Introduction-v2.mp4",
+      "gitBlob": "717e8e78f76d45b93a59c9c2556311ea8ef43b4b",
+      "bytes": 8874194
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-Introduction-v2.vtt",
+      "gitBlob": "13684472670b1dae180437b4b248dc4841854f4f",
+      "bytes": 2602
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/ACA-Phase-Two-Lesson-1-2-Introduction.mp4",
+      "gitBlob": "518eb6c9dc1aad9e6b1bf95fcd00c573ddf692ff",
+      "bytes": 8564410
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/guided-chapters.json",
+      "gitBlob": "e4f85dc4ed749e21aacba837eb0a8dcd98003a74",
+      "bytes": 9641
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/intro-v2-manifest.json",
+      "gitBlob": "f53bf3b24638ed72bf0c2585c1193a976da2a532",
+      "bytes": 646
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/media-manifest.json",
+      "gitBlob": "fb63d6ad66816938bb493d98718a6d717c445b79",
+      "bytes": 541
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/poster-v2.webp",
+      "gitBlob": "cd0a9b6675c6ae69d03a4f897fec6d7dacd87217",
+      "bytes": 50918
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/poster.webp",
+      "gitBlob": "cd0a9b6675c6ae69d03a4f897fec6d7dacd87217",
+      "bytes": 50918
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-2/production-report.json",
+      "gitBlob": "dfe5266fba46ffcbc57da436a1321289f049d9ad",
+      "bytes": 3084
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-01-roles.mp4",
+      "gitBlob": "5b6de37600874032a85ce19697b5fef27b366b63",
+      "bytes": 489639
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-01-roles.vtt",
+      "gitBlob": "212783e380cdf420b2649c2e2329a921d8d70930",
+      "bytes": 545
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-02-cost.mp4",
+      "gitBlob": "9afa4997559aaeaade3ad5ceedb67c3b6b08d881",
+      "bytes": 534733
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-02-cost.vtt",
+      "gitBlob": "cd890d419c5fa69560ee9254942f84c7c18a3028",
+      "bytes": 573
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-03-alternative.mp4",
+      "gitBlob": "0e41f00fd85945c7f424ef3a52d44ca449d306d8",
+      "bytes": 515457
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-03-alternative.vtt",
+      "gitBlob": "b2e8d59d63a9b295d6fed402a45b6a74fa6be782",
+      "bytes": 573
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-04-value.mp4",
+      "gitBlob": "bcc997155670f72a9228edbfafe9e5cbbf80cf9e",
+      "bytes": 520157
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-04-value.vtt",
+      "gitBlob": "a774d01e503303a89539cf945affa60de3d35e4c",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-Guided-Instruction.m4a",
+      "gitBlob": "d41f9bf8e25dac75a30c6895da61184b7c168752",
+      "bytes": 8665971
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-Introduction-v2.mp4",
+      "gitBlob": "3c3bd5180deff7a1a3b96cce6e96c0d0095a0aab",
+      "bytes": 8382406
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-Introduction-v2.vtt",
+      "gitBlob": "566fb0ecd4736479f470c0803ae57abcbda1c768",
+      "bytes": 2240
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/ACA-Phase-Two-Lesson-1-3-Introduction.mp4",
+      "gitBlob": "0cfd2cf55c5f9bdbfb4ece50b4b556d7e03258bc",
+      "bytes": 7075058
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/guided-chapters.json",
+      "gitBlob": "193e34f9610ba241d9afde29e06ce6b96c6aeedf",
+      "bytes": 9777
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/intro-v2-manifest.json",
+      "gitBlob": "3139604834d475c1ef2bcd2767c41affc9f08f95",
+      "bytes": 646
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/media-manifest.json",
+      "gitBlob": "443a9b34484fb5534f7d9239b189958da7a9a042",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/poster-v2.webp",
+      "gitBlob": "02f8b827a58b7a5c6b83c2ba60fd355c39756af1",
+      "bytes": 51548
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/poster.webp",
+      "gitBlob": "02f8b827a58b7a5c6b83c2ba60fd355c39756af1",
+      "bytes": 51548
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-3/production-report.json",
+      "gitBlob": "34cbc3af7aa0d5522023d6c365cbc3dacc5ae67e",
+      "bytes": 3201
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-01-vague.mp4",
+      "gitBlob": "f22f56505cc9bb12f9ffd20c8adb3e5b7d1f6e3d",
+      "bytes": 497700
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-01-vague.vtt",
+      "gitBlob": "ee3e53c888925a33245d21ad00d2021963a4a6ac",
+      "bytes": 529
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-02-framework.mp4",
+      "gitBlob": "1cce528c25f0394e10be36e2f2484238ac9fe1b2",
+      "bytes": 518854
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-02-framework.vtt",
+      "gitBlob": "bd1b3804ac70268ad2319e12c45e9ee49b50f773",
+      "bytes": 484
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-03-challenge.mp4",
+      "gitBlob": "257fa5d1bd5b9629fd4f5f3fbabe4e3f368e57b1",
+      "bytes": 487471
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-03-challenge.vtt",
+      "gitBlob": "2ac651c1e0b3a9029308cbc6eeabebdcce7c5e21",
+      "bytes": 530
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-04-memo.mp4",
+      "gitBlob": "127f929a6cf9549c9473e5de1b624fd7b9852a33",
+      "bytes": 548978
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-04-memo.vtt",
+      "gitBlob": "6ce15dbeae7ab8cac0cd3b9366941f3607c28234",
+      "bytes": 567
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-Guided-Instruction.m4a",
+      "gitBlob": "7c45d3d1938ee0fc03aeb9d24cad3a32eb1f6fb3",
+      "bytes": 9036321
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-Introduction-v2.mp4",
+      "gitBlob": "4ee07b3824b8a62ad7104b09aa6e658963a83ed1",
+      "bytes": 9153254
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-Introduction-v2.vtt",
+      "gitBlob": "d9bad5a131ef49cfa9abee7b5685fdfaaa64c4c7",
+      "bytes": 2397
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/ACA-Phase-Two-Lesson-1-4-Introduction.mp4",
+      "gitBlob": "2ed89f1413c32817f666c88970fa71911da86d4c",
+      "bytes": 9250922
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/guided-chapters.json",
+      "gitBlob": "8d6ffaa70fbcaf6bb01dd1eb4bdbfec639efcfc8",
+      "bytes": 10295
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/intro-v2-manifest.json",
+      "gitBlob": "d3f6a8f65142c7b03fae826cd04534148031e591",
+      "bytes": 645
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/media-manifest.json",
+      "gitBlob": "fe915879970e98fdf8447dd84fd412d0eff5ebb3",
+      "bytes": 540
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/poster-v2.webp",
+      "gitBlob": "21e53deb31434c76e7c586ae674f5a1b6144d90a",
+      "bytes": 55182
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/poster.webp",
+      "gitBlob": "21e53deb31434c76e7c586ae674f5a1b6144d90a",
+      "bytes": 55182
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-4/production-report.json",
+      "gitBlob": "1e2b724e54b66bfa78bc78440a95a58db6a87aeb",
+      "bytes": 3226
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-01-concept.mp4",
+      "gitBlob": "04c431a03a4c046b673ea4efcb8d2674a2d2b2a4",
+      "bytes": 522325
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-01-concept.vtt",
+      "gitBlob": "7dd3473ed6d97113473c2d87c03d95a4b04f2827",
+      "bytes": 512
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-02-focus.mp4",
+      "gitBlob": "5cd8552ca1c7b76ce3d866352f550de33da49419",
+      "bytes": 449954
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-02-focus.vtt",
+      "gitBlob": "d2d7dc3f560923f38e5606b3baf309ffa8da11b2",
+      "bytes": 551
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-03-options.mp4",
+      "gitBlob": "c6555b614849232e8e08097d0249aae7d4817c5f",
+      "bytes": 514763
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-03-options.vtt",
+      "gitBlob": "961991f24e368dceb2ceaff78837ebe80d8e49ab",
+      "bytes": 557
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-04-charter.mp4",
+      "gitBlob": "6b73aed422a90ee787d87d5f4a23acaa3a0e7ae5",
+      "bytes": 495553
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-04-charter.vtt",
+      "gitBlob": "4a8bf38ea372f41549276943f0ffe769cb3ecd9f",
+      "bytes": 487
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-Guided-Instruction.m4a",
+      "gitBlob": "f811fa926e7f72ba688afa806aa50204c75fb3b7",
+      "bytes": 9758220
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/ACA-Phase-Two-Lesson-1-5-Introduction.mp4",
+      "gitBlob": "ccc2cdf7fd025df2e3e13ee5e93112bbf6ffcdd7",
+      "bytes": 8827795
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/guided-chapters.json",
+      "gitBlob": "f54d829cda6ed70d8b61cf27ece492240a766a20",
+      "bytes": 10919
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/media-manifest.json",
+      "gitBlob": "18cf5c7612cfa97535ab5901bb552e1e5a03e86b",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/poster.webp",
+      "gitBlob": "71227498be0e8ec0f87fb5229b5cee1fda97e78f",
+      "bytes": 54432
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-5/production-report.json",
+      "gitBlob": "2168e7eda96400eafc8605120ec48b724f7c49ec",
+      "bytes": 3140
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-01-model.mp4",
+      "gitBlob": "7d8b73f1d4ec740125feb24ee7b9e6d69bafe931",
+      "bytes": 571860
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-01-model.vtt",
+      "gitBlob": "949812d07fc845e682b27f3f10380cc04c22ac1a",
+      "bytes": 524
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-02-policy.mp4",
+      "gitBlob": "db31ca2e9a4ccc75371b38dfbd550572b0e66cbb",
+      "bytes": 468916
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-02-policy.vtt",
+      "gitBlob": "5a87004a2a41cd2ab2acd05bbf4e89b65568ba1a",
+      "bytes": 487
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-03-consequence.mp4",
+      "gitBlob": "114d35b532bc3b0905d5f1085c2bac16da121fbb",
+      "bytes": 530415
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-03-consequence.vtt",
+      "gitBlob": "a9f1dcf85ffaa3aa79c81c789ed2d53257a1355f",
+      "bytes": 621
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-04-handoff.mp4",
+      "gitBlob": "229fbf706f2f363c1b74443cafcd4ceff47cfd5f",
+      "bytes": 502892
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-04-handoff.vtt",
+      "gitBlob": "b9f76bc62f5c78c8a39eaa1e6f87c474fcb96546",
+      "bytes": 577
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-Guided-Instruction.m4a",
+      "gitBlob": "908ff2db684d7c2a48ea04c0158c3f464f74fad3",
+      "bytes": 10052855
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/ACA-Phase-Two-Lesson-1-6-Introduction.mp4",
+      "gitBlob": "7dfcccb851ce7ad68d474cc8ac045308435a3b62",
+      "bytes": 10090323
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/guided-chapters.json",
+      "gitBlob": "75611a23f38ef0b787797fb38f40f0ee32a00808",
+      "bytes": 11498
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/media-manifest.json",
+      "gitBlob": "d1d665d9684453ea0bf49f6da12b90a42ccdcd62",
+      "bytes": 543
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/poster.webp",
+      "gitBlob": "6bdb29c31f3195a40ee6f67d21b10c3fc0181656",
+      "bytes": 53530
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-1-6/production-report.json",
+      "gitBlob": "b8a37f4bbff1e8720b925491208ca723734dffd4",
+      "bytes": 3322
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-01-trace.mp4",
+      "gitBlob": "6bf0acdc06261527fa53a94b60dd234757667f9a",
+      "bytes": 430304
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-01-trace.vtt",
+      "gitBlob": "91dd04bae492d6fbdf552e53fcd9895e11937f55",
+      "bytes": 529
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-02-delay.mp4",
+      "gitBlob": "3fd335e9bf8b4ea4e5797fb56f8425e7bc16f1a5",
+      "bytes": 438740
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-02-delay.vtt",
+      "gitBlob": "8f0041dc0bfdbf82d4fffd2e4fa6b5a1e1a609f8",
+      "bytes": 526
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-03-handoff.mp4",
+      "gitBlob": "261852a4e1a027a1e2a21958b1eca13730bac56e",
+      "bytes": 421960
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-03-handoff.vtt",
+      "gitBlob": "f3cf8b7de0af82dd329aabb855baf11124aff447",
+      "bytes": 528
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-04-verify.mp4",
+      "gitBlob": "76c2388ac4461213613626d5dbcef0c713e31249",
+      "bytes": 461824
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-04-verify.vtt",
+      "gitBlob": "42f21f5d78c079159b764af0c64d70032b0553c6",
+      "bytes": 546
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-Guided-Instruction.m4a",
+      "gitBlob": "49ab2dd6f1d8af318cad7de00c979882601c1324",
+      "bytes": 9089349
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-Introduction-landscape.mp4",
+      "gitBlob": "e6604c76639f20efdd0ea8bad499e84f351c836b",
+      "bytes": 13927645
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/ACA-Phase-Two-Lesson-2-1-Introduction.mp4",
+      "gitBlob": "7fdc0e94477f266ee38898dc3d4c5d265696af44",
+      "bytes": 6644310
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/guided-chapters.json",
+      "gitBlob": "1584e39940334ba895feb1f9ab16e3f880309e19",
+      "bytes": 11494
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/landscape-intro-manifest.json",
+      "gitBlob": "efb8ac500663783d3335df208d90c4b9567ed3c5",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/media-manifest.json",
+      "gitBlob": "c10044c52ab149b7ebc12427a2ebe228bf51d9e6",
+      "bytes": 541
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/poster-landscape.webp",
+      "gitBlob": "1b3093fdc05389e11a2691dc432b4e9e626f77f9",
+      "bytes": 47062
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/poster.webp",
+      "gitBlob": "1d20121717022b1d4a712105ed77fd4c3980127f",
+      "bytes": 48408
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-1/production-report.json",
+      "gitBlob": "479ef02677bb1ee94ccc0a126afa14db29499b88",
+      "bytes": 3201
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-01-purpose.mp4",
+      "gitBlob": "354c014d61fb49473ea22d655588e3dacd69d94f",
+      "bytes": 428385
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-01-purpose.vtt",
+      "gitBlob": "dfdee520d5cea8a24293ae5af9b364e4013c939d",
+      "bytes": 512
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-02-request.mp4",
+      "gitBlob": "adf92ffea4678692c4d403549aaa0e9459ff0956",
+      "bytes": 482916
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-02-request.vtt",
+      "gitBlob": "a1af8f07e30ae906685ac9d1149838e60c65b098",
+      "bytes": 582
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-03-adapt.mp4",
+      "gitBlob": "60b739a96187d65c7de721f84a833bd6aba9e391",
+      "bytes": 445166
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-03-adapt.vtt",
+      "gitBlob": "8a25ed1588474c4c45f6373f346ecafface1c7b2",
+      "bytes": 539
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-04-check.mp4",
+      "gitBlob": "9125b5faaee3e15927ef52ffb0dc4d4721514f97",
+      "bytes": 519466
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-04-check.vtt",
+      "gitBlob": "7f04e07875ff8e6e307c88205a63bd65273ee67b",
+      "bytes": 576
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-Guided-Instruction.m4a",
+      "gitBlob": "eeb51503b86f49ef7677bc4b9e043fc8982191da",
+      "bytes": 8579160
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/ACA-Phase-Two-Lesson-2-2-Introduction.mp4",
+      "gitBlob": "6f7f01bf46018d570b2a4c1b6d88de7b8f60f36d",
+      "bytes": 14128959
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/guided-chapters.json",
+      "gitBlob": "4cd2854b8b19b16d20e6b56e33592d7ccd53062e",
+      "bytes": 11027
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/media-manifest.json",
+      "gitBlob": "3560ee8b789b01a26d5896f2ed86df1950b858a1",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/poster.webp",
+      "gitBlob": "180ba6590243e3749bd4c89b40e8504f2c6f0f8b",
+      "bytes": 52810
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-2/production-report.json",
+      "gitBlob": "d5702e772e7184b2b0b3d1e5edb0d4488a9f25c3",
+      "bytes": 3273
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-01-review.mp4",
+      "gitBlob": "0e80afba3bbb357d3554a11b3558b496a40c7ea7",
+      "bytes": 493315
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-01-review.vtt",
+      "gitBlob": "ef6b59339041d5ef2b97857598b6933e15e3b171",
+      "bytes": 560
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-02-critique.mp4",
+      "gitBlob": "8c88eaaacf4fb5484abab33e13f66003c3eebed2",
+      "bytes": 443966
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-02-critique.vtt",
+      "gitBlob": "067530af2301fc3fd0526cbad27bd7cfdbad25f5",
+      "bytes": 548
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-03-source.mp4",
+      "gitBlob": "aad4b4f2fa6616433ddbe5f86c84b83301a7e222",
+      "bytes": 440655
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-03-source.vtt",
+      "gitBlob": "4acfcfeac62611eecfc27567f3f46a2650dc90d9",
+      "bytes": 553
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-04-revise.mp4",
+      "gitBlob": "28d1eb94652ead0b4eff471dfd2b70946937fb83",
+      "bytes": 593260
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-04-revise.vtt",
+      "gitBlob": "06d84a2bc17528354d518af19a77d3388bcbba4d",
+      "bytes": 667
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-Guided-Instruction.m4a",
+      "gitBlob": "f63e008980e5380e126fe77b7d457123d843db9e",
+      "bytes": 8890731
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/ACA-Phase-Two-Lesson-2-3-Introduction.mp4",
+      "gitBlob": "36fa8dff8f531d5d2c86974745c1b22d2d33fa6e",
+      "bytes": 14943855
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/guided-chapters.json",
+      "gitBlob": "46105b5cc4fb0af5ce73a134aeb491996a1a5f49",
+      "bytes": 11326
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/media-manifest.json",
+      "gitBlob": "d7aa7e756d34129072e00e64818d2327c11c9768",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/poster.webp",
+      "gitBlob": "1fcf51315578aca54fc5666701a3b79cf939342e",
+      "bytes": 46260
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-3/production-report.json",
+      "gitBlob": "31da6d1038b2bbe6c12ca168576ba3a852a12203",
+      "bytes": 3374
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-01-compare.mp4",
+      "gitBlob": "baef6570bd17a36c1e27db3207c0ef9b1690d86a",
+      "bytes": 477674
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-01-compare.vtt",
+      "gitBlob": "40398d6e62efefefab64b3434baec39426fc7e61",
+      "bytes": 641
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-02-exception.mp4",
+      "gitBlob": "3246b47fb29d3bb06a5af036222f4fc5fd399500",
+      "bytes": 438073
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-02-exception.vtt",
+      "gitBlob": "9c20d6d382a30ff51b8e6d891b898daad3fd98c8",
+      "bytes": 563
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-03-boundary.mp4",
+      "gitBlob": "ef7548869cf92192c946fe626d8bbdc3776e973b",
+      "bytes": 448251
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-03-boundary.vtt",
+      "gitBlob": "73ba880813e9658fa8677f213926fbbd23ed72b0",
+      "bytes": 579
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-04-save.mp4",
+      "gitBlob": "6e18ba44a8159202410cac1d0fbbc1bc086bab64",
+      "bytes": 556405
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-04-save.vtt",
+      "gitBlob": "9221de171eb4d011eafd6db3897254c3d553a4dc",
+      "bytes": 626
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-Guided-Instruction.m4a",
+      "gitBlob": "3476adf2b93fc13472ee942ab62653cffad71fd9",
+      "bytes": 8643759
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/ACA-Phase-Two-Lesson-2-4-Introduction.mp4",
+      "gitBlob": "a87e560165855e77b6d1b4071a1c80f43356306c",
+      "bytes": 15806865
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/guided-chapters.json",
+      "gitBlob": "1874da4a367bd4721ed86ad4e08d2ffb5bc758aa",
+      "bytes": 10886
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/media-manifest.json",
+      "gitBlob": "2939017aed39fc8c59d9c42fae44f148e004bdc5",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/poster.webp",
+      "gitBlob": "659347e33c37011ea63fedf9417148acbc98e348",
+      "bytes": 50966
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-4/production-report.json",
+      "gitBlob": "8c6f58460f44d50aa4c6914cdcdb2d576e794020",
+      "bytes": 3346
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-01-bound-path.mp4",
+      "gitBlob": "42f76af92859cd0a1ffe1f3f9a4f7544abfc76d5",
+      "bytes": 402045
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-01-bound-path.vtt",
+      "gitBlob": "53e319dac52ed1d87680ea197ae1d742ed2fce19",
+      "bytes": 455
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-02-use-sample.mp4",
+      "gitBlob": "8b924c4f30a8ac618eee6eb3a25e1dc8a2310e07",
+      "bytes": 382084
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-02-use-sample.vtt",
+      "gitBlob": "c79d8420a6d29cedba4397bdc453f364ce2ee287",
+      "bytes": 460
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-03-material-revision.mp4",
+      "gitBlob": "e61c58b65bd421f39d0d60d3b07f3d8d18a9d48b",
+      "bytes": 402425
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-03-material-revision.vtt",
+      "gitBlob": "5ced11e70e4ca8100f27f9cb98822bdecc969c8c",
+      "bytes": 476
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-04-demonstrate-save.mp4",
+      "gitBlob": "81d4eebe1a44a250cf79df0157c9eeeca9aae233",
+      "bytes": 459486
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-04-demonstrate-save.vtt",
+      "gitBlob": "aca1718f9a0588939d54a5ffa75181f7972d3394",
+      "bytes": 492
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-Guided-Instruction.m4a",
+      "gitBlob": "6780df014da0831cdad2c5eacef634f8fe3a456d",
+      "bytes": 8935990
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/ACA-Phase-Two-Lesson-2-5-Introduction.mp4",
+      "gitBlob": "feaad662c325f32d3103939b8ab5870b0cd519ab",
+      "bytes": 16488779
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/guided-chapters.json",
+      "gitBlob": "91d4e479699670c90ede04f55c5a90d88968fe6b",
+      "bytes": 11250
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/media-manifest.json",
+      "gitBlob": "85f9a281b82fed0ad5d8252ffd533b58c35d683c",
+      "bytes": 543
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/poster.webp",
+      "gitBlob": "81eb18b8ca7d31f97af3cf9625e40fa623a5a94b",
+      "bytes": 48180
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-5/production-report.json",
+      "gitBlob": "002732e4906bee3e15ffd4c127769ee05b0c8371",
+      "bytes": 3075
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-01-expected-tests.mp4",
+      "gitBlob": "f75ddcdf640f2477290320d146a6defdd233f728",
+      "bytes": 407579
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-01-expected-tests.vtt",
+      "gitBlob": "d113981464f975e852f875d74dbf938b48adff3a",
+      "bytes": 489
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-02-find-conflict.mp4",
+      "gitBlob": "8a1d31012fede11a0633e7a73414379f7564babc",
+      "bytes": 414090
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-02-find-conflict.vtt",
+      "gitBlob": "57769b73badb1e0053ea644d2bd0fb2c0edde760",
+      "bytes": 509
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-03-correct-retest.mp4",
+      "gitBlob": "b8dbc36f19fa307e45840dd8226a626fdd519808",
+      "bytes": 443910
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-03-correct-retest.vtt",
+      "gitBlob": "7104c6e0c11e1ec824d7db61bbf64649d00ef363",
+      "bytes": 498
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-04-integrate-evidence.mp4",
+      "gitBlob": "ca7a9f56dfce5565887680beb00a23c97a8f4f96",
+      "bytes": 439560
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-04-integrate-evidence.vtt",
+      "gitBlob": "b0b556706c691bdd49ebd389cc19d2e7c5ab5245",
+      "bytes": 517
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-Guided-Instruction.m4a",
+      "gitBlob": "4cae3eb1fbd0e619f6fd8ccbcb4650d66ea37bb4",
+      "bytes": 8973582
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/ACA-Phase-Two-Lesson-2-6-Introduction.mp4",
+      "gitBlob": "bc99a22a7053ebd9d4b67ce7283ee5818107baf0",
+      "bytes": 17464831
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/guided-chapters.json",
+      "gitBlob": "2a4cb366b3ca0fdcf842f44a8b7ab32725a4f73d",
+      "bytes": 11232
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/media-manifest.json",
+      "gitBlob": "6888eeec830625a6be60ed1ae2c6bbe25b43ebbf",
+      "bytes": 541
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/poster.webp",
+      "gitBlob": "7587f37a3a16b55e83b5d6904a4c2ae1baafa8fe",
+      "bytes": 46530
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-2-6/production-report.json",
+      "gitBlob": "4ef2e9acebaff2f7ef71ca2bc3c39e3aecccd9da",
+      "bytes": 3218
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-Guided-Instruction.m4a",
+      "gitBlob": "2061614a509d7695cd4192fb322c64950d5f6fbc",
+      "bytes": 8688411
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-Introduction.mp4",
+      "gitBlob": "67d92dd01c1038e7f9f7db34c075bd072ad420f0",
+      "bytes": 9427205
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-concerns.mp4",
+      "gitBlob": "4fa10ddb7586cf349092b638a94c54c16585b266",
+      "bytes": 1179836
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-concerns.vtt",
+      "gitBlob": "14c0cbd95ae6a4fb87423b70ee658f32c857fe57",
+      "bytes": 1247
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-design.mp4",
+      "gitBlob": "146f45d43283b927ea3575a301901892dbdab52e",
+      "bytes": 1114999
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-design.vtt",
+      "gitBlob": "b863438aeb0fec5cd1989e9192718b77c65d247c",
+      "bytes": 1190
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-groups.mp4",
+      "gitBlob": "6a76669f707e612a9118bdabf008df7422439f0a",
+      "bytes": 1092687
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-groups.vtt",
+      "gitBlob": "52b724e550fec57ad8366af6e255345b1a8eb8f1",
+      "bytes": 1207
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-lens.mp4",
+      "gitBlob": "c38ec1be02aa5d8db59ba18153c00ccb44735a7d",
+      "bytes": 1165105
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/ACA-Phase-Two-Lesson-3-1-lens.vtt",
+      "gitBlob": "f5bdfb22f84fd444ac035e43f27a540f91fe8d9f",
+      "bytes": 1163
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/guided-chapters.json",
+      "gitBlob": "4c7c7d9f76f1ac88f8cdcf178c8cd0a52fe4d408",
+      "bytes": 788
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/media-manifest.json",
+      "gitBlob": "63a0fd3ba8b78975ae41b6627095e44379c89e25",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/poster.webp",
+      "gitBlob": "42f99715b3b9af42dc0e99c83487769f7499ba03",
+      "bytes": 50916
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-1/production-report.json",
+      "gitBlob": "27f812f865f9b13a7428342e6755525820d17c5f",
+      "bytes": 1802
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-Guided-Instruction.m4a",
+      "gitBlob": "1d62b88fc831c67f77edf21cac1661f072b8b011",
+      "bytes": 8582519
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-Introduction.mp4",
+      "gitBlob": "e80adbab6a3a24dcca6cbedf31deb3098f70b013",
+      "bytes": 10553034
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-disagreement.mp4",
+      "gitBlob": "78bf165a8369a2f15bf4a4d59f935c0e83acf01c",
+      "bytes": 1058977
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-disagreement.vtt",
+      "gitBlob": "bfc99b1b6a714d66ee4e1fed42f9c5a1042ca3c9",
+      "bytes": 1156
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-listen.mp4",
+      "gitBlob": "040cc424335c51ce16fcf2d71c014c8cd726603e",
+      "bytes": 1137570
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-listen.vtt",
+      "gitBlob": "320723587d07770746bb4db3fd2db34e506d3e4b",
+      "bytes": 1204
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-reflection.mp4",
+      "gitBlob": "2fc00d6121191277bd7a884622784ee749d876b1",
+      "bytes": 1049428
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-reflection.vtt",
+      "gitBlob": "86b10ae4c6c3fe2ef4a5b20ccee07b9cbee9d26d",
+      "bytes": 1157
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-support.mp4",
+      "gitBlob": "e9cdd7b3b131bafed0011978529bce5ba89471e8",
+      "bytes": 1143461
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/ACA-Phase-Two-Lesson-3-2-support.vtt",
+      "gitBlob": "4a00bfc3e6d2dc0477b38808f05f2e5a2afc5033",
+      "bytes": 1240
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/guided-chapters.json",
+      "gitBlob": "37c86eda4423252818c4c2086169a7185040fddf",
+      "bytes": 802
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/media-manifest.json",
+      "gitBlob": "23a2f71099fdf6ffac2c05fa32633a9a05ce6897",
+      "bytes": 543
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/poster.webp",
+      "gitBlob": "95b3f98664d4b1bded64b5e701105e1a7fb80f02",
+      "bytes": 47662
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-2/production-report.json",
+      "gitBlob": "8c6b23925f92388e3a8e361173ae50dd2103449c",
+      "bytes": 1864
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-Guided-Instruction.m4a",
+      "gitBlob": "e7c032ec8049c670592d1e8632a4b8fcd8db0e6b",
+      "bytes": 10047133
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-Introduction.mp4",
+      "gitBlob": "8e9f022a33c1a29a8af62ce054fefc7f37687faa",
+      "bytes": 9548845
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-audience.mp4",
+      "gitBlob": "e8f333b803b54776b08ed36cbf5f78c85dbe1bee",
+      "bytes": 1193823
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-audience.vtt",
+      "gitBlob": "270ff1fe6bdba846fa5ad32a6ce4701e5cb60aa2",
+      "bytes": 1230
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-clear.mp4",
+      "gitBlob": "1ef81b6586bd42fa4ea55d0d8a30e2957598a2a8",
+      "bytes": 1289522
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-clear.vtt",
+      "gitBlob": "092f0fea893cc7d14dc1036c3ed8b3121f1f8b59",
+      "bytes": 1385
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-evidence.mp4",
+      "gitBlob": "7576300c9d2bcf15aa6fb29e16207470436d7efc",
+      "bytes": 1123617
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-evidence.vtt",
+      "gitBlob": "11813522343f1c5cc222d1d7c2a69f8ba4f7efef",
+      "bytes": 1255
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-pilot.mp4",
+      "gitBlob": "3cd6a3e2f2b01b1fc266dcb2a895e38df34722d4",
+      "bytes": 1133201
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/ACA-Phase-Two-Lesson-3-3-pilot.vtt",
+      "gitBlob": "736b202d1dd4a2ef617fde904919a9fcacd6eb47",
+      "bytes": 1232
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/guided-chapters.json",
+      "gitBlob": "4da6f5d6334207b9065b4e4429b8d8d2571e0e15",
+      "bytes": 830
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/media-manifest.json",
+      "gitBlob": "e47b0feab3cfe727f4801a029c0808712248241b",
+      "bytes": 540
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/poster.webp",
+      "gitBlob": "1b0a66435841cf357f791de05e9f0860f6437379",
+      "bytes": 48666
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-3/production-report.json",
+      "gitBlob": "fcc4cf775d42b62eeffbdb17ba03272adc166182",
+      "bytes": 1826
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-Guided-Instruction.m4a",
+      "gitBlob": "ae5f5fc5e999949b8c3e650610507480a51aa767",
+      "bytes": 9404199
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-Introduction.mp4",
+      "gitBlob": "4c428909c984828585b4cb5e73f7e2d5d40b9b72",
+      "bytes": 9719607
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-learning.mp4",
+      "gitBlob": "4752bf34510cbc7a7085d6b57f6b060721c21682",
+      "bytes": 1197602
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-learning.vtt",
+      "gitBlob": "07f413f56f85483172f79f5c37772a7a1eb4e6f9",
+      "bytes": 1354
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-policy.mp4",
+      "gitBlob": "c0f8d4047577115ca7c97dcba58b42ab130053a1",
+      "bytes": 1120462
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-policy.vtt",
+      "gitBlob": "50a22ccd8ac5e2f87e0fd85c5b2cd7929e9580c6",
+      "bytes": 1264
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-readiness.mp4",
+      "gitBlob": "290cab6e8502beba4f7e7fbfd223689c38e51570",
+      "bytes": 1184118
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-readiness.vtt",
+      "gitBlob": "e76f90d929a419d32b523bb6c580f5df56a8bde8",
+      "bytes": 1247
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-verify.mp4",
+      "gitBlob": "007925a5bf837c1611d7515a8d20bd024e1e5412",
+      "bytes": 1254571
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/ACA-Phase-Two-Lesson-3-4-verify.vtt",
+      "gitBlob": "79189de57a6cc741da255c2c6077f27faf587be3",
+      "bytes": 1341
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/guided-chapters.json",
+      "gitBlob": "da702355d51c876c6d8cf5703500c64790ac5e5a",
+      "bytes": 786
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/media-manifest.json",
+      "gitBlob": "7aeab39af23ba2faafea9676ca2defb164e41acd",
+      "bytes": 541
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/poster.webp",
+      "gitBlob": "c1f14add8458093efe00ccbfcc286f6d7c3c11e6",
+      "bytes": 51332
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-4/production-report.json",
+      "gitBlob": "04c64026dfbe4bd88da863b1f7d9f4621d024a6e",
+      "bytes": 1849
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-Guided-Instruction.m4a",
+      "gitBlob": "da9772746c2d2892764732ee44082c53481c2c19",
+      "bytes": 9545131
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-Introduction.mp4",
+      "gitBlob": "3be145e7c577dbc1248c5880ae9a09ae4e21eabc",
+      "bytes": 10376057
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-govern.mp4",
+      "gitBlob": "5c4d88ec8dbe4ee819f450dc4db6175062aeab78",
+      "bytes": 1397505
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-govern.vtt",
+      "gitBlob": "7e83721fe379126c72c401e09f95343be0f69c81",
+      "bytes": 1306
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-measures.mp4",
+      "gitBlob": "c7eddae95ad2a8b0215c14f17eccdf80dbd6549c",
+      "bytes": 1143399
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-measures.vtt",
+      "gitBlob": "0720db65207eeddbfadcef642f3c8d417bf3f17f",
+      "bytes": 1237
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-scope.mp4",
+      "gitBlob": "022afbb8fbeb781b221e31eed9322ccbc8c38f89",
+      "bytes": 1193315
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-scope.vtt",
+      "gitBlob": "6de87e9443f5151d2dafbb72a651635dc23ad2fc",
+      "bytes": 1292
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-stop.mp4",
+      "gitBlob": "911437542fbc9c042e09fe4db72e091390bd0762",
+      "bytes": 1254456
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/ACA-Phase-Two-Lesson-3-5-stop.vtt",
+      "gitBlob": "94adac42de6b582f462d478b408908bdf56ca81a",
+      "bytes": 1373
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/guided-chapters.json",
+      "gitBlob": "a81eefa83f2d23a3cab07f09f0070ebd39ae5feb",
+      "bytes": 791
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/media-manifest.json",
+      "gitBlob": "a3f66a738992c32478d65dc577fee08178c5bab6",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/poster.webp",
+      "gitBlob": "9160b8e7eae7e1d841b3d77f57a579daa0e4b706",
+      "bytes": 51736
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-5/production-report.json",
+      "gitBlob": "a2259ce0c6e07ccb14f7d75fb685e50b98ab9ef4",
+      "bytes": 1840
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-Guided-Instruction.m4a",
+      "gitBlob": "65b86e9ec36a2feadd0f133a361416f7645caa5f",
+      "bytes": 9536819
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-Introduction.mp4",
+      "gitBlob": "5e923e14528f584d7b5a8af8c2fa6adcf39e6520",
+      "bytes": 11193834
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-integrate.mp4",
+      "gitBlob": "d1be7235e0aa90a7cb9cd9460ab33bfc58fc6a0c",
+      "bytes": 1285911
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-integrate.vtt",
+      "gitBlob": "4695fd2e70494ad857c74e5ff71e261635f463ff",
+      "bytes": 1296
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-perspectives.mp4",
+      "gitBlob": "064937a8f4a09dd37d85192268cb327202812bf7",
+      "bytes": 1238035
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-perspectives.vtt",
+      "gitBlob": "76e141a880a1b4052c36e4d9c795a82c0a8a1074",
+      "bytes": 1352
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-retain.mp4",
+      "gitBlob": "072da3a8e75b22c531b0defc2565add3a4ca9488",
+      "bytes": 1381072
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-retain.vtt",
+      "gitBlob": "c9b78058813c738a44c1aae3037bd56e9fdadbb8",
+      "bytes": 1404
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-revise.mp4",
+      "gitBlob": "ad65262ab3d534935278dfad18bcda6a79df3776",
+      "bytes": 1249353
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/ACA-Phase-Two-Lesson-3-6-revise.vtt",
+      "gitBlob": "7acd939255f254c3f3e302ca9025bf6ef899c263",
+      "bytes": 1344
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/guided-chapters.json",
+      "gitBlob": "a0a9f0a299d47541234591f170e7e3787a208f47",
+      "bytes": 810
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/media-manifest.json",
+      "gitBlob": "758ac957e6d811d59b55db7ed853ac77f8404d37",
+      "bytes": 542
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/poster.webp",
+      "gitBlob": "b8f688143ea4b9fa78e3cae93ca62dd99c6d22ab",
+      "bytes": 49188
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-3-6/production-report.json",
+      "gitBlob": "798c300d4423d57cda388d2845fb6a90e1c361ec",
+      "bytes": 1904
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-Guided-Instruction.m4a",
+      "gitBlob": "7f0c97c01c2159183befdbae8f0f9bfad0cc736b",
+      "bytes": 10077944
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-Introduction.mp4",
+      "gitBlob": "8b23e6eb0fcc0877c5ef19bb3b9c1d80897297ae",
+      "bytes": 13968494
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-audience.mp4",
+      "gitBlob": "f2bf046409c4d7dd892586266c30fd8725360b08",
+      "bytes": 1143492
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-audience.vtt",
+      "gitBlob": "49cf82fbd07194aab8d96c0862b21211a88547f6",
+      "bytes": 1239
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-format.mp4",
+      "gitBlob": "aec8908624b157fa89ff1bcc23ec22448e448a47",
+      "bytes": 1223401
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-format.vtt",
+      "gitBlob": "80d02d79f2eced625dd3bad831271312553a6a85",
+      "bytes": 1315
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-promise.mp4",
+      "gitBlob": "40ad9ce10cb8788871f8b4570f235597384f2c1c",
+      "bytes": 1243591
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-promise.vtt",
+      "gitBlob": "1d03f8f0af94a0fcdf1d93f955b2f87bc8db28c9",
+      "bytes": 1344
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-verify.mp4",
+      "gitBlob": "667130dc8e25f74c905a81447c4a93148804123b",
+      "bytes": 1249074
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/ACA-Phase-Two-Lesson-4-1-verify.vtt",
+      "gitBlob": "ba30f78f3967ad60ea9bf5ae6ef34ed6de850511",
+      "bytes": 1298
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/guided-chapters.json",
+      "gitBlob": "e0202cf9370a6982586d0410c5c95b21c741758e",
+      "bytes": 789
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/media-manifest.json",
+      "gitBlob": "eeaf5998ffaee5fb558f6c78a6f60a4f65e3ef4f",
+      "bytes": 706
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/poster.webp",
+      "gitBlob": "d06533e221ec1595cf00cd87fea55ad57e90bb2d",
+      "bytes": 46444
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-1/production-report.json",
+      "gitBlob": "81fedfa63d356fb8bd7e26d7d1bd748af52aa47b",
+      "bytes": 1883
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-Guided-Instruction.m4a",
+      "gitBlob": "92638525f0adea0665f186a880dbc4c4389965b7",
+      "bytes": 10414671
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-Introduction.mp4",
+      "gitBlob": "e83b377d982b04e7e81690e5d0f0eab1f3ee120a",
+      "bytes": 14664766
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-result.mp4",
+      "gitBlob": "d231af0b8ce8ef7346ca3d2952925322bc332bfa",
+      "bytes": 1128141
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-result.vtt",
+      "gitBlob": "8ef191b29fbe30737c049b05c84c71f3905272f3",
+      "bytes": 1191
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-review.mp4",
+      "gitBlob": "6a646ae8444c550bddfd7cadcee4bfbe396836d4",
+      "bytes": 1191257
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-review.vtt",
+      "gitBlob": "c52804291326c8453e47675a63c7c0dda451bf8a",
+      "bytes": 1287
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-sample.mp4",
+      "gitBlob": "b1b11da4450c7d4a60277a21e7d0a0b8eef5f9bc",
+      "bytes": 1195979
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-sample.vtt",
+      "gitBlob": "07d5dd7a737eb87039b4420f6b738c693a4977f2",
+      "bytes": 1325
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-sequence.mp4",
+      "gitBlob": "18ff3869192f9d62302588bc81417b7ca8db66ae",
+      "bytes": 1138910
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/ACA-Phase-Two-Lesson-4-2-sequence.vtt",
+      "gitBlob": "65fd24720e14c78ced4cc67a1017db56dd249dca",
+      "bytes": 1278
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/guided-chapters.json",
+      "gitBlob": "37175f5566a3f16c31e870585105933f6c1aa7b3",
+      "bytes": 808
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/media-manifest.json",
+      "gitBlob": "682c0aa70fbdbf0198cf6f85f76a586de5946460",
+      "bytes": 1095
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/poster.webp",
+      "gitBlob": "92900bcc532f5405e0882d480c9b7b31f52ae2ce",
+      "bytes": 51642
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-2/production-report.json",
+      "gitBlob": "ee08499eaa233d4571e55894206bd273c8b2e0ad",
+      "bytes": 1836
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-Guided-Instruction.m4a",
+      "gitBlob": "ace65b730029b3d07bc06a556aa12694a4a7c419",
+      "bytes": 10317083
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-Introduction.mp4",
+      "gitBlob": "f5801674c63067ed1251f41e4199218c06d66617",
+      "bytes": 15874157
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-agency.mp4",
+      "gitBlob": "290eef848ab2125df11c55e95a0e5fde514215d1",
+      "bytes": 1199209
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-agency.vtt",
+      "gitBlob": "186e437dc391ab388fe4e7e70c8c301c8fb203cd",
+      "bytes": 1183
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-direct.mp4",
+      "gitBlob": "15646a2077b7964b1abdc681e8e22977a474e2a0",
+      "bytes": 1253638
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-direct.vtt",
+      "gitBlob": "b6fe9e768f9aa77ee5e3c059b6425fe582191b6f",
+      "bytes": 1180
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-examine.mp4",
+      "gitBlob": "66411531534212a1fd7fb8ffeb0629f9793a8a91",
+      "bytes": 1191474
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-examine.vtt",
+      "gitBlob": "aa6be39136bd1f838a5b5afe39d40865925a0437",
+      "bytes": 1251
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-verify.mp4",
+      "gitBlob": "589f0ea78da0de0aabb36eeca0dd012c3a357719",
+      "bytes": 1373731
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/ACA-Phase-Two-Lesson-4-3-verify.vtt",
+      "gitBlob": "ce4629f3ccde8df0d5d05c662ee9c065e78587ff",
+      "bytes": 1281
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/guided-chapters.json",
+      "gitBlob": "9df7c8e9b41b8eb36abcfa7d1baf48da303547cc",
+      "bytes": 823
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/media-manifest.json",
+      "gitBlob": "995b2e58caaebc08246a648e4cb7bf4ea86288e2",
+      "bytes": 1096
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/poster.webp",
+      "gitBlob": "d19714e644b23aa4cac9006adcdb988a9ec75bde",
+      "bytes": 53182
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-3/production-report.json",
+      "gitBlob": "822298994b1460592d80d5564b6571861e0ad1e2",
+      "bytes": 1829
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-Guided-Instruction.m4a",
+      "gitBlob": "9d299bfec483859132a366b10e07a0109b0abc4e",
+      "bytes": 10865487
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-Introduction.mp4",
+      "gitBlob": "94c0141ae6ec3d4ff22e7ca04b9fffa6c2d32f4e",
+      "bytes": 17424978
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-connect.mp4",
+      "gitBlob": "323e18af75621d3ad05a786b1a052b3930e38385",
+      "bytes": 1231128
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-connect.vtt",
+      "gitBlob": "6f1effcf25846e211410b05953cd57bbac8bcb13",
+      "bytes": 1217
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-expectations.mp4",
+      "gitBlob": "cdcef806bc067cf78bbed3d93474b9ab50855497",
+      "bytes": 1232057
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-expectations.vtt",
+      "gitBlob": "a396f81551cb2239b285589b9c80c4bbfbd8b2ed",
+      "bytes": 1208
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-verify.mp4",
+      "gitBlob": "4d3d6fcb6170ac97e28082b75a0c5c27a16e2c8d",
+      "bytes": 1245953
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-verify.vtt",
+      "gitBlob": "0df6195b3b57b74be6d04dfec9a5786bb4eb110c",
+      "bytes": 1210
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-walkthrough.mp4",
+      "gitBlob": "8b690c4bf465d0ad72a5c38b7328fbe07408d131",
+      "bytes": 1145362
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/ACA-Phase-Two-Lesson-4-4-walkthrough.vtt",
+      "gitBlob": "fdf49d177ca327e2895436a56a68bd9369c4156b",
+      "bytes": 1171
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/guided-chapters.json",
+      "gitBlob": "f3855a81b013d517b933f6df540e5e2488a5f36d",
+      "bytes": 813
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/media-manifest.json",
+      "gitBlob": "732f87552b3d21eb2b2b5b8e2288a378570e71b5",
+      "bytes": 1097
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/poster.webp",
+      "gitBlob": "ee0279a57564622fe0e93e1fe18ca1741f6e629b",
+      "bytes": 47806
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-4/production-report.json",
+      "gitBlob": "b8091c130effbcff483c335ae3b14c9f4f5e6ad1",
+      "bytes": 1847
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-Guided-Instruction.m4a",
+      "gitBlob": "922240618f877e89644427b62360cbac67be2f3d",
+      "bytes": 10427308
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-Introduction.mp4",
+      "gitBlob": "dd7fdd50194a8627a8dabca97384b881bd9843bf",
+      "bytes": 17374767
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-cost.mp4",
+      "gitBlob": "d4607d765f71627d27763bdbd2d625cadccc44fd",
+      "bytes": 1208228
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-cost.vtt",
+      "gitBlob": "80f5dfede2aac362af89060ebf1544867598dba1",
+      "bytes": 1341
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-decision.mp4",
+      "gitBlob": "5af0e8e2eb173f84a0a8789b6e36f63237fd25ff",
+      "bytes": 1161504
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-decision.vtt",
+      "gitBlob": "dd9b8f4efcdd732d6d102ec26b9d04b7b16231cf",
+      "bytes": 1260
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-review.mp4",
+      "gitBlob": "7227666b18912e7cd8a739d834ada78ac412afb4",
+      "bytes": 1191232
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-review.vtt",
+      "gitBlob": "21f1d2b5e52d37d20f66905a5ddc029ecf50498b",
+      "bytes": 1273
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-test.mp4",
+      "gitBlob": "8ff263b6f1cf77709a733c1a0d8fa2c473ea60bf",
+      "bytes": 1174077
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/ACA-Phase-Two-Lesson-4-5-test.vtt",
+      "gitBlob": "d24ec85a144a41a989a957249c484298aeaaad4b",
+      "bytes": 1283
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/guided-chapters.json",
+      "gitBlob": "9b4bbb233d17e611c0eb327c42622506f0978d35",
+      "bytes": 798
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/media-manifest.json",
+      "gitBlob": "155a863829df29d8b011ea8b09032d2ed440730b",
+      "bytes": 1097
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/poster.webp",
+      "gitBlob": "01199308555db00f07fc4050c9ed1af010ac50a9",
+      "bytes": 50028
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-5/production-report.json",
+      "gitBlob": "7a33738b798d72f862a01fb503f63681f4ce8e02",
+      "bytes": 1806
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-Guided-Instruction.m4a",
+      "gitBlob": "1c66bd66a2401c2c3451ea0d1572c75fb98f2145",
+      "bytes": 10676366
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-Introduction.mp4",
+      "gitBlob": "732922e50733a698cc4ee110f7446c0cb6d8a7f5",
+      "bytes": 16453691
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-assemble.mp4",
+      "gitBlob": "a4311c8bcaf7d2d68fc91ddbabbe69e81cae2165",
+      "bytes": 1159937
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-assemble.vtt",
+      "gitBlob": "13371a37078f849330529c49e18ae04b586a099c",
+      "bytes": 1162
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-observe.mp4",
+      "gitBlob": "5021b7da3fd8c3342db0902764b6842930bb9606",
+      "bytes": 1156363
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-observe.vtt",
+      "gitBlob": "e610bd2d986e44c29f2364cea0754509d03640c3",
+      "bytes": 1189
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-retain.mp4",
+      "gitBlob": "606af08e7b080d809dbabd581f4280b0b6737a6a",
+      "bytes": 1286216
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-retain.vtt",
+      "gitBlob": "16517162b948bfe0c47bb3e7901612997dc142f1",
+      "bytes": 1196
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-retest.mp4",
+      "gitBlob": "ca647df885a1c134ebb1ea3b09040df35ca434d7",
+      "bytes": 1210166
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/ACA-Phase-Two-Lesson-4-6-retest.vtt",
+      "gitBlob": "9952d86ef8de09e1450ed66f00ec035f55cd62f5",
+      "bytes": 1237
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/guided-chapters.json",
+      "gitBlob": "ee1a01f15e65ba61f700e7c93ec29b0081bbf333",
+      "bytes": 831
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/media-manifest.json",
+      "gitBlob": "e1a80009cf5eed50fccb89b8380f3d141ff2ddad",
+      "bytes": 1096
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/poster.webp",
+      "gitBlob": "94dac182ac3f8430055cef212766b6106da9942d",
+      "bytes": 49928
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-4-6/production-report.json",
+      "gitBlob": "76b26d9e1bae8180e0710b028d0acfe180245b89",
+      "bytes": 1830
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-Guided-Instruction.m4a",
+      "gitBlob": "1314a3e188b4ae2742cb4c208c17b17deb5b5734",
+      "bytes": 10744862
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-Introduction.mp4",
+      "gitBlob": "e6898302b2977a4817a223781c3e5194e57f7f4a",
+      "bytes": 16674090
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-boundary.mp4",
+      "gitBlob": "adb1d675a626975610f09896956745f5370ee9d3",
+      "bytes": 989406
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-boundary.vtt",
+      "gitBlob": "97a4314f662188aefd30c3ac899efcb04e319650",
+      "bytes": 1101
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-environment.mp4",
+      "gitBlob": "41e7133cab0e05bab46a0ffc405c9098fa4f11d6",
+      "bytes": 968894
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-environment.vtt",
+      "gitBlob": "a0d49dc052d2c7c128c749e787de12ab899ed9b8",
+      "bytes": 1099
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-inventory.mp4",
+      "gitBlob": "4ce73ed6000501a7625e409442cf623b747d9367",
+      "bytes": 860833
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-inventory.vtt",
+      "gitBlob": "6b1a1ee9bd208f7ffe47f77cad1ef1f17d69b05b",
+      "bytes": 1041
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-minimize.mp4",
+      "gitBlob": "7864d9664df236424beee308056d7263e85f6efa",
+      "bytes": 910117
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/ACA-Phase-Two-Lesson-5-1-minimize.vtt",
+      "gitBlob": "e6efebb55b1355aef023aa31d5487efa6c2de587",
+      "bytes": 1046
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/guided-chapters.json",
+      "gitBlob": "6eb556e6131991788d8acb069db3e514cea19e90",
+      "bytes": 873
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/media-manifest.json",
+      "gitBlob": "74cb2811aba05f95bde3f8573adefc4cf2baab0f",
+      "bytes": 545
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/poster.webp",
+      "gitBlob": "8ca6ebc571c25a888e0aa691c40d25939358c0ce",
+      "bytes": 51150
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-1/production-report.json",
+      "gitBlob": "ee6876adf107655da112950901fb842000711fdd",
+      "bytes": 1961
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-Guided-Instruction.m4a",
+      "gitBlob": "1ea1f126cda17e5117981af8a3f753920adac45c",
+      "bytes": 10926098
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-Introduction.mp4",
+      "gitBlob": "15a8fb11c5660b11e326d99b3bd39a4e4d83e23f",
+      "bytes": 18785956
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-claims.mp4",
+      "gitBlob": "f5858728d6ffa3b6440cee783c6c47c173c16b01",
+      "bytes": 937837
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-claims.vtt",
+      "gitBlob": "06a2657ad2b855c72a2e694a1c4a9eed77d72f96",
+      "bytes": 1076
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-correction.mp4",
+      "gitBlob": "fea8c6c34aaeb239e40e8e9eb4380a6e8a2e09d1",
+      "bytes": 942451
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-correction.vtt",
+      "gitBlob": "748bdc8e166f51795e2c0f6cd2214a612d0bdb5c",
+      "bytes": 1090
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-exception.mp4",
+      "gitBlob": "fb27f0783068c81867e30ce1e5e3f9be6febdf8a",
+      "bytes": 885174
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-exception.vtt",
+      "gitBlob": "b08d6ccc82644657ee80ba2d7f88d97b39de667d",
+      "bytes": 1022
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-variations.mp4",
+      "gitBlob": "16cbe83c36085abc7a04617b7477daa3dfcdf81d",
+      "bytes": 911458
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/ACA-Phase-Two-Lesson-5-2-variations.vtt",
+      "gitBlob": "f2b4ec57c85703dc6e34413753877255617ba16f",
+      "bytes": 1060
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/guided-chapters.json",
+      "gitBlob": "48ee77d1170e10e3d90693139a2ddbd62e66ecdf",
+      "bytes": 916
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/media-manifest.json",
+      "gitBlob": "74494cc52e40d238379f4226be7415210df0ee2b",
+      "bytes": 544
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/poster.webp",
+      "gitBlob": "1bbb9e824375d9656ca95b7f5de9dd9b3f9bf941",
+      "bytes": 48298
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-2/production-report.json",
+      "gitBlob": "14b15a148cda39fae28e98a8e544286eb247cc53",
+      "bytes": 1921
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-Guided-Instruction.m4a",
+      "gitBlob": "2656113d38c625331a2f9aec060f9c758747399a",
+      "bytes": 9061614
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-Introduction.mp4",
+      "gitBlob": "42ea9c0e19ab087617092c30e8aa388f2726b65f",
+      "bytes": 19481893
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-clearer.mp4",
+      "gitBlob": "a5f7d587e2bdbd998e73b4bbf4afe70eea37b7e4",
+      "bytes": 848800
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-clearer.vtt",
+      "gitBlob": "56e9f309178c857d16d0d9ecbcbc8ff4766f483c",
+      "bytes": 873
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-correction.mp4",
+      "gitBlob": "00eb0a814bb5de94ef95deb42facc65a12ac9653",
+      "bytes": 793402
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-correction.vtt",
+      "gitBlob": "4c8fe5055632fc849252fb73ef116e80dcd073a3",
+      "bytes": 905
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-exception.mp4",
+      "gitBlob": "1459be4e9dfccae11974bd7d6b07dbe9bac8715a",
+      "bytes": 753575
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-exception.vtt",
+      "gitBlob": "c90d1e168d48d8c3106744cf6dc190d32b644358",
+      "bytes": 885
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-format.mp4",
+      "gitBlob": "c0a173d9c089d45c824ecee909b8ac82dc753dc1",
+      "bytes": 689010
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/ACA-Phase-Two-Lesson-5-3-format.vtt",
+      "gitBlob": "90fe678913ecd20a0f50e097887e2e8af3d34a1e",
+      "bytes": 822
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/guided-chapters.json",
+      "gitBlob": "45240dadca0e64be863a69fe8daa02777ea2f4c7",
+      "bytes": 874
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/media-manifest.json",
+      "gitBlob": "3018bee8640bc5715e9a9e501389414bd53325c1",
+      "bytes": 543
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/poster.webp",
+      "gitBlob": "a0b0325fc167faead3aae54f16ee034dcc460337",
+      "bytes": 49042
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-3/production-report.json",
+      "gitBlob": "256e92438cc59a05a24f9e378ed6d68eb93f8333",
+      "bytes": 1908
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-Guided-Instruction.m4a",
+      "gitBlob": "32c0fdbe950169d40f08ff7b8808adb7b94aa69b",
+      "bytes": 9604224
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-Introduction.mp4",
+      "gitBlob": "35bc77aaaeea186eabb42218204eff81e2cc46d2",
+      "bytes": 19752479
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-backup.mp4",
+      "gitBlob": "00e71f052516095c2e9af9122ab633eb9af28915",
+      "bytes": 783489
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-backup.vtt",
+      "gitBlob": "aff90219e6a2d5833cbe0d39451f6e688db8ecab",
+      "bytes": 911
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-evidence.mp4",
+      "gitBlob": "45f56dbf2df04b4d0fc4c1b38b1925e1566e7b97",
+      "bytes": 819054
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-evidence.vtt",
+      "gitBlob": "d8fb1c995999ec467b5dd53971a626a11aa9aca6",
+      "bytes": 877
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-flow.mp4",
+      "gitBlob": "a5eda6e2d4ca5a08ae49097646fb727153006f69",
+      "bytes": 734072
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-flow.vtt",
+      "gitBlob": "65c2cbce05378782ddb08f11c2611120adec2823",
+      "bytes": 863
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-ready.mp4",
+      "gitBlob": "3bb1af0d5920f6a4d2e9e778f5f6d11e01cbc856",
+      "bytes": 825768
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/ACA-Phase-Two-Lesson-5-4-ready.vtt",
+      "gitBlob": "00165a9810d17dba9ff3fb391fca15851c9957cb",
+      "bytes": 855
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/guided-chapters.json",
+      "gitBlob": "735e6c8dcc90f4248911b2a8d1b572a74234c545",
+      "bytes": 891
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/media-manifest.json",
+      "gitBlob": "ec038903dfa6048c4ee235ed5df49c7001a31f49",
+      "bytes": 543
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/poster.webp",
+      "gitBlob": "93b4fd8d4985da5cfcde8c94f0f6a5fd2b9bd5fa",
+      "bytes": 49468
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-4/production-report.json",
+      "gitBlob": "296a1200f0d0e2a3f2afd83c91985c646ca75ff9",
+      "bytes": 1888
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-Guided-Instruction.m4a",
+      "gitBlob": "a1c3f2fb6ec5de77fa65e73fe426f24ccf28121b",
+      "bytes": 11134359
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-Introduction.mp4",
+      "gitBlob": "af2559c80268338c21bef4d8c850e94033e0b9de",
+      "bytes": 19950297
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-decision.mp4",
+      "gitBlob": "9424bd2eb91330d8a45f3347beeb8ec2240a67eb",
+      "bytes": 860289
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-decision.vtt",
+      "gitBlob": "dc9faab6e429e47aebad0a128b3b5ecb7192d54d",
+      "bytes": 900
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-notice.mp4",
+      "gitBlob": "0630e0a21dadf3e404ea20af89fe9cb11a13eb20",
+      "bytes": 757879
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-notice.vtt",
+      "gitBlob": "d6f2cf342dfe3ab7033cce7f7163c0f7e189613a",
+      "bytes": 885
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-pause.mp4",
+      "gitBlob": "4284d7b74614c49827693704ebff7f9ad925be86",
+      "bytes": 802675
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-pause.vtt",
+      "gitBlob": "17a0826f953fa87dd92bcc05c3a8d9e3e7c24231",
+      "bytes": 881
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-trace.mp4",
+      "gitBlob": "d84d3ff0b7093b0c96a47ffecfc6f2edb8fb206b",
+      "bytes": 855802
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/ACA-Phase-Two-Lesson-5-5-trace.vtt",
+      "gitBlob": "8941101de2796201cb895b25192909136c86e07e",
+      "bytes": 917
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/guided-chapters.json",
+      "gitBlob": "65d638069b4b6c2f5dfa06168dd63f026308eb1b",
+      "bytes": 891
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/media-manifest.json",
+      "gitBlob": "99f614d6712dcfdb23be22550127bc8159ad250b",
+      "bytes": 544
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/poster.webp",
+      "gitBlob": "d0a5c0c7eeb7aae238b299d1c40e46fc7383adff",
+      "bytes": 52700
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-5/production-report.json",
+      "gitBlob": "2b24e426927b7a04ff57e3b084efcb44446f0199",
+      "bytes": 1905
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-Guided-Instruction.m4a",
+      "gitBlob": "f9577e461a1d83316557f522d16f61d2c734a3d1",
+      "bytes": 10992384
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-Introduction.mp4",
+      "gitBlob": "6a6a80ef57ac5ce223badaed717c0b30d476b132",
+      "bytes": 20468379
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-cases.mp4",
+      "gitBlob": "bdf33f7bc451e46e74374992a042f2bde6863e28",
+      "bytes": 775912
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-cases.vtt",
+      "gitBlob": "977d9dd0b7c5a0be336575d1d10ae3cf6f70de11",
+      "bytes": 911
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-evidence.mp4",
+      "gitBlob": "7d069f6b23d83199daef1535a2401b03935d46f2",
+      "bytes": 869447
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-evidence.vtt",
+      "gitBlob": "63a61c8503ea7d22775afb0a4689635fe7db293b",
+      "bytes": 899
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-fallback.mp4",
+      "gitBlob": "27e2ac042410013ac847e5fef5344cc5e5097fda",
+      "bytes": 808512
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-fallback.vtt",
+      "gitBlob": "4996998104978511910b17a4692a11a7b3db06b7",
+      "bytes": 931
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-retest.mp4",
+      "gitBlob": "a8322c752560a867e6981c4e1d1c09549518d27a",
+      "bytes": 779551
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/ACA-Phase-Two-Lesson-5-6-retest.vtt",
+      "gitBlob": "8a7992bf71f6c3dc6d82320bb6f7a547995a860e",
+      "bytes": 870
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/guided-chapters.json",
+      "gitBlob": "2139b74b17ea5dffb00d1bb8ccc7e7c95128f525",
+      "bytes": 883
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/media-manifest.json",
+      "gitBlob": "4c928f038b69be66f1ba09936d5cd38afa21ea9e",
+      "bytes": 544
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/poster.webp",
+      "gitBlob": "d0ac81d52613fee6f29721a7b83fde32b34db101",
+      "bytes": 51134
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-5-6/production-report.json",
+      "gitBlob": "bbfc8666adc8f403226aa537367cc381f56e0983",
+      "bytes": 1909
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-Guided-Instruction.m4a",
+      "gitBlob": "2003b9527dfa83edc0b588f7c9ca0648ba7adabe",
+      "bytes": 11542048
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-Introduction-wide.mp4",
+      "gitBlob": "3e88e0dd9025fc99abec6e06033e0b6fa4eae03a",
+      "bytes": 13242336
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-Introduction.mp4",
+      "gitBlob": "620468c9c4e6ca300d5fd7897344ff7b671688e1",
+      "bytes": 10690149
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-capability.mp4",
+      "gitBlob": "4b1c00347c1207bfe4ab4c0ec1e0697fda58f3fe",
+      "bytes": 1055008
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-capability.vtt",
+      "gitBlob": "c730539bd5c794fe2e931d8931fc8b49fa0048be",
+      "bytes": 1281
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-inventory.mp4",
+      "gitBlob": "4a9fe705e07796a8af028622e7a977879fad7a32",
+      "bytes": 1086055
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-inventory.vtt",
+      "gitBlob": "7df786b61ad709345fabb8d3f6c73aa61396588f",
+      "bytes": 1321
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-story.mp4",
+      "gitBlob": "6610e3dc98da11f7c68d67385fe5c04626c16b11",
+      "bytes": 1183598
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-story.vtt",
+      "gitBlob": "821708a14e1d0f5812d3f72b6e4bef10a35d1f47",
+      "bytes": 1371
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-value.mp4",
+      "gitBlob": "135f9a8853f3fe2c3a75338fe64f8d3dc9306c6c",
+      "bytes": 1085022
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/ACA-Phase-Two-Lesson-6-1-value.vtt",
+      "gitBlob": "bcbfff383c6384411c7f37e76c76be053f88fc7c",
+      "bytes": 1323
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/guided-chapters.json",
+      "gitBlob": "88aca8779b50529590839d161c2df03495baad61",
+      "bytes": 900
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/media-manifest.json",
+      "gitBlob": "dd0f7c8de15867ec4114a8b578cabb6f288c5f82",
+      "bytes": 1148
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/poster-wide.webp",
+      "gitBlob": "a6c06d7c898c6cf902ab2cfdc477e17d74c2bc32",
+      "bytes": 49888
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/poster.webp",
+      "gitBlob": "a6c06d7c898c6cf902ab2cfdc477e17d74c2bc32",
+      "bytes": 49888
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-1/production-report.json",
+      "gitBlob": "229a3bb924dc650bbedb366e2e80f25284023027",
+      "bytes": 1948
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-Guided-Instruction.m4a",
+      "gitBlob": "e583abda2fd21a43a8147f06001bce649970251b",
+      "bytes": 10486149
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-Introduction-wide.mp4",
+      "gitBlob": "211c6a4fee3365c01ed81616c8cdf5229aa707a0",
+      "bytes": 11868732
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-build.mp4",
+      "gitBlob": "624c478cec62d5bf8fa7d13e5a3e05899baf400b",
+      "bytes": 1152488
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-build.vtt",
+      "gitBlob": "02510d46da04266e3b17d27aa2bbcbfe02349acb",
+      "bytes": 1315
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-charter.mp4",
+      "gitBlob": "5fbc3b67a90af60da22cfd2141093ea32006946c",
+      "bytes": 1114808
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-charter.vtt",
+      "gitBlob": "7c0804b319db240287b88f7f89c56f42902391d5",
+      "bytes": 1304
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-finish.mp4",
+      "gitBlob": "d6d28c177304ae6ede2401a4ab93ac50542676d0",
+      "bytes": 1215220
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-finish.vtt",
+      "gitBlob": "4619e5ca5900344bcbee049a90571602ff35c707",
+      "bytes": 1439
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-retest.mp4",
+      "gitBlob": "48611ecb50d1b5eacccee49a21856176f4794a1d",
+      "bytes": 1192951
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/ACA-Phase-Two-Lesson-6-2-retest.vtt",
+      "gitBlob": "136b404e4c01945116a5bde58597223a401c3c4c",
+      "bytes": 1329
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/guided-chapters.json",
+      "gitBlob": "82b19958efdb116ae230179149b20dc10508c9ce",
+      "bytes": 890
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/media-manifest.json",
+      "gitBlob": "9d3bbd6c6126e98ba77a2c52c63cafcda34f3f6c",
+      "bytes": 1146
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/poster-wide.webp",
+      "gitBlob": "d7080cdc937e17ab51ee4875c232b09cb3c4a585",
+      "bytes": 49998
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-2/production-report.json",
+      "gitBlob": "99b88f0f04c3196d78b0e80266e521a03a0a794a",
+      "bytes": 1921
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-Guided-Instruction.m4a",
+      "gitBlob": "40e93466e5f89bc42fdfe6174206a1a1e3008f29",
+      "bytes": 10370365
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-Introduction-wide.mp4",
+      "gitBlob": "681d0827dbd49dfcc9793daabf11e7cf3e8de4b9",
+      "bytes": 12693506
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-limits.mp4",
+      "gitBlob": "e55e06c5310e1c0ee2dba8504ae5da159851f46c",
+      "bytes": 1176398
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-limits.vtt",
+      "gitBlob": "1ccbcc8793dca3ddb55511ec45cdf9212d26ac41",
+      "bytes": 1315
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-ownership.mp4",
+      "gitBlob": "6d6f62911a2096019a4315fc561af8619f2a7f95",
+      "bytes": 1129408
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-ownership.vtt",
+      "gitBlob": "48b88bfa95d5070471fec694db69f4643923f87c",
+      "bytes": 1307
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-ready.mp4",
+      "gitBlob": "3a591a621e6b4157261ef7721900492ce02a1a2d",
+      "bytes": 1170533
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-ready.vtt",
+      "gitBlob": "9d7ea9d166525f52b7e6255d2f59c740e1b54bca",
+      "bytes": 1272
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-statement.mp4",
+      "gitBlob": "f0e29e6d8612d80d5c54268273eafd9c772b325a",
+      "bytes": 1156595
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/ACA-Phase-Two-Lesson-6-3-statement.vtt",
+      "gitBlob": "f367524b850d8b48c3174f037e8c7eb93592e45b",
+      "bytes": 1332
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/guided-chapters.json",
+      "gitBlob": "3dd6fe6e73fb060ad9dcae0c042f3819c8e6775c",
+      "bytes": 904
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/media-manifest.json",
+      "gitBlob": "521653f1673cd46e1b9fb0e9d4139df10994c5a5",
+      "bytes": 1147
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/poster-wide.webp",
+      "gitBlob": "28ed740a99a7497bb2f0b567f9289b86f5bb7b61",
+      "bytes": 53094
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-3/production-report.json",
+      "gitBlob": "00cb638ccb4798ebae5fd3f1afeafebbb00bcefb",
+      "bytes": 1967
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-Guided-Instruction.m4a",
+      "gitBlob": "3a0e181650e4bbfc8a49c42eff4fd569e9b435ed",
+      "bytes": 9934756
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-Introduction-wide.mp4",
+      "gitBlob": "92312645ee7fec8bd1841426dc770201601bf433",
+      "bytes": 12359393
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-paths.mp4",
+      "gitBlob": "a1e1ae1896c9ce88cdfc02acaea9c50ab6d2185a",
+      "bytes": 1172192
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-paths.vtt",
+      "gitBlob": "ea37f91dc47c2cc1c74cb8efde57513131400bda",
+      "bytes": 1277
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-questions.mp4",
+      "gitBlob": "793d263e160918a8f3c1209ff5f5f037756b719a",
+      "bytes": 1203225
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-questions.vtt",
+      "gitBlob": "7e1bb4844c87e18a79c6a7b70842c7a87d56b8a3",
+      "bytes": 1313
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-rehearse.mp4",
+      "gitBlob": "02660b58c5f7e5700fd68e8b417a8c1f85377e1c",
+      "bytes": 1088020
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-rehearse.vtt",
+      "gitBlob": "3b523f0bfdeef696f770a986f291ae04aaf1a18d",
+      "bytes": 1356
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-story.mp4",
+      "gitBlob": "0b53324558a110d50c8f1d3a64bd6180c9eca707",
+      "bytes": 1177357
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/ACA-Phase-Two-Lesson-6-4-story.vtt",
+      "gitBlob": "7b23e9d4ecb0351f8678c3936911a993906f945a",
+      "bytes": 1296
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/guided-chapters.json",
+      "gitBlob": "fb44480a2c1173c7b23cb2a23f082de99cb13c58",
+      "bytes": 873
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/media-manifest.json",
+      "gitBlob": "d9cea461f3e86032bc4aae8505dfe104c96371d1",
+      "bytes": 1146
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/poster-wide.webp",
+      "gitBlob": "a0a8e602e75782062f86ce2760afe996f9d86063",
+      "bytes": 49288
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-4/production-report.json",
+      "gitBlob": "c92345c0ab2c3f3c6905a8c5a615c3b523194b57",
+      "bytes": 1926
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-Guided-Instruction.m4a",
+      "gitBlob": "9831b9c99e427022246b2c0dd6df23aa0a20f789",
+      "bytes": 10393503
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-Introduction-wide.mp4",
+      "gitBlob": "d167f5f384eaeac0bf3147471c64aa9c5754a339",
+      "bytes": 12588027
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-action.mp4",
+      "gitBlob": "991fd7c34090ea2d7eaba786c1f974eaeb89465d",
+      "bytes": 1152509
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-action.vtt",
+      "gitBlob": "7d5b496a658b729f200386740f5481b7dab4b3ea",
+      "bytes": 1240
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-formats.mp4",
+      "gitBlob": "8c430c7f640d8332049aa169b7a2cd68384074bd",
+      "bytes": 1138543
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-formats.vtt",
+      "gitBlob": "7838061653ded6a07efb006a67d8b123b72cf5e8",
+      "bytes": 1267
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-map.mp4",
+      "gitBlob": "e88cefffb2eeef4835edbb78f1208221ec0e786e",
+      "bytes": 1141334
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-map.vtt",
+      "gitBlob": "e6e448d284bc5cef1b24a05c5c8cbddf3eb17085",
+      "bytes": 1239
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-truth.mp4",
+      "gitBlob": "49ddb4da8667949c01a32ffc5fb47b5c5f0404b6",
+      "bytes": 1205123
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/ACA-Phase-Two-Lesson-6-5-truth.vtt",
+      "gitBlob": "c1b21de22e49e99617509ae1fd7801fe74d97c8e",
+      "bytes": 1273
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/guided-chapters.json",
+      "gitBlob": "05547107174ecbdc74c54baaf41ed59ca3545667",
+      "bytes": 908
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/media-manifest.json",
+      "gitBlob": "00a00eee53d5c3abb2372a49b0de4d89b04a1d04",
+      "bytes": 1147
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/poster-wide.webp",
+      "gitBlob": "070dc8bcc5df56938e45889a015174c006b6b68c",
+      "bytes": 50192
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-5/production-report.json",
+      "gitBlob": "9bdf6e56fbd298437c105cc13729808a05f10fa9",
+      "bytes": 1929
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-Guided-Instruction.m4a",
+      "gitBlob": "dfc00438ef2eb2e560da9fd124527c7ed262fbff",
+      "bytes": 10918209
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-Introduction-wide.mp4",
+      "gitBlob": "e8f448d3b34d3a1c0be27c7dee517225f6127ab7",
+      "bytes": 12991686
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-index.mp4",
+      "gitBlob": "4e059023962ea4f64add81662a11c7f5750bc019",
+      "bytes": 858446
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-index.vtt",
+      "gitBlob": "b65338f3cff1a23ccf36630b50a8a16f05af4bf2",
+      "bytes": 930
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-review.mp4",
+      "gitBlob": "047dca37bcbb8877b6147462c1163b426ab70b49",
+      "bytes": 888782
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-review.vtt",
+      "gitBlob": "47449394a9b175329360ca07a1fbe92b48d8881c",
+      "bytes": 1002
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-roadmap.mp4",
+      "gitBlob": "4fcdaa02354f4606d5285a0e90613fbfd63fc8f8",
+      "bytes": 1113127
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-roadmap.vtt",
+      "gitBlob": "983513471dc6e6241e410d999662a64c1c80f22e",
+      "bytes": 1047
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-submit.mp4",
+      "gitBlob": "a5100850f8e5e3115f728cb0daf928eda5a0b7a2",
+      "bytes": 1030136
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/ACA-Phase-Two-Lesson-6-6-submit.vtt",
+      "gitBlob": "b8b1fad3d5d2a53b946cdb47f0b6e7eda83311f2",
+      "bytes": 1081
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/guided-chapters.json",
+      "gitBlob": "0e7b4ac79e08ae34f42cef5636c793ffbae2cb24",
+      "bytes": 919
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/media-manifest.json",
+      "gitBlob": "9105fb0c2029482eb69701c9a74443ffafc0092c",
+      "bytes": 1147
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/poster-wide.webp",
+      "gitBlob": "a82d57b4efad0bfdfc9227ce3407624508036a0e",
+      "bytes": 46752
+    },
+    {
+      "path": "assets/videos/phase-two-lesson-6-6/production-report.json",
+      "gitBlob": "81d1e8076a82f7414be9c55863e12ba40576241e",
+      "bytes": 1932
+    }
+  ]
+}

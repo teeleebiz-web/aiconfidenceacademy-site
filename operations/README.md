@@ -1126,3 +1126,28 @@ keeps a private rollback copy, and verifies the uploaded bytes. Large output use
 Supabase's fixed 6 MiB resumable upload chunks, preserving rendered quality. The
 service-only publication ledger records actual completion, rather than treating
 a render or workflow start as installation.
+## Private Phase Two media migration — staged November 21, 2026
+
+See the current migration entry in `LEARNER-PORTAL.md`. Run
+`node operations/migrate-phase-two-media.mjs plan` in the existing private
+credential context for a read-only storage inventory and capacity comparison.
+`upload` additionally requires `ACA_PHASE_TWO_MEDIA_MIGRATION_APPROVED=true` and
+the actual enforced backup and retry limits to cover the entire collection plus
+64 MiB metadata allowance. `verify` downloads every catalogued destination and
+compares its original Git blob hash. All three use the existing source credential;
+never place it in a public file, command argument, browser, or log.
+
+The tool never changes source objects, publications, learner records or service
+plans, and never overwrites a destination. A partial transfer can be resumed only
+with matching existing bytes. Migration success alone is not activation evidence:
+the existing encrypted R2 backup and complete restore must also succeed. No
+capacity limit has been raised in this staged branch. The proposed 4 GiB bounds
+must be applied coherently to manual backup, retry checks, retention transfer
+checks and runner-disk preflight after the founder approves the change.
+
+The Vercel public artifact is controlled by `ACA_PUBLIC_SITE` together with
+`ACA_PRIVATE_PHASE_TWO_MEDIA`. Both default off. Public output contains only the
+approved pages, public marketing assets, and current portal build manifest files.
+The backend retains private metadata and the protected construction app. Domain
+cutover must also update release verification to the new production host and
+confirm that the independent monitor still diagnoses the same real service.

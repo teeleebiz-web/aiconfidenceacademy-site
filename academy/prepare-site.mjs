@@ -1,6 +1,10 @@
-import { cp, mkdir, readFile, writeFile, readdir } from 'node:fs/promises'
+import { cp, mkdir, readFile, writeFile, readdir, rm } from 'node:fs/promises'
+import { preparePublicSite, protectedLessonAsset } from './public-site.mjs'
 import { videoCatalog } from './email/newsletter.mjs'
 const pages = ['', 'ask', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'explore', 'faq', 'library', 'library/ai-updates', 'privacy', 'programs', 'programs/phase-one', 'programs/phase-two', 'reflections', 'refund-policy', 'terms', 'videos']
+const privateMedia = process.env.ACA_PRIVATE_PHASE_TWO_MEDIA === 'true'
+const publicSite = process.env.ACA_PUBLIC_SITE === 'true'
+await rm('vercel-public', { recursive: true, force: true })
 // Only crawler instructions are public; website files stay behind the password gate.
 await mkdir('vercel-public', { recursive: true })
 await writeFile('vercel-public/robots.txt', 'User-agent: *\nDisallow: /\n')
@@ -30,11 +34,18 @@ for (const { slug } of hub.updates) {
   await mkdir(`private-dist/explore/updates/${slug}`, { recursive: true })
   await writeFile(`private-dist/explore/updates/${slug}/index.html`, html.replace('<a href="/learn/">Learner sign in</a>', '<a href="/academy/phase-one/">Phase One</a>'))
 }
-await cp('assets', 'private-dist/assets', { recursive: true })
-await cp('learn', 'private-dist/learn', { recursive: true })
-await cp('control-center', 'private-dist/control-center', { recursive: true })
+await rm('private-dist/assets', { recursive: true, force: true })
+await cp('assets', 'private-dist/assets', { recursive: true, filter: source => {
+  if (publicSite) return ['assets','assets/videos'].includes(source) || (protectedLessonAsset(source) && (!/\.[^/]+$/.test(source) || source.endsWith('.json')))
+  return !privateMedia || !protectedLessonAsset(source) || !/\.[^/]+$/.test(source) || source.endsWith('.json')
+} })
+for (const section of ['learn','control-center']) {
+  await rm(`private-dist/${section}`, { recursive: true, force: true })
+  if (!publicSite) await cp(section, `private-dist/${section}`, { recursive: true })
+}
 await cp('site.js', 'private-dist/site.js')
 for(const file of ['support.js','support.css','support-knowledge.js']) await cp(file, `private-dist/${file}`)
 for (const file of await readdir('.')) {
   if (/\.(png|svg|jpg|jpeg|webp|ico|pdf)$/.test(file)) await cp(file, `private-dist/${file}`)
 }
+await preparePublicSite({ pages: [...pages, ...hub.articles.map(({slug}) => `explore/${slug}`), ...hub.books.map(({slug}) => `library/${slug}`), ...hub.updates.map(({slug}) => `explore/updates/${slug}`)], enabled: publicSite, privateMedia })

@@ -11,6 +11,8 @@ import { handleCodeAgent } from './support/code-agent.mjs'
 import { handleUpdates } from './support/updates.mjs'
 import { handleWorkbook } from './workbook/api.mjs'
 import { handleLearnerMedia } from './learner-media.mjs'
+import { handlePhaseTwoMedia } from './phase-two-media.mjs'
+import { protectedLessonAsset } from './public-site.mjs'
 import { handleStripeEnrollment } from './enrollment/stripe-webhook.mjs'
 import { handleInstallmentCheckout, handlePaidInFullCheckout } from './enrollment/installment-plan.mjs'
 import { handleInstallmentMaintenance } from './enrollment/installment-maintenance.mjs'
@@ -31,7 +33,7 @@ const exploreVideos = new Map([
   ['03', 'explore-chatgpt/ACA-Explore-ChatGPT-03.mp4'],
 ])
 const academyWelcomeVideo = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
-export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null, learnerOrigins = ['https://aiconfidenceacademy.org'], workbookReviewerCheck }) {
+export function createAcademyServer({ password, root, db, courseId, enrollmentAutomation = null, learnerOrigins = ['https://aiconfidenceacademy.org'], workbookReviewerCheck, privatePhaseTwoMedia = false, phaseTwoMediaAccessCheck }) {
   if (!password || password.length < 24) throw new Error('A construction password of at least 24 characters is required.')
   if (!courseId) throw new Error('The Phase One course ID is required.')
   const expected = digest('academy:' + password)
@@ -57,9 +59,13 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     res.setHeader('X-Frame-Options', 'DENY')
     res.setHeader('Strict-Transport-Security', 'max-age=31536000')
     const requestPath = new URL(req.url, 'http://localhost').pathname
+    if (privatePhaseTwoMedia) {
+      try { if (protectedLessonAsset(decodeURIComponent(requestPath))) { res.writeHead(404); res.end(); return } }
+      catch { res.writeHead(400); res.end(); return }
+    }
     if (requestPath === '/api/resources/updates') { await handleUpdates(req, res); return }
     if (requestPath === '/api/health') { await availability(req, res); return }
-    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/')) {
+    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/') || requestPath.startsWith('/api/learner/phase-two-media/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
         res.writeHead(403, { 'Content-Type': 'application/json' })
@@ -78,7 +84,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
       if (requestPath === '/api/support/ask') { await handleAssistant(req, res, enrollmentAutomation || {db}, {publicAccess:true}); return }
       if (requestPath.startsWith('/api/support/') || requestPath === '/api/operations/support') { await handleSupport(req, res, enrollmentAutomation || {db}, {reviewerCheck:workbookReviewerCheck}); return }
       if (requestPath === '/api/operations/control-center') {
-        await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot }); return
+        await handleControlCenter(req, res, { db, reviewerCheck: workbookReviewerCheck, automation: enrollmentAutomation, root: publicRoot, privatePhaseTwoMedia }); return
       }
       if (requestPath === '/api/trials/accept') { await handleTrialAccept(req, res, enrollmentAutomation); return }
       if (requestPath === '/api/trials/request-access') { await handleTrialEntry(req, res, enrollmentAutomation); return }
@@ -88,6 +94,9 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
       }
       if (requestPath.startsWith('/api/learner/lesson-media/')) {
         await handleLearnerMedia(req, res, { db, courseId, lessonId: requestPath.slice('/api/learner/lesson-media/'.length) }); return
+      }
+      if (requestPath.startsWith('/api/learner/phase-two-media/')) {
+        await handlePhaseTwoMedia(req, res, { db, courseId: enrollmentAutomation?.phaseTwoCourseId, lessonId: requestPath.slice('/api/learner/phase-two-media/'.length), enabled: privatePhaseTwoMedia, accessCheck: phaseTwoMediaAccessCheck, reviewerCheck: workbookReviewerCheck }); return
       }
       const workbookKey = requestPath.slice('/api/learner/workbooks/'.length)
       await handleWorkbook(req, res, { db, courseId, ownerAuthenticated: false, workbookKey, reviewerCheck: workbookReviewerCheck }); return

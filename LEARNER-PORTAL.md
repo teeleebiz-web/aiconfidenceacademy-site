@@ -559,3 +559,56 @@ must be checked before repository privacy changes. Do not break the live site,
 raise the existing backup transfer limit, or mark media protected prematurely.
 The current owner authorization covers defect corrections; the remaining
 administrator sign-in requires the account holder, not another repair approval.
+## November 21, 2026 — private media and hosting repair staged
+
+Working branch: `repair/private-media-production`; production activation remains
+pending the capacity and cutover gates below. No learner enrollment, payment,
+lesson window, curriculum record, domain, repository visibility, or production
+service plan was changed by this preparation.
+
+Phase Two source is recovered from the documented baseline
+`b1b91386e53d8a217ec4342d3b8ec323adb44bbd` into this same maintained codebase,
+including its required existing test fixtures and direct-navigation patch.
+`portal/src/phaseTwoMain.tsx` now builds both existing Phase Two entry routes;
+`portal/index.html` no longer depends on a manually named historic bundle.
+Existing Phase One changes remain intact. Do not apply the historical navigation
+patch again to the restored source.
+
+`ACA_PRIVATE_PHASE_TWO_MEDIA=true` enables a read-only media endpoint which checks
+the verified user, exact active enrollment, existing user-scoped lesson access RPC,
+published lesson and phase before signing only that lesson's catalogued objects.
+Owner review uses the server owner check without opening a study window. The
+portal resolves recordings, captions, posters and metadata through private links,
+renews expiring links while retaining the lesson subtree and playback position,
+and refuses public fallback. Published learner media uses the same existing
+recordings currently selected in owner review; this repairs missing learner media
+plans for lessons after 1.1 without editing teaching, transcripts or database rows.
+
+`ACA_PUBLIC_SITE=true` additionally builds an allowlisted public Vercel artifact;
+it requires private-media mode. Construction/API authentication remains intact.
+Paid media directories and obsolete portal builds are excluded, with explicit
+denial of the old asset routes. Public marketing assets are served statically,
+outside the backend function package. Editorial generation is now an explicit
+`npm run build:content` task to preserve committed approved public pages.
+
+Migration inventory: 525 files, 1,048,800,956 bytes, with original Git blob hashes
+verified against main. Existing private storage was 1,729,388,971 bytes; combined
+source is 2,778,189,927 bytes before encrypted-manifest overhead. The actual backup
+and retry bound remains 2,147,483,648 bytes. The migration tool defaults to a
+read-only plan and refuses uploads that exceed the enforced backup/retry bounds.
+It verifies every source before writing, never overwrites an existing object, and
+checks downloaded destination bytes against the original Git hash.
+
+Continuation: obtain approval for a 4 GiB source/encrypted backup bound, including
+the matching retry bound and at least 12.5 GiB private temporary space; verify the
+runtime budget and capacity. Transfer to existing private Supabase storage, then
+run the existing encrypted backup and complete restore/hash verification. Only
+then enable production media, validate authorized/denied playback and captions,
+validate all public/enrollment routes on the existing Vercel project, cut over the
+domain, disable GitHub Pages, make the repository private with appropriate branch
+protection, and verify old Pages/raw URLs no longer expose the files. Preserve a
+rollback deployment; never restore public paid-media delivery as a rollback.
+
+Local evidence is automated fixture/build evidence, not live learner playback.
+One opt-in live trial fixture remains skipped. Preview flags are scoped only to
+this repair branch. The Academy must not yet be described as launch-ready.
