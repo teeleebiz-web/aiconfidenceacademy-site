@@ -54,7 +54,7 @@ function database(thirdLessonStatus = 'draft', lesson33Status = 'draft', lesson3
         if(table==='enrollments')rows=['learner-a','learner-b'].map(learner_id=>({id:`enrollment-${learner_id}`,learner_id,course_id:'course',status:'active',starts_at:'2020-01-01',enrolled_at:'2020-01-01',access_expires_at:null,course:{status:'published',drip_enabled:true}}))
         else if(table==='course_journeys')rows=[{id:'journey',course_id:'course',journey_number:1,status:'published'},{id:'third-journey',course_id:'course',journey_number:3,status:'published'},{id:'fourth-journey',course_id:'course',journey_number:4,status:'published'},{id:'fifth-journey',course_id:'course',journey_number:5,status:'published'}]
         else if(table==='lessons')rows=lessonRows
-        else if(table==='aca_workbook_definitions')rows=[{course_id:'course',workbook_key:'journey-one',content:workbook},{course_id:'course',workbook_key:'journey-two',content:secondWorkbook},{course_id:'course',workbook_key:'journey-three',content:thirdWorkbook},{course_id:'course',workbook_key:'journey-four',content:fourthWorkbook},{course_id:'course',workbook_key:'journey-five',content:fifthWorkbook}]
+        else if(table==='aca_workbook_definitions')rows=[{course_id:'course',workbook_key:'journey-one',content:workbook},{course_id:'course',workbook_key:'journey-two',content:secondWorkbook},{course_id:'course',workbook_key:'journey-three',content:thirdWorkbook},{course_id:'course',workbook_key:'journey-four',content:fourthWorkbook},{course_id:'course',workbook_key:'journey-five',content:db.fifthDefinition ?? fifthWorkbook}]
         else if(table==='aca_workbook_responses')rows=records
         else throw Error(`Unexpected access: ${table}`)
         if(action!=='read') {
@@ -411,3 +411,48 @@ test('expired lesson keeps released workbook answers readable and editable witho
  assert.equal((await (await request('GET',null,token)).json()).answers[field],'Continued independently')
  assert.ok(db.writes.every(table=>table==='aca_workbook_responses'))
 }))
+
+
+test('mixed legacy page numbers preserve every released page, saved answer and access restriction', async () => {
+  const db = database(...Array(13).fill('published'))
+  db.fifthDefinition = structuredClone(fifthWorkbook)
+  for (const page of db.fifthDefinition.pages.slice(12)) { page.page = page.number; delete page.number }
+  const original = structuredClone(db.fifthDefinition)
+  const headers = {'x-aca-access-token':'learner-a','x-aca-workbook':'1','content-type':'application/json'}
+  const options = {db,courseId:'course',ownerAuthenticated:false,workbookKey:'journey-five'}
+  let status, output
+  const res = {setHeader(){},writeHead(code){status=code},end(value){output=JSON.parse(value)}}
+  const call = async (method='GET',body) => { await handleWorkbook({method,headers,body},res,options); return output }
+  await call()
+  assert.equal(status,200)
+  assert.deepEqual(output.workbook.pages.map(p=>p.number),Array.from({length:24},(_,i)=>i+1))
+  let revision = 0
+  for (const page of [2,13,17,21,24]) {
+    await call('PATCH',{baseRevision:revision++,page,answers:{[`fifth-${page}`]:`Saved page ${page}`}})
+    assert.equal(status,200)
+  }
+  await call()
+  for (const page of [2,13,17,21,24]) assert.equal(output.answers[`fifth-${page}`],`Saved page ${page}`)
+  assert.equal(output.last_page,24)
+  db.rpc=async()=>({data:[{released_lesson_ids:['lesson-5-1']}],error:null})
+  await call()
+  assert.deepEqual(output.workbook.pages.map(p=>p.number),[1,2,3,4])
+  assert.deepEqual(output.answers,{'fifth-2':'Saved page 2'})
+  await call('PATCH',{baseRevision:revision,page:13,answers:{'fifth-13':'Must reject'}})
+  assert.equal(status,400)
+  assert.equal(db.records[0].answers['fifth-13'],'Saved page 13')
+  assert.deepEqual(db.fifthDefinition,original)
+})
+
+test('ambiguous or invalid workbook page identifiers fail closed without saving', async () => {
+  for (const invalid of [{number:1,page:2},{number:0},{number:'1'},{number:2},{number:1.5}]) {
+    const db=database()
+    db.fifthDefinition=structuredClone(fifthWorkbook)
+    Object.assign(db.fifthDefinition.pages[0],invalid)
+    let status
+    const res={setHeader(){},writeHead(code){status=code},end(){}}
+    await handleWorkbook({method:'GET',headers:{'x-aca-workbook':'1'}},res,{db,courseId:'course',ownerAuthenticated:true,workbookKey:'journey-five'})
+    assert.equal(status,503)
+    assert.equal(db.writes.length,0)
+  }
+})
