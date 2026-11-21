@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { mkdtemp, mkdir, writeFile, readFile, access, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
-import { preparePublicSite, protectedLessonAsset, copyPublicPortal } from './public-site.mjs'
+import { preparePublicSite, protectedLessonAsset, copyPublicPortal, assertNoPaidIntroductions } from './public-site.mjs'
 
 test('public production output excludes paid media, source, construction files and obsolete bundles', async () => {
   const root = await mkdtemp(join(tmpdir(), 'aca-public-artifact-')), output = join(root, 'output')
@@ -32,4 +32,18 @@ test('protection covers the entire paid-media folder without excluding public vi
   assert.equal(protectedLessonAsset('assets/videos/phase-two-lesson-6-6/intro.mp4'), true)
   assert.equal(protectedLessonAsset('assets/videos/phase-two-lesson-1-1'), true)
   assert.equal(protectedLessonAsset('assets/videos/welcome/intro.mp4'), false)
+})
+
+test('public output rejects paid introductions inside generated code or JSON', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'aca-introduction-boundary-'))
+  const catalog = JSON.parse(await readFile(new URL('./phase-two-introductions.json', import.meta.url), 'utf8'))
+  try {
+    await writeFile(join(root, 'entry.js'), 'export const title = "Learner sign in"')
+    await assertNoPaidIntroductions(root)
+    for (const file of ['entry.js', 'data.json']) {
+      await writeFile(join(root, file), JSON.stringify(catalog))
+      await assert.rejects(assertNoPaidIntroductions(root), /protected introduction text/)
+      await rm(join(root, file))
+    }
+  } finally { await rm(root, { recursive: true, force: true }) }
 })

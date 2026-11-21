@@ -1,16 +1,5 @@
+import { lessonIntroduction } from './phaseTwoIntroductionAccess'
 import { useEffect, useState } from 'react'
-import { LESSON_12_INTRO_TRANSCRIPT } from './phaseTwoLesson12Intro'
-import { LESSON_13_INTRO_TRANSCRIPT } from './phaseTwoLesson13Intro'
-import { LESSON_14_INTRO_TRANSCRIPT } from './phaseTwoLesson14Intro'
-import { LESSON_15_INTRO_TRANSCRIPT } from './phaseTwoLesson15Intro'
-import { LESSON_16_INTRO_TRANSCRIPT } from './phaseTwoLesson16Intro'
-import { LESSON_21_INTRO_TRANSCRIPT } from './phaseTwoLesson21Intro'
-import { LESSON_22_INTRO_TRANSCRIPT } from './phaseTwoLesson22Intro'
-import { LESSON_23_INTRO_TRANSCRIPT } from './phaseTwoLesson23Intro'
-import { LESSON_24_INTRO_TRANSCRIPT } from './phaseTwoLesson24Intro'
-import { LESSON_25_INTRO_TRANSCRIPT } from './phaseTwoLesson25Intro'
-import { LESSON_26_INTRO_TRANSCRIPT } from './phaseTwoLesson26Intro'
-import { phaseTwoRevisedIntroTranscripts } from './phaseTwoRevisedIntroTranscripts'
 import sealUrl from '../../../aca-official-seal.png'
 import { PhaseTwoProducedLessonReview, validProducedLesson, type PhaseTwoProducedLesson } from './PhaseTwoProducedLessonReview'
 import { PhaseTwoGuidedAudio, type GuidedInstructionMedia, type VisualDemoClip } from './PhaseTwoGuidedMedia'
@@ -86,9 +75,9 @@ function PhaseTwoLessonBody({
            m.instructor_voice_id!=='ac277b338cf64d8b9686784c43c563da' ||
            m.video_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.mp4` ||
            m.captions_file!==`ACA-Phase-Two-Lesson-${pageId.replace('.','-')}-Introduction-v2.vtt` ||
-           m.poster_file!=='poster-v2.webp' || !phaseTwoRevisedIntroTranscripts[pageId])throw new Error('Introduction does not match this lesson')
+           m.poster_file!=='poster-v2.webp' || !lessonIntroduction(mediaAccess, pageId, 'revised'))throw new Error('Introduction does not match this lesson')
         setRevisedIntro({url:'https://aiconfidenceacademy.org'+root+m.video_file,captions_url:'https://aiconfidenceacademy.org'+root+m.captions_file,
-          poster_url:'https://aiconfidenceacademy.org'+root+m.poster_file,transcript:phaseTwoRevisedIntroTranscripts[pageId],
+          poster_url:'https://aiconfidenceacademy.org'+root+m.poster_file,transcript:lessonIntroduction(mediaAccess, pageId, 'revised'),
           approvalStatus:'founder_review_pending'})
       }).catch(()=>{ if (!cancelled && mediaAccess.private) setMediaLoadError(true) })
     return ()=>{cancelled=true}
@@ -135,7 +124,7 @@ function PhaseTwoLessonBody({
   const selectedVideo = (loadPublishedMedia ? revisedIntro : null) ?? introVideo ?? (['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4','3.5','3.6','4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) && loadPublishedMedia && producedMedia
     ? {
       url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/ACA-Phase-Two-Lesson-' + pageId.replace('.', '-') + (['6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? '-Introduction-wide.mp4' : pageId === '2.1' ? '-Introduction-landscape.mp4' : '-Introduction.mp4'),
-      transcript: ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? production?.media_transcripts?.introduction ?? '' : pageId === '1.2' ? LESSON_12_INTRO_TRANSCRIPT : pageId === '1.3' ? LESSON_13_INTRO_TRANSCRIPT : pageId === '1.4' ? LESSON_14_INTRO_TRANSCRIPT : pageId === '1.5' ? LESSON_15_INTRO_TRANSCRIPT : pageId === '1.6' ? LESSON_16_INTRO_TRANSCRIPT : pageId === '2.1' ? LESSON_21_INTRO_TRANSCRIPT : pageId === '2.2' ? LESSON_22_INTRO_TRANSCRIPT : pageId === '2.3' ? LESSON_23_INTRO_TRANSCRIPT : pageId === '2.4' ? LESSON_24_INTRO_TRANSCRIPT : pageId === '2.5' ? LESSON_25_INTRO_TRANSCRIPT : LESSON_26_INTRO_TRANSCRIPT,
+      transcript: ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? production?.media_transcripts?.introduction ?? '' : lessonIntroduction(mediaAccess, pageId, 'original'),
       approvalStatus: 'founder_review_pending' as const,
       ...(['6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? {poster_url: location.origin + '/assets/videos/phase-two-lesson-' + pageId.replace('.', '-') + '/poster-wide.webp'} : pageId === '2.1' ? {poster_url: location.origin + '/assets/videos/phase-two-lesson-2-1/poster-landscape.webp'} : {}),
     } : null)

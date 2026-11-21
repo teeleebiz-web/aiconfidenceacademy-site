@@ -4,7 +4,7 @@ import type { PhaseTwoMediaAccess } from './PhaseTwoPrivateMedia'
 
 const fixture = vi.hoisted(() => ({ page: '1.1', voice: '', json: vi.fn() }))
 vi.mock('./PhaseTwoPrivateMedia', () => ({ PhaseTwoPrivateMedia: ({children}: {children:(access:PhaseTwoMediaAccess)=>unknown}) => children({
-  private:true, resolve:url=>url ? 'https://storage.test' + new URL(url,'https://aiconfidenceacademy.org').pathname : undefined, json:fixture.json,
+  private:true, introductions: { original: 'Approved introduction', revised: 'Approved revised introduction' }, resolve:url=>url ? 'https://storage.test' + new URL(url,'https://aiconfidenceacademy.org').pathname : undefined, json:fixture.json,
 }) }))
 vi.mock('./PhaseTwoProducedLessonReview', () => ({validProducedLesson:()=>true,
   PhaseTwoProducedLessonReview:({demoClips}: {demoClips?:Array<{key:string;url:string;captions_url:string}>}) => <div>{demoClips?.map(clip=><video key={clip.key} aria-label={'Demo '+clip.key} src={clip.url}><track src={clip.captions_url} /></video>)}</div>,

@@ -687,3 +687,49 @@ a new manual transfer/backup run on that reviewed main. Resume by validating the
 eight existing objects; do not overwrite them. Require all 525 hashes and the
 complete 594-object, 2,778,189,927-byte encrypted backup/restore proof before any
 production delivery activation. The Academy is not yet launch-ready.
+
+## November 21, 2026 — private inventory complete; transcript boundary hardened
+
+PR #124 merged as `71510cfdd78c97b5445154d7802fcb6d621472a1`. All CI
+checks passed at head `810d05b9effc439b75da76bd60bc25f1f299d712`: 562 portal,
+267 backend and 165 recovery tests, plus SQL and container isolation. Vercel
+production deployment `dpl_EhHMgVET7gpYHqZYLZ2dyNMuBQQL` is READY with
+production media/hosting flags still unset.
+
+The new approved manual transfer/backup run is 44908917519, on that exact main:
+https://github.com/teeleebiz-web/aiconfidenceacademy-site/actions/runs/44908917519
+Live private Storage now contains all 525 Phase Two objects (1,048,800,956 bytes)
+and all 69 originals: 594 objects totaling 2,778,189,927 bytes. The bucket remains
+private, retains its 209,715,200-byte per-file limit and its original MIME types,
+with audio/mp4, application/json and image/webp added. Anonymous requests to the
+new object's public and authenticated Storage routes returned no file bytes.
+The R2 upload is at `aca-backups/ea568319-00f3-4c8e-a6ac-02b5b630b25c`.
+At this record's preparation, the final download/decrypt/restore checks are still
+running. Do not treat the uploaded snapshot as a completed recovery receipt until
+the run's final four verification flags are true and its counts match.
+
+The protected public build also exposed 11 original introduction modules in
+JavaScript. All 15 original/revised introduction values now share one canonical
+server-side JSON source; SHA-256 tests preserve every byte from main 71510cf.
+The existing authorized media response returns only the selected lesson's text.
+Private clients have no public-text fallback. The current public mode preserves
+its existing wording until cutover. Protected builds remove the legacy catalog,
+and an independent output guard rejects text fingerprints in public JS/HTML/JSON.
+CI runs that protected build after preserving the current release artifact.
+No lesson words, recordings, publication states, enrollment or clocks changed.
+
+Local validation passed: 565 portal tests (one opt-in live trial skipped), 270
+backend tests, 165 recovery tests, type checking, default build and protected
+public build. All 36 private lesson fixtures retain their existing instructor
+version, guided audio and four demonstrations. Branch-specific preview flags
+apply only to `repair/protected-introduction-delivery` on the existing project.
+The Edge connection became unavailable during the run. Live signed-in owner
+playback/captions therefore remain unverified; do not manufacture a user session.
+
+Remaining launch gates: record successful full recovery; release/review the
+transcript correction; reconnect Edge for authorized owner playback; complete
+the existing Vercel public-route checks and approved hosting cutover; disable
+Pages and make the source repository private with appropriate branch protection.
+Public originals are still accessible until that coordinated cutover. No new
+subscription, repository-visibility change, domain change or production flag
+activation has been performed. The Academy is not yet launch-ready.

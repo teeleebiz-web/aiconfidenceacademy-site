@@ -57,6 +57,8 @@ test('authorized links contain only the selected lesson and expire within remain
   assert.ok(f.signed[0].paths.every(p => p.startsWith('phase-two/lessons/1-1/')))
   assert.ok(Object.keys(result.body.files).every(p => p.startsWith('/assets/videos/phase-two-lesson-1-1/')))
   assert.ok(Date.parse(result.body.expiresAt) < Date.now() + 90000)
+  assert.deepEqual(Object.keys(result.body.introductions), ['revised'])
+  assert.equal(typeof result.body.introductions.revised, 'string')
 })
 test('owner review requires the server owner check and does not allocate learner access', async () => {
   const denied = fixture(); assert.equal((await run(denied, { ownerRoute: true })).status, 403); assert.equal(denied.signed.length, 0)
@@ -84,4 +86,17 @@ test('all 36 lesson inventories retain recordings, captions, posters and metadat
 test('an incomplete signing response cannot yield an apparently usable bundle', async () => {
   const f = fixture(); f.db.storage.from = () => ({ createSignedUrls: async () => ({ data: [] }) })
   await assert.rejects(signPhaseTwoMedia(f.db, '1.1', 90), /unavailable/)
+})
+
+test('introduction text follows the same authentication, enrollment and timing boundaries', async () => {
+  for (const options of [{ badUser: true }, { anonymous: true }, { noEnrollment: true }, { noLesson: true }, { accessStatus: 'closed' }, { remaining: 0 }, { signFailure: true }]) {
+    const result = await run(fixture(options))
+    assert.notEqual(result.status, 200)
+    assert.equal(result.body.introductions, undefined)
+  }
+  const f = fixture()
+  const second = await signPhaseTwoMedia(f.db, '2.1', 90)
+  assert.deepEqual(Object.keys(second.introductions), ['original'])
+  assert.equal(typeof second.introductions.original, 'string')
+  assert.equal(second.introductions.revised, undefined)
 })
