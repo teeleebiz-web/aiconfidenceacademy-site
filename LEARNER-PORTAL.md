@@ -843,3 +843,37 @@ publication, content, enrollment, payment or learner timer is changed.
 Local targeted validation: 55 tests passed and TypeScript checking passed.
 The source repair still requires full CI and authenticated playback in its
 updated protected deployment before claiming the browser check passed.
+
+## November 22, 2026 — owner review repair verified in CI and merged
+
+PR #127 merged as `bc148a6f6e9f0ccdd8b1b178e335e3b04e61b83d`.
+Exact head `1b43d6c1c40f3a7c2acacc4766a2f73ce3de553d` passed CI
+44929544153: 569 portal, 270 backend and 168 recovery tests (1,007 total;
+one opt-in live trial skipped), TypeScript, SQL, container isolation and the
+default and protected-output builds. The source regression was reproduced
+before repair. The local full portal run initially lacked public JavaScript
+files because the new checkout was sparse; after including those original
+files, the affected three tests passed. CI used the full repository and passed.
+
+Protected preview `dpl_2oqA2wCgoctcE9iT1uNpFinv8q1M` is READY on that head:
+https://aiconfidenceacademy-site-mkvf-gmlvnen2h.vercel.app/learn/?review=phase-two&lesson=1.1
+HTTP checks returned 200 for home, owner-review entry and backend health;
+401 for unauthenticated private media and the canonical introduction source;
+404 for the old paid-media path. These checks do not prove signed-in playback.
+
+The Edge control connection timed out twice after the successful owner sign-in
+and observed review failure on the older preview. No browser actions were
+attempted through a different browser. The exact temporary Supabase callback
+`https://aiconfidenceacademy-site-mkvf-fxpvbuxhu.vercel.app/learn/` remains present:
+cleanup was attempted as a read of its settings page, but no removal occurred.
+Do not claim it was removed. Terrence's existing approval includes its removal
+after testing; do not ask again for that cleanup. No wildcard or other callback
+was added. The newer deployment's address was not added or approved.
+
+Continuation: when the selected Edge connection responds, remove the older
+temporary callback, finish authenticated review/playback/captions on the corrected
+protected preview, and verify the source release on the live owner surface.
+Preserve normal sign-in; never copy browser sessions or manufacture credentials.
+Production private-media and public-hosting activation remains pending the
+coordinated cutover; public originals still exist. Overall launch readiness is
+not established. The previously verified 6m35s full recovery remains valid.
