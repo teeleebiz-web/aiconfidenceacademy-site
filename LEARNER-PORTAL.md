@@ -42,11 +42,60 @@ running continuously.
 5. Verify one controlled collection/repair-handling cycle and owner reporting,
    then record the exact activation evidence here.
 
-**Redeployment caution:** `operations/incident-timer.wrangler.json` still
-contains the launch-time quarter-hour schedule. Do not redeploy it unchanged
-during this pause; preserve the deployed backup-only schedule and disabled
-GitHub workflows. Do not treat this pause as cancellation of subscriptions or
-proof that all platform charges have stopped.
+**Saved configuration:** `operations/incident-timer.wrangler.json` now matches
+the deployed backup-only cron list. Future deployment must preserve the live
+backup activation override; both checked-in activation defaults remain false.
+Keep the three GitHub workflows disabled until explicit launch approval.
+Do not treat this pause as cancellation of subscriptions or proof that all
+platform charges have stopped.
+
+## Release preparation while registrar access is pending — November 22, 2026
+
+Prepared from main `fcd3526c1acfcfc813b8a4ef83971f0884421ac4`. Application
+behavior remains the already verified PR #128 revision. The only operational
+configuration change removes the quarter-hour Cloudflare trigger from source,
+matching the live pause. The runtime fixtures explicitly exercise the retained
+incident handler without relying on its position in the active schedule list.
+They continue to prove backup dispatch, disabled no-network behavior, incident
+dispatch when explicitly activated, and redirect rejection. Local validation:
+17 timer/backup tests passed; the three workerd tests were rerun after preserving
+disabled incident-event coverage and passed. No real token or provider dispatch
+was used. Hosted verification is recorded in the associated PR before merge.
+
+### Prepared switch settings — not activated
+
+The target remains the existing paid Vercel project
+`prj_bMtMImZai47HLEM7DqlhwOZI81NN` (`aiconfidenceacademy-site-mkvf`), which
+already owns `checkout.aiconfidenceacademy.org`. Do not create another project
+or subscription. Names/types/scopes-only environment inspection confirms the
+two protected-delivery flags below are preview-only and absent in production.
+No secret values were decrypted or copied.
+
+| Change at the authorized switch | Prepared value / boundary |
+| --- | --- |
+| Existing Vercel production variables | Set `ACA_PRIVATE_PHASE_TWO_MEDIA=true` and `ACA_PUBLIC_SITE=true` together; preserve all other production settings. Build the exact reviewed source and retain a protected rollback deployment. |
+| Domain attachments | Attach `aiconfidenceacademy.org` and `www.aiconfidenceacademy.org` to that project; use the apex as canonical and redirect www to it. Verify ownership and TLS before completing the switch. |
+| GoDaddy apex A records | Vercel's project-scoped API currently recommends `216.150.1.1` and `216.150.16.1` (rank 1), replacing the four existing GitHub Pages A records. Re-read the project's recommendation at execution time. |
+| GoDaddy www CNAME | Current target is `teeleebiz-web.github.io.`; project-scoped recommendation is `672b60f83fd7e9a9.vercel-dns-017.com.`. Re-read at execution time. |
+| Records to preserve | Keep GoDaddy nameservers, checkout, mail/MX, SPF, DKIM, DMARC and unrelated verification records. Export/review the actual zone first; a public DNS query is not a full zone inventory. |
+| Auth return address | Preserve the existing production `https://aiconfidenceacademy.org/learn/` Site URL. No new wildcard or preview callback is needed merely because its hosting changes. |
+| Release mode | Set the GitHub repository variable `ACA_PUBLIC_SITE=true` for future supported releases, while leaving all three paused operational workflows disabled. |
+| Old public copies | After protected delivery is confirmed, retire Pages and coordinate repository privacy so old Pages/raw/blob/download routes no longer bypass authorization. Check public-copy denial before declaring protection complete. |
+
+Vercel reports the present apex/www as not configured for Vercel because they
+still intentionally point to Pages. This is the known cutover state, not a new
+outage. The GoDaddy sign-in code and explicit activation authority remain needed.
+No DNS, production flags, repository visibility, plan or subscription was changed.
+
+### Remaining acceptance after the switch
+
+Reuse the existing payment, enrollment, email, timer, isolation and full recovery
+receipts. Exercise the ordinary learner sign-in, entitled media/workbook and
+saved-work path on the released configuration only after Terrence authorizes the
+trial start. Verify anonymous and unauthorized access denial, including the old
+public routes. Do not start an enrollment, payment, invitation or artificial
+production failure just to fill this checklist. Automatic monitoring/repair
+activation is a separate launch decision and remains paused during preparation.
 
 ## Current launch closure record — November 22, 2026
 

@@ -854,6 +854,22 @@ outcome history. Classification alone must never dispatch that retry.
 
 ## Approved external incident timer (October 27 continuation)
 
+**Current state — November 22:** Terrence has paused prelaunch diagnostics and
+automatic repair work. The deployed and checked-in Cloudflare schedule now
+contains only the daily backup cron, `17 18 * * *`. The incident, coding-worker
+and automatic-release GitHub workflows are disabled manually. Keep them disabled
+until explicit launch activation approval. The older activation instructions
+below describe the retained capability, not permission to restart it.
+
+Before launch, choose one diagnostic timer arrangement. Restoring the external
+timer requires deliberately adding `*/15 * * * *` to the cron list, setting
+`ACA_TIMER_ENABLED=true`, and enabling its GitHub workflow. Native scheduling is
+still defined in that workflow; avoid activating two timers unintentionally.
+Retain the daily backup cron and its independently approved active binding.
+The checked-in `ACA_BACKUP_TIMER_ENABLED=false` is a safe deployment default;
+any future live redeployment must preserve the existing approved backup override.
+No Worker redeployment is needed merely to save this prelaunch configuration.
+
 Terrence approved the Cloudflare Workers timer on October 27. It supplements the
 existing GitHub schedule after that schedule produced no observed unattended
 collector run. `incident-timer.mjs` dispatches only `incident-diagnostics.yml` in
@@ -933,9 +949,10 @@ create a false production incident to prove the timer. The current credential,
 plan, deployment and natural timer acceptance states belong in the protected
 continuity record, not an inferred success claim here.
 
-Rollback: redeploy with `--var ACA_TIMER_ENABLED:false`, then remove only this
-Worker's cron trigger if necessary (set `triggers.crons` to an empty array, not
-an omitted key). Native alerts and the original collector remain. To stop all
+Rollback: hold incident dispatch with `ACA_TIMER_ENABLED=false`, preserving
+`ACA_BACKUP_TIMER_ENABLED` and other settings. Remove only `*/15 * * * *` from
+the Worker cron list; retain `17 18 * * *` for the separately approved backup.
+Native alerts and the original collector remain. To stop all
 collection during a database outage, disable the GitHub incident workflow as
 already documented. This timer still depends on GitHub API and runner uptime.
 
