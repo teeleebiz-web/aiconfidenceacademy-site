@@ -58,23 +58,31 @@ def main():
         # luminance protects Anna's dark foreground instead of freezing her hair.
         # The branch is confined to this region from approximately 117–124 s.
         graph = (
-            "[0:v]setpts=PTS-STARTPTS,format=yuv420p,split=2[base][ms];"
-            "[ms]trim=start=116:end=125,crop=540:350:300:0,format=gray,"
+            "[0:v]setpts=PTS-STARTPTS,format=yuv420p[base];"
+            "[2:v]setpts=PTS-STARTPTS+116/TB,format=yuv420p,"
+            "crop=540:350:300:0,format=gray,"
             "geq=lum='min(1,min(X/12,(W-1-X)/12))*min(1,(H-1-Y)/12)*"
             "if(lt(X,460),255,clip((lum(X,Y)-75)*255/65,0,255))'[mask];"
-            "[1:v]format=yuv420p,crop=540:350:300:0[plate];"
+            "[1:v]trim=duration=9,setpts=PTS+116/TB,format=yuv420p,crop=540:350:300:0[plate];"
             "[plate][mask]alphamerge[patch];"
-            "[base][patch]overlay=300:0:enable='between(t,116,125)',"
-            "drawbox=x=840:y=695:w=250:h=70:color=0xf6f2e8:t=fill:enable='lt(n,24)'[v]"
+            "[base][patch]overlay=300:0:eof_action=pass:enable='between(t,116,125)',"
+            "split[fixed][cardbase];[cardbase]crop=250:72:840:800[fill];"
+            "[fixed][fill]overlay=840:694:enable='lt(n,24)'[v]"
         )
+        visual = tmp/'visual.mp4'
         master = tmp/'corrected1080.mp4'
         print('Rendering corrected original-resolution film', flush=True)
         ff('-i', source, '-loop','1','-i',tmp/'clean.png',
+            '-ss','116','-t','9','-i',source,
             '-filter_complex_threads','2','-filter_complex',graph,
-            '-map','[v]','-map','0:a:0','-frames:v','6568',
+            '-map','[v]','-an','-frames:v','6568','-r','30','-fps_mode','cfr',
             '-c:v','libx264','-threads','4','-preset','fast','-crf','18',
             '-pix_fmt','yuv420p','-g','240','-keyint_min','240','-sc_threshold','0',
-            '-c:a','copy','-movflags','+faststart',master)
+            '-movflags','+faststart',visual)
+        # Mux the full original audio only after video encoding, so a video-frame
+        # limit cannot drop buffered AAC packets at the end of the film.
+        ff('-i',visual,'-i',source,'-map','0:v:0','-map','1:a:0',
+            '-c','copy','-r','30','-movflags','+faststart',master)
         out.mkdir(parents=True)
         # Keep the exact existing mobile AAC track and its original timestamps.
         print('Rendering progressive mobile copy and streaming fallback', flush=True)
@@ -106,6 +114,11 @@ def main():
             assert actual_audio == audio_hash(original_path), f'{name}: AAC changed'
             receipt[name]={'duration':duration,'aacSha256':actual_audio,'fullDecode':True}
         assert (out/'film-mobile.mp4').stat().st_size < 100_000_000
+        # HTTP cache versions also apply to the HLS init/segments, not just its playlist.
+        playlist = out/'film.m3u8'
+        text = playlist.read_text().replace('URI="init.mp4"', 'URI="init.mp4?v=20261122-polish"')
+        text = '\n'.join(line+'?v=20261122-polish' if line.endswith('.m4s') else line for line in text.split('\n'))
+        playlist.write_text(text)
         receipt['files']={p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
             for p in sorted(out.iterdir()) if p.is_file()}
         (out/'verification.json').write_text(json.dumps(receipt,indent=2)+'\n')
