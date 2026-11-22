@@ -1,4 +1,44 @@
+Warning: truncated output (original token count: 21530)
+Total output lines: 1259
+
 # AI Confidence Academy learner portal
+
+## Enrollment presentation correction — November 22, 2026
+
+Terrence explicitly authorized the three inspected enrollment-page corrections:
+reduce the oversized player, remove the external presenter name, and remove the
+transient floating branch near 2:00. This scope does not reopen the narration,
+pricing, checkout, course content, monitoring activation or hosting cutover.
+
+Based on main `51355e1aef97c088e3876e9e1845276a8f60e7fb`. The original desktop
+player measured 1018.67 × 573 px, compared with the homepage's 640 × 360 px.
+The enrollment section now caps its inner player at approximately 680 × 383 px,
+centered with a responsive full-width layout below that maximum. Its heading,
+accessible name, poster and opening card use **Enrollment Overview**, without
+an external instructor name. Internal IDs and the existing player behavior stay
+intact. The rest of the enrollment HTML is byte-for-byte unchanged.
+
+The existing 1080p film supplies its own clean background from 110 seconds.
+A feathered background composite covers the transient branch during 116–125
+seconds; a luminance mask preserves the moving dark hair edge. The existing
+opening-card background replaces only its presenter subtitle. No generative
+avatar or voice service is called. The 0.8-second opening, complete performance,
+closing card, audio and all 6,568 frame positions are retained. Both the 720p
+progressive MP4 and 1080p HLS fallback are updated, with cache-versioned URLs
+including the HLS segments and initialization file.
+
+Local acceptance: both complete films decode, both contain 6,568 frames, and
+both AAC streams match their respective originals by SHA-256. The mobile film
+remains 218.948 seconds; all 6,568 presentation timestamps exactly match the
+original. Its MP4 index precedes the media data for progressive playback. The
+opening card and detailed repair interval were visually inspected. HTML parsing,
+section-only diff verification, Python compilation and whitespace checks pass.
+The reusable rendering script pins original source hashes and refuses a changed
+input; the originals remain recoverable from the base Git revision.
+
+Publication and live desktop/mobile verification are recorded below after they
+are observed. No recurring process or new subscription is authorized by this task.
+
 
 ## Approved Script Two welcome publication — November 22, 2026
 
@@ -603,29 +643,7 @@ Before enabling owner review in production:
 
 ## Active study correction — October 31, 2026
 
-Terrence's controlling requirement is a 120-minute study allowance preserved across pauses, logout, browser closure, power loss and emergencies. Thirty minutes of study followed by an hour away must leave 90 minutes. The October 8 fixed elapsed deadline contradicted that requirement. PR #102 contains the correction; PR #103 updates the existing retained Phase Two controller source. The current launch continuity record identifies the actual deployment state; a PR alone is not proof of publication.
-
-The candidate uses the existing phase ledgers, server-owned millisecond accounting, authenticated session tokens, a 30-second heartbeat and a 45-second confirmation lease. Manual Pause, hidden/closed pages and connection loss preserve unused minutes. Five minutes without interaction triggers an automatic pause with a warning in the last 30 seconds; playing lesson audio/video counts as activity. This five-minute interval is an implementation default, not a recovered founder-approved policy. No browser can determine the precise instant a person physically leaves. Long unconfirmed gaps are not charged. Resume does not reset the allowance. Saved work, payment cutoffs, existing owner extensions and the Phase Two Saturday-through-Sunday exception remain separate controls.
-
-Do not claim the release calendar has been corrected by the timer patch. Terrence subsequently specified independent enrollment starts, daily release at 6 a.m. Pacific, and 24 hours to first open an ordinary lesson. That first-opening window is not a 6–8 a.m. lesson and is not an elapsed two-hour completion window. Phase Two has six release days and a Saturday extension through Sunday. Phase end must follow the final lesson's applicable boundary, not an unrelated 42-day default. The present cohort-based calendar still requires alignment with those instructions. Do not request a Monday start date or treat the existing cohort implementation as an approved founder decision. Preserve prior evidence and update the existing continuity mandate with actual deployment and test status before closing the task.
-
-
-The October 31 isolated ordinary-learner acceptance used fictional data and the actual candidate browser-to-Supabase path. It verified preserved minutes and drafts across manual pause, browser reload and closure, an actual five-minute inactivity warning/pause, exhausted teaching access, and a saved workbook edited after exhaustion and retained on reload. A positioned stale-running record verified return without charging its unconfirmed absence. Thirty-minute/hour-away values were positioned test records, not a real hour-long browser wait. No physical-phone, real power/network outage or real lesson-media playback was claimed.
-
-Payment integration checks found and corrected a fractional-cutoff defect before production: temporary payment restriction must preserve the underlying unused study budget so bringing payment current restores otherwise eligible access. Added regression checks cover that boundary in both phases. The legacy heartbeat adapter also starts an already-open pre-token record once, preserving remaining minutes for cached readers during rollout; it cannot create a lesson opening by itself. The Saturday extension retained its calendar boundary, was restricted by the payment cutoff, and resumed that same boundary after the fictional payment status was brought current. No real charge or email was sent.
-
-The current portal CI verifies the correction against the existing phase contracts. A final heartbeat confirming Phase One exhaustion must durably record the closed budget before returning, so eligibility cannot reappear when a confirmation lease becomes stale. This is covered by a dedicated regression gate. Retained Phase Two source d5a71ac27c3f5164e2d96bcd53ecdc10b733aa3a passed CI 41186369785 and supplies index-D2LwPTTN.js. Publish the CI-built public HTML and all changed dependencies through the existing GitHub Pages route, apply the exact tested migration, and verify the served artifacts and applied functions before claiming installation. The disposable database was deleted and verified absent after approximately 49 minutes; its cleanup backstop was disabled after deletion. Existing production course publication, payment dates, prices and backup operation must remain unchanged. Calendar/24-hour first-opening/final phase-end alignment is still separate pending launch work.
-
-
-## Independent release calendar - October 31, 2026 candidate
-
-Terrence confirmed that Lesson 1 opens immediately with the enrollment link, including after 6 a.m. or on Sunday. Later Phase Two lessons release at 6 a.m. America/Los_Angeles on Monday-Saturday; they do not require a shared Monday cohort. The actual calendar Saturday receives the extension through Sunday, ending Monday at 00:00 Pacific, even when its lesson number is not .6. Phase One keeps its configured release offsets, anchored to Pacific calendar dates and 6 a.m.; completion no longer adds an extra day of delay.
-
-The first-opening window is 24 elapsed hours after ordinary release. Already-open saved study budgets remain independent of that opening cutoff. Unopened missed lessons cannot be opened by direct RPC. Phase end is calculated from the final lesson's applicable boundary: an unopened final lesson ends at its opening cutoff; an opened ordinary final lesson retains its saved allowance until completion/exhaustion. Existing explicit owner/trial end dates remain hard limits. New paid enrollments do not receive an unrelated 42/90-day default. Historical enrollment dates and work are not rewritten.
-
-`private.aca_lesson_calendar` is shared by both access paths, workbook release visibility, Phase Two notice candidates and owner diagnostics. Historical cohort metadata may remain attached for compatibility but no longer determines release timing. New Phase Two checkout retains the course-publication and enrollment-date gate; the course stays draft until separately authorized. Legacy already-created Checkout sessions with cohort metadata remain fulfillable.
-
-Candidate only until the current continuity record confirms release. `operations/lesson-calendar-db-check.sh` runs PostgreSQL calendar, DST, first-opening, resume, final-boundary, saved-work and ownership checks using synthetic data. Its minimal fixture does not cover the full Supabase owner/trial schema; complete isolated Supabase acceptance before production. No curriculum/media, price, installment date or backup change is authorized by this calendar correction.
+Terrence's controlling requirement is a 120-minute study allowance preserved across pauses, logout, browser closure, power loss and emergencies. Thirty minutes of study followed by an hour away mus…1530 tokens truncated…ixture does not cover the full Supabase owner/trial schema; complete isolated Supabase acceptance before production. No curriculum/media, price, installment date or backup change is authorized by this calendar correction.
 
 
 ## Direct navigation standard — November 7, 2026
