@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare'
+import { timerCron } from './incident-timer.mjs'
 
 test('daily backup handler runs in workerd against fixture GitHub, with no live credentials', async () => {
   const config = JSON.parse(await readFile(new URL('./incident-timer.wrangler.json', import.meta.url)))
@@ -47,7 +48,7 @@ test('the configured production entrypoint starts in workerd and stays inert whi
   }))
   try {
     const worker = await mf.getWorker()
-    for (const cron of config.triggers.crons) {
+    for (const cron of new Set([timerCron, ...config.triggers.crons])) {
       const scheduled = await worker.scheduled({ cron, scheduledTime: Date.now() })
       assert.equal(scheduled.outcome, 'ok')
     }
@@ -57,7 +58,7 @@ test('the configured production entrypoint starts in workerd and stays inert whi
   } finally { await mf.dispose() }
 })
 
-test('the configured production entrypoint accepts a fresh non-rounded timestamp in workerd', async () => {
+test('the explicitly activated incident handler accepts a fresh non-rounded timestamp in workerd', async () => {
   const config = JSON.parse(await readFile(new URL('./incident-timer.wrangler.json', import.meta.url)))
   const entry = fileURLToPath(new URL(config.main, import.meta.url))
   const core = fileURLToPath(new URL('./incident-timer.mjs', import.meta.url))
@@ -79,7 +80,7 @@ test('the configured production entrypoint accepts a fresh non-rounded timestamp
   try {
     const worker = await mf.getWorker()
     const scheduledTime = Date.now() - 1040
-    const scheduled = await worker.scheduled({ cron: config.triggers.crons[0], scheduledTime })
+    const scheduled = await worker.scheduled({ cron: timerCron, scheduledTime })
     assert.equal(scheduled.outcome, 'ok', JSON.stringify({ scheduled, calls, runtimeLogs }))
     const base = 'https://api.github.com/repos/teeleebiz-web/aiconfidenceacademy-site/actions/workflows/incident-diagnostics.yml'
     assert.deepEqual(calls, [
@@ -87,7 +88,7 @@ test('the configured production entrypoint accepts a fresh non-rounded timestamp
       { url: `${base}/dispatches`, method: 'POST', body: JSON.stringify({ ref: 'main', inputs: { mode: 'collect' } }) },
     ])
     redirect = true
-    const rejected = await worker.scheduled({ cron: config.triggers.crons[0], scheduledTime: Date.now() - 1040 })
+    const rejected = await worker.scheduled({ cron: timerCron, scheduledTime: Date.now() - 1040 })
     assert.equal(rejected.outcome, 'exception')
     assert.equal(calls.length, 3)
     assert.equal(calls[2].url, `${base}/runs?branch=main&per_page=20`)
