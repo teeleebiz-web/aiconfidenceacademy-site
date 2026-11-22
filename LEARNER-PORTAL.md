@@ -39,6 +39,29 @@ production build passed. Compiled Pages entries accompany the source. Required
 hosted checks and signed-in live navigation/playback verification are recorded
 with the associated PR and follow-up receipt before completion is claimed.
 
+### Publication receipt — November 22, 2026
+
+PR #130 is merged at `8377d0812418e3d5fed860a3090880a460512c19`.
+The exact feature head `bb22144cc9f52ccf920eee4783445f69be2fcd23`
+passed ACA learner portal checks (run 44999101772, including application tests,
+both builds, database acceptance and code isolation) and Phase Two Lesson 1.1
+acceptance (run 44999101790). The merge revision also passed portal checks
+(run 44999418068), and Pages publication succeeded (run 44999417594).
+
+Direct HTTP retrieval from the live Academy domain confirmed byte-for-byte
+matches with this build for the Control Center and learner HTML entries, the
+Control Center, App and Phase Two JavaScript bundles, and both changed CSS
+bundles. This verifies publication of the intended feature.
+
+**Remaining verification:** the connected Edge session timed out on the
+post-publication Control Center reload and again while requesting connection
+troubleshooting guidance. Therefore a signed-in post-publication Welcome →
+ChatGPT orientation → Lesson 1.1 walkthrough, workbook checks, and a screenshot
+are not yet verified. Do not report these as completed or repeat unrelated
+diagnostics. Resume those exact UI checks when Edge is available. No trial,
+invitation, learner progress update, monitoring reactivation, or GoDaddy change
+was made for this feature.
+
 ## Prelaunch monitoring pause — November 22, 2026
 
 **Controlling owner instruction:** the Academy is still in build mode. Pause
