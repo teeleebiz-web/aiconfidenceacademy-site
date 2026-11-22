@@ -7,6 +7,7 @@ import { LessonView } from './components/LessonView'
 import { LessonStudySession } from './components/LessonStudySession'
 import { SignIn } from './components/SignIn'
 import { LearnerOnboarding } from './components/LearnerOnboarding'
+import { OwnerCurriculumNavigation } from './components/OwnerCurriculumNavigation'
 const AcademyControlCenter = lazy(() => import('./components/AcademyControlCenter').then(module => ({ default: module.AcademyControlCenter })))
 import { TrialEntry } from './components/TrialEntry'
 import type { LessonAccess } from './components/LessonClock'
@@ -65,6 +66,7 @@ export function App() {
   const [reviewMode, setReviewMode] = useState(false)
   const [lessonAccess, setLessonAccess] = useState<LessonAccess | null>(null)
   const [completedOnboardingId, setCompletedOnboardingId] = useState('')
+  const [completedReviewWelcome, setCompletedReviewWelcome] = useState(false)
   const [beginningEnrollment, setBeginningEnrollment] = useState(false)
   const [lessonVideoUrl, setLessonVideoUrl] = useState<string | undefined>()
   const [lessonAudioUrl, setLessonAudioUrl] = useState<string | undefined>()
@@ -288,19 +290,18 @@ export function App() {
         if (session?.user) await loadPortal(session.user.id)
         return
       }
-      if (completingOnboarding && portalData.enrollment) {
-        if (!reviewMode || !portalData.enrollment.onboarding_completed_at) {
-          const { data: completedAt, error: completionError } = await supabase.rpc('complete_aca_onboarding', {
-            p_enrollment_id: portalData.enrollment.id,
-          })
-          if (request !== mediaRequest.current) return
-          if (completionError || !completedAt) {
-            setError('Your introduction could not be saved. Please try again.')
-            return
-          }
+      if (completingOnboarding && portalData.enrollment && !reviewMode) {
+        const { data: completedAt, error: completionError } = await supabase.rpc('complete_aca_onboarding', {
+          p_enrollment_id: portalData.enrollment.id,
+        })
+        if (request !== mediaRequest.current) return
+        if (completionError || !completedAt) {
+          setError('Your introduction could not be saved. Please try again.')
+          return
         }
         setCompletedOnboardingId(portalData.enrollment.id)
       }
+      if (completingOnboarding && reviewMode) setCompletedReviewWelcome(true)
       setLessonVideoUrl(video)
       setLessonAudioUrl(audio)
     } catch {
@@ -486,6 +487,7 @@ export function App() {
     setSelectedLesson(null)
     setSelectedIntroduction(null)
     setCompletedOnboardingId('')
+    setCompletedReviewWelcome(false)
     setLessonVideoUrl(undefined)
     setLessonAudioUrl(undefined)
   }
@@ -495,9 +497,10 @@ export function App() {
     : { ...portalData, ...learnerAccessView(portalData) }
 
   const onboardingEnrollment = portalData.enrollment
-  const needsOnboarding = !portalData.reviewCourse && onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
+  const reviewWelcome = reviewMode && !!portalData.reviewCourse && params.get('view') === 'welcome' && !completedReviewWelcome
+  const needsOnboarding = reviewWelcome || (!portalData.reviewCourse && onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
     && completedOnboardingId !== onboardingEnrollment.id
-    && (reviewMode ? !workbookKey : !onboardingEnrollment.onboarding_completed_at)
+    && (reviewMode ? !workbookKey && !completedReviewWelcome : !onboardingEnrollment.onboarding_completed_at))
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
   const workbookHome = params.get('view') === 'workbooks' || window.location.hash === '#my-workbooks'
   usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment || portalData.reviewCourse ? workbookHome ? 'workbooks' : 'curriculum' : 'access')
@@ -529,7 +532,7 @@ export function App() {
   }, [workbookKey, reviewMode, session?.user.id])
 
   async function finishOnboarding() {
-    if (!onboardingEnrollment || !firstLesson) return
+    if ((!onboardingEnrollment && !portalData.reviewCourse) || !firstLesson) return
     await openLesson(firstLesson, true)
   }
 
@@ -575,11 +578,12 @@ export function App() {
             <small>Learner Portal</small>
           </span>
         </a>
-        {reviewMode ? <a className="quiet-button" href={operationsView ? '/learn/' : '/learn/?view=enrollments'}>{operationsView ? 'Learner portal' : 'Enrollment administration'}</a> : null}
         <button className="quiet-button" type="button" onClick={signOut}>
           Sign out
         </button>
       </header>
+
+      {reviewMode && (portalData.reviewCourse || portalData.enrollment) ? <OwnerCurriculumNavigation /> : null}
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 

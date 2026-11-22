@@ -7,6 +7,18 @@ const id='00000000-0000-4000-8000-000000000002'
 const snapshot={updated_at:'2026-10-16T06:00:00Z',enrollments:[{id,learner_id:id,course_id:courseId,phase_number:1,course_title:'Phase One',status:'active',effective_access:'active',course_status:'published',email:'learner@example.com',display_name:'Learner One',first_name:'Learner',account_status:'active',enrollment_type:'trial',payment_mode:'unrecorded',record_label:null,enrolled_at:'2026-10-16T00:00:00Z',starts_at:null,access_expires_at:'2026-12-01T00:00:00Z',onboarding_completed_at:null,last_sign_in_at:null,invited_at:null,last_lesson:null,last_learning_activity:null,updated_at:'2026-10-16T06:00:00Z',lessons_completed:0,total_lessons:36,payment:{kind:'direct',status:'no payment record',paid:0,total:0,currency:'usd',completed:null,next_due_at:null,next_amount:null,grace_until:null,reminder_sent_for_due_at:null}}],summary:{enrollments:1,active:1,trials:1,paused:0,live_collected_usd:0,upcoming:0,overdue:0,unclassified:0},courses:[{id:courseId,phase_number:1,title:'AI Confidence Academy Phase One: AI Foundations',status:'published',updated_at:'2026-10-16T00:00:00Z',default_access_days:90}],journeys:[],lessons:[],emails:[],payments:[],refunds:[],trials:[],cohorts:[],feedback:[],activity:[],automations:[],newsletter:{subscribers:0,sync_issues:0,editions:[]},configuration:{database:'connected',payments:true,email:true,emailTracking:true,paymentTracking:true,scheduler:true},request_duration_ms:20} satisfies Snapshot
 const response=(value:unknown,status=200)=>({ok:status<400,status,json:async()=>value})
 afterEach(()=>vi.unstubAllGlobals())
+it('opens full curriculum review from the Control Center without creating a trial',async()=>{
+ const user=userEvent.setup(),fetcher=vi.fn(async()=>response(snapshot));vi.stubGlobal('fetch',fetcher)
+ render(<AcademyControlCenter accessToken="owner-token"/>);await screen.findByRole('heading',{name:'Phase operations'})
+ await user.click(within(screen.getByRole('navigation',{name:'Academy administration'})).getByRole('button',{name:'Curriculum review'}))
+ expect(document.activeElement).toBe(screen.getByRole('heading',{level:1,name:'Curriculum review'}))
+ expect(screen.getByRole('link',{name:'Start Phase One — Welcome to the Academy'}).getAttribute('href')).toBe('/learn/?review=phase-one&view=welcome')
+ expect(screen.getByRole('link',{name:'Phase One lessons'}).getAttribute('href')).toBe('/learn/?review=phase-one&view=curriculum')
+ expect(screen.getByRole('link',{name:'Phase One workbooks'}).getAttribute('href')).toBe('/learn/?review=phase-one&view=workbooks')
+ expect(screen.getByRole('link',{name:'Phase Two lessons and workbooks'}).getAttribute('href')).toBe('/learn/?review=phase-two&view=curriculum')
+ expect(screen.queryByRole('dialog')).toBeNull()
+ expect(fetcher.mock.calls.every(call=>(call as unknown as [string,RequestInit])[1]?.method!=='POST')).toBe(true)
+})
 it('opens each working section and keeps the default view focused on Academy operations',async()=>{
  const scroll=vi.spyOn(window,'scrollTo').mockImplementation(()=>{});const user=userEvent.setup();const fetcher=vi.fn(async(url:string)=>response(url.endsWith('/api/operations/support')?{cases:[],messages:[]}:snapshot));vi.stubGlobal('fetch',fetcher)
  render(<AcademyControlCenter accessToken="owner-token"/>);expect(await screen.findByRole('heading',{name:'Phase operations'})).toBeTruthy()

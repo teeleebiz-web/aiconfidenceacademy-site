@@ -1,5 +1,44 @@
 # AI Confidence Academy learner portal
 
+## Owner curriculum entry restored — November 22, 2026
+
+Terrence explicitly requested permanent curriculum access from the Control Center,
+starting with the same Welcome to the Academy and ChatGPT orientation that a
+Phase One learner sees, continuing through lessons and workbooks, with Phase Two
+also available. This navigation work does not depend on registrar access or
+authorize the separately pending hosting switch or monitoring reactivation.
+
+Based on main `913512b559aa84b46a11c1a5c7f195c599f167ea`. The live Control
+Center showed lesson-management/inspection controls but lacked a full curriculum
+entry. The explicit owner welcome address reproduced a curriculum dashboard
+instead of the Welcome sequence. New regression cases reproduced both gaps.
+
+The Control Center now has a persistent **Curriculum review** navigation item
+and a prominent **Review curriculum** shortcut. Its review section links to:
+
+- `/learn/?review=phase-one&view=welcome` — the existing approved Academy welcome
+  film, the existing Getting Started with ChatGPT component, then Lesson 1.1;
+- `/learn/?review=phase-one&view=curriculum` — all Phase One journeys/lessons;
+- `/learn/?review=phase-one&view=workbooks` — Phase One workbook access;
+- `/learn/?review=phase-two&lesson=1.1` — the first Phase Two lesson; and
+- `/learn/?review=phase-two&view=curriculum` — all Phase Two lessons/workbooks.
+
+Both phase review screens provide persistent links back to the Control Center,
+the Welcome sequence, and the curriculum/workbooks. The welcome uses the actual
+learner components and existing signed media path; no substitute video, duplicate
+curriculum, trial, enrollment, schedule, publication or database migration is
+created. Existing owner authorization and RLS remain required. Owner continuation
+now stays in local review state even if the owner also has an unfinished learner
+enrollment; it cannot mark onboarding complete or start a learner clock. Ordinary
+learner onboarding still uses its existing completion and access checks.
+
+Local evidence: 75 targeted routing, owner access, Control Center, Phase Two and
+orientation tests passed; 17 onboarding tests passed after aligning the prior
+owner-completion expectation with read-only review. Type checking and the default
+production build passed. Compiled Pages entries accompany the source. Required
+hosted checks and signed-in live navigation/playback verification are recorded
+with the associated PR and follow-up receipt before completion is claimed.
+
 ## Prelaunch monitoring pause — November 22, 2026
 
 **Controlling owner instruction:** the Academy is still in build mode. Pause

@@ -6,6 +6,7 @@ import { usePageStart } from '../lib/usePageStart'
 import { inspectPhaseTwoDraft } from '../phaseTwo/phaseTwoDraftIntegrity'
 import { PhaseTwoLessonExperience } from '../phaseTwo/PhaseTwoLessonExperience'
 import { PhaseTwoWorkbook } from '../phaseTwo/PhaseTwoWorkbook'
+import { OwnerCurriculumNavigation } from './OwnerCurriculumNavigation'
 import type { GuidedInstructionMedia, VisualDemoClip } from '../phaseTwo/PhaseTwoGuidedMedia'
 import './phase-two-review.css'
 
@@ -204,10 +205,7 @@ export function PhaseTwoReview() {
     return () => window.removeEventListener('popstate', back)
   }, [])
   usePageStart(status !== 'ready' ? null : workbookPreview ? null : showCurriculum ? 'phase-two-curriculum' : 'phase-two:' + lessonForReview?.page_id)
-  const phaseLinks = <nav className="curriculum-phase-links" aria-label="Academy phases">
-    <a href="/learn/?review=phase-one&view=curriculum">Phase 1</a>
-    <a href="/learn/?review=phase-two&view=curriculum" aria-current="page">Phase 2</a>
-  </nav>
+  const phaseLinks = <OwnerCurriculumNavigation />
 
   if (status === 'ready' && workbookPreview) {
     return <div>{phaseLinks}<PhaseTwoWorkbook journey={workbookJourney}
