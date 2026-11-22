@@ -36,8 +36,37 @@ section-only diff verification, Python compilation and whitespace checks pass.
 The reusable rendering script pins original source hashes and refuses a changed
 input; the originals remain recoverable from the base Git revision.
 
-Publication and live desktop/mobile verification are recorded below after they
-are observed. No recurring process or new subscription is authorized by this task.
+Publication completed November 22, 2026 (Asia/Manila). PR #132 was squash-merged
+as `98384acefeb4f0cd21519ee2ac38145083d32ae4` after both Vercel checks passed.
+The one-time media render run `45023715075` passed full decoding, frame counts
+and original AAC identity for both outputs. Its temporary workflow was removed
+before merge. GitHub Pages run `45024551813` then completed successfully.
+
+The public enrollment page serves the corrected heading, accessible label and
+cache-versioned assets. Independent live downloads returned HTTP 200 and matched
+the hosted verification fingerprints exactly:
+- MP4: 43,129,844 bytes; SHA-256
+  `fdbb385afb53cee71304f22ce0dbfef22b31db6be3dec28d78de2d283bcc0b00`.
+- Poster: 41,332 bytes; SHA-256
+  `828b11ae0751b318568d5c8327a8f21ae5249b50fd2a0d44671023bb777cee59`.
+- HLS playlist: 1,501 bytes; SHA-256
+  `60d5aa1b75cd37683fafe750f61565d2d4be3d28bea7d516822bc53d948f2897`.
+
+Live Edge verification measured the desktop player at 680.67 × 382.875 px.
+Play started and advanced with readyState 4 and no media error. Seeking resumed
+successfully; a paused view at 122.427468 seconds confirmed the branch-free
+background. The duration remains 218.948 seconds. At a 390 px phone viewport,
+the player measured 333.33 × 187.5 px and fit within the page without horizontal
+overflow. The viewport was reset, playback reset to the opening card, and the
+public enrollment tab left ready for founder review. The updated heading was
+also observed in the independent cloud browser. Initial Edge connection timeouts
+resolved on retry and did not block verification.
+
+All three authorized corrections are published and verified. The existing
+narration, performance, order, closing card and enrollment behavior remain
+unchanged. No recurring process, subscription, paid avatar regeneration, DNS
+change or hosting cutover was activated. The next step is Terrence's visual
+review of https://aiconfidenceacademy.org/enroll/; no implementation blocker remains.
 
 
 ## Approved Script Two welcome publication — November 22, 2026
