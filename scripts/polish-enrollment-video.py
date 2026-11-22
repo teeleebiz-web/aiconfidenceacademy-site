@@ -9,7 +9,6 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 
@@ -49,7 +48,7 @@ def main():
                 f.write(p.read_bytes())
         assert hashlib.sha256(raw.read_bytes()).hexdigest() == HLS_SHA
         source = tmp/'source.mp4'
-        ff('-i', raw, '-c', 'copy', source)
+        ff('-i', MEDIA/'film.m3u8', '-c', 'copy', source)
         original = probe(source)
         v = original['streams'][0]
         assert (v['width'],v['height'],v['r_frame_rate'],v['nb_frames']) == (1920,1080,'30/1','6568')
@@ -59,13 +58,13 @@ def main():
         # luminance protects Anna's dark foreground instead of freezing her hair.
         # The branch is confined to this region from approximately 117–124 s.
         graph = (
-            "[0:v]format=yuv420p,split=2[base][ms];"
-            "[ms]crop=390:350:450:0,format=gray,"
+            "[0:v]setpts=PTS-STARTPTS,format=yuv420p,split=2[base][ms];"
+            "[ms]trim=start=116:end=125,crop=540:350:300:0,format=gray,"
             "geq=lum='min(1,min(X/12,(W-1-X)/12))*min(1,(H-1-Y)/12)*"
-            "if(lt(X,310),255,clip((lum(X,Y)-75)*255/65,0,255))'[mask];"
-            "[1:v]format=yuv420p,crop=390:350:450:0[plate];"
+            "if(lt(X,460),255,clip((lum(X,Y)-75)*255/65,0,255))'[mask];"
+            "[1:v]format=yuv420p,crop=540:350:300:0[plate];"
             "[plate][mask]alphamerge[patch];"
-            "[base][patch]overlay=450:0:enable='between(t,116,125)',"
+            "[base][patch]overlay=300:0:enable='between(t,116,125)',"
             "drawbox=x=840:y=695:w=250:h=70:color=0xf6f2e8:t=fill:enable='lt(n,24)'[v]"
         )
         master = tmp/'corrected1080.mp4'
@@ -96,13 +95,15 @@ def main():
             target=out/name
             ff('-i',target,'-f','null','-')
             info=probe(target)
+            if name == 'film-mobile.mp4':
+                assert float(info['streams'][0]['start_time']) == 0
             duration=float(info['format']['duration'])
             assert abs(duration-218.94)<0.03, duration
             count=subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0',
                 '-count_frames','-show_entries','stream=nb_read_frames','-of','csv=p=0',str(target)],text=True).strip()
             assert set(count.split()) == {'6568'}, count
             actual_audio=audio_hash(target)
-            assert actual_audio == audio_hash(original_path), 'AAC changed'
+            assert actual_audio == audio_hash(original_path), f'{name}: AAC changed'
             receipt[name]={'duration':duration,'aacSha256':actual_audio,'fullDecode':True}
         assert (out/'film-mobile.mp4').stat().st_size < 100_000_000
         receipt['files']={p.name:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}
