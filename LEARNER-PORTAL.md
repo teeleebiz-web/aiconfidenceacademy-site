@@ -1,5 +1,31 @@
 # AI Confidence Academy learner portal
 
+## Approved Script Two welcome publication — November 22, 2026
+
+Terrence reviewed the complete 709.489-second film and explicitly approved placing
+it in Welcome to the Academy. The only approved media change is his Script Two
+founder segment and the shortened original opening card. First speech is at
+0.931458 seconds. All 14,105 instructor/closing frames remain in order; retained
+audio correlation is 0.998109. The full MP4 decoded successfully and supports
+progressive playback. Founder look/voice match the November homepage/Our Story.
+
+The exact approved file is 81,887,736 bytes, SHA-256
+`350e6cb65f13cdd5c6c1938a6d96af063a74c0c9726b9fe86dceff7d50fafff6`.
+The existing private target remains
+`aca-learning-media/academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4`.
+The existing publication workflow now accepts this exact reviewed file through a
+time-limited, non-overwriting private staging upload. It verifies a private copy
+of the previous live film, verifies the staged bytes, rechecks the live fingerprint,
+replaces the existing object without re-encoding, and verifies the downloaded bytes.
+No media is committed to the public repository. The publication ledger key is
+`academy-welcome-script-two-20261122`; only `verified` proves installation.
+
+Seven focused publication safety/recovery tests pass locally. Publication and
+live browser playback evidence will be added below after actual execution. Edge
+page interactions currently time out; do not claim a one-second network start or
+signed-in playback without observing it. Monitoring remains paused; no enrollment,
+payment, curriculum, instructor, DNS or hosting configuration change is included.
+
 ## Owner curriculum entry restored — November 22, 2026
 
 Terrence explicitly requested permanent curriculum access from the Control Center,
