@@ -1,5 +1,85 @@
 # AI Confidence Academy learner portal
 
+## Current launch closure record — November 22, 2026
+
+This summary supersedes older pending-status statements below only where explicit
+evidence is supplied. Preserve the historical record and completed tests. The
+current task is to finish the existing Academy release economically, not expand
+features, replace platforms, repeat historical diagnostics, or reopen curriculum.
+
+**Evidence baseline:** application revision
+`a68c86b823ee5c9e5c0d8e42b1d4ce2269eb7458` (PR #128).
+This documentation update does not alter that application code.
+
+### Verified work to preserve
+
+| Item | Evidence and actual scope |
+| --- | --- |
+| Phase One owner access repair | PR #128 merged. Exact PR head `57eb89b0479682b3dea30d15cb8ac82d893593a9` passed portal CI 44984447642: application/type/build verification, database acceptance, isolated repair checks, protected public output. Lesson acceptance 44984447665 passed. |
+| Published application | Post-merge portal CI 44984814014 and Pages deployment 44984813123 passed. Vercel production `dpl_AfEsn57S6ctaoEQTP6a989x8jEGU` is READY on the same merged application revision. |
+| Live owner flow | Signed-in Edge opened the production Phase One curriculum, which listed six journeys, 36 lessons and six workbook links. Lesson 5.4 opened; its audio advanced past 14 seconds, reported duration 287.975771 seconds and no media error, and was paused afterward. Open Workbook reached Journey Five / Lesson 5.4, page 13 of 24. No answers were entered or saved. |
+| Protected Phase Two preview | Retain the dated authenticated playback/caption/denied-access evidence below. It is preview evidence and sampled playback, not production protection or an every-asset viewing pass. |
+| Media recovery | Retain the 594-file original-hash restore and 6m35s live recovery receipt from run 44926966979. Automatic backup 44961330505 also completed successfully, including the policy/recovery step. No extra recovery run is required merely to recreate this conversation's evidence. |
+| Operational execution | Diagnostic run 44991807709 and coding-worker run 44991930814 succeeded. Success shows those jobs executed; it does not establish that a real learner fault was repaired end to end. |
+
+**Reporting correction:** saying that this session opened all 36 Phase One
+lessons exceeded the observed evidence. All 36 were listed; the exercised lesson
+was 5.4. A green test count, READY deployment, successful connection or owner-only
+sample must never be reported as proof that the entire Academy is launch-ready.
+
+### Existing release gates and their closure evidence
+
+1. **Protected production delivery and public-copy withdrawal — open.**
+   Existing private-media transfer and protected preview are complete as recorded.
+   Production delivery activation, domain routing, Pages retirement, repository
+   privacy and release protection must be coordinated. Verify authorized access
+   and denial through old Pages/raw/direct media routes after the switch.
+   Domain inspection confirms the apex still uses GitHub Pages addresses and
+   GoDaddy nameservers. Vercel currently has the checkout subdomain and its default
+   domain; the Academy apex is not yet attached. Preserve rollback capability
+   without restoring public paid-media delivery. Registrar access is pending;
+   inspection authorization alone is not DNS-change authorization.
+2. **Economical private operation — assessed, not activated.**
+   Basic private repositories are available on GitHub Free. Advanced private
+   release protection and Actions usage are separate decisions, not a fee for
+   privacy or a requirement to buy another storage service. The current diagnostic
+   schedule is four times hourly and triggers the coding worker each time.
+   Sample jobs took 85 and 111 seconds, each rounding to two billed minutes under
+   current GitHub rules. At 96 pairs/day for 30 days that is 11,520 minutes,
+   approximately $69.12 gross at $0.006/minute, before included compute allowance.
+   This is a projection for that schedule/sample, not measured monthly usage or
+   a current bill; backups, builds, storage and other usage are excluded. It
+   does not authorize a plan, budget increase or paid service. Any reduction
+   must preserve approved monitoring, repair authority, checks and recovery.
+3. **Final learner/recovery acceptance on the released configuration — open.**
+   Reuse existing enrollment, payment, email, timer, saved-work and isolation
+   receipts where their contracts remain unchanged. Identify only evidence
+   invalidated by the delivery switch or still absent. Owner review is not an
+   ordinary learner session. Final acceptance must demonstrate the ordinary
+   sign-in-to-authorized-media/workbook path, saved work and access boundaries
+   on the actual released configuration, and close the previously recorded
+   incident-to-recovery evidence gap within the approved repair authority.
+   Learner/assistant trials, invitations, payments or intentionally injected
+   production faults must not be started silently. The founder retained control
+   of when those trials begin.
+
+### Continuation rule
+
+Continue from these gates, not another general diagnostic restart. A closed item
+may be reopened only with a named changed dependency, reproduced regression or
+specific missing acceptance evidence. Record that reason alongside the item.
+Do not describe older draft entries as newly discovered defects or infer a
+provider failure from a stale pending note. Do not guarantee incident-free
+operation or declare launch readiness until the named live release gates close.
+
+Current pricing references (reviewed November 22):
+- https://docs.github.com/en/get-started/learning-about-github/githubs-plans
+- https://docs.github.com/en/billing/reference/actions-runner-pricing
+- https://docs.github.com/en/billing/reference/product-usage-included
+
+---
+
+
 This repository is the single source of truth for both the public ACA website and
 the secure learner portal.
 
