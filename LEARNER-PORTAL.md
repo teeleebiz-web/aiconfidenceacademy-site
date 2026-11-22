@@ -877,3 +877,53 @@ Preserve normal sign-in; never copy browser sessions or manufacture credentials.
 Production private-media and public-hosting activation remains pending the
 coordinated cutover; public originals still exist. Overall launch readiness is
 not established. The previously verified 6m35s full recovery remains valid.
+
+## November 22, 2026 — browser recovery and Phase One owner-access repair
+
+This entry supersedes the pending browser/callback status above. Edge recovered.
+After the founder approved the corrected preview's exact callback, normal email
+sign-in succeeded there. Both the older `fxpvbuxhu` callback and corrected
+`gmlvnen2h` callback were removed after testing. Supabase URL configuration now
+shows no extra redirect URLs; its production Site URL remains unchanged.
+
+On protected deployment `dpl_2oqA2wCgoctcE9iT1uNpFinv8q1M`, authenticated
+Phase Two review loaded all 36 lesson choices and six workbooks. Actual playback
+was observed for the revised 1.1 introduction and guided audio, its first demo
+(to ended), and introductions 2.1 and 6.6. Native captions visibly rendered on
+1.1. Lesson 1.2 and final-lesson audio/demo metadata loaded; this is not full
+playback coverage of every asset. Journey Six workbook opened to Lesson 6.6.
+No workbook responses, progress, enrollment, payment or timing records changed.
+Twenty-one protected preview routes returned expected pages. An unsigned media
+request was denied and the old paid-media URL returned 404. Production originals
+remain publicly reachable until the coordinated delivery/repository cutover.
+
+Cross-phase navigation exposed a distinct Phase One defect: the verified owner
+was rejected when no active/pending/completed learner enrollment was returned.
+Owner review now obtains a separately authorized course context using existing
+owner RLS. No synthetic enrollment is created. Explicit review and workbook
+navigation bypass learner start/onboarding gates; ordinary learner access remains
+on its existing enrollment path. Owner lessons remain read-only and signed-media
+protected. Dashboard labels owner review accurately. No database migration or
+curriculum modification is involved. The applied course/journey/lesson owner
+policies were inspected and confirmed before this correction.
+
+New regression tests reproduced the blocked owner curriculum/workbook and staged
+review before repair. Local validation passes 576 portal tests (one opt-in live
+trial skipped), 270 backend tests, 168 recovery tests, TypeScript and default
+build. Initial local failures were missing sparse-checkout assets; original
+files were restored, without changing tests to skip those checks. Generated
+portal/control-center entries accompany the source for current Pages delivery.
+Full hosted SQL/isolation/protected-build validation and the actual source
+release/browser verification remain pending for this new correction.
+
+Cutover dependencies inspected: external DNS still points to GitHub Pages and
+uses GoDaddy nameservers. The source repository remains public and has no branch
+rules. The account is GitHub Free; its displayed Pro offer is $4/month with
+private protected branches and 3,000 Actions minutes/month. Current 15-minute
+incident diagnostics trigger the isolated repair worker. Sample jobs took
+82 and 88 seconds respectively (runs 44983128204 and 44983247701); private
+Actions usage needs a budget/capacity assessment before changing visibility.
+No plan purchase, DNS change, repository visibility change or hosting activation
+has been made. The founder approved GoDaddy inspection; normal sign-in is needed.
+The earlier automatic access denial was not bypassed. The full 594-file recovery
+proof remains valid and was not repeated. Launch readiness remains unestablished.
