@@ -1,5 +1,53 @@
 # AI Confidence Academy learner portal
 
+## Prelaunch monitoring pause — November 22, 2026
+
+**Controlling owner instruction:** the Academy is still in build mode. Pause
+continuous operational diagnostics and automatic repair processing until the
+owner approves launch activation. Do not turn these back on merely because
+development resumes. Preserve backups and checks that validate actual changes.
+This instruction supersedes older instructions below to keep these routines
+running continuously.
+
+### Applied and verified
+
+- Removed the Cloudflare `aca-incident-timer` cron `*/15 * * * *`.
+  API readback shows only the existing nightly backup cron `17 18 * * *`
+  (02:17 Asia/Manila; 01:17 Asia/Bangkok). Backup settings and credentials were
+  not changed.
+- GitHub confirms “This workflow was disabled manually” for
+  `incident-diagnostics.yml`, `support-code-worker.yml`, and
+  `support-release.yml`. This holds both recurring diagnostics and the
+  associated automatic coding/release chain. Workflow source is retained.
+- Latest observed diagnostics run `44995178577` and coding run `44995329012`
+  had already completed successfully before the pause; automatic repair release
+  had zero runs. No new diagnostic or coding run was requested for this change.
+- Application code, nightly backup workflow, and code-change acceptance checks
+  are unchanged. This is an operational pause, not evidence of a new defect.
+
+### Required before launch activation
+
+1. Obtain the owner's explicit launch activation approval and verify the chosen
+   monitoring arrangement and actual expected cost. The earlier $69.12 figure
+   was a projected private-repository runner cost, not a verified bill.
+2. Review any pending support cases and stale repair branches before restoring
+   automatic handling. Re-enable the coding and release workflows only when
+   their bounded repair/release controls are ready.
+3. Re-enable the diagnostic workflow and choose one intended timer arrangement.
+   Native GitHub scheduling remains defined in the workflow; Cloudflare's
+   quarter-hour trigger was the external fallback. Do not blindly activate both.
+4. If restoring the external timer, restore `*/15 * * * *` alongside the
+   existing backup cron and verify `ACA_TIMER_ENABLED` deliberately. Do not
+   change `ACA_BACKUP_TIMER_ENABLED` or overwrite the backup schedule.
+5. Verify one controlled collection/repair-handling cycle and owner reporting,
+   then record the exact activation evidence here.
+
+**Redeployment caution:** `operations/incident-timer.wrangler.json` still
+contains the launch-time quarter-hour schedule. Do not redeploy it unchanged
+during this pause; preserve the deployed backup-only schedule and disabled
+GitHub workflows. Do not treat this pause as cancellation of subscriptions or
+proof that all platform charges have stopped.
+
 ## Current launch closure record — November 22, 2026
 
 This summary supersedes older pending-status statements below only where explicit
