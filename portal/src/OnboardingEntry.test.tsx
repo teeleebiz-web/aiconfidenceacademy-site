@@ -200,7 +200,7 @@ it('opens an owner workbook directly without restarting the welcome', async () =
   expect(api.signMedia).not.toHaveBeenCalled()
 })
 
-it('opens the same welcome and ChatGPT guide for the owner without starting a learner clock', async () => {
+it('opens the same welcome and ChatGPT guide for the owner without writing learner completion or starting a clock', async () => {
   api.owner = true
   api.progress = [{ lesson_id: 'onboarding-lesson', status: 'in_progress' }]
   render(<App />)
@@ -209,7 +209,7 @@ it('opens the same welcome and ChatGPT guide for the owner without starting a le
   expect(screen.getByRole('heading', { name: 'Getting Started with ChatGPT' })).toBeTruthy()
   await userEvent.click(screen.getByRole('button', { name: 'Continue to Lesson 1.1' }))
   expect(await screen.findByRole('heading', { name: 'Lesson 1.1' })).toBeTruthy()
-  expect(api.rpc).toHaveBeenCalledWith('complete_aca_onboarding', { p_enrollment_id: 'onboarding-enrollment' })
+  expect(api.rpc.mock.calls.some(([name]) => name === 'complete_aca_onboarding')).toBe(false)
   expect(api.rpc.mock.calls.some(([name]) => name === 'touch_lesson_access')).toBe(false)
   expect(api.rpc.mock.calls.some(([name]) => name === 'get_learner_lesson_access')).toBe(false)
 })
