@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { publishApprovedScriptTwo } from './approved-welcome-script-two.mjs'
 import { createHash } from 'node:crypto'
 import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -37,6 +38,7 @@ export async function main() {
 const db = createClient('https://ymmkodlifpxutynpjnxm.supabase.co', process.env.ACA_BACKUP_SOURCE_SERVICE_ROLE_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
 })
+if (await publishApprovedScriptTwo(db)) return
 const task = checked(await db.from('aca_media_publications').select('*').eq('publication_key', publicationKey).single())
 const bucket = db.storage.from('aca-learning-media')
 const download = async path => Buffer.from(await checked(await bucket.download(path, { cacheNonce: `${Date.now()}-${process.hrtime.bigint()}` }, { cache: 'no-store' })).arrayBuffer())
