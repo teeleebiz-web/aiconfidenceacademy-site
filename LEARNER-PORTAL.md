@@ -26,6 +26,34 @@ page interactions currently time out; do not claim a one-second network start or
 signed-in playback without observing it. Monitoring remains paused; no enrollment,
 payment, curriculum, instructor, DNS or hosting configuration change is included.
 
+### Verified installation — November 22, 2026, 16:58 Manila
+
+PR #131 merged at `96d41925720a9b94c2c056795b8b6567155b188f`.
+Publication workflow 45004975646 and its publication job 137154412891 succeeded.
+The service-only ledger records `verified_at=2026-11-22T08:58:33.516Z`.
+The installed existing target is 81,887,736 bytes and its downloaded SHA-256
+matches the exact owner-reviewed film:
+`350e6cb65f13cdd5c6c1938a6d96af063a74c0c9726b9fe86dceff7d50fafff6`.
+The previous 78,416,986-byte film is preserved as
+`academy-welcome/ACA_Welcome_before_script_two_20261122.mp4`.
+The temporary staging object was removed and its temporary upload reference
+cleared from the ledger. Signed standard upload succeeded; the signed TUS staging
+request was rejected, before any live replacement, with Invalid Compact JWS.
+The existing credentialed workflow's TUS installation and readback then succeeded.
+
+Hosted portal checks 45004976752 and Pages deployment 45004974823 also succeeded
+for the merge revision. No application/UI file or media playback route changed.
+The installed MP4 retains the approved original-card timing (first speech at
+0.931458 seconds), founder Script Two, and complete instructor/closing sequence.
+
+Remaining scope: the selected Edge browser returned page-interaction timeouts
+on the existing Welcome tab and the fresh publishing-tab attempt. Therefore live
+authenticated playback, actual click-to-play latency, and a live screenshot are
+not verified. Resume only those checks at
+https://aiconfidenceacademy.org/learn/?review=phase-one&view=welcome when Edge
+responds. Do not republish this verified file, rerender it, activate monitoring,
+or rerun unrelated diagnostics to resume that check.
+
 ## Owner curriculum entry restored — November 22, 2026
 
 Terrence explicitly requested permanent curriculum access from the Control Center,
