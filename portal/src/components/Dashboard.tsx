@@ -1,7 +1,8 @@
-import type { Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from '../types'
+import type { Course, Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from '../types'
 
 type DashboardProps = {
-  enrollment: Enrollment
+  enrollment: Enrollment | null
+  reviewCourse?: Course | null
   journeys: Journey[]
   lessons: Lesson[]
   progress: LessonProgress[]
@@ -17,6 +18,7 @@ type DashboardProps = {
 
 export function Dashboard({
   enrollment,
+  reviewCourse,
   journeys,
   lessons,
   progress,
@@ -29,6 +31,8 @@ export function Dashboard({
   onOpenLesson,
   onOpenIntroduction,
 }: DashboardProps) {
+  const course = reviewCourse ?? enrollment?.course
+  if (!course) return null
   const completed = accessState?.completed_lessons
     ?? progress.filter((item) => item.status === 'completed').length
   const total = accessState?.total_lessons ?? lessons.length
@@ -58,7 +62,7 @@ export function Dashboard({
         <div>
           <p className="eyebrow">Your learning home</p>
           <h1>Welcome{learnerName ? `, ${learnerName}` : ''}.</h1>
-          <p>{enrollment.course.summary}</p>
+          <p>{course.summary}</p>
         </div>
         {reviewMode ? (
           <div className="progress-card review-summary-card" aria-label="Owner review build">
@@ -86,9 +90,9 @@ export function Dashboard({
         <div className="section-heading">
           <div>
             <p className="eyebrow">Phase One</p>
-            <h2 id="course-heading">{enrollment.course.title}</h2>
+            <h2 id="course-heading">{course.title}</h2>
           </div>
-          <span className="access-badge">Active enrollment</span>
+          <span className="access-badge">{reviewMode ? 'Owner review' : 'Active enrollment'}</span>
         </div>
 
         {!reviewMode && journeys.length === 0 ? (

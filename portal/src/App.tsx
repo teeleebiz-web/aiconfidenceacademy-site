@@ -14,10 +14,11 @@ import { supabase } from './lib/supabase'
 import { learnerAccessView } from './learnerAccess'
 import { usePageStart } from './lib/usePageStart'
 import { Workbook, type WorkbookKey } from '../../academy/workbook/Workbook'
-import type { Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from './types'
+import type { Course, Enrollment, Journey, JourneyIntroduction, LearnerLessonAccess, Lesson, LessonProgress } from './types'
 
 type PortalData = {
   enrollment: Enrollment | null
+  reviewCourse: Course | null
   journeys: Journey[]
   lessons: Lesson[]
   progress: LessonProgress[]
@@ -28,6 +29,7 @@ type PortalData = {
 
 const emptyPortalData: PortalData = {
   enrollment: null,
+  reviewCourse: null,
   journeys: [],
   lessons: [],
   progress: [],
@@ -138,7 +140,26 @@ export function App() {
       return
     }
 
-    if (!enrollment) {
+    // Owner review has its own course context. It must never create or start a
+    // learner enrollment merely to make the curriculum available for inspection.
+    let reviewCourse: Course | null = null
+    if (isOwner && (!enrollment || params.get('review') === 'phase-one' || workbookKey)) {
+      const courseResult = enrollment ? { data: enrollment.course, error: null } : await supabase.from('courses')
+        .select('id, code, title, summary')
+        .eq('code', 'phase-one-chatgpt-foundations')
+        .in('status', ['draft', 'published'])
+        .maybeSingle()
+      if (courseResult.error || !courseResult.data) {
+        setPortalData(emptyPortalData)
+        setWorkbooks([])
+        setError('The owner curriculum could not load. Please refresh this page.')
+        setLoading(false)
+        return
+      }
+      reviewCourse = courseResult.data as Course
+    }
+
+    if (!enrollment && !reviewCourse) {
       setWorkbooks([])
       setPortalData({
         ...emptyPortalData,
@@ -148,7 +169,7 @@ export function App() {
       return
     }
 
-    if (enrollment.status === 'pending' && enrollment.learner_start_pending) {
+    if (!reviewCourse && enrollment?.status === 'pending' && enrollment.learner_start_pending) {
       setWorkbooks([])
       setPortalData({ ...emptyPortalData, enrollment,
         learnerName: profileResult.data?.first_name ?? profileResult.data?.display_name ?? '' })
@@ -156,27 +177,28 @@ export function App() {
       return
     }
 
+    const courseId = reviewCourse?.id ?? enrollment!.course_id
     const [journeyResult, lessonResult, progressResult, introductionResult, accessResult] = await Promise.all([
       supabase
         .from('course_journeys')
         .select('id, course_id, journey_number, week_number, title, promise, release_offset_days, status')
-        .eq('course_id', enrollment.course_id)
+        .eq('course_id', courseId)
         .order('journey_number'),
       supabase
         .from('lessons')
         .select('id, course_id, journey_id, page_id, title, purpose, estimated_minutes, course_position, journey_position, unlock_offset_days, status, content')
-        .eq('course_id', enrollment.course_id)
+        .eq('course_id', courseId)
         .order('course_position'),
-      supabase
+      reviewCourse ? Promise.resolve({ data: [], error: null }) : supabase
         .from('lesson_progress')
         .select('id, lesson_id, status, last_step, artifact_saved')
-        .eq('enrollment_id', enrollment.id),
+        .eq('enrollment_id', enrollment!.id),
       supabase
         .from('journey_introductions')
         .select('id, journey_id, media_kind, media_path, caption_path, companion_audio_path, companion_caption_path, duration_seconds, content, status, source_version'),
       isOwner
         ? Promise.resolve({ data: null, error: null })
-        : supabase.rpc('get_learner_lesson_access', { p_enrollment_id: enrollment.id }),
+        : supabase.rpc('get_learner_lesson_access', { p_enrollment_id: enrollment!.id }),
     ])
 
     const queryError = journeyResult.error
@@ -190,11 +212,12 @@ export function App() {
       return
     }
 
-    const workbookResult = isOwner ? { data: [], error: null } : await supabase.rpc('get_learner_workbooks', { p_enrollment_id: enrollment.id })
+    const workbookResult = isOwner ? { data: [], error: null } : await supabase.rpc('get_learner_workbooks', { p_enrollment_id: enrollment!.id })
     if (workbookResult.error) setError('Your workbook list could not load. Please refresh this page.')
     setWorkbooks(isOwner ? (lessonResult.data ?? []) : (workbookResult.data ?? []).filter((item: {page_id?: string}) => item.page_id))
     setPortalData({
       enrollment,
+      reviewCourse,
       journeys: (journeyResult.data ?? []) as Journey[],
       lessons: (lessonResult.data ?? []) as unknown as Lesson[],
       progress: (progressResult.data ?? []) as LessonProgress[],
@@ -472,12 +495,12 @@ export function App() {
     : { ...portalData, ...learnerAccessView(portalData) }
 
   const onboardingEnrollment = portalData.enrollment
-  const needsOnboarding = onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
+  const needsOnboarding = !portalData.reviewCourse && onboardingEnrollment?.course.code === 'phase-one-chatgpt-foundations'
     && completedOnboardingId !== onboardingEnrollment.id
     && (reviewMode ? !workbookKey : !onboardingEnrollment.onboarding_completed_at)
   const firstLesson = visiblePortalData.lessons.find((lesson) => lesson.page_id === '1.1')
   const workbookHome = params.get('view') === 'workbooks' || window.location.hash === '#my-workbooks'
-  usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment ? workbookHome ? 'workbooks' : 'curriculum' : 'access')
+  usePageStart(loading || !session || workbookKey ? null : needsOnboarding ? 'onboarding' : selectedIntroduction ? `journey:${selectedIntroduction.id}` : selectedLesson ? `lesson:${selectedLesson.id}` : portalData.enrollment || portalData.reviewCourse ? workbookHome ? 'workbooks' : 'curriculum' : 'access')
 
   useEffect(() => {
     if (!loading && !workbookKey && !selectedLesson && window.location.hash === '#my-workbooks') {
@@ -560,7 +583,7 @@ export function App() {
 
       {error ? <p className="global-error" role="alert">{error}</p> : null}
 
-      {operationsView ? (reviewMode ? <Suspense fallback={<div className="loading-screen">Opening Academy operations…</div>}><AcademyControlCenter accessToken={session.access_token} onSignOut={signOut} /></Suspense> : <main className="access-shell"><section className="auth-card"><h1>Owner access required</h1><p>Enrollment administration is available to the Academy owner.</p><a href="/learn/">Return to your learner portal</a></section></main>) : portalData.enrollment?.status === 'pending' && portalData.enrollment.learner_start_pending ? (
+      {operationsView ? (reviewMode ? <Suspense fallback={<div className="loading-screen">Opening Academy operations…</div>}><AcademyControlCenter accessToken={session.access_token} onSignOut={signOut} /></Suspense> : <main className="access-shell"><section className="auth-card"><h1>Owner access required</h1><p>Enrollment administration is available to the Academy owner.</p><a href="/learn/">Return to your learner portal</a></section></main>) : !portalData.reviewCourse && portalData.enrollment?.status === 'pending' && portalData.enrollment.learner_start_pending ? (
         <main className="auth-shell"><section className="auth-card">
           <p className="eyebrow">AI Confidence Academy</p>
           <h1>Your Phase One access is ready</h1>
@@ -569,7 +592,7 @@ export function App() {
             {beginningEnrollment ? 'Opening your welcome…' : 'Begin Phase One'}
           </button>
         </section></main>
-      ) : workbookKey && portalData.enrollment && !needsOnboarding ? (
+      ) : workbookKey && (portalData.enrollment || portalData.reviewCourse) && !needsOnboarding ? (
         <Workbook workbookKey={workbookKey} lessonId={params.get('lesson')}
           apiBase={workbookApiBase} backHref={returnLesson ? `/learn/?lesson=${encodeURIComponent(returnLesson.page_id)}` : '/learn/?course=phase-one&view=workbooks'} backLabel={returnLesson ? `Back to Lesson ${returnLesson.page_id}` : 'My Workbooks'} />
       ) : needsOnboarding ? (
@@ -612,10 +635,11 @@ export function App() {
           onOpenLesson={reviewMode ? openLesson : undefined}
         />
         </LessonStudySession>
-      ) : portalData.enrollment ? (
+      ) : portalData.enrollment || portalData.reviewCourse ? (
         <Dashboard
           workbookHome={workbookHome}
           enrollment={portalData.enrollment}
+          reviewCourse={portalData.reviewCourse}
           journeys={visiblePortalData.journeys}
           lessons={visiblePortalData.lessons}
           progress={visiblePortalData.progress}
