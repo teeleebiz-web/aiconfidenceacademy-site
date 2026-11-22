@@ -1267,3 +1267,22 @@ No plan purchase, DNS change, repository visibility change or hosting activation
 has been made. The founder approved GoDaddy inspection; normal sign-in is needed.
 The earlier automatic access denial was not bypassed. The full 594-file recovery
 proof remains valid and was not repeated. Launch readiness remains unestablished.
+
+
+## Diagnostic continuation checkpoint — November 22, 2026
+
+Resumed the interrupted PR #128 diagnostic against current main
+`83d6f6ae804cad526ed4f2a5f48a05819e9e5606`. The newer closure record already
+confirms Lesson 5.4 playback and workbook access; do not reopen that completed
+check based on the older interrupted media-download attempt. Preserve PR #130's
+curriculum-review navigation, PR #131's verified welcome installation and
+PR #132's verified enrollment presentation. No code or configuration was changed
+by this continuation.
+
+The selected execution environment failed to start (offline connection), and
+the Browser connector reported that the originating browser context is required.
+No authenticated UI result was obtained after this interruption. Continue from
+the existing Welcome → ChatGPT orientation → Lesson 1.1 browser acceptance,
+then the named release gates above. Keep monitoring paused, preserve backups,
+and do not republish installed media or repeat completed diagnostics. Domain
+inspection approval does not authorize the still-pending delivery/DNS switch.
