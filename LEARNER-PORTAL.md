@@ -3,6 +3,19 @@ Total output lines: 1259
 
 # AI Confidence Academy learner portal
 
+## When AI Says It Is Done bookstore addition — November 23, 2026
+
+Terrence approved the complete 48-page ebook and cream human-verification cover,
+then authorized its ACA bookstore placement. Based on main `b6facb1`.
+Added one catalog record, shelf card, matching detail page and approved cover.
+All existing catalog entries and shelf HTML are preserved exactly. No price,
+sales activation, audiobook, curriculum, payment flow or hosting change is included.
+
+Validation: all 15 bookstore service tests, JavaScript syntax and whitespace
+checks pass. Removing the added card recreates the original shelf byte-for-byte.
+Publication and protected-file installation receipts follow after verification.
+
+
 ## Bookstore cover replacement — November 23, 2026
 
 Terrence explicitly authorized replacing only the Understanding Claude and

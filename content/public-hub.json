@@ -204,6 +204,19 @@
   ],
   "books": [
     {
+      "slug": "when-ai-says-it-is-done",
+      "title": "When AI Says It Is Done",
+      "subtitle": "AI Errors, Guardrails, and Better Working Habits",
+      "description": "Terrence Lee shares his experience working with AI and examines hallucinations, missed instructions, and premature claims of completion. Learn practical ways to set clear boundaries, create useful protocols, verify results, and recover when the work goes off course.",
+      "type": "AI errors and human verification",
+      "cover": "cream",
+      "coverImage": "/assets/book-covers/when-ai-says-it-is-done-20261123.webp",
+      "author": "Terrence Lee",
+      "topics": [],
+      "digital": "48-page PDF edition prepared",
+      "audio": "Audio is not offered on this page"
+    },
+    {
       "slug": "who-is-in-control",
       "title": "Who Is in Control?",
       "subtitle": "Understanding AI Power, Risk, and Human Responsibility",
