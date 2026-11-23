@@ -13,7 +13,29 @@ sales activation, audiobook, curriculum, payment flow or hosting change is inclu
 
 Validation: all 15 bookstore service tests, JavaScript syntax and whitespace
 checks pass. Removing the added card recreates the original shelf byte-for-byte.
-Publication and protected-file installation receipts follow after verification.
+Published and verified November 23, 2026 (Asia/Manila). PR #134 merged as
+`10a257473533135cfbd32411ff6d5cf254dfa55f` after Vercel checks succeeded.
+GitHub Pages run `45172692156` completed successfully. Live HTTP reads of the
+bookstore shelf, new detail page and cream WebP cover match the repository bytes.
+In Edge, the new shelf title opens the correct detail page; its title, subtitle,
+author, cream cover, description and 48-page edition details were inspected.
+
+The complete approved PDF is installed in the existing private bookstore bucket
+at `when-ai-says-it-is-done/v1/When_AI_Says_It_Is_Done.pdf`.
+It is 2,552,049 bytes; downloaded readback matches SHA-256
+`6cb190a715aa1ec74bddca6519302effe4c111f81808c1e03f47c972b7716f46`.
+Public storage access is denied. The existing title/edition/file tables link it
+to draft ebook edition `2fb91df4-74e8-4968-9256-21ffa57b5306`; no price or
+Stripe price was assigned. The existing bookstore sales flag remains false.
+This completes catalog placement and protected file installation, not activation
+of purchases or customer downloads. Those remain the existing bookstore launch
+work. No manuscript content was changed.
+
+The browser file chooser timed out; the approved file was transferred through
+the Academy's existing authenticated storage connection instead. No browser
+setting, credential, storage policy, bucket visibility or subscription changed.
+The final browser tab-cleanup call stalled after live verification; no additional
+website change resulted.
 
 
 ## Bookstore cover replacement — November 23, 2026
