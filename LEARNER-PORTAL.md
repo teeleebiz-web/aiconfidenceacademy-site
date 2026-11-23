@@ -3,6 +3,25 @@ Total output lines: 1259
 
 # AI Confidence Academy learner portal
 
+## Bookstore cover replacement — November 23, 2026
+
+Terrence explicitly authorized replacing only the Understanding Claude and
+Understanding ChatGPT covers. Based on main `b61a0ba6757578824345c5a589a3d766503e6a98`.
+Claude uses the original embedded cover from
+`Understanding_Claude_Warm_Beginner_Edition_Revised_2026-08-23.docx`;
+ChatGPT uses the original embedded cover from the owner-uploaded
+`ACA_Rev_Understanding_ChatGPT.docx`. Both are converted to quality-94 WebP
+at their original dimensions, with dated filenames to avoid stale cached covers.
+The catalog data, bookstore shelf and two detail pages reference these images.
+All other page bytes, book text, titles, editions and bookstore behavior are unchanged.
+The previous images remain in Git for recovery.
+
+Validation: exact reverse-substitution comparison passed for all four text
+files; all 15 existing bookstore tests passed; `git diff --check` passed.
+Claude image SHA-256: `938a5f13d71d6e0e73344c6c7c61171207137c94bd906b4644369ac590d5a68e`.
+ChatGPT image SHA-256: `f90243ddfd6b230cbcd1574e180a73245ecc9b8e9e4a927763ec758cda4dbd9d`.
+Publication and live visual verification remain pending at this commit.
+
 ## Enrollment presentation correction — November 22, 2026
 
 Terrence explicitly authorized the three inspected enrollment-page corrections:
