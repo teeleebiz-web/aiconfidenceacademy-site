@@ -1,3 +1,34 @@
+## Compact CC inside playback controls — November 25, 2026
+
+Terrence approved option 1 from the caption-control visual comparison: a small
+CC icon integrated into the playback bar. This supersedes the separate caption
+panel described below. Prepared from `c22eb2c1d2e05535efb6b410188a0982f507239a`.
+
+The shared public/React enhancement keeps each original HTML video and its native
+caption tracks, sources, HLS integration, event handlers and curriculum defaults.
+A self-hosted, pinned Video.js 10.6.0 UI component bundle supplies accessible
+play/pause, seek, volume and fullscreen controls; ACA's existing caption controller
+supplies CC. Playback speed and picture-in-picture remain in playback options.
+No new media engine, CDN, analytics, account, storage preference or paid service.
+The original browser controls remain available if the enhancement fails to load.
+
+CC has a 44-pixel interaction area around its small outlined icon, a visible gold
+on state, keyboard activation, and an accessible on/off action label. The bar
+stays visible, adjoins the picture, and does not cover the captions. Responsive
+controls reduce optional volume/time detail on small screens. Public HLS errors
+are located through the existing card so the new player wrapper preserves their
+visibility. Burned-in-only walkthroughs retain their existing controls.
+
+Lessons/demonstrations start on; welcomes/introductions start off; the previously
+approved Video Library presenter default-on exception is retained. Caption timing,
+recordings, access policies, payments and hosting are outside this change.
+
+Local validation: typecheck, both production builds, 595 portal tests and six
+public-output tests pass (one opt-in live fixture skipped). Ten focused control
+tests cover native playback/mute, keyboard caption activation, native menu sync,
+late private tracks, renewed links, failures, cleanup and enhancement fallback.
+Release and browser evidence will be recorded after deployment.
+
 ## Visible caption controls — November 24, 2026
 
 Terrence approved a visible, plainly labeled caption button beneath each

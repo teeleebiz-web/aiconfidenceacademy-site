@@ -15,6 +15,12 @@
     "file": "assets/chatgpt-message-box-DL0fxd8Y.jpg",
     "src": "../academy/assets/chatgpt-message-box.jpg"
   },
+  "../assets/vendor/aca-media-ui-10.6.0.js": {
+    "file": "assets/aca-media-ui-10.6.0-B7mfOS1w.js",
+    "name": "aca-media-ui-10.6.0",
+    "src": "../assets/vendor/aca-media-ui-10.6.0.js",
+    "isDynamicEntry": true
+  },
   "_SignIn-BxiO6g32.js": {
     "file": "assets/SignIn-BxiO6g32.js",
     "name": "SignIn",
@@ -60,26 +66,30 @@
       "_jsx-runtime-Cltr0gcK.js"
     ]
   },
-  "_workbook-ByitfRI4.js": {
-    "file": "assets/workbook-ByitfRI4.js",
+  "_workbook-CSpAcSKT.js": {
+    "file": "assets/workbook-CSpAcSKT.js",
     "name": "workbook",
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
+      "_preload-helper-OpGwMzNl.js",
       "_supabase-Z9No2zg3.js"
     ],
+    "dynamicImports": [
+      "../assets/vendor/aca-media-ui-10.6.0.js"
+    ],
     "css": [
-      "assets/workbook-tYmq3k7X.css"
+      "assets/workbook-Ctk1FW4B.css"
     ],
     "assets": [
       "assets/aca-official-seal-VflxWHIT.png"
     ]
   },
-  "_workbook-tYmq3k7X.css": {
-    "file": "assets/workbook-tYmq3k7X.css",
-    "src": "_workbook-tYmq3k7X.css"
+  "_workbook-Ctk1FW4B.css": {
+    "file": "assets/workbook-Ctk1FW4B.css",
+    "src": "_workbook-Ctk1FW4B.css"
   },
   "index.html": {
-    "file": "assets/index-Dh799gtW.js",
+    "file": "assets/index-B3RBitAj.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -93,14 +103,14 @@
     ]
   },
   "src/App.tsx": {
-    "file": "assets/App-PrYqaMbw.js",
+    "file": "assets/App-DMPeajl1.js",
     "name": "App",
     "src": "src/App.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
       "_preload-helper-OpGwMzNl.js",
-      "_workbook-ByitfRI4.js",
+      "_workbook-CSpAcSKT.js",
       "_supabase-Z9No2zg3.js",
       "_SignIn-BxiO6g32.js",
       "_usePageStart-DaXnocVc.js",
@@ -145,7 +155,7 @@
     ]
   },
   "src/LearnerEntry.tsx": {
-    "file": "assets/LearnerEntry-cWDTaL1v.js",
+    "file": "assets/LearnerEntry-B5EpQCbB.js",
     "name": "LearnerEntry",
     "src": "src/LearnerEntry.tsx",
     "isDynamicEntry": true,
@@ -184,7 +194,7 @@
     ]
   },
   "src/main.tsx": {
-    "file": "assets/main-vgLbKPcS.js",
+    "file": "assets/main-BkqtM9w_.js",
     "name": "main",
     "src": "src/main.tsx",
     "isDynamicEntry": true,
@@ -206,13 +216,13 @@
     ]
   },
   "src/phaseTwoMain.tsx": {
-    "file": "assets/phaseTwoMain-Dw-o9vsD.js",
+    "file": "assets/phaseTwoMain-D7_t27WQ.js",
     "name": "phaseTwoMain",
     "src": "src/phaseTwoMain.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
-      "_workbook-ByitfRI4.js",
+      "_workbook-CSpAcSKT.js",
       "_supabase-Z9No2zg3.js",
       "_SignIn-BxiO6g32.js",
       "_usePageStart-DaXnocVc.js",

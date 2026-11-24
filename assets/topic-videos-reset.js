@@ -1,12 +1,13 @@
 (() => {
   document.querySelectorAll('main video[poster]').forEach((video) => {
     const source = video.dataset.hls;
+    const message = video.closest('.topic-video-card')?.querySelector('.topic-video-error');
     let hls;
 
     function attachStream() {
       hls = new window.Hls({ autoStartLoad: video.preload === 'auto' });
       hls.on(window.Hls.Events.ERROR, (_, data) => {
-        if (data.fatal) video.nextElementSibling.hidden = false;
+        if (data.fatal && message) message.hidden = false;
       });
       hls.loadSource(source);
       hls.attachMedia(video);
@@ -24,14 +25,13 @@
     });
 
     if (!source || video.canPlayType('application/vnd.apple.mpegurl')) return;
-    const message = video.nextElementSibling;
     if (!window.Hls || !window.Hls.isSupported()) {
-      message.hidden = false;
+      if (message) message.hidden = false;
       return;
     }
 
     video.addEventListener('play', () => hls.startLoad());
-    video.addEventListener('playing', () => { message.hidden = true; });
+    video.addEventListener('playing', () => { if (message) message.hidden = true; });
     attachStream();
   });
 })();

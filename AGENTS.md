@@ -76,8 +76,10 @@ familiarity with a website convention, icon or hidden menu.
   to reach. Do not require learners to guess that a feature exists or search
   an overflow menu for it. Preserve keyboard access, readable contrast, touch
   targets and a consistent navy/gold/cream presentation.
-- Caption-enabled videos have a visible button directly beneath the player:
-  “CC · Captions off” / “CC · Captions on”, synchronized with the native player.
+- November 25 update: Terrence approved a compact CC icon inside the playback
+  bar, superseding the bulky separate button beneath the video. Keep CC visible
+  without an overflow menu, synchronized with the native text track, keyboard
+  accessible, and with a generous tap target around its small visual icon.
   Lessons and demonstrations start on; welcomes and presenter introductions
   start off. Preserve the already approved Video Library presenter default-on
   exception. Burned-in captions cannot be switched off; do not imply otherwise.
