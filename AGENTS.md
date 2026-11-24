@@ -63,3 +63,28 @@ retry frequency/cooldown/deadlines and at least 12.5 GiB private temporary disk.
 This is not authorization for a new subscription or unlimited usage.
 
 The October 17, 2026 founder direction is to complete launch operations, security, policies, terms, refund disclosures, and automated support. It does not reopen approved curriculum.
+
+
+## Founder accessibility and discoverability standard — November 24, 2026
+
+Design every new or changed ACA feature so its purpose and availability are
+plain to the learner. Phase One especially welcomes adults in their 40s, 50s
+and 60s who may be new to AI; respect their experience without assuming
+familiarity with a website convention, icon or hidden menu.
+
+- Make important actions and useful features visible, clearly labeled and easy
+  to reach. Do not require learners to guess that a feature exists or search
+  an overflow menu for it. Preserve keyboard access, readable contrast, touch
+  targets and a consistent navy/gold/cream presentation.
+- Caption-enabled videos have a visible button directly beneath the player:
+  “CC · Captions off” / “CC · Captions on”, synchronized with the native player.
+  Lessons and demonstrations start on; welcomes and presenter introductions
+  start off. Preserve the already approved Video Library presenter default-on
+  exception. Burned-in captions cannot be switched off; do not imply otherwise.
+- Recommend useful contemporary improvements when evidence supports a better
+  learner experience. Premium means polished, understandable and accessible;
+  additional features must serve learners. Suggestions do not authorize unrelated
+  changes, purchases, trials or migrations.
+
+This is standing direction for future ACA work, not a claim that every existing
+surface has passed a complete accessibility audit.

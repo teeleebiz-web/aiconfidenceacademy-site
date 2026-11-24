@@ -1,0 +1,41 @@
+.aca-caption-controls {
+  display: flex;
+  justify-content: center;
+  padding: 10px 8px 12px;
+  box-sizing: border-box;
+  width: 100%;
+}
+.aca-caption-controls[hidden] { display: none; }
+.aca-caption-controls .aca-caption-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: min(180px, 100%);
+  max-width: 100%;
+  padding: 10px 16px;
+  margin: 0;
+  border: 2px solid #d4b36b;
+  border-radius: 8px;
+  background: #102d4f;
+  color: #fffdf5;
+  font: 600 16px/1.3 Arial, sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
+  cursor: pointer;
+}
+.aca-caption-controls .aca-caption-button[aria-pressed="true"] {
+  background: #f0d79f;
+  color: #102d4f;
+  border-color: #102d4f;
+}
+.aca-caption-controls .aca-caption-button:hover { box-shadow: 0 0 0 2px #d4b36b; }
+.aca-caption-controls .aca-caption-button:focus-visible {
+  outline: 3px solid #102d4f;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px #fffdf5;
+}
+.aca-caption-controls .aca-caption-button:disabled { cursor: default; }
+/* Allow a control row below the image without stretching or cropping it. */
+#website-welcome.aca-caption-frame { display: block; aspect-ratio: auto; }
+#website-welcome.aca-caption-frame > video { height: auto; aspect-ratio: 16 / 9; }

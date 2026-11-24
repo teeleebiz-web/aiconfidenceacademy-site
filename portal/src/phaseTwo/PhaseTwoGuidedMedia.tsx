@@ -1,3 +1,4 @@
+import { CaptionedVideo } from '../../../academy/CaptionedVideo'
 import { useRef, useState } from 'react'
 import './phaseTwoGuidedMedia.css'
 
@@ -124,11 +125,11 @@ export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
       </div>
       <div className="p2-demo-clip-player">
         <h4>{current.title}</h4>
-        <video ref={videoRef} crossOrigin="anonymous" controls playsInline preload="auto"
+        <CaptionedVideo ref={videoRef} crossOrigin="anonymous" controls playsInline preload="auto"
           src={current.url} aria-label={current.title + ' screen demonstration'}>
           <track key={current.captions_url} kind="captions" src={current.captions_url} srcLang="en" label="English" default />
           Your browser does not support video playback.
-        </video>
+        </CaptionedVideo>
         <details>
           <summary>Read this demonstration</summary>
           <p>{current.transcript}</p>

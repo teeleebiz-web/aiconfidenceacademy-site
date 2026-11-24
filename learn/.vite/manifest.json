@@ -60,26 +60,26 @@
       "_jsx-runtime-Cltr0gcK.js"
     ]
   },
-  "_workbook-Dk7a6hsD.js": {
-    "file": "assets/workbook-Dk7a6hsD.js",
+  "_workbook-Dv5YBYhi.js": {
+    "file": "assets/workbook-Dv5YBYhi.js",
     "name": "workbook",
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
       "_supabase-Z9No2zg3.js"
     ],
     "css": [
-      "assets/workbook-IttDVsJQ.css"
+      "assets/workbook-tYmq3k7X.css"
     ],
     "assets": [
       "assets/aca-official-seal-VflxWHIT.png"
     ]
   },
-  "_workbook-IttDVsJQ.css": {
-    "file": "assets/workbook-IttDVsJQ.css",
-    "src": "_workbook-IttDVsJQ.css"
+  "_workbook-tYmq3k7X.css": {
+    "file": "assets/workbook-tYmq3k7X.css",
+    "src": "_workbook-tYmq3k7X.css"
   },
   "index.html": {
-    "file": "assets/index-Dxzwg5Lh.js",
+    "file": "assets/index-DdcSHaC9.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -93,14 +93,14 @@
     ]
   },
   "src/App.tsx": {
-    "file": "assets/App-NWvKf7CK.js",
+    "file": "assets/App-CBH2tsDi.js",
     "name": "App",
     "src": "src/App.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
       "_preload-helper-OpGwMzNl.js",
-      "_workbook-Dk7a6hsD.js",
+      "_workbook-Dv5YBYhi.js",
       "_supabase-Z9No2zg3.js",
       "_SignIn-BxiO6g32.js",
       "_usePageStart-DaXnocVc.js",
@@ -110,7 +110,7 @@
       "src/components/AcademyControlCenter.tsx"
     ],
     "css": [
-      "assets/App-B9OKwwLV.css"
+      "assets/App-B5RHPP6R.css"
     ],
     "assets": [
       "assets/chatgpt-message-box-DL0fxd8Y.jpg",
@@ -145,7 +145,7 @@
     ]
   },
   "src/LearnerEntry.tsx": {
-    "file": "assets/LearnerEntry-YBtm-EQO.js",
+    "file": "assets/LearnerEntry-BL3BK1Rg.js",
     "name": "LearnerEntry",
     "src": "src/LearnerEntry.tsx",
     "isDynamicEntry": true,
@@ -184,7 +184,7 @@
     ]
   },
   "src/main.tsx": {
-    "file": "assets/main-BAPmz1Cr.js",
+    "file": "assets/main-D5MT_ZqF.js",
     "name": "main",
     "src": "src/main.tsx",
     "isDynamicEntry": true,
@@ -206,13 +206,13 @@
     ]
   },
   "src/phaseTwoMain.tsx": {
-    "file": "assets/phaseTwoMain-BexP2Zvu.js",
+    "file": "assets/phaseTwoMain-C73IDcgn.js",
     "name": "phaseTwoMain",
     "src": "src/phaseTwoMain.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
-      "_workbook-Dk7a6hsD.js",
+      "_workbook-Dv5YBYhi.js",
       "_supabase-Z9No2zg3.js",
       "_SignIn-BxiO6g32.js",
       "_usePageStart-DaXnocVc.js",

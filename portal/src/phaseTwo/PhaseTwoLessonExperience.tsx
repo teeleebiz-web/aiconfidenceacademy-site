@@ -1,3 +1,4 @@
+import { CaptionedVideo } from '../../../academy/CaptionedVideo'
 import { PhaseTwoIntroductionCaptions } from './PhaseTwoIntroductionCaptions'
 import { lessonIntroduction } from './phaseTwoIntroductionAccess'
 import { useEffect, useState } from 'react'
@@ -173,7 +174,7 @@ function PhaseTwoLessonBody({
           {mediaReady && (medium === 'audio' || ['1.2','1.3','1.4','1.5','1.6','2.1','2.2','2.3','2.4','2.5','2.6','3.1','3.2','3.3','3.4','3.5','3.6','4.1','4.2','4.3','4.4','4.5','4.6','5.1','5.2','5.3','5.4','5.5','5.6','6.1','6.2','6.3','6.4','6.5','6.6'].includes(pageId)) && approvedVideo && (
             <section className="p2-lesson-avatar" aria-labelledby="p2-lesson-avatar-heading">
               <h2 id="p2-lesson-avatar-heading">Watch your instructor introduce the lesson</h2>
-              <video
+              <CaptionedVideo
                 controls
                 crossOrigin="anonymous"
                 playsInline
@@ -184,7 +185,7 @@ function PhaseTwoLessonBody({
               >
                 {approvedVideo.captions_url ? <track kind="captions" label="English" srcLang="en" src={mediaAccess.resolve(approvedVideo.captions_url)} /> : lessonId ? <PhaseTwoIntroductionCaptions lessonId={lessonId} enrollmentId={enrollmentId} pageId={pageId} access={mediaAccess} /> : null}
                 Your browser does not support video playback.
-              </video>
+              </CaptionedVideo>
               {approvedVideo.transcript.trim() && (
                 <details>
                   <summary>Read the lesson introduction</summary>

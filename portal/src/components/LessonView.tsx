@@ -1,3 +1,4 @@
+import { CaptionedVideo } from '../../../academy/CaptionedVideo'
 import { useEffect, useState } from 'react'
 import type { Lesson, LessonProgress } from '../types'
 import type { LessonAccess } from './LessonClock'
@@ -112,7 +113,7 @@ export function LessonView({
         {videoSrc || audioSrc || lesson.content.audio_overview_script ? (
           <section className="practice-panel" aria-labelledby="lesson-audio-heading">
             <h2 id="lesson-audio-heading">{scriptOnly ? 'Lesson introduction' : `${videoSrc || plannedVideo ? 'Watch' : 'Listen to'} Lesson ${lesson.page_id}`}</h2>
-            {videoSrc ? <video
+            {videoSrc ? <CaptionedVideo
               key={videoSrc}
               controls
               crossOrigin="anonymous"
@@ -143,7 +144,7 @@ export function LessonView({
                 }
               }}
               style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 1rem' }}
-            >{videoCaptionSrc ? <track key={videoCaptionSrc} kind="captions" src={videoCaptionSrc} srcLang="en" label="English" default /> : null}Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
+            >{videoCaptionSrc ? <track key={videoCaptionSrc} kind="captions" src={videoCaptionSrc} srcLang="en" label="English" default /> : null}Your browser does not support video playback.</CaptionedVideo> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
               Your browser does not support audio playback.
             </audio> : scriptOnly ? null : <p className="review-only-panel">{plannedVideo ? 'Video will be available here.' : 'Audio will be available here.'}</p>}
             {lesson.content.audio_overview_script ? (
