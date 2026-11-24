@@ -10,6 +10,11 @@ page structure and playback behavior were preserved.
 The public-site and video-catalog tests passed locally. Verify the ten covers and
 playback on the deployed Videos page after publication.
 
+Cover reset follow-up (November 24, 2026, based on `a70340c`). All ten public
+players reset their media after the natural end so the poster can reappear.
+HLS.js reconnects the same stream for replay. The source films and their cards
+are unchanged. Event-path checks passed for MP4, native HLS and HLS.js.
+
 # AI Confidence Academy learner portal
 
 ## When AI Says It Is Done bookstore addition — November 23, 2026
