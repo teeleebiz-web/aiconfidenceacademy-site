@@ -64,7 +64,11 @@ export function captionButtonText(state) {
   button.className = 'aca-caption-button';
   button.setAttribute('aria-controls', video.id);
   row.append(button);
-  video.after(row);
+  // The existing Video Library player keeps its playback error immediately
+  // after the video. Preserve that relationship when adding the visible control.
+  const message = video.nextElementSibling;
+  if (message?.classList.contains('topic-video-error')) message.after(row);
+  else video.after(row);
   const controller = bindCaptionControl(video, state => {
     row.hidden = !state.available;
     button.textContent = captionButtonText(state);

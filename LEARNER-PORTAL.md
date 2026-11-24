@@ -19,7 +19,7 @@ in root `AGENTS.md` for all future ACA work.
 
 Local validation: typecheck and both production builds pass. The portal regression
 suite passed 590 tests with one opt-in live fixture skipped; the additional
-public-page button check and all six shared-control tests pass. Tests cover
+public-page button checks and all seven shared-control tests pass. Tests cover
 keyboard activation, playback position, native-menu synchronization, asynchronously
 attached tracks, URL renewal, failure handling and listener cleanup.
 Preview, CI and live publication verification are pending this branch's release.

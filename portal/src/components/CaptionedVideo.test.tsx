@@ -76,18 +76,24 @@ describe('visible caption control', () => {
     expect(renderState).not.toHaveBeenCalled()
   })
 
-  it('adds the public-page control below an opted-in player and leaves burned-in videos alone', async () => {
+  it.each([false, true])('adds the public control while preserving playback errors (%s) and burned-in videos', async hasError => {
     const tracks = trackList()
     const getter = vi.spyOn(HTMLMediaElement.prototype, 'textTracks', 'get').mockReturnValue(tracks as unknown as TextTrackList)
     const host = document.createElement('section')
-    host.innerHTML = '<video data-aca-caption-player><track kind="captions" src="/en.vtt"></video><video><track kind="captions" src="/burned-in-extra.vtt"></video>'
+    host.innerHTML = '<video data-aca-caption-player><track kind="captions" src="/en.vtt"></video>' +
+      (hasError ? '<p class="topic-video-error" hidden>Playback could not load.</p>' : '') +
+      '<video><track kind="captions" src="/burned-in-extra.vtt"></video>'
     document.body.append(host)
     vi.resetModules()
     await import('../../../assets/caption-controls.js')
     const video = host.querySelector('video')!
     const button = host.querySelector('button')!
     expect(host.querySelectorAll('button').length).toBe(1)
-    expect(video.nextElementSibling?.contains(button)).toBe(true)
+    if (hasError) {
+      expect(video.nextElementSibling?.className).toBe('topic-video-error')
+      expect(video.nextElementSibling?.hasAttribute('hidden')).toBe(true)
+      expect(video.nextElementSibling?.nextElementSibling?.contains(button)).toBe(true)
+    } else expect(video.nextElementSibling?.contains(button)).toBe(true)
     expect(button.textContent).toBe('CC · Captions off')
     fireEvent.click(button)
     expect(tracks[0].mode).toBe('showing')
