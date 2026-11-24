@@ -23,8 +23,33 @@ tests. Portal suite: 585 passed with one opt-in live fixture skipped; backend su
 272 passed. Typecheck and both builds passed. PR #138 CI verified the database,
 code isolation, full checks and lesson acceptance before merge `da4eb35`.
 The original Phase Two 1.1–1.4 variants also receive their own matching tracks;
-the revised variants keep their existing captions. Deployed playback results
-are recorded in the release follow-up. Caption review is assisted transcription
+the revised variants keep their existing captions.
+
+Release verified November 24: PRs #138 and #139 are merged. Application revision
+`ef207fe08ce3b0d258c295af15f84040da202f7e` is ready on the production backend;
+GitHub Pages publication also succeeded. All 59 new VTT files are prepared:
+56 private objects were read back with matching SHA-256 hashes and denied
+anonymous public access; the three public VTT files match the deployed bytes.
+Exactly 18 Phase One lesson caption fields and one existing draft welcome
+caption field were updated. The welcome migration was applied successfully.
+
+Live owner-review browser evidence: Phase One 1.1 played visible English captions
+by default and accepted the Off toggle; 3.3 and 6.6 selected their own tracks
+with captions showing. Academy welcome started disabled and displayed captions
+when English was selected. Phase Two 1.5, 2.1 and 6.6 introductions selected the
+matching private tracks with captions disabled; the revised 1.1 kept its existing
+track. Demonstrations showed captions by default and selecting another example
+changed to its matching track. Home, Our Story and enrollment all expose English
+with no default activation. Anonymous caption API requests returned 401 and an
+unapproved Origin returned 403. No learner lesson timer or progress was changed
+by browser verification. The original 1.1–1.4 caption signing paths passed the
+expanded authorization tests; their four private files were independently
+uploaded and hash-verified. No caption-release work remains pending.
+
+Continuation: preserve the existing media/version mapping and these caption
+policies when replacing an approved recording; retime its matching track when
+spoken content or video timing changes. This evidence covers caption delivery
+and sampled playback, not unrelated launch readiness or a full listening audit. Caption review is assisted transcription
 and spot checks, not a claim of a complete human listening audit.
 
 Warning: truncated output (original token count: 21530)
