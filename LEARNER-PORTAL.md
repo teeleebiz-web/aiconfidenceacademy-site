@@ -17,6 +17,17 @@ are unchanged. Event-path checks passed for MP4, native HLS and HLS.js.
 
 # AI Confidence Academy learner portal
 
+## Public Video Library seal and captions — November 24, 2026
+
+Terrence approved the upper-left ACA seal and timed English captions shown in
+the first-video preview. The six public presenter streams now use branded
+deliverables rendered from their existing films. The English caption tracks
+default to on and can be disabled in the player. Caption timing was derived
+from the published speech and checked against the corresponding site scripts.
+The four public Explore ChatGPT walkthroughs already contain the ACA seal and
+on-screen captions. Their media and existing optional track were retained.
+All ten distinct posters and the verified end-of-playback reset were preserved.
+
 ## When AI Says It Is Done bookstore addition — November 23, 2026
 
 Terrence approved the complete 48-page ebook and cream human-verification cover,
