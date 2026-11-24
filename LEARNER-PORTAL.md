@@ -27,7 +27,29 @@ Local validation: typecheck, both production builds, 595 portal tests and six
 public-output tests pass (one opt-in live fixture skipped). Ten focused control
 tests cover native playback/mute, keyboard caption activation, native menu sync,
 late private tracks, renewed links, failures, cleanup and enhancement fallback.
-Release and browser evidence will be recorded after deployment.
+Release: PR #141 passed verify, code-isolation, retry-database and
+lesson-acceptance at `089259143f52e67f8b7ea914e4ca3028a33ea2a9`, then merged as
+`9f5c860cb65d217115463ff0b62f50eb302da2b3`. Pages run `45437613145` succeeded;
+production Vercel deployment `dpl_2fyraeToKZRxyavNiJb1dBuowjdc` and preview
+`dpl_E3XAUrNqPGtCF12PNUaJyGqYsUM2` are READY.
+
+Live public verification in Chrome: home, Our Story and enrollment show the
+compact CC control inside the continuous playback bar, initially off. Playing
+and enabling captions visibly renders synchronized text above the bar. Home
+play/pause, keyboard CC activation, seeking, mute/unmute and playback-speed
+selection work. Caption changes do not reset the playhead. All six Video Library
+presenters initially show CC on; the first HLS stream played, toggled off/on and
+paused correctly without changing the other five. Four burned-in walkthroughs
+retain native controls. The home player was left paused for review.
+
+Verification limits: the connected Edge browser returned a Chat API 401 during
+navigation and DOM inspection, so the signed-in curriculum browser review could
+not be repeated this release. Its shared controls and private-track behavior
+passed regression tests; do not claim a new private live-playback check. The
+cloud browser did not enter fullscreen with either the new control or the
+unchanged native walkthrough control, so fullscreen/device verification remains
+unconfirmed. The preview could not be browser-inspected. No access protections
+were changed to work around those limitations.
 
 ## Visible caption controls — November 24, 2026
 
