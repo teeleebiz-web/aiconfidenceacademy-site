@@ -39,7 +39,7 @@ describe('LessonView', () => {
     const href='/academy/phase-one/?workbook=journey-five&lesson=5.1'
     const {container}=render(<LessonView lesson={current} videoSrc="/approved-5.1.mp4" workbookHref={href} reviewMode onBack={()=>{}} onSave={async()=>{}} />)
     expect(container.querySelectorAll('video')).toHaveLength(1)
-    expect(container.querySelector('audio,details')).toBeNull()
+    expect(container.querySelector('audio,details:not(.aca-playback-options)')).toBeNull()
     const link=screen.getByRole('link',{name:'Open Workbook'})
     expect(link.getAttribute('href')).toBe(href)
     expect(link.getAttribute('target')).toBeNull()
@@ -155,7 +155,7 @@ describe('LessonView', () => {
     expect(video.controls).toBe(true)
     expect(video.autoplay).toBe(false)
     expect(container.querySelectorAll('video')).toHaveLength(1)
-    expect(container.querySelector('audio,details')).toBeNull()
+    expect(container.querySelector('audio,details:not(.aca-playback-options)')).toBeNull()
     const link=screen.getByRole('link',{name:'Open Workbook'})
     expect(link.nextElementSibling?.textContent).toBe('Guided practice')
     expect(link.getAttribute('target')).toBeNull()
