@@ -33,6 +33,6 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/video-library-branded
+          git add --sparse assets/video-library-branded
           git commit -m 'Add verified branded Video Library streams'
           git push origin HEAD:aca-video-library-seal-render
