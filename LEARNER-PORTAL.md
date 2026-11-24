@@ -7,8 +7,8 @@ trial; its existing seal, cards, captions and playback reset remain unchanged.
 
 Prepared against main `9dbe2438d176cacdb4cdf3117e4eccaa6034d98a`:
 18 Phase One video tracks, the Academy and existing draft Journey Two welcomes,
-32 remaining Phase Two presenter introductions, and the three public home,
-Our Story and enrollment films. Existing four Phase Two introduction tracks
+36 original Phase Two presenter introductions, and the three public home,
+Our Story and enrollment films. Existing four revised Phase Two introduction tracks
 and 144 demonstration tracks are reused. No recordings were regenerated.
 Private caption objects retain authenticated storage; the Phase Two caption-only
 endpoint uses the same enrollment, lesson and remaining-time checks as media.
@@ -19,7 +19,11 @@ rules, hosting flags, payments, or workbook content change.
 Validation: word timestamps from the exact recordings, corresponding script
 comparisons where they match, bounded two-line VTT cues, targeted second-pass
 speech checks, track/default behavior and caption-link authorization/renewal
-tests. Backend suite: 272 passed. Full portal and deployed playback verification
+tests. Portal suite: 585 passed with one opt-in live fixture skipped; backend suite:
+272 passed. Typecheck and both builds passed. PR #138 CI verified the database,
+code isolation, full checks and lesson acceptance before merge `da4eb35`.
+The original Phase Two 1.1–1.4 variants also receive their own matching tracks;
+the revised variants keep their existing captions. Deployed playback results
 are recorded in the release follow-up. Caption review is assisted transcription
 and spot checks, not a claim of a complete human listening audit.
 
