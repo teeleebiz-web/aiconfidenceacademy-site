@@ -1,3 +1,4 @@
+import { CaptionedVideo } from '../../../academy/CaptionedVideo'
 import type { JourneyIntroduction } from '../types'
 
 type JourneyIntroductionViewProps = {
@@ -50,12 +51,12 @@ export function JourneyIntroductionView({
           <section className="practice-panel" aria-labelledby="welcome-media-heading">
             <h2 id="welcome-media-heading">Welcome to Journey {journeyNumber}</h2>
             {mediaUrl && introduction.media_kind === 'video' ? (
-              <video controls playsInline preload="metadata" crossOrigin="anonymous" poster={content.poster_url}
+              <CaptionedVideo controls playsInline preload="metadata" crossOrigin="anonymous" poster={content.poster_url}
                 style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 16px' }}>
                 <source src={mediaUrl} />
                 {captionUrl ? <track kind="captions" src={captionUrl} srcLang="en" label="English" /> : null}
                 Your browser does not support video playback. Read the introduction below.
-              </video>
+              </CaptionedVideo>
             ) : (
               <div className="welcome-video-placeholder">
                 {content.poster_url ? <img src={content.poster_url} alt={content.poster_alt ?? 'Your ACA instructor'} /> : null}
@@ -80,13 +81,13 @@ export function JourneyIntroductionView({
                 </div>
               </header>
               {mediaUrl && introduction.media_kind === 'video' ? (
-                <video controls preload="metadata" crossOrigin="anonymous">
+                <CaptionedVideo controls preload="metadata" crossOrigin="anonymous">
                   <source src={mediaUrl} />
                   {captionUrl ? (
                     <track kind="captions" src={captionUrl} srcLang="en" label="English" />
                   ) : null}
                   Your browser does not support the video player. Use the transcript below.
-                </video>
+                </CaptionedVideo>
               ) : (
                 <div className="media-placeholder" role="status">
                   <strong>Video coming soon</strong>

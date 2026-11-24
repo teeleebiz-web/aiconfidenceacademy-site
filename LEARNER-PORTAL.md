@@ -1,3 +1,31 @@
+## Visible caption controls — November 24, 2026
+
+Terrence approved a visible, plainly labeled caption button beneath each
+caption-enabled video, rather than relying on the native overflow menu.
+Prepared from `182674a827f5d871008779aedbd41dc785a97742` in the existing repository.
+The shared controller exposes “CC · Captions off” / “CC · Captions on” and
+synchronizes with native controls. It supports keyboard activation, late-arriving
+private tracks and renewed caption links without seeking or replacing the video.
+Public home, Our Story, enrollment and six Video Library presenter players use
+it, as do curriculum lessons, introductions, demonstrations and Getting Started.
+The four public walkthroughs with burned-in text retain their existing behavior;
+no button implies that burned-in text can be disabled.
+
+Caption defaults and recordings are unchanged: lessons/demonstrations start on,
+introductions start off, and the approved Video Library presenters retain on.
+The Academy welcome frame now accommodates the control below its image.
+The founder's standing accessibility and discoverability direction is recorded
+in root `AGENTS.md` for all future ACA work.
+
+Local validation: typecheck and both production builds pass. The portal regression
+suite passed 590 tests with one opt-in live fixture skipped; the additional
+public-page button checks and all seven shared-control tests pass. Tests cover
+keyboard activation, playback position, native-menu synchronization, asynchronously
+attached tracks, URL renewal, failure handling and listener cleanup.
+Preview, CI and live publication verification are pending this branch's release.
+Continuation: verify the same visible control on public pages and signed-in
+owner curriculum review, then record the production revision and results here.
+
 ## Curriculum English captions — November 24, 2026
 
 Terrence authorized English captions across the curriculum: on by default for
