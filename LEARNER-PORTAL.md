@@ -22,9 +22,33 @@ suite passed 590 tests with one opt-in live fixture skipped; the additional
 public-page button checks and all seven shared-control tests pass. Tests cover
 keyboard activation, playback position, native-menu synchronization, asynchronously
 attached tracks, URL renewal, failure handling and listener cleanup.
-Preview, CI and live publication verification are pending this branch's release.
-Continuation: verify the same visible control on public pages and signed-in
-owner curriculum review, then record the production revision and results here.
+Release verified November 24: PR #140 passed verify, code-isolation,
+retry-database and lesson-acceptance checks at `3aba0f8`, then merged as
+`3c889862e943051adfc5d28a105f69c90065eed9`. GitHub Pages run `45420970003`
+succeeded, and production deployment `dpl_9duL63uQgyfYUJpuZgKyQWzD1NkR` is READY.
+The protected Vercel preview built successfully but its access gate prevented
+browser inspection there; the following evidence is from the live production site.
+
+Live Edge verification: home, Our Story and enrollment show enabled, visible
+buttons initially off and toggle the native track correctly. On the home film,
+Space switched captions off while playback advanced from 10.5 to 14.5 seconds
+without pausing or restarting. All six Video Library presenter buttons initially
+show on; toggling the first left the other five unchanged. Playback-error siblings
+remain intact, and burned-in walkthroughs receive no misleading off switch.
+
+Signed-in owner review: Phase One 1.1 starts on, switches off/on during playback,
+and visibly renders captions with the button beneath the image. Academy welcome
+starts off and its button fits below the video. Phase Two 1.5's private introduction
+track arrives with its button off; its demonstration button starts on. Each toggles
+only its own video. Selecting demonstration 04 keeps the control connected to the
+selected track, and manual playback visibly renders that demonstration's captions.
+The sampled videos were paused before leaving; no learner progress or study timer
+was changed. The home page and Phase One sample remain available for review.
+
+Continuation: preserve this shared control and the founder's discoverability
+standard when changing players. This release verifies the named controls and
+sampled playback; it is not a whole-site accessibility or curriculum-content audit.
+No caption-button release work remains pending.
 
 ## Curriculum English captions — November 24, 2026
 
