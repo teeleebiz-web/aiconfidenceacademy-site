@@ -14,7 +14,6 @@ export function phaseTwoMediaFiles(pageId) {
 
 export function phaseTwoIntroductionCaption(pageId) {
   if (!/^[1-6]\.[1-6]$/.test(pageId)) throw new Error('Invalid lesson')
-  if (['1.1','1.2','1.3','1.4'].includes(pageId)) return null
   const number = pageId.replace('.', '-')
   const suffix = pageId.startsWith('6.') ? '-wide' : pageId === '2.1' ? '-landscape' : ''
   const name = `ACA-Phase-Two-Lesson-${number}-Introduction${suffix}.en.vtt`

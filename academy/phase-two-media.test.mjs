@@ -103,7 +103,7 @@ test('introduction text follows the same authentication, enrollment and timing b
 
 
 test('caption-only delivery signs exactly the requested introduction and preserves timed authorization', async () => {
-  for (const pageId of ['1.5', '2.1', '6.6']) {
+  for (const pageId of ['1.1', '1.2', '1.3', '1.4', '1.5', '2.1', '6.6']) {
     const f = fixture({ pageId, config: { captionsOnly: true } })
     const result = await run(f)
     assert.equal(result.status, 200)
