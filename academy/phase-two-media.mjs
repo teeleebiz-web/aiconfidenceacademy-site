@@ -12,10 +12,20 @@ export function phaseTwoMediaFiles(pageId) {
   return files.map(file => ({ ...file, object: `phase-two/lessons/${pageId.replace('.', '-')}/${file.path.slice(prefix.length)}` }))
 }
 
-export async function signPhaseTwoMedia(db, pageId, remainingSeconds, started = Date.now()) {
+export function phaseTwoIntroductionCaption(pageId) {
+  if (!/^[1-6]\.[1-6]$/.test(pageId)) throw new Error('Invalid lesson')
+  if (['1.1','1.2','1.3','1.4'].includes(pageId)) return null
+  const number = pageId.replace('.', '-')
+  const suffix = pageId.startsWith('6.') ? '-wide' : pageId === '2.1' ? '-landscape' : ''
+  const name = `ACA-Phase-Two-Lesson-${number}-Introduction${suffix}.en.vtt`
+  return { path: `assets/videos/phase-two-lesson-${number}/${name}`, object: `phase-two/lessons/${number}/${name}` }
+}
+
+export async function signPhaseTwoMedia(db, pageId, remainingSeconds, started = Date.now(), captionsOnly = false) {
   const ttl = Math.min(900, Math.floor(remainingSeconds)) - Math.max(1, Math.ceil((Date.now() - started) / 1000))
   if (!Number.isSafeInteger(ttl) || ttl <= 0) throw new Error('Lesson window closed')
-  const files = phaseTwoMediaFiles(pageId)
+  const caption = phaseTwoIntroductionCaption(pageId)
+  const files = captionsOnly ? (caption ? [caption] : phaseTwoMediaFiles(pageId).filter(file => /Introduction.*\.vtt$/.test(file.path))) : [...phaseTwoMediaFiles(pageId), ...(caption ? [caption] : [])]
   const result = await db.storage.from('aca-learning-media').createSignedUrls(files.map(file => file.object), ttl)
   if (result.error || !Array.isArray(result.data) || result.data.length !== files.length) throw new Error('Private media unavailable')
   const byObject = new Map(result.data.map(item => [item.path, item]))
@@ -32,7 +42,7 @@ export async function signPhaseTwoMedia(db, pageId, remainingSeconds, started = 
 }
 
 // Read-only authorization: this endpoint never opens a lesson or starts a timer.
-export async function handlePhaseTwoMedia(req, res, { db, courseId, lessonId, enabled = false, accessCheck, reviewerCheck }) {
+export async function handlePhaseTwoMedia(req, res, { db, courseId, lessonId, enabled = false, captionsOnly = false, accessCheck, reviewerCheck }) {
   const reply = (status, body) => { res.writeHead(status, { 'Content-Type': 'application/json', 'Cache-Control': 'private, no-store' }); res.end(JSON.stringify(body)) }
   if (req.method !== 'GET') return reply(405, { error: 'Method not allowed.' })
   if (!enabled) return reply(503, { error: 'Private lesson media is not yet available.' })
@@ -58,6 +68,6 @@ export async function handlePhaseTwoMedia(req, res, { db, courseId, lessonId, en
     const lesson = await db.from('lessons').select('page_id').eq('id', lessonId).eq('course_id', courseId).eq('status', 'published').maybeSingle()
     if (lesson.error) throw lesson.error
     if (!lesson.data) return reply(403, { error: 'Unavailable' })
-    return reply(200, await signPhaseTwoMedia(db, lesson.data.page_id, remaining, started))
+    return reply(200, await signPhaseTwoMedia(db, lesson.data.page_id, remaining, started, captionsOnly))
   } catch { return reply(503, { error: 'The academy could not load this material. Please try again.' }) }
 }

@@ -69,6 +69,7 @@ export function App() {
   const [completedReviewWelcome, setCompletedReviewWelcome] = useState(false)
   const [beginningEnrollment, setBeginningEnrollment] = useState(false)
   const [lessonVideoUrl, setLessonVideoUrl] = useState<string | undefined>()
+  const [lessonVideoCaptionUrl, setLessonVideoCaptionUrl] = useState<string | undefined>()
   const [lessonAudioUrl, setLessonAudioUrl] = useState<string | undefined>()
   const mediaRequest = useRef(0)
   const params = new URLSearchParams(window.location.search)
@@ -275,14 +276,14 @@ export function App() {
       return data.signedUrl
     }
     try {
-      let video: string | undefined, audio: string | undefined
+      let video: string | undefined, audio: string | undefined, videoCaption: string | undefined
       if (reviewMode) {
-        [video, audio] = await Promise.all([sign(lesson.content.video_path), sign(lesson.content.audio_path)])
+        [video, audio, videoCaption] = await Promise.all([sign(lesson.content.video_path), sign(lesson.content.audio_path), sign(lesson.content.video_caption_path)])
       } else if (lesson.content.video_path || lesson.content.audio_path) {
         const response = await fetch(`${import.meta.env.VITE_ACA_BACKEND_ORIGIN ?? 'https://checkout.aiconfidenceacademy.org'}/api/learner/lesson-media/${encodeURIComponent(lesson.id)}`, { headers: { 'X-ACA-Access-Token': session!.access_token }, cache: 'no-store' })
         if (!response.ok) throw new Error('Unavailable')
         const media = await response.json()
-        video = media.video ?? undefined; audio = media.audio ?? undefined
+        video = media.video ?? undefined; audio = media.audio ?? undefined; videoCaption = media.videoCaption ?? undefined
       }
       if (request !== mediaRequest.current) return
       if (Date.now() >= deadline) {
@@ -302,6 +303,7 @@ export function App() {
         setCompletedOnboardingId(portalData.enrollment.id)
       }
       if (completingOnboarding && reviewMode) setCompletedReviewWelcome(true)
+      setLessonVideoCaptionUrl(videoCaption)
       setLessonVideoUrl(video)
       setLessonAudioUrl(audio)
     } catch {
@@ -336,7 +338,7 @@ export function App() {
     })
     if (accessError) {
       mediaRequest.current++
-      setSelectedLesson(null); setSelectedIntroduction(null); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
+      setSelectedLesson(null); setSelectedIntroduction(null); setLessonVideoCaptionUrl(undefined); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
       setError('Lesson unavailable. Your workbooks remain available.')
       if (session?.user) await loadPortal(session.user.id)
       return null
@@ -351,7 +353,7 @@ export function App() {
     const response = await fetch(`${import.meta.env.VITE_ACA_BACKEND_ORIGIN ?? 'https://checkout.aiconfidenceacademy.org'}/api/learner/lesson-media/${encodeURIComponent(selectedLesson.id)}`, { headers: { 'X-ACA-Access-Token': session.access_token }, cache: 'no-store' })
     if (!response.ok) throw new Error('The academy could not reload this material. Your lesson remains paused.')
     const media = await response.json()
-    setLessonVideoUrl(media.video ?? undefined); setLessonAudioUrl(media.audio ?? undefined)
+    setLessonVideoCaptionUrl(media.videoCaption ?? undefined); setLessonVideoUrl(media.video ?? undefined); setLessonAudioUrl(media.audio ?? undefined)
   }
 
   async function openIntroduction(savedIntroduction: JourneyIntroduction) {
@@ -488,7 +490,7 @@ export function App() {
     setSelectedIntroduction(null)
     setCompletedOnboardingId('')
     setCompletedReviewWelcome(false)
-    setLessonVideoUrl(undefined)
+    setLessonVideoCaptionUrl(undefined); setLessonVideoUrl(undefined)
     setLessonAudioUrl(undefined)
   }
 
@@ -616,13 +618,14 @@ export function App() {
           lessonId={selectedLesson.id} onResume={refreshLessonMedia}
           onClosed={() => {
             mediaRequest.current++
-            setSelectedLesson(null); setLessonAccess(null); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
+            setSelectedLesson(null); setLessonAccess(null); setLessonVideoCaptionUrl(undefined); setLessonVideoUrl(undefined); setLessonAudioUrl(undefined)
             setError('Your lesson is no longer available. Your saved work is preserved.')
             if (session?.user) void loadPortal(session.user.id)
           }}>
         <LessonView
           lesson={selectedLesson}
           videoSrc={lessonVideoUrl}
+          videoCaptionSrc={lessonVideoCaptionUrl}
           audioSrc={lessonAudioUrl}
           audioPreload={selectedLesson.page_id.startsWith('2.') ? 'metadata' : 'none'}
           workbookHref={workbookHrefForLesson(selectedLesson.page_id)}

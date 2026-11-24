@@ -1,3 +1,4 @@
+import { PhaseTwoIntroductionCaptions } from './PhaseTwoIntroductionCaptions'
 import { lessonIntroduction } from './phaseTwoIntroductionAccess'
 import { useEffect, useState } from 'react'
 import sealUrl from '../../../aca-official-seal.png'
@@ -38,6 +39,7 @@ export function PhaseTwoLessonExperience(props: PhaseTwoLessonExperienceProps) {
 }
 
 function PhaseTwoLessonBody({
+  lessonId,
   pageId,
   lessonTitle,
   journeyTitle,
@@ -180,7 +182,7 @@ function PhaseTwoLessonBody({
                 src={mediaAccess.resolve(approvedVideo.url + (['6.2','6.3','6.4','6.5','6.6'].includes(pageId) ? (approvedVideo.url.includes('?') ? '&' : '?') + 'v=j6-invitations-20261011' : ''))}
                 aria-label={`Lesson ${pageId} instructor introduction video`}
               >
-                {approvedVideo.captions_url && <track kind="captions" label="Optional English captions" srcLang="en" src={mediaAccess.resolve(approvedVideo.captions_url)} />}
+                {approvedVideo.captions_url ? <track kind="captions" label="English" srcLang="en" src={mediaAccess.resolve(approvedVideo.captions_url)} /> : lessonId ? <PhaseTwoIntroductionCaptions lessonId={lessonId} enrollmentId={enrollmentId} pageId={pageId} access={mediaAccess} /> : null}
                 Your browser does not support video playback.
               </video>
               {approvedVideo.transcript.trim() && (

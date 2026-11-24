@@ -1,6 +1,7 @@
 export type LessonContent = {
   teaching_heading?: string
   video_path?: string | null
+  video_caption_path?: string | null
   audio_path?: string | null
   audio_overview_script?: string
   planned_media?: 'video' | 'audio'

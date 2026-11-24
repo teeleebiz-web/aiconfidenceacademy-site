@@ -26,7 +26,7 @@ export async function handleLearnerMedia(req, res, { db, courseId, lessonId }) {
       if (result.error) throw result.error
       return result.data.signedUrl
     }
-    const [video, audio] = await Promise.all([sign(lesson.data.content.video_path), sign(lesson.data.content.audio_path)])
-    reply(200, { video, audio })
+    const [video, audio, videoCaption] = await Promise.all([sign(lesson.data.content.video_path), sign(lesson.data.content.audio_path), sign(lesson.data.content.video_caption_path)])
+    reply(200, { video, audio, videoCaption })
   } catch { reply(503, { error: 'The academy could not load this material. Please try again.' }) }
 }

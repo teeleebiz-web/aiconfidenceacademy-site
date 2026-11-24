@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { AcademyWelcome, academyWelcomeVideoPath } from '../../../academy/AcademyWelcome'
+import { AcademyWelcome, academyWelcomeVideoPath, academyWelcomeCaptionPath } from '../../../academy/AcademyWelcome'
 import { GettingStarted } from '../../../academy/GettingStarted'
 import { supabase } from '../lib/supabase'
 import { usePageStart } from '../lib/usePageStart'
@@ -7,17 +7,19 @@ import { usePageStart } from '../lib/usePageStart'
 export function LearnerOnboarding({ onContinue }: { onContinue?: () => Promise<void> }) {
   const [step, setStep] = useState<'welcome' | 'getting-started'>('welcome')
   const [mediaUrl, setMediaUrl] = useState<string | null>(null)
+  const [captionUrl, setCaptionUrl] = useState<string | undefined>()
   const [error, setError] = useState('')
   const [continuing, setContinuing] = useState(false)
   usePageStart(mediaUrl ? `onboarding:${step}` : null)
 
   useEffect(() => {
     let cancelled = false
-    supabase.storage.from('aca-learning-media').createSignedUrl(academyWelcomeVideoPath, 3600)
-      .then(({ data, error: mediaError }) => {
+    Promise.all([academyWelcomeVideoPath, academyWelcomeCaptionPath].map(path =>
+      supabase.storage.from('aca-learning-media').createSignedUrl(path, 3600)))
+      .then(([video, captions]) => {
         if (cancelled) return
-        if (mediaError || !data?.signedUrl) setError('The academy could not load this material. Please try again.')
-        else setMediaUrl(data.signedUrl)
+        if (video.error || !video.data?.signedUrl || captions.error || !captions.data?.signedUrl) setError('The academy could not load this material. Please try again.')
+        else { setMediaUrl(video.data.signedUrl); setCaptionUrl(captions.data.signedUrl) }
       })
       .catch(() => { if (!cancelled) setError('The academy could not load this material. Please try again.') })
     return () => { cancelled = true }
@@ -35,7 +37,7 @@ export function LearnerOnboarding({ onContinue }: { onContinue?: () => Promise<v
   />
   if (error) return <p className="global-error" role="alert">{error}</p>
   if (!mediaUrl) return <p className="loading-screen">Loading Phase One…</p>
-  return <AcademyWelcome mediaUrl={mediaUrl} onContinue={() => {
+  return <AcademyWelcome mediaUrl={mediaUrl} captionUrl={captionUrl} onContinue={() => {
     setStep('getting-started')
   }} />
 }

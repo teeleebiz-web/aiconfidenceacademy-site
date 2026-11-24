@@ -281,3 +281,15 @@ it('does not offer backward navigation even when a prior lesson is supplied', ()
  expect(screen.queryByRole('button', {name:/previous lesson|back to|return to/i})).toBeNull()
  expect(screen.getByRole('button', {name:/next lesson 1.2/i})).toBeTruthy()
 })
+
+ it('attaches default English captions and replaces them with the next video', () => {
+   const props={lesson, onBack:()=>{}, onSave:async()=>{}}
+   const {container,rerender}=render(<LessonView {...props} videoSrc="/one.mp4" videoCaptionSrc="/one.vtt" />)
+   expect(container.querySelector('video')?.getAttribute('crossorigin')).toBe('anonymous')
+   expect(container.querySelector('track')?.hasAttribute('default')).toBe(true)
+   rerender(<LessonView {...props} videoSrc="/two.mp4" videoCaptionSrc="/two.vtt" />)
+   expect(container.querySelectorAll('track')).toHaveLength(1)
+   expect(container.querySelector('track')?.getAttribute('src')).toBe('/two.vtt')
+   rerender(<LessonView {...props} audioSrc="/audio.mp3" />)
+   expect(container.querySelector('track')).toBeNull()
+ })

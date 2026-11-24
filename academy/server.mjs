@@ -65,7 +65,7 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
     }
     if (requestPath === '/api/resources/updates') { await handleUpdates(req, res); return }
     if (requestPath === '/api/health') { await availability(req, res); return }
-    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/') || requestPath.startsWith('/api/learner/phase-two-media/')) {
+    if (requestPath.startsWith('/api/support/') || requestPath.startsWith('/api/operations/') || requestPath === '/api/trials/request-access' || requestPath === '/api/trials/accept' || requestPath === '/api/learner/feedback' || requestPath.startsWith('/api/learner/workbooks/') || requestPath.startsWith('/api/learner/lesson-media/') || requestPath.startsWith('/api/learner/phase-two-media/') || requestPath.startsWith('/api/learner/phase-two-captions/')) {
       const origin = req.headers.origin
       if (origin && !learnerOrigins.includes(origin)) {
         res.writeHead(403, { 'Content-Type': 'application/json' })
@@ -94,6 +94,9 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
       }
       if (requestPath.startsWith('/api/learner/lesson-media/')) {
         await handleLearnerMedia(req, res, { db, courseId, lessonId: requestPath.slice('/api/learner/lesson-media/'.length) }); return
+      }
+      if (requestPath.startsWith('/api/learner/phase-two-captions/')) {
+        await handlePhaseTwoMedia(req, res, { db, courseId: enrollmentAutomation?.phaseTwoCourseId, lessonId: requestPath.slice('/api/learner/phase-two-captions/'.length), enabled: true, captionsOnly: true, accessCheck: phaseTwoMediaAccessCheck, reviewerCheck: workbookReviewerCheck }); return
       }
       if (requestPath.startsWith('/api/learner/phase-two-media/')) {
         await handlePhaseTwoMedia(req, res, { db, courseId: enrollmentAutomation?.phaseTwoCourseId, lessonId: requestPath.slice('/api/learner/phase-two-media/'.length), enabled: privatePhaseTwoMedia, accessCheck: phaseTwoMediaAccessCheck, reviewerCheck: workbookReviewerCheck }); return
@@ -168,18 +171,19 @@ export function createAcademyServer({ password, root, db, courseId, enrollmentAu
         if (error || !signed?.signedUrl) throw new Error('Walkthrough video unavailable')
         res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
       }
-      if (path === '/api/academy/academy-welcome-video') {
-        const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(academyWelcomeVideo, 3600)
+      if (path === '/api/academy/academy-welcome-video' || path === '/api/academy/academy-welcome-captions') {
+        const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(path.endsWith('-captions') ? academyWelcomeVideo.replace(/\.mp4$/, '.en.vtt') : academyWelcomeVideo, 3600)
         if (error || !signed?.signedUrl) throw new Error('Academy welcome video unavailable')
         res.writeHead(302, { Location: signed.signedUrl }); res.end(); return
       }
-      if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
+      if (path === '/api/academy/phase-one' || path.startsWith('/api/academy/welcome/') || path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/') || path.startsWith('/api/academy/lesson-video-captions/')) {
         const data = await curriculum()
-        if (path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/')) {
+        if (path.startsWith('/api/academy/lesson-audio/') || path.startsWith('/api/academy/lesson-video/') || path.startsWith('/api/academy/lesson-video-captions/')) {
+          const isCaption = path.startsWith('/api/academy/lesson-video-captions/')
           const isVideo = path.startsWith('/api/academy/lesson-video/')
-          const prefix = isVideo ? '/api/academy/lesson-video/' : '/api/academy/lesson-audio/'
+          const prefix = isCaption ? '/api/academy/lesson-video-captions/' : isVideo ? '/api/academy/lesson-video/' : '/api/academy/lesson-audio/'
           const lesson = data.lessons.find(l => l.id === path.slice(prefix.length))
-          const name = isVideo ? lesson?.content?.video_path : lesson?.content?.audio_path
+          const name = isCaption ? lesson?.content?.video_caption_path : isVideo ? lesson?.content?.video_path : lesson?.content?.audio_path
           if (!name || typeof name !== 'string') { res.writeHead(404); res.end(); return }
           const { data: signed, error } = await db.storage.from('aca-learning-media').createSignedUrl(name, 3600)
           if (error || !signed?.signedUrl) {

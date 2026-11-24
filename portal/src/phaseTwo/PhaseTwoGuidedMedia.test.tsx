@@ -73,3 +73,19 @@ describe('ACA Phase Two guided instruction media', () => {
     expect(screen.getByText(/fictional training data/)).toBeTruthy()
   })
 })
+
+ it('shows one default English caption track for every selected demonstration', async()=>{
+   const user=userEvent.setup()
+   vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue(undefined)
+   vi.spyOn(HTMLMediaElement.prototype,'pause').mockImplementation(()=>{})
+   vi.spyOn(HTMLMediaElement.prototype,'load').mockImplementation(()=>{})
+   const {container}=render(<PhaseTwoDemoClips clips={clips} />)
+   for(const clip of clips){
+     await user.click(screen.getByRole('button',{name:new RegExp(clip.title)}))
+     const track=container.querySelector('track')
+     expect(container.querySelectorAll('track')).toHaveLength(1)
+     expect(track?.getAttribute('src')).toBe(clip.captions_url)
+     expect(track?.getAttribute('kind')).toBe('captions')
+     expect(track?.hasAttribute('default')).toBe(true)
+   }
+ })

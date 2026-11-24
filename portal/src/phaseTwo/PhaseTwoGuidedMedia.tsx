@@ -92,7 +92,6 @@ export function PhaseTwoGuidedAudio({ lessonId, media }: {
 /** Each short clip uses the same confirmed instructor voice and a clearly fictional report. */
 export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
   const [selected, setSelected] = useState(0)
-  const [caption, setCaption] = useState('')
   const videoRef = useRef<HTMLVideoElement>(null)
   const current = clips[selected]
   if (!current) return null
@@ -100,7 +99,6 @@ export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
   function chooseClip(index: number) {
     const player = videoRef.current
     setSelected(index)
-    setCaption('')
     if (!player) return
     player.pause()
     player.src = clips[index].url
@@ -109,11 +107,6 @@ export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
     // available for pausing and replay. If browser policy blocks audio, leave
     // the player ready for an explicit Play gesture; never silently mute it.
     void player.play().catch(() => {})
-  }
-
-  function updateCaption(player: HTMLVideoElement) {
-    const active = player.textTracks[0]?.activeCues
-    setCaption(active ? Array.from(active).map(cue => (cue as VTTCue).text).join(' ') : '')
   }
 
   return (
@@ -132,18 +125,10 @@ export function PhaseTwoDemoClips({ clips }: { clips: VisualDemoClip[] }) {
       <div className="p2-demo-clip-player">
         <h4>{current.title}</h4>
         <video ref={videoRef} crossOrigin="anonymous" controls playsInline preload="auto"
-          src={current.url} aria-label={current.title + ' screen demonstration'}
-          onTimeUpdate={e => updateCaption(e.currentTarget)}
-          onEnded={() => setCaption('')}>
-          <track kind="metadata" src={current.captions_url} srcLang="en" label="Narration below video" default />
-          <track kind="captions" src={current.captions_url} srcLang="en" label="Optional captions inside video" />
+          src={current.url} aria-label={current.title + ' screen demonstration'}>
+          <track key={current.captions_url} kind="captions" src={current.captions_url} srcLang="en" label="English" default />
           Your browser does not support video playback.
         </video>
-        <div className="p2-demo-caption-strip" role="status" aria-live="off"
-          style={{ background: '#102d4f', color: '#fff', padding: '0.8rem 1rem',
-            minHeight: '3.5rem', textAlign: 'center', fontSize: '1rem', lineHeight: 1.5 }}>
-          {caption || 'Narration appears here below the video while it plays.'}
-        </div>
         <details>
           <summary>Read this demonstration</summary>
           <p>{current.transcript}</p>
