@@ -1,6 +1,15 @@
 Warning: truncated output (original token count: 21530)
 Total output lines: 1259
 
+## Public Video Library covers — November 24, 2026
+
+Terrence approved the first custom cover and authorized the same design direction
+across the Video Library. Based on main `6ffefbf`. The ten players at `/videos/`
+use separate, title-specific WebP covers. The video sources, captions, scripts,
+page structure and playback behavior were preserved.
+The public-site and video-catalog tests passed locally. Verify the ten covers and
+playback on the deployed Videos page after publication.
+
 # AI Confidence Academy learner portal
 
 ## When AI Says It Is Done bookstore addition — November 23, 2026
