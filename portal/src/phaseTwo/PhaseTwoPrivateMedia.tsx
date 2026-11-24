@@ -28,11 +28,11 @@ export function privateMediaAccess(bundle: MediaBundle): PhaseTwoMediaAccess {
   } }
 }
 
-export async function requestPhaseTwoMedia(lessonId: string, enrollmentId?: string, signal?: AbortSignal): Promise<MediaBundle> {
+export async function requestPhaseTwoMedia(lessonId: string, enrollmentId?: string, signal?: AbortSignal, captionsOnly = false): Promise<MediaBundle> {
   const { data } = await supabase.auth.getSession()
   if (!data.session?.access_token) throw new Error('Please sign in to load your lesson.')
   const query = enrollmentId ? '?enrollment=' + encodeURIComponent(enrollmentId) : ''
-  const response = await fetch(`${academyBackendOrigin()}/api/learner/phase-two-media/${encodeURIComponent(lessonId)}${query}`, {
+  const response = await fetch(`${academyBackendOrigin()}/api/learner/${captionsOnly ? 'phase-two-captions' : 'phase-two-media'}/${encodeURIComponent(lessonId)}${query}`, {
     headers: { 'X-ACA-Access-Token': data.session.access_token }, cache: 'no-store', signal,
   })
   if (!response.ok) throw new Error('Your lesson recordings could not be loaded. Please try again.')

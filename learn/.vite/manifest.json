@@ -79,7 +79,7 @@
     "src": "_workbook-IttDVsJQ.css"
   },
   "index.html": {
-    "file": "assets/index-Dpb2ZDZm.js",
+    "file": "assets/index-Dxzwg5Lh.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -93,7 +93,7 @@
     ]
   },
   "src/App.tsx": {
-    "file": "assets/App-DS_fepDn.js",
+    "file": "assets/App-NWvKf7CK.js",
     "name": "App",
     "src": "src/App.tsx",
     "isDynamicEntry": true,
@@ -145,7 +145,7 @@
     ]
   },
   "src/LearnerEntry.tsx": {
-    "file": "assets/LearnerEntry-CyBdS6KN.js",
+    "file": "assets/LearnerEntry-YBtm-EQO.js",
     "name": "LearnerEntry",
     "src": "src/LearnerEntry.tsx",
     "isDynamicEntry": true,
@@ -184,7 +184,7 @@
     ]
   },
   "src/main.tsx": {
-    "file": "assets/main-9_tsTb4-.js",
+    "file": "assets/main-BAPmz1Cr.js",
     "name": "main",
     "src": "src/main.tsx",
     "isDynamicEntry": true,
@@ -206,7 +206,7 @@
     ]
   },
   "src/phaseTwoMain.tsx": {
-    "file": "assets/phaseTwoMain-Cqp-9qcR.js",
+    "file": "assets/phaseTwoMain-BexP2Zvu.js",
     "name": "phaseTwoMain",
     "src": "src/phaseTwoMain.tsx",
     "isDynamicEntry": true,
@@ -216,6 +216,7 @@
       "_supabase-Z9No2zg3.js",
       "_SignIn-BxiO6g32.js",
       "_usePageStart-DaXnocVc.js",
+      "_academyApi-C6u_L_bb.js",
       "_client-D7P41wCC.js"
     ],
     "css": [

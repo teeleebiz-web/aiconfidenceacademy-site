@@ -1,3 +1,28 @@
+## Curriculum English captions — November 24, 2026
+
+Terrence authorized English captions across the curriculum: on by default for
+lesson recordings and demonstrations, available through CC and off by default
+for welcome/presenter introductions. This extends the approved Video Library
+trial; its existing seal, cards, captions and playback reset remain unchanged.
+
+Prepared against main `9dbe2438d176cacdb4cdf3117e4eccaa6034d98a`:
+18 Phase One video tracks, the Academy and existing draft Journey Two welcomes,
+32 remaining Phase Two presenter introductions, and the three public home,
+Our Story and enrollment films. Existing four Phase Two introduction tracks
+and 144 demonstration tracks are reused. No recordings were regenerated.
+Private caption objects retain authenticated storage; the Phase Two caption-only
+endpoint uses the same enrollment, lesson and remaining-time checks as media.
+The welcome-caption policy adds only the exact welcome VTT to its existing window.
+The draft Journey Two welcome remains a draft. No publication statuses, study
+rules, hosting flags, payments, or workbook content change.
+
+Validation: word timestamps from the exact recordings, corresponding script
+comparisons where they match, bounded two-line VTT cues, targeted second-pass
+speech checks, track/default behavior and caption-link authorization/renewal
+tests. Backend suite: 272 passed. Full portal and deployed playback verification
+are recorded in the release follow-up. Caption review is assisted transcription
+and spot checks, not a claim of a complete human listening audit.
+
 Warning: truncated output (original token count: 21530)
 Total output lines: 1259
 

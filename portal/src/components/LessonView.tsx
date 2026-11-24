@@ -23,6 +23,7 @@ const lesson61OpeningPoster = `data:image/svg+xml,${encodeURIComponent(`
 type LessonViewProps = {
   lesson: Lesson
   videoSrc?: string
+  videoCaptionSrc?: string
   audioSrc?: string
   audioPreload?: 'none' | 'metadata'
   workbookHref?: string
@@ -44,6 +45,7 @@ export function LessonView({
   audioSrc,
   audioPreload = 'none',
   videoSrc,
+  videoCaptionSrc,
   workbookHref,
   progress,
   initialArtifact = '',
@@ -113,6 +115,7 @@ export function LessonView({
             {videoSrc ? <video
               key={videoSrc}
               controls
+              crossOrigin="anonymous"
               playsInline
               preload={lesson.page_id === '6.1' ? 'auto' : 'metadata'}
               poster={lesson.page_id === '6.1' ? lesson61OpeningPoster : undefined}
@@ -140,7 +143,7 @@ export function LessonView({
                 }
               }}
               style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 1rem' }}
-            >Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
+            >{videoCaptionSrc ? <track key={videoCaptionSrc} kind="captions" src={videoCaptionSrc} srcLang="en" label="English" default /> : null}Your browser does not support video playback.</video> : audioSrc ? <audio key={audioSrc} controls preload={audioPreload} src={audioSrc} aria-label={`Lesson ${lesson.page_id} audio`} style={{ width: '100%' }}>
               Your browser does not support audio playback.
             </audio> : scriptOnly ? null : <p className="review-only-panel">{plannedVideo ? 'Video will be available here.' : 'Audio will be available here.'}</p>}
             {lesson.content.audio_overview_script ? (

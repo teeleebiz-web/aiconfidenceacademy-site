@@ -70,3 +70,10 @@ it('shows one approved video without a misplaced workbook tab',()=>{
   expect(screen.queryByText('Video coming soon')).toBeNull()
   expect(screen.queryByRole('link',{name:'Open Workbook'})).toBeNull()
 })
+
+ it('offers English CC without enabling it by default on journey welcomes',()=>{
+   const {container}=render(<JourneyIntroductionView introduction={introduction} mediaUrl="/welcome.mp4" captionUrl="/welcome.vtt" onBack={()=>{}} onContinue={()=>{}} />)
+   const track=container.querySelector('video track')
+   expect(track?.getAttribute('src')).toBe('/welcome.vtt')
+   expect(track?.hasAttribute('default')).toBe(false)
+ })

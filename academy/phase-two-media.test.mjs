@@ -14,7 +14,7 @@ function fixture(options = {}) {
       const q = { select() { return q }, eq(k, v) { filters[k] = v; return q }, async maybeSingle() {
         calls.push([table, filters])
         if (table === 'enrollments') return { data: !options.noEnrollment && filters.id === enrollment && filters.learner_id === learner && filters.course_id === course && filters.status === 'active' ? { id: enrollment } : null }
-        return { data: !options.noLesson && filters.id === lesson && filters.course_id === course && filters.status === 'published' ? { page_id: '1.1' } : null }
+        return { data: !options.noLesson && filters.id === lesson && filters.course_id === course && filters.status === 'published' ? { page_id: options.pageId ?? '1.1' } : null }
       } }; return q
     }, storage: { from(bucket) { assert.equal(bucket, 'aca-learning-media'); return { async createSignedUrls(paths, ttl) {
       signed.push({ paths, ttl }); return options.signFailure ? { error: 'private provider details' } : { data: paths.map(path => ({ path, signedUrl: 'https://private.test/' + path })) }
@@ -99,4 +99,22 @@ test('introduction text follows the same authentication, enrollment and timing b
   assert.deepEqual(Object.keys(second.introductions), ['original'])
   assert.equal(typeof second.introductions.original, 'string')
   assert.equal(second.introductions.revised, undefined)
+})
+
+
+test('caption-only delivery signs exactly the requested introduction and preserves timed authorization', async () => {
+  for (const pageId of ['1.5', '2.1', '6.6']) {
+    const f = fixture({ pageId, config: { captionsOnly: true } })
+    const result = await run(f)
+    assert.equal(result.status, 200)
+    assert.equal(f.signed[0].paths.length, 1)
+    assert.match(f.signed[0].paths[0], /Introduction(?:-landscape|-wide)?\.en\.vtt$/)
+    assert.ok(f.signed[0].paths[0].startsWith(`phase-two/lessons/${pageId.replace('.', '-')}/`))
+    assert.ok(f.signed[0].ttl < 90)
+  }
+  for (const options of [{ badUser: true }, { anonymous: true }, { noEnrollment: true }, { accessStatus: 'closed' }, { remaining: 0 }]) {
+    const f = fixture({ ...options, config: { captionsOnly: true } })
+    assert.notEqual((await run(f)).status, 200)
+    assert.equal(f.signed.length, 0)
+  }
 })

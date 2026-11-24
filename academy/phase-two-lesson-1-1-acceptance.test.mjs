@@ -63,14 +63,14 @@ test('Selecting a demonstration starts its video immediately without losing repl
   assert.match(bundle, /([\w$]+)\.src=[\w$]+\[[\w$]+\]\.url,\1\.load\(\),\1\.play\(\)\.catch/, 'Tab selection should load and play the chosen clip using the same player');
   assert.match(bundle, /preload:`auto`,src:[\w$]+\.url/, 'React must retain the selected clip when signed URLs renew');
   assert.match(bundle, /ref:[\w$]+,crossOrigin:`anonymous`,controls:!0/, 'Keep controls, a stable player, and cross-origin captions');
-  assert.ok(bundle.includes('p2-demo-caption-strip'), 'Keep captions below the video');
+  assert.match(bundle, /kind:`captions`,src:[\w$]+\.captions_url,srcLang:`en`,label:`English`,default:!0/, 'Demonstrations open with English captions inside the video');
 });
 
 test('Lesson 1.1 runtime bundle exposes all essential learning sections', () => {
   const bundle = publishedPhaseTwoBundle();
   for (const feature of ['p2-guided-chapters','Read the guided instruction transcript',
     'p2-demo-clip-tabs','kind:`captions`','p2-visual-lab',
-    'Your first professional AI responsibility map', 'p2-demo-caption-strip', 'kind:`metadata`', 'p2-practice-ai', 'Copy prompt', 'p2-practice-prompt']) {
+    'Your first professional AI responsibility map', 'p2-practice-ai', 'Copy prompt', 'p2-practice-prompt']) {
     assert.ok(bundle.includes(feature), `Learner application missing ${feature}`);
   }
 });
