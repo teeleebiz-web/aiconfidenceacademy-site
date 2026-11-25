@@ -29,8 +29,20 @@ Validation before publication: 16 public-site/catalog checks, 10 existing
 caption-player tests, production build, unique IDs and local asset/link checks,
 and generator idempotence passed. Local browsers could not reach the workspace
 HTTP server; desktop/mobile playback must be checked on the deployed page.
-Next: complete media upload, merge after hosted checks, verify live playback,
-CC toggle, transcript, reset and related links, then record the deployed revision.
+Published through PR #142 as `fcd0ca7d568dc5b57710e560302f113735532575`.
+Hosted portal CI `45644693735` and Pages release `45645952934` passed; both
+Vercel preview contexts passed. All 29 published media/caption/poster files
+responded with their exact source sizes; the poster, playlist and captions also
+matched byte for byte. All five feature/supporting pages were verified live.
+Edge desktop playback reached readyState 4 with no media or console error;
+CC toggled off/on and the native two-line captions were visibly rendered.
+Seeking to the ending restored the approved poster, time zero, paused state,
+and central play button. The transcript expanded with all approved text, and
+the book link opened the correct title. A final presentation adjustment caps
+the feature at 900px and prevents focus from moving the page on play. The
+browser viewport override did not change Edge’s actual viewport, so no phone-
+device visual pass is claimed. Responsive styles are included; the last desktop
+sizing/focus adjustment requires a live reread after its publication.
 
 ## Compact CC inside playback controls — November 25, 2026
 
