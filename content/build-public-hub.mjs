@@ -83,3 +83,6 @@ for (const item of data.books) {
 }
 
 console.log(`Built Explore hub, ${data.articles.length} articles, ${data.updates.length} field notes, and ${data.books.length} book pages`)
+
+// Reapply the approved founder feature after rebuilding editorial pages.
+await import('./build-founder-reflection.mjs');

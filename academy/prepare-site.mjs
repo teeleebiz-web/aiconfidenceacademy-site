@@ -1,7 +1,7 @@
 import { cp, mkdir, readFile, writeFile, readdir, rm } from 'node:fs/promises'
 import { preparePublicSite, protectedLessonAsset } from './public-site.mjs'
 import { videoCatalog } from './email/newsletter.mjs'
-const pages = ['', 'ask', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'explore', 'faq', 'library', 'library/ai-updates', 'privacy', 'programs', 'programs/phase-one', 'programs/phase-two', 'reflections', 'refund-policy', 'terms', 'videos']
+const pages = ['', 'ask', 'about', 'accessibility', 'ai-learning-disclaimer', 'contact', 'enroll', 'explore', 'explore/what-working-with-ai-has-taught-me', 'faq', 'library', 'library/ai-updates', 'privacy', 'programs', 'programs/phase-one', 'programs/phase-two', 'reflections', 'refund-policy', 'terms', 'videos']
 const privateMedia = process.env.ACA_PRIVATE_PHASE_TWO_MEDIA === 'true'
 const publicSite = process.env.ACA_PUBLIC_SITE === 'true'
 await rm('vercel-public', { recursive: true, force: true })

@@ -1,0 +1,25 @@
+Hi, welcome to AI Confidence Academy. Here at ACA, we want people to benefit from artificial intelligence through guided practice, without having to learn every difficult lesson through a mistake of their own. That is why I am sharing part of my experience from an e-book I’ve written with my AI assistant, Knowledge, entitled When AI Says It Is Done.
+
+There is value in showing what a tool can help us accomplish. There is also value in showing what happens when the work goes wrong, the explanation sounds reasonable, and the same problem later returns.
+
+My work with AI has included books, educational materials, videos, and the development of AI Confidence Academy. These are projects with a purpose beyond producing more content. They are meant to help everyday adults understand technology, participate with confidence, and keep their own judgment at the center. The quality of that work matters because someone else eventually reads the book, watches the lesson, or relies on the instructions.
+
+I call my AI assistant Knowledge. That name belongs to the way I address ChatGPT in our collaboration. It should not be mistaken for evidence that the system possesses human judgment, understands our relationship as a person would, or can guarantee the truth of what it says. A familiar working language can make a tool more comfortable to use. It should also leave room for careful questions.
+
+Over time, those questions became necessary. Had the requested correction actually been made? Was the assistant working on the right book? Why was completed work being described as unfinished, and unfinished work being described as completed? Why did an acknowledgment sometimes become the end of the work rather than the beginning of the correction? And what did it mean when an assistant said that a new protocol would prevent the problem from happening again, only for the same problem to return?
+
+These were not all questions about unclear instructions. The records include directions that were specific, repeated, and later placed into written operating documents. They also include admissions from Knowledge that it had not followed those directions and had failed to do the requested work. That distinction matters, because a person should not be told that every failure can be solved by becoming better at prompting.
+
+At the same time, this book is not an accusation that every AI failure is deliberate, or a claim that my experience measures how often everyone will encounter the same problems. A record of a mistake can establish what happened in a particular exchange. It usually cannot reveal the model’s internal cause, prove a motive, or predict the next result.
+
+This book shares what I experienced, what I learned, and the working habits that can help us make better decisions. It explores setting boundaries, preserving decisions, checking the result people will actually use, and recovering from mistakes without losing good work.
+
+I also asked Knowledge to respond directly, to explain its recommendations and acknowledge what those recommendations cannot guarantee. That response has its own chapter in the book, so you can examine it for yourself.
+
+My purpose is to help you recognize when a helpful conversation is becoming an unreliable process. You deserve to understand what you can delegate, what needs verification, and what should remain under your direct control.
+
+At AI Confidence Academy, our principle is simple:
+
+People come first. AI is the tool. Confidence is the product.
+
+That principle has to remain true when the technology impresses us, and when it disappoints us. We must remain vigilant.
