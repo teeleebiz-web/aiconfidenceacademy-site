@@ -6,7 +6,7 @@ document.querySelectorAll('.founder-film').forEach(frame => {
   start.hidden = false;
   start.addEventListener('click', () => {
     start.hidden = true;
-    video.play().then(() => video.focus()).catch(() => { start.hidden = false; });
+    video.play().then(() => video.focus({ preventScroll: true })).catch(() => { start.hidden = false; });
   });
   video.addEventListener('play', () => { start.hidden = true; });
   // topic-videos-reset restores the same poster after the film ends.
