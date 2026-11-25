@@ -1,3 +1,37 @@
+## Founder reflection video — November 25, 2026
+
+Approved scope: the portrait opening card and the finished black-suit founder
+recording belong in Explore AI → Deeper thoughts. Title: “What Working with AI
+Has Taught Me”; eyebrow: “A Founder’s Perspective”. The approved subtitle has no
+presenter name. Supporting links connect Videos / Founder Conversations,
+Founder Reflections, and the When AI Says It Is Done book detail page. Direct
+links open `/explore/what-working-with-ai-has-taught-me/` with its own heading.
+
+Implementation on `feature/founder-reflection-video`, based on main `48ec131`:
+`content/build-founder-reflection.mjs` owns the feature and direct page, and is
+called after the public-hub generator. It is idempotent across all five pages.
+`academy/prepare-site.mjs` includes the direct page in both publication paths.
+The selected navy/gold portrait artwork is the poster; a plain accessible play
+icon starts the film directly. The existing end-reset script restores the same
+poster. No extra intro, regeneration, voice, gesture or script changes.
+
+The 242.562-second HeyGen recording (`c4a7a107d2cb856e3b91784f065dd7cb`)
+is remuxed to the established HLS/fMP4 delivery format with stream copy.
+All 6,064 encoded video packets and 11,371 audio packets match the source.
+Caption alignment was completed locally from the actual recording (Whisper
+small.en word timestamps); 63 two-line English cues preserve all 585 approved
+words. Reviewed tokenization/spelling differences: e-book, ChatGPT,
+acknowledgment and asked. No external transcription upload was performed.
+The shared compact CC control is reused; this founder introduction starts with
+captions off. The full approved text is available under “Read the reflection”.
+
+Validation before publication: 16 public-site/catalog checks, 10 existing
+caption-player tests, production build, unique IDs and local asset/link checks,
+and generator idempotence passed. Local browsers could not reach the workspace
+HTTP server; desktop/mobile playback must be checked on the deployed page.
+Next: complete media upload, merge after hosted checks, verify live playback,
+CC toggle, transcript, reset and related links, then record the deployed revision.
+
 ## Compact CC inside playback controls — November 25, 2026
 
 Terrence approved option 1 from the caption-control visual comparison: a small
