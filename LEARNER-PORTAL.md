@@ -1,3 +1,25 @@
+## Our Story conversation opening card — November 26, 2026
+
+Terrence selected the two-chair warm-library image for Our Story. Only the
+existing three-second opening card and its matching website poster change.
+Base: `82329f0ec73915eb8118d59da766c0d3ea701254`. Preserve the existing
+Terrence/Jeff presentation, closing card, player/reset behavior, captions,
+default-on CC, seal overlay and all other pages.
+
+The opening remains 75 frames at 25 fps, 1280×720. Its H.264 decoder
+configuration matches the original initialization file exactly. The original
+138 AAC packets, hashes and timestamps are retained in the replacement first
+segment; every video presentation timestamp and duration matches. All 39 later
+segments and the original init are referenced unchanged, preserving the
+309.36-second playlist. The original first segment and poster remain available
+for rollback. Cache version is changed only on the Our Story playlist URL.
+
+Local verification: the 11-second opening and transition decode without errors;
+frame review confirms the new card through frame 74 and the unchanged presenter
+from frame 75. Audio packet hashes/timing and all 75 frame times match. The
+remaining playlist lines and all controls/caption sources are unchanged.
+Publication and live playback verification are pending.
+
 ## All website videos: seal and captions on — November 26, 2026
 
 Terrence authorized the small upper-left ACA seal on every website video and
