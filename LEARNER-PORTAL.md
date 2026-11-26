@@ -1,3 +1,27 @@
+## Explore AI placement and consistent video size — November 26, 2026
+
+Terrence authorized only the section swap and smaller founder video. Based on
+main `6d71a6066db87ae688ddb94edc9625b268638bb2`, Deeper thoughts now takes the
+former Choose your path position immediately after the opening hero. Choose
+your path takes the former Deeper thoughts position; Quick answers and all
+other sections retain their positions and exact contents.
+
+The homepage introduction supplies the size reference: a 640px-wide video.
+The founder card is capped at 642px including its two 1px borders, giving the
+video the same 640px content width. This applies to Explore and its dedicated
+reflection page. Fullscreen, the approved poster/recording, CC, transcript and
+book link are unchanged. The stylesheet is versioned v2 on its three consumers
+so cached v1 cannot hide the size correction. The existing targeted generator
+preserves the section swap and remains idempotent across all five pages.
+
+Source verification: generator syntax, exact section-content preservation and
+swap order, unchanged video markup, single player ID, five-page idempotence,
+stylesheet versions, and git diff checks passed. Existing live Edge measurements
+were 640px for the home video and about 899px for the founder video. Release
+verification must check `/explore/` and its Deeper thoughts direct view after
+publication, including the smaller player, captions and existing book link.
+No curriculum, backend, media files or shared player controls were edited.
+
 ## Founder reflection video — November 25, 2026
 
 Approved scope: the portrait opening card and the finished black-suit founder
