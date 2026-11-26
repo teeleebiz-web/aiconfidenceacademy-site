@@ -1,0 +1,36 @@
+name: One-time approved enrollment opening
+on:
+  push:
+    branches: ['aca-agent/enrollment-generations-card']
+permissions:
+  contents: write
+concurrency:
+  group: enrollment-generations-card
+  cancel-in-progress: false
+jobs:
+  install-verified-media:
+    if: github.event.head_commit.message == 'Stage verified enrollment opening assets'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .media-staging/enrollment
+            .github/workflows/enrollment-opening-once.yml
+            assets/videos/anna-enrollment/film-mobile.mp4
+          sparse-checkout-cone-mode: false
+      - name: Reconstruct exact locally verified media
+        run: |
+          python .media-staging/enrollment/apply-patch.py assets/videos/anna-enrollment/film-mobile.mp4 .media-staging/enrollment/mobile-opening.patch.gz assets/videos/anna-enrollment/film-mobile.mp4
+      - name: Commit only the verified media output
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          test "$(git ls-remote origin "refs/heads/$TARGET_BRANCH" | cut -f1)" = "$SOURCE_SHA"
+          git add --sparse assets/videos/anna-enrollment/film-mobile.mp4
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Install verified enrollment opening media'
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"

@@ -5,7 +5,7 @@
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXT-X-MAP:URI="init.mp4?v=20261122-polish"
 #EXTINF:8.000000,
-part000.m4s?v=20261122-polish
+opening-generations-000.m4s
 #EXTINF:8.000000,
 part001.m4s?v=20261122-polish
 #EXTINF:8.000000,
