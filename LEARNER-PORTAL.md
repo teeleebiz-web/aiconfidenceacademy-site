@@ -1,3 +1,30 @@
+## Phase One doorway welcome card — November 26, 2026
+
+Terrence selected option three, Entering the Academy: navy/gold seal wall and
+open doorway into the learning room. Only the 20-frame, 0.8-second beginning
+card of the existing protected Welcome to the Academy film changes. The
+709.489-second duration, all 17,737 video presentation times, complete
+33,244-packet AAC track, caption file, instructor sequence and closing remain.
+The first 10-second video GOP is re-encoded to make the card substitution;
+all 17,487 later encoded video packets and their timestamps are unchanged.
+Original and replacement codec configurations match. Full decode, opening
+frame review, audio/video packet comparisons and timing checks passed.
+The retained 0.8–10-second presenter interval has SSIM 0.98955.
+
+Exact output: 81,911,058 bytes; SHA-256
+`b43833fc1f5c9d7c67f5e8803a27287daba5de03100cec9a6af74228427a9c2d`.
+Predecessor: `350e6cb65f13cdd5c6c1938a6d96af063a74c0c9726b9fe86dceff7d50fafff6`.
+Reuse the existing protected target, guarded staging/rollback publication
+workflow and publication ledger. Current ledger key:
+`academy-welcome-doorway-card-20261126`. No video is added to public GitHub.
+No learner UI, curriculum text, caption timing, access or player behavior changes.
+
+Signed-in owner access to the exact current film was verified before editing.
+Publication, downloaded-byte verification and live updated playback remain
+pending until the new ledger entry is verified. Existing earlier publication
+records remain historical evidence and must not be reused to overwrite this
+newer approved welcome.
+
 ## Homepage Education and AI opening card — November 26, 2026
 
 Terrence selected the second revised design: open book, AI tablet, official

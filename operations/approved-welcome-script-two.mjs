@@ -1,14 +1,15 @@
 import { createHash } from 'node:crypto'
 import { setTimeout as delay } from 'node:timers/promises'
 
+// Latest founder-approved revision; keep the existing guarded publication path.
 export const approvedWelcome = Object.freeze({
-  key: 'academy-welcome-script-two-20261122',
+  key: 'academy-welcome-doorway-card-20261126',
   target: 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4',
-  staging: 'academy-welcome/ACA_Welcome_Script_Two_Approved_20261122.mp4',
-  rollback: 'academy-welcome/ACA_Welcome_before_script_two_20261122.mp4',
-  previous: 'e484c51eeee4523d3f325bee5115f06bd63d6d2a53ee7934538b1978ac6a2122',
-  approved: '350e6cb65f13cdd5c6c1938a6d96af063a74c0c9726b9fe86dceff7d50fafff6',
-  bytes: 81887736,
+  staging: 'academy-welcome/ACA_Welcome_Doorway_Approved_20261126.mp4',
+  rollback: 'academy-welcome/ACA_Welcome_before_doorway_card_20261126.mp4',
+  previous: '350e6cb65f13cdd5c6c1938a6d96af063a74c0c9726b9fe86dceff7d50fafff6',
+  approved: 'b43833fc1f5c9d7c67f5e8803a27287daba5de03100cec9a6af74228427a9c2d',
+  bytes: 81911058,
 })
 const hash = bytes => createHash('sha256').update(bytes).digest('hex')
 const checked = result => {
@@ -34,7 +35,7 @@ export async function publishApprovedScriptTwo(db) {
   let live = await download(approvedWelcome.target)
   if (validateApprovedWelcome(task, hash(live)) === 'complete') {
     await record({ status: 'verified', source_url: 'approved-review-upload-complete', output_sha256: approvedWelcome.approved, verified_at: new Date().toISOString() })
-    console.log('Exact approved Script Two welcome already installed and verified.')
+    console.log('Exact approved welcome already installed and verified.')
     return true
   }
   try {
@@ -76,10 +77,10 @@ export async function publishApprovedScriptTwo(db) {
     await record({ status: 'verified', source_url: 'approved-review-upload-complete', output_sha256: approvedWelcome.approved, verified_at: new Date().toISOString() })
     const cleanup = await bucket.remove([approvedWelcome.staging])
     if (cleanup.error) console.warn('Verified welcome installed; temporary staging cleanup remains pending.')
-    console.log(`Approved Script Two welcome installed: ${approvedWelcome.bytes} bytes; SHA-256 ${approvedWelcome.approved}. Previous live film preserved privately.`)
+    console.log(`Approved welcome installed: ${approvedWelcome.bytes} bytes; SHA-256 ${approvedWelcome.approved}. Previous live film preserved privately.`)
     return true
   } catch (error) {
     await record({ status: 'failed', source_url: 'approved-review-upload-incomplete' })
-    throw new Error('Script Two publication stopped; retained rollback remains available.', { cause: error })
+    throw new Error('Approved welcome publication stopped; retained rollback remains available.', { cause: error })
   }
 }
