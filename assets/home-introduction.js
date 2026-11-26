@@ -9,18 +9,33 @@
     // the manifest and initial video segment.
     video.preload = 'auto';
     if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      if (video.closest('#academy-introduction')) {
+        video.addEventListener('ended', () => video.load());
+      }
       video.load();
       return;
     }
     if (!window.Hls || !window.Hls.isSupported()) return;
-    const hls = new window.Hls({
+    const options = {
       autoStartLoad: true,
       startFragPrefetch: true,
       maxBufferLength: 18,
       maxMaxBufferLength: 30
-    });
-    hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));
-    hls.attachMedia(video);
+    };
+    let hls;
+    const attachStream = () => {
+      hls = new window.Hls(options);
+      hls.on(window.Hls.Events.MEDIA_ATTACHED, () => hls.loadSource(src));
+      hls.attachMedia(video);
+    };
+    if (video.closest('#academy-introduction')) {
+      video.addEventListener('ended', () => {
+        hls.destroy();
+        video.load();
+        attachStream();
+      });
+    }
+    attachStream();
   });
 })();
 
