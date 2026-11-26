@@ -31,8 +31,16 @@ The final HLS render additionally normalizes input video timestamps and fixes
 30 fps explicitly; retained presenter SSIM is 0.994671, and frame 24 begins
 Anna's presentation without an added or dropped frame. All five public-output
 protection checks pass. The temporary publisher and patch are removed before
-review; no recurring workflow or runtime dependency is added. Publication/live
-checks are pending.
+review; no recurring workflow or runtime dependency is added.
+
+Released in PR #150, main `cbd9db3c4ac883e986cc5b39479139a45aa522c0`.
+Both Vercel PR checks succeeded; Pages run `45805618500` completed successfully.
+Vercel production deployment `dpl_FoBxiiDr2urRz3d7HNhoNgqc2myF` is READY.
+Live `/enroll/` serves the new poster and versioned MP4. Browser playback passed
+at 7.84 seconds with readyState 4, captions showing and the ACA seal visible.
+The original closing card remains; playing through the end resets to the new
+card at time 0, paused, readyState 4. Duration is still 218.948 seconds.
+Screenshot: `/workspace/shared/enrollment-generations-live.jpg`.
 
 ## Our Story conversation opening card — November 26, 2026
 
