@@ -1,3 +1,20 @@
+## Founder video copy cleanup — November 26, 2026
+
+Terrence requested removal of the repeated large title above the opening card
+and the complete “4 minutes · Use CC to turn captions on or off” line. The
+existing A Founder’s Perspective label and reflection subtitle remain. The
+label retains accessible heading semantics. The shared feature generator
+applies this to Explore and the dedicated reflection page without changing the
+poster, media, size, section order, controls, transcript, or book links.
+
+Released through PR #145 at `10de1dd001f03fc2b8ba256160c1fca28cfef92d`.
+Generator syntax, exact before/after HTML comparison for the two permitted
+removals, generator idempotence and diff checks passed. Pages run `45765904423`
+succeeded. Both live HTML routes contain the removals. Edge visually confirmed
+the simplified section, original poster, retained CC control and 640.67px video
+width. This was a text-only change; playback was not retested this release.
+No further copy-cleanup work remains pending.
+
 ## Explore AI placement and consistent video size — November 26, 2026
 
 Terrence authorized only the section swap and smaller founder video. Based on
