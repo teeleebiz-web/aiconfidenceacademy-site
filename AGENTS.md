@@ -91,3 +91,12 @@ familiarity with a website convention, icon or hidden menu.
 
 This is standing direction for future ACA work, not a claim that every existing
 surface has passed a complete accessibility audit.
+
+## Founder video presentation consistency — November 26, 2026
+
+For public video presentation changes, compare the rendered section with the
+Academy's established video panels before release. Reuse existing responsive
+sizing, borders, framing and adjacent descriptive copy; avoid isolated custom
+video widths. Enrollment uses the same framed component as Home. Preserve
+approved media, captions, seals, controls and opening/closing behavior unless
+the requested change explicitly covers them. Verify desktop and narrow layouts.
