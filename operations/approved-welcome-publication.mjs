@@ -10,6 +10,7 @@ import { createWriteStream } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
 
+// November 26: publish the approved doorway opening through the existing guarded uploader.
 const publicationKey = 'academy-welcome-november-avatar-20261117'
 const target = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01.mp4'
 const backup = 'academy-welcome/ACA_Welcome_to_the_Academy_Film_Web_v01_before_november_avatar.mp4'
