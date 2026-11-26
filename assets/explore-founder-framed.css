@@ -1,0 +1,25 @@
+/* Keep the established panel width inside Explore's editorial section. */
+#deeper-thoughts { padding-inline: 0; }
+#deeper-thoughts > .section-kicker,
+#deeper-thoughts > h2,
+#deeper-thoughts > .hub-lead,
+#deeper-thoughts > .hub-grid { margin-inline: clamp(24px, 7vw, 112px); }
+.founder-feature.home-introduction { max-width: 1200px; overflow: visible; }
+.founder-feature .founder-panel-title {
+  margin: 0 0 20px;
+  color: #102d4f;
+  font: 700 clamp(32px, 3.7vw, 48px) / 1.12 Georgia, serif;
+  letter-spacing: -.025em;
+}
+.home-introduction .founder-follow { padding: 20px 0; }
+.home-introduction .founder-transcript { margin: 0; }
+.home-introduction .founder-film { border-radius: 6px; overflow: hidden; }
+@media (max-width: 800px) {
+  .founder-feature .founder-panel-title { font-size: clamp(32px, 6vw, 44px); }
+}
+@media (max-width: 650px) {
+  #deeper-thoughts > .section-kicker,
+  #deeper-thoughts > h2,
+  #deeper-thoughts > .hub-lead,
+  #deeper-thoughts > .hub-grid { margin-inline: 22px; }
+}

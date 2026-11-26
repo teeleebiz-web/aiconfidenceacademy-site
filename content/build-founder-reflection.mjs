@@ -9,7 +9,17 @@ const script = await readFile(new URL('./founder-reflection.txt', import.meta.ur
 const transcript = script.trim().split(/\n\s*\n/).map(p => `<p>${escape(p)}</p>`).join('');
 const mark = (name, html) => `<!-- founder-reflection:${name}:start -->${html}<!-- founder-reflection:${name}:end -->`;
 const remove = (html, name) => html.replace(new RegExp(`<!-- founder-reflection:${name}:start -->[\\s\\S]*?<!-- founder-reflection:${name}:end -->`, 'g'), '');
-const feature = (level = 3) => `<article class="founder-feature topic-video-card" aria-labelledby="founder-reflection-title"><header><p class="section-kicker" id="founder-reflection-title" role="heading" aria-level="${level}">A Founder’s Perspective</p><p class="founder-deck">${subtitle}</p></header><div class="founder-film"><video id="founder-reflection-video" data-aca-caption-player controls playsinline preload="metadata" width="1920" height="1080" poster="${media}/opening.webp" data-hls="${media}/film.m3u8" aria-label="${title}"><source src="${media}/film.m3u8" type="application/vnd.apple.mpegurl"/><track kind="captions" src="${media}/captions-en.vtt" srclang="en" label="English" default/>Your browser does not support video playback.</video><button class="founder-start" type="button" aria-label="Play ${title}" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M18 11 38 24 18 37Z" fill="currentColor"/></svg></button></div><p class="topic-video-error" role="status" hidden>The video could not load. Please refresh to try again, or read the reflection below.</p><div class="founder-follow"><a href="/library/when-ai-says-it-is-done/">Explore the book behind this reflection <span aria-hidden="true">→</span></a></div><details class="founder-transcript"><summary>Read the reflection</summary><div>${transcript}</div></details></article>`;
+const stackedFeature = (level = 3) => `<article class="founder-feature topic-video-card" aria-labelledby="founder-reflection-title"><header><p class="section-kicker" id="founder-reflection-title" role="heading" aria-level="${level}">A Founder’s Perspective</p><p class="founder-deck">${subtitle}</p></header><div class="founder-film"><video id="founder-reflection-video" data-aca-caption-player controls playsinline preload="metadata" width="1920" height="1080" poster="${media}/opening.webp" data-hls="${media}/film.m3u8" aria-label="${title}"><source src="${media}/film.m3u8" type="application/vnd.apple.mpegurl"/><track kind="captions" src="${media}/captions-en.vtt" srclang="en" label="English" default/>Your browser does not support video playback.</video><button class="founder-start" type="button" aria-label="Play ${title}" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M18 11 38 24 18 37Z" fill="currentColor"/></svg></button></div><p class="topic-video-error" role="status" hidden>The video could not load. Please refresh to try again, or read the reflection below.</p><div class="founder-follow"><a href="/library/when-ai-says-it-is-done/">Explore the book behind this reflection <span aria-hidden="true">→</span></a></div><details class="founder-transcript"><summary>Read the reflection</summary><div>${transcript}</div></details></article>`;
+// Explore uses the same responsive panel as Home and Enrollment.
+function feature(level = 3) {
+  const html = stackedFeature(level);
+  if (level !== 3) return html;
+  const film = html.match(/<div class="founder-film">[\s\S]*?<\/button><\/div>/)[0];
+  const error = html.match(/<p class="topic-video-error"[\s\S]*?<\/p>/)[0];
+  const follow = html.match(/<div class="founder-follow">[\s\S]*?<\/div>/)[0];
+  const details = html.match(/<details[\s\S]*?<\/details>/)[0];
+  return `<article class="founder-feature topic-video-card home-introduction" aria-labelledby="founder-reflection-title"><div class="home-introduction-copy"><h3 class="founder-panel-title" id="founder-reflection-title">A Founder’s Perspective</h3><p class="home-introduction-caption">${subtitle}</p>${follow}${details}</div><div class="home-introduction-frame">${film}${error}</div></article>`;
+}
 const invitation = `<a class="founder-invitation" href="${destination}"><img src="${media}/opening.webp" width="1672" height="941" alt="" loading="lazy"/><div><p class="section-kicker">A Founder’s Perspective</p><h2>${title}</h2><p>${subtitle}</p><span>Watch or read the reflection <span aria-hidden="true">→</span></span></div></a>`;
 function styles(html) {
   if (!html.includes('/assets/founder-reflection.css')) html = html.replace('</head>', '<link rel="stylesheet" href="/assets/founder-reflection.css?v=2"/></head>');
@@ -31,6 +41,12 @@ async function update(file, name, anchor, insertion) {
 }
 const lead = '<p class="hub-lead">Ideas about human judgment, participation, and the kind of confidence worth building.</p>';
 await update('explore/index.html', 'feature', lead, html => lead + html);
+let framedExplore = await readFile('explore/index.html', 'utf8');
+for (const href of ['/assets/home-introduction-framed.css?v=1', '/assets/explore-founder-framed.css?v=1']) {
+  if (!framedExplore.includes(href.split('?')[0])) framedExplore = framedExplore.replace('</head>', `<link rel="stylesheet" href="${href}"/></head>`);
+}
+await writeFile('explore/index.html', framedExplore);
+
 // Keep the founder-approved section swap when the editorial hub is rebuilt.
 let explore = await readFile('explore/index.html', 'utf8');
 const intro = /<section class="hub-intro\b[^>]*>[\s\S]*?<\/section>/.exec(explore);
@@ -51,7 +67,7 @@ book = book.replace('<h2>Related reading</h2>', '<h2>Related reading</h2>' + mar
 await writeFile('library/when-ai-says-it-is-done/index.html', book);
 
 const source = await readFile('explore/index.html', 'utf8');
-let page = source.replace(/<main(?:\s[^>]*)?>[\s\S]*?<\/main>/, `<main><section class="founder-page section-pad"><a class="founder-back" href="/explore/">← Explore AI</a>${feature(1)}</section></main>`);
+let page = source.replace(/<link rel="stylesheet" href="\/assets\/(?:home-introduction-framed|explore-founder-framed)\.css\?v=1"\/>/g, '').replace(/<main(?:\s[^>]*)?>[\s\S]*?<\/main>/, `<main><section class="founder-page section-pad"><a class="founder-back" href="/explore/">← Explore AI</a>${feature(1)}</section></main>`);
 page = page.replace(/<title>[\s\S]*?<\/title>/, `<title>${title} | AI Confidence Academy</title>`).replace(/<meta name="description" content="[^"]*"\s*\/?\s*>/, `<meta name="description" content="${subtitle}"/>`);
 await mkdir(`.${destination}`, { recursive: true });
 await writeFile(`.${destination}index.html`, page);
