@@ -1,3 +1,25 @@
+## Homepage Education and AI opening card — November 26, 2026
+
+Terrence selected the second revised design: open book, AI tablet, official
+ACA seal and navy/gold library, with no people. This replaces the homepage
+welcome poster and the complete existing three-second opening card. The
+332.28-second film, four-presenter sequence, caption track and playback sizing
+remain. The home player restores the selected poster after the natural end.
+Our Story receives no change in playback behavior.
+
+Based on `d04a368`, only the first two HLS segments (0–12 seconds) are rendered
+again because the three-second card crosses their boundary. Only the first
+three seconds receive new imagery. Matching H.264 decoder configuration uses
+the existing init segment; all 560 audio packets and timestamps and all 300
+video presentation times match. The remaining 33 original segments are reused
+byte for byte. Poster, playlist and home script URLs have updated cache versions.
+
+Local checks: complete first-12-second decode without errors, visual frames
+across the card/presenter transition, matched media timing/audio hashes,
+unchanged remainder of playlist, JS syntax, native/HLS home reset checks and
+unchanged Our Story initialization, and diff checks passed. Publication and
+live browser playback/reset verification are pending at this checkpoint.
+
 ## Founder video copy cleanup — November 26, 2026
 
 Terrence requested removal of the repeated large title above the opening card
