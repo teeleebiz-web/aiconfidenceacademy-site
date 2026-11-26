@@ -19,14 +19,20 @@ Local validation: complete MP4 and 16-second HLS opening/transition decode
 without errors, boundary frame review, exact packet comparisons, and retained
 0.8–8-second MP4 presenter SSIM 0.992910. The mobile output is 43,126,463 bytes,
 SHA-256 `f477a7b3d86c961a14777dd973f22dc257ab4394053c7aec26f14703074fdad9`.
-The first HLS segment is 4,816,385 bytes, SHA-256
-`bce87a3fef5a5e1b9bbfdf9d314b7f45f1a298f64d299c73d499f96df1b48084`.
+The first HLS segment is 4,833,093 bytes, SHA-256
+`69bcd5bdba6dc14627c4d0351f37425c82c3045bb47463ef91263b4f1420c01c`.
 
 Use the existing one-time media publication pattern: reconstruct the locally
 verified MP4 on an isolated branch from a source-hash-checked binary patch,
 require the exact output hash, remove the temporary workflow/staging assets,
-then review and merge only the final media/page/reference changes. No recurring
-workflow or runtime dependency is added. Publication/live checks are pending.
+then review and merge only the final media/page/reference changes. Run
+`45804013073` succeeded, and the uploaded MP4 Git blob matches the local output.
+The final HLS render additionally normalizes input video timestamps and fixes
+30 fps explicitly; retained presenter SSIM is 0.994671, and frame 24 begins
+Anna's presentation without an added or dropped frame. All five public-output
+protection checks pass. The temporary publisher and patch are removed before
+review; no recurring workflow or runtime dependency is added. Publication/live
+checks are pending.
 
 ## Our Story conversation opening card — November 26, 2026
 
