@@ -18,7 +18,20 @@ Local verification: the 11-second opening and transition decode without errors;
 frame review confirms the new card through frame 74 and the unchanged presenter
 from frame 75. Audio packet hashes/timing and all 75 frame times match. The
 remaining playlist lines and all controls/caption sources are unchanged.
-Publication and live playback verification are pending.
+Released through PR #149 as `64ef93d32896477de712b2e85db973d46f0656e2`.
+The exact PR build passed on Vercel; application CI is path-filtered and was
+not triggered by this media-only change. All five local public-protection
+checks passed. Pages build/deploy/report run `45797013197` succeeded.
+Production Vercel `dpl_4xRTtquAuLQBABEVpUMtBv5FkCVn` is READY.
+
+The connected Edge browser timed out during the post-release check. Public
+Chrome verification succeeded: new poster and versioned playlist loaded,
+playback advanced past the opening to 12.07 seconds with readyState 4 and no
+media error, and captions remained showing. Seeking to one second displayed
+the selected conversation card with the existing seal. Seeking to 308 seconds
+showed the unchanged closing card; playing to the end restored the new opening
+at time zero, paused and readyState 4. The page was left ready for review.
+No new full-film listening or physical-mobile pass is claimed.
 
 ## All website videos: seal and captions on — November 26, 2026
 
