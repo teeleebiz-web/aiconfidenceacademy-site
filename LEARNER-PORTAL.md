@@ -20,18 +20,32 @@ caption links and the seal, retaining its native controls without custom CC.
 
 Local evidence: typecheck and both production builds pass. The full portal suite
 passed 598 tests (one opt-in live fixture skipped), followed by all 14 focused
-player tests including the new source/renewal check. The backend suite's only
-failures were three Lesson 1.1 media-presence checks in the sparse checkout;
-all five acceptance checks passed after materializing the unchanged reference
-files and generated styles. The combined release checks passed all 39 tests.
+player tests including the new source/renewal check. After materializing the
+unchanged Lesson 1.1 reference files and generated styles in the sparse checkout,
+the complete backend suite passed all 272 tests and all five acceptance checks
+passed. The combined release checks passed all 39 tests.
 Public markup audit covers all 15 player instances across six routes, including
 all four burned-in-caption walkthroughs. Owner-caption and public-protection
 checks passed. Current generated portal/control-center entries accompany the
 source for the established Pages publication route.
 
-Publication, CI and live desktop/mobile/fullscreen checks are pending. No new
-full-film listening audit is claimed. Continue from this branch and preserve
-all previous welcome-card replacements and private publication records below.
+Published through PR #148, squash commit
+`366cc7c70db7179bfd8894fd9e5c5b7c3a92890b`, after Terrence explicitly approved
+publication to the existing public repository and website. PR checks
+`45788109565` and acceptance `45788109626` passed. Main CI `45789191026`
+passed all three jobs. Pages build/deploy/report `45789190917` succeeded.
+Production Vercel deployment `dpl_5BJGQ1U66Xi53ZNVLLVRp3xRoahe` is READY
+with the existing checkout domain assigned.
+
+Live Edge homepage verification confirmed version-3 player code, default
+English text track showing, CC pressed, playback readyState 4, and one visible
+32-pixel seal on a 640-pixel picture after playback started. The existing
+Video Library reference seal was visually reviewed before implementation.
+The browser connection subsequently timed out, so post-release curriculum,
+mobile and fullscreen browser checks remain unverified; automated coverage
+is not represented as those live checks. The protected Vercel preview returned
+401; protection was retained. No new full-film listening audit is claimed.
+Preserve all previous welcome-card replacements and private records below.
 
 ## Phase One doorway welcome card — November 26, 2026
 
