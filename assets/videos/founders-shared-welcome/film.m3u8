@@ -5,7 +5,7 @@
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXT-X-MAP:URI="init-av-fixed.mp4"
 #EXTINF:3.000000,
-av-fixed-000.m4s
+opening-conversation-000.m4s
 #EXTINF:8.000000,
 av-fixed-001.m4s
 #EXTINF:8.000000,
