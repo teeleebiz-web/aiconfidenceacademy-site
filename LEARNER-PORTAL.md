@@ -20,8 +20,15 @@ workflow and publication ledger. Current ledger key:
 No learner UI, curriculum text, caption timing, access or player behavior changes.
 
 Signed-in owner access to the exact current film was verified before editing.
-Publication, downloaded-byte verification and live updated playback remain
-pending until the new ledger entry is verified. Existing earlier publication
+Released through PR #147 as `841b97b8aea6d3698a1c5478fe73f99e70857405`.
+PR checks `45783228161` passed all three jobs. Private publication run
+`45784036435` succeeded; downloaded target bytes matched the exact output hash
+above. The ledger is verified at 2026-11-26 08:39:26 UTC. The predecessor is
+retained privately as `ACA_Welcome_before_doorway_card_20261126.mp4`.
+The local replacement passed full decode and opening transition frame review.
+The connected browser became unavailable before the final updated-page check;
+no post-publication browser playback or full-film listening pass is claimed.
+The requested image replacement is published. Existing earlier publication
 records remain historical evidence and must not be reused to overwrite this
 newer approved welcome.
 
