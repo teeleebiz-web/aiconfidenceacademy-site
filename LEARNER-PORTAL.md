@@ -15,7 +15,16 @@ readable copy and visible CC controls. Preview playback reached 7.03 seconds,
 readyState 4, captions showing, without a media error. Video markup is identical
 apart from removal of its inline sizing; the rest of the HTML is identical
 apart from the existing stylesheet link. All five public-output protection
-tests and git diff checks pass. Publication and live layout verification pending.
+tests and git diff checks pass.
+
+Released through PR #151 as `bd4f83d9c67941f44df0631a5665b512322d8153`.
+Both exact-commit Vercel PR checks passed. Pages build/deploy run `45812014311`
+completed successfully. Live `/enroll/` now renders the shared bordered panel,
+Phase One & Phase Two description and 635.59375px video at a 1363px viewport,
+matching Home exactly. Live playback reached 15.63 seconds with readyState 4,
+captions showing and no media error; seeking back displays the approved card.
+Screenshot: `/workspace/shared/enrollment-framed-live.jpg`.
+The temporary local QA server is stopped. No media or payment changes occurred.
 
 ## Enrollment generations opening card — November 26, 2026
 
