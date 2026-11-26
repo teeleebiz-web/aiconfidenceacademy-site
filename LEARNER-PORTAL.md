@@ -17,8 +17,19 @@ byte for byte. Poster, playlist and home script URLs have updated cache versions
 Local checks: complete first-12-second decode without errors, visual frames
 across the card/presenter transition, matched media timing/audio hashes,
 unchanged remainder of playlist, JS syntax, native/HLS home reset checks and
-unchanged Our Story initialization, and diff checks passed. Publication and
-live browser playback/reset verification are pending at this checkpoint.
+unchanged Our Story initialization, and diff checks passed. The splice into
+unchanged footage at 12 seconds also decoded without errors. The re-encoded
+presenter interval has SSIM 0.9905 against the original.
+
+Released through PR #146 as `4269c25270f6e6a29e851d77ef43707d0bea0523`.
+Pages build/deploy `45774217596` succeeded. Live Edge showed the selected card,
+played through the opening and beyond the 12-second splice with readyState 4
+and no media error, and enabled/disabled the existing CC control. Seeking to
+the final presenter then playing to the natural end restored the selected
+poster, paused state and time zero. Replay also advanced normally. The page
+was reloaded to its default captions-off opening and left ready for review.
+No new mobile-device or full-film listening pass is claimed; caption timing
+and source remain unchanged. This requested card replacement is complete.
 
 ## Founder video copy cleanup — November 26, 2026
 
