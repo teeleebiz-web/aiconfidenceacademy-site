@@ -1,4 +1,4 @@
-.founder-feature{max-width:900px;margin:2rem auto 2.5rem;background:#fffdf7;border:1px solid #d6c398;border-radius:14px;overflow:hidden;box-shadow:0 12px 32px #1425370d;color:#142537}
+.founder-feature{max-width:642px;margin:2rem auto 2.5rem;background:#fffdf7;border:1px solid #d6c398;border-radius:14px;overflow:hidden;box-shadow:0 12px 32px #1425370d;color:#142537}
 .founder-feature header{padding:clamp(20px,3vw,36px) clamp(20px,3vw,40px) 24px}
 .founder-feature header h1,.founder-feature header h3{font-family:Georgia,serif;font-weight:500;font-size:clamp(1.8rem,3vw,2.65rem);line-height:1.16;max-width:850px;margin:12px 0 16px}
 .founder-deck{max-width:760px;line-height:1.65;font-size:1.08rem;margin:0;color:#475363}
