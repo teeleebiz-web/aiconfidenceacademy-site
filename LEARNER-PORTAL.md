@@ -1,3 +1,19 @@
+## Explore AI founder video framing — November 26, 2026
+
+Terrence requested that the Explore AI founder video match Enrollment’s framed,
+side-by-side presentation. Reuse `home-introduction-framed.css` for panel sizing,
+columns, border, padding and mobile stacking. Move the existing heading,
+description, book link and expandable transcript into the adjacent copy column.
+The video, source, caption track, poster, play/reset controls and wording are
+unchanged. The standalone reflection page and other public pages are unchanged.
+The founder-reflection generator preserves this layout on future rebuilds.
+
+Base main: `6438f60da33b992cd67e386ce11b78b5652e0f0a`.
+Validation: generator syntax and idempotence, exact preservation of video,
+caption track, transcript and book-link markup, five public-output protection
+tests, and diff whitespace check pass. Hosted visual preview and live release
+verification are the next checks; the cloud browser cannot reach local preview.
+
 ## Enrollment video presentation consistency — November 26, 2026
 
 Terrence identified that Enrollment stood alone at a larger size without the
