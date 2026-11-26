@@ -11,8 +11,17 @@ The founder-reflection generator preserves this layout on future rebuilds.
 Base main: `6438f60da33b992cd67e386ce11b78b5652e0f0a`.
 Validation: generator syntax and idempotence, exact preservation of video,
 caption track, transcript and book-link markup, five public-output protection
-tests, and diff whitespace check pass. Hosted visual preview and live release
-verification are the next checks; the cloud browser cannot reach local preview.
+tests, and diff whitespace check pass. Released through PR #152 as
+`aee15b35f651d048ea16261bc3a8b89380ef62cb`; Pages run `45841372071`
+completed successfully. The active Vercel build also completed. The hosted
+preview browser refused access, so visual verification used the public page.
+At a 1363px desktop viewport, the live panel is 1200px and its video is
+635.59375px wide, exactly matching Enrollment. Screenshot inspection confirms
+the heading, description, book link and transcript disclosure beside the video
+inside one bordered panel. Playback reached 7.37 seconds, readyState 4, captions
+showing and no media error. Narrow layouts inherit the existing shared responsive
+rules; no physical-phone or narrow-viewport browser pass is claimed. No remaining
+source or deployment work for this change.
 
 ## Enrollment video presentation consistency — November 26, 2026
 
