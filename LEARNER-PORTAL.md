@@ -1,3 +1,22 @@
+## Enrollment video presentation consistency — November 26, 2026
+
+Terrence identified that Enrollment stood alone at a larger size without the
+established bordered panel and explanatory copy. Reuse Home's existing
+`home-introduction-framed.css` and its exact panel, copy and frame classes.
+Keep Enrollment Overview, add the Phase One & Phase Two label and a concise
+orientation description, and remove its standalone inline sizing. No media,
+caption, player, payment, eligibility or other page changes are included.
+Base main: `ea0541d5d5b99e242229b1ea8050bccc8519af17`.
+
+Live baseline at a 1363px viewport: Enrollment video 680px; Home 635.59375px.
+The local browser preview matches Home exactly at 635.59375px. Narrow 390px
+and 768px iframe viewport checks show the existing responsive stacked panel,
+readable copy and visible CC controls. Preview playback reached 7.03 seconds,
+readyState 4, captions showing, without a media error. Video markup is identical
+apart from removal of its inline sizing; the rest of the HTML is identical
+apart from the existing stylesheet link. All five public-output protection
+tests and git diff checks pass. Publication and live layout verification pending.
+
 ## Enrollment generations opening card — November 26, 2026
 
 Terrence selected the revised enrollment image with a young adult woman,
