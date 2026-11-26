@@ -2,7 +2,9 @@
 export function bindCaptionControl(video, render) {
   const tracks = () => Array.from(video.textTracks).filter(track =>
     track.kind === 'captions' || track.kind === 'subtitles');
-  let choice = null;
+  let choice = true;
+  const sourceKey = () => (video.dataset.hls || video.getAttribute('src') || video.querySelector('source')?.getAttribute('src') || '').split('?')[0];
+  let source = sourceKey();
   const sync = () => {
     const elements = Array.from(video.querySelectorAll('track[kind="captions"], track[kind="subtitles"]'));
     const available = tracks();
@@ -22,15 +24,20 @@ export function bindCaptionControl(video, render) {
     if (tracks().length) choice = tracks().some(track => track.mode === 'showing');
     sync();
   };
-  const added = () => { if (choice !== null) apply(); sync(); };
+  const added = () => {
+    const next = sourceKey();
+    if (next !== source) { source = next; choice = true; }
+    apply(); sync();
+  };
   const observer = new MutationObserver(added);
   observer.observe(video, { childList: true, subtree: true, attributes: true, attributeFilter: ['src', 'kind', 'default'] });
   video.textTracks.addEventListener?.('change', changed);
   video.textTracks.addEventListener?.('addtrack', added);
   video.textTracks.addEventListener?.('removetrack', sync);
-  video.addEventListener('loadedmetadata', sync);
+  video.addEventListener('loadedmetadata', added);
   video.addEventListener('load', sync, true);
   video.addEventListener('error', sync, true);
+  apply();
   sync();
   return {
     toggle() {
@@ -43,11 +50,46 @@ export function bindCaptionControl(video, render) {
       video.textTracks.removeEventListener?.('change', changed);
       video.textTracks.removeEventListener?.('addtrack', added);
       video.textTracks.removeEventListener?.('removetrack', sync);
-      video.removeEventListener('loadedmetadata', sync);
+      video.removeEventListener('loadedmetadata', added);
       video.removeEventListener('load', sync, true);
       video.removeEventListener('error', sync, true);
     },
   };
+}
+
+
+export function mountVideoSeal(video, frame) {
+  if (video.dataset.acaSeal === 'embedded') return { destroy() {} };
+  const seal = document.createElement('img');
+  seal.className = 'aca-video-seal';
+  seal.src = '/aca-official-seal.png';
+  seal.alt = '';
+  seal.setAttribute('aria-hidden', 'true');
+  frame.append(seal);
+  const position = () => {
+    const rect = video.getBoundingClientRect();
+    const parent = frame.getBoundingClientRect();
+    const ratio = video.videoWidth && video.videoHeight ? video.videoWidth / video.videoHeight : rect.width / rect.height;
+    const width = Math.min(rect.width, rect.height * ratio) || rect.width;
+    const height = width / ratio || rect.height;
+    seal.style.width = `${width * 0.05}px`;
+    seal.style.left = `${rect.left - parent.left + (rect.width - width) / 2 + width * 0.02}px`;
+    seal.style.top = `${rect.top - parent.top + (rect.height - height) / 2 + width * 0.015}px`;
+    // Keep the approved opening/closing poster unobstructed.
+    seal.hidden = video.readyState < 2 || video.currentTime === 0 || video.ended;
+  };
+  const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(position);
+  observer?.observe(video);
+  const events = ['loadedmetadata', 'loadeddata', 'timeupdate', 'emptied', 'ended'];
+  events.forEach(event => video.addEventListener(event, position));
+  document.addEventListener('fullscreenchange', position);
+  position();
+  return { destroy() {
+    observer?.disconnect();
+    events.forEach(event => video.removeEventListener(event, position));
+    document.removeEventListener('fullscreenchange', position);
+    seal.remove();
+  } };
 }
 
 const icon = (name, paths) => `<svg class="aca-icon-${name}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">${paths}</svg>`;
@@ -81,6 +123,7 @@ function loadPlayerUI() { return uiPromise ??= import('./vendor/aca-media-ui-10.
 /** Enhance the existing video only after the accessible controls load. */
 export function mountPlaybackControls(video, host, loadUI = loadPlayerUI) {
   let disposed = false;
+  const seal = mountVideoSeal(video, video.parentElement);
   const originalControls = video.controls;
   const originalTabIndex = video.getAttribute('tabindex');
   const listeners = [];
@@ -123,6 +166,7 @@ export function mountPlaybackControls(video, host, loadUI = loadPlayerUI) {
   return { ready, destroy() {
     disposed = true;
     captions.destroy();
+    seal.destroy();
     listeners.forEach(remove => remove());
     host.replaceChildren();
     video.controls = originalControls;

@@ -80,9 +80,10 @@ familiarity with a website convention, icon or hidden menu.
   bar, superseding the bulky separate button beneath the video. Keep CC visible
   without an overflow menu, synchronized with the native text track, keyboard
   accessible, and with a generous tap target around its small visual icon.
-  Lessons and demonstrations start on; welcomes and presenter introductions
-  start off. Preserve the already approved Video Library presenter default-on
-  exception. Burned-in captions cannot be switched off; do not imply otherwise.
+  November 26 update: every video starts with synchronized captions on, including
+  welcomes and presenter introductions. Retain existing CC controls and do not
+  add CC controls to players that do not already have them. Match the small
+  upper-left Video Library ACA seal throughout the website; preserve embedded seals. Burned-in captions cannot be switched off; do not imply otherwise.
 - Recommend useful contemporary improvements when evidence supports a better
   learner experience. Premium means polished, understandable and accessible;
   additional features must serve learners. Suggestions do not authorize unrelated

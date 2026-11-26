@@ -222,6 +222,7 @@ test('owner inspection resolves the current Phase Two introductions and nested o
    await writeFile(join(folder,'demo.mp4'),'synthetic')
    await writeFile(join(folder,'production-report.json'),JSON.stringify({guided_audio:{file:'guided.m4a'},demonstrations:[{title:'Practice',file:'demo.mp4'}]}))
    if(variant==='-v2') await writeFile(join(folder,'intro-v2-manifest.json'),JSON.stringify({lesson:page,intro_closing:"Let's begin.",instructor_voice_id:'ac277b338cf64d8b9686784c43c563da',video_file:intro,captions_file:intro.replace('.mp4','.vtt'),poster_file:'poster-v2.webp'}))
+   c.db.storage={from:()=>({createSignedUrls:async paths=>({data:paths.map(path=>({path,signedUrl:'https://private.test/'+path}))})})}
    c.tables.courses[0].phase_number=2
    c.tables.lessons=[{id:requestId,course_id:actor,page_id:page,title:'Synthetic lesson',content:{phase_two_production:{outcomes:['Assess evidence']}}}]
    const r=await run(handleControlCenter,{...c,root},{url:`/api/operations/control-center?lesson=${requestId}`})
@@ -229,6 +230,8 @@ test('owner inspection resolves the current Phase Two introductions and nested o
    assert.deepEqual(r.body.outcomes,['Assess evidence'])
    assert.equal(r.body.media.length,3)
    assert.ok(r.body.media.find(m=>m.label==='Instructor introduction').url.endsWith('/'+intro))
+   const caption=intro.replace('.mp4',variant==='-v2'?'.vtt':'.en.vtt')
+   assert.ok(r.body.media.find(m=>m.label==='Instructor introduction').captions_url.endsWith('/'+caption))
   }
  } finally {await rm(root,{recursive:true,force:true})}
 })

@@ -2,3 +2,5 @@ export type CaptionState = { available: boolean; enabled: boolean; on: boolean; 
 export function bindCaptionControl(video: HTMLVideoElement, render: (state: CaptionState) => void): { toggle: () => void; destroy: () => void }
 export const playbackBarMarkup: string
 export function mountPlaybackControls(video: HTMLVideoElement, host: HTMLElement, loadUI?: () => Promise<unknown>): { ready: Promise<void>; destroy: () => void }
+
+export function mountVideoSeal(video: HTMLVideoElement, frame: HTMLElement): { destroy: () => void }

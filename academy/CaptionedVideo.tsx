@@ -1,6 +1,6 @@
 import { createElement, forwardRef, useEffect, useId, useImperativeHandle, useRef } from 'react'
 import type { ComponentPropsWithoutRef } from 'react'
-import { mountPlaybackControls } from '../assets/caption-controls.js'
+import { mountPlaybackControls, mountVideoSeal, bindCaptionControl } from '../assets/caption-controls.js'
 import '../assets/caption-controls.css'
 
 /** The original media element, with CC integrated into its playback bar. */
@@ -22,3 +22,19 @@ export const CaptionedVideo = forwardRef<HTMLVideoElement, ComponentPropsWithout
     )
   },
 )
+
+/** Owner inspection keeps its original native player; no custom CC is added. */
+export function InspectionVideo({ src, captions }: { src: string; captions?: string }) {
+  const video = useRef<HTMLVideoElement>(null)
+  const frame = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const seal = mountVideoSeal(video.current!, frame.current!)
+    const captions = bindCaptionControl(video.current!, () => {})
+    return () => { seal.destroy(); captions.destroy() }
+  }, [src])
+  return <div className="aca-player-frame" ref={frame}>
+    <video ref={video} controls crossOrigin="anonymous" preload="metadata" src={src}>
+      {captions ? <track kind="captions" src={captions} srcLang="en" label="English" default /> : null}
+    </video>
+  </div>
+}
