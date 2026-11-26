@@ -17,9 +17,16 @@ preserves the section swap and remains idempotent across all five pages.
 Source verification: generator syntax, exact section-content preservation and
 swap order, unchanged video markup, single player ID, five-page idempotence,
 stylesheet versions, and git diff checks passed. Existing live Edge measurements
-were 640px for the home video and about 899px for the founder video. Release
-verification must check `/explore/` and its Deeper thoughts direct view after
-publication, including the smaller player, captions and existing book link.
+were 640px for the home video and about 899px for the founder video. Released through PR #144 at
+`e4f5efd1b7c1c849d99df58ae6f31a9d555dd250`. Pages run `45762790684` passed and
+Vercel production `dpl_4FWQuZC9sSBHS4YatU374svMYAq8` is READY. Live Edge
+confirmed hero → Deeper thoughts → Quick answers → Choose your path. Both
+Explore and the dedicated reflection page render a 640.67px video (homepage
+reference: 640.03px at the same viewport). Playback reached readyState 4 and
+advanced past 15 seconds; CC toggled on and pause worked. The original poster,
+book link, transcript and fullscreen control remain present. The browser's
+phone viewport override did not apply, so no new phone-size visual pass is
+claimed. The approved page is left at its opening for review.
 No curriculum, backend, media files or shared player controls were edited.
 
 ## Founder reflection video — November 25, 2026
