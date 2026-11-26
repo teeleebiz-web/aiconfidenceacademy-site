@@ -14,7 +14,8 @@ const stackedFeature = (level = 3) => `<article class="founder-feature topic-vid
 function feature(level = 3) {
   const html = stackedFeature(level);
   if (level !== 3) return html;
-  const film = html.match(/<div class="founder-film">[\s\S]*?<\/button><\/div>/)[0];
+  const film = html.match(/<div class="founder-film">[\s\S]*?<\/button><\/div>/)[0]
+    .replace(`${media}/opening.webp`, `${media}/opening-clean.webp`);
   const error = html.match(/<p class="topic-video-error"[\s\S]*?<\/p>/)[0];
   const follow = html.match(/<div class="founder-follow">[\s\S]*?<\/div>/)[0];
   const details = html.match(/<details[\s\S]*?<\/details>/)[0];
