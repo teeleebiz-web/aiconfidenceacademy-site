@@ -1,3 +1,39 @@
+## Enrollment generations opening card — November 26, 2026
+
+Terrence selected the revised enrollment image with a young adult woman,
+middle-aged man and older gentleman learning together. Replace only the existing
+0.8-second beginning card and matching poster. Preserve the complete narration,
+Anna presentation, November 22 branch correction, closing card, player/reset
+behavior, seal, captions and enrollment/payment behavior. Base main:
+`a0d120bbb66cc1a801bdb43a0ff68007d5cefd8d`.
+
+Both established formats are covered: 720p MP4 and 1080p HLS. The 24-frame card
+remains 0.8 seconds at 30 fps. Re-encode only the first eight-second GOP; the
+original decoder configurations match exactly. All 6,568 frame presentation
+times match. All 10,265 AAC packets and all 6,328 later MP4 video packets match
+original hashes, sizes and timestamps. HLS preserves all 373 opening AAC
+packets and the original init and 27 later segments. MP4 duration remains
+218.948 seconds; HLS playlist duration remains 218.933333 seconds.
+
+Local validation: complete MP4 and 16-second HLS opening/transition decode
+without errors, boundary frame review, exact packet comparisons, and retained
+0.8–8-second MP4 presenter SSIM 0.992910. The mobile output is 43,126,463 bytes,
+SHA-256 `f477a7b3d86c961a14777dd973f22dc257ab4394053c7aec26f14703074fdad9`.
+The first HLS segment is 4,833,093 bytes, SHA-256
+`69bcd5bdba6dc14627c4d0351f37425c82c3045bb47463ef91263b4f1420c01c`.
+
+Use the existing one-time media publication pattern: reconstruct the locally
+verified MP4 on an isolated branch from a source-hash-checked binary patch,
+require the exact output hash, remove the temporary workflow/staging assets,
+then review and merge only the final media/page/reference changes. Run
+`45804013073` succeeded, and the uploaded MP4 Git blob matches the local output.
+The final HLS render additionally normalizes input video timestamps and fixes
+30 fps explicitly; retained presenter SSIM is 0.994671, and frame 24 begins
+Anna's presentation without an added or dropped frame. All five public-output
+protection checks pass. The temporary publisher and patch are removed before
+review; no recurring workflow or runtime dependency is added. Publication/live
+checks are pending.
+
 ## Our Story conversation opening card — November 26, 2026
 
 Terrence selected the two-chair warm-library image for Our Story. Only the
