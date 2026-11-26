@@ -1,3 +1,38 @@
+## All website videos: seal and captions on — November 26, 2026
+
+Terrence authorized the small upper-left ACA seal on every website video and
+synchronized captions on by default, including welcomes and introductions.
+Keep existing CC switches; do not add a custom CC control to other players.
+This supersedes all earlier introduction/welcome default-off guidance below.
+
+Based on main `5da59664a6207a2106472bbb1fb23d20f2dc6d80`, the shared player
+adds the existing official seal at 5% picture width, 2% left / 1.5% top inset.
+It follows the picture inside letterboxed fullscreen, does not intercept clicks,
+and hides when the approved poster is restored. The ten Video Library films
+retain their embedded seals without a second overlay. Added seals are website
+player overlays; they are not burned into the media bytes and do not accompany
+native picture-in-picture, native video-only fullscreen or downloaded files.
+The existing recordings, timing, caption cues, opening/closing cards and access
+policies are retained. The default change supports delayed private tracks,
+keeps an off choice during signed-link renewal, and turns captions on for a
+new video source. The owner inspector now receives the existing authorized
+caption links and the seal, retaining its native controls without custom CC.
+
+Local evidence: typecheck and both production builds pass. The full portal suite
+passed 598 tests (one opt-in live fixture skipped), followed by all 14 focused
+player tests including the new source/renewal check. The backend suite's only
+failures were three Lesson 1.1 media-presence checks in the sparse checkout;
+all five acceptance checks passed after materializing the unchanged reference
+files and generated styles. The combined release checks passed all 39 tests.
+Public markup audit covers all 15 player instances across six routes, including
+all four burned-in-caption walkthroughs. Owner-caption and public-protection
+checks passed. Current generated portal/control-center entries accompany the
+source for the established Pages publication route.
+
+Publication, CI and live desktop/mobile/fullscreen checks are pending. No new
+full-film listening audit is claimed. Continue from this branch and preserve
+all previous welcome-card replacements and private publication records below.
+
 ## Phase One doorway welcome card — November 26, 2026
 
 Terrence selected option three, Entering the Academy: navy/gold seal wall and

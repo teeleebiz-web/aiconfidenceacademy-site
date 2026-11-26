@@ -59,37 +59,44 @@
     "file": "assets/supabase-Z9No2zg3.js",
     "name": "supabase"
   },
-  "_usePageStart-DaXnocVc.js": {
-    "file": "assets/usePageStart-DaXnocVc.js",
+  "_usePageStart-CHG4-Z88.css": {
+    "file": "assets/usePageStart-CHG4-Z88.css",
+    "src": "_usePageStart-CHG4-Z88.css"
+  },
+  "_usePageStart-DRM0vsgK.js": {
+    "file": "assets/usePageStart-DRM0vsgK.js",
     "name": "usePageStart",
     "imports": [
-      "_jsx-runtime-Cltr0gcK.js"
-    ]
-  },
-  "_workbook-CSpAcSKT.js": {
-    "file": "assets/workbook-CSpAcSKT.js",
-    "name": "workbook",
-    "imports": [
       "_jsx-runtime-Cltr0gcK.js",
-      "_preload-helper-OpGwMzNl.js",
-      "_supabase-Z9No2zg3.js"
+      "_preload-helper-OpGwMzNl.js"
     ],
     "dynamicImports": [
       "../assets/vendor/aca-media-ui-10.6.0.js"
     ],
     "css": [
-      "assets/workbook-Ctk1FW4B.css"
+      "assets/usePageStart-CHG4-Z88.css"
+    ]
+  },
+  "_workbook-Dk7a6hsD.js": {
+    "file": "assets/workbook-Dk7a6hsD.js",
+    "name": "workbook",
+    "imports": [
+      "_jsx-runtime-Cltr0gcK.js",
+      "_supabase-Z9No2zg3.js"
+    ],
+    "css": [
+      "assets/workbook-IttDVsJQ.css"
     ],
     "assets": [
       "assets/aca-official-seal-VflxWHIT.png"
     ]
   },
-  "_workbook-Ctk1FW4B.css": {
-    "file": "assets/workbook-Ctk1FW4B.css",
-    "src": "_workbook-Ctk1FW4B.css"
+  "_workbook-IttDVsJQ.css": {
+    "file": "assets/workbook-IttDVsJQ.css",
+    "src": "_workbook-IttDVsJQ.css"
   },
   "index.html": {
-    "file": "assets/index-B3RBitAj.js",
+    "file": "assets/index-gNjKR4lr.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
@@ -103,17 +110,17 @@
     ]
   },
   "src/App.tsx": {
-    "file": "assets/App-DMPeajl1.js",
+    "file": "assets/App-FXavfoNH.js",
     "name": "App",
     "src": "src/App.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
       "_preload-helper-OpGwMzNl.js",
-      "_workbook-CSpAcSKT.js",
+      "_workbook-Dk7a6hsD.js",
+      "_usePageStart-DRM0vsgK.js",
       "_supabase-Z9No2zg3.js",
       "_SignIn-BxiO6g32.js",
-      "_usePageStart-DaXnocVc.js",
       "_academyApi-C6u_L_bb.js"
     ],
     "dynamicImports": [
@@ -139,7 +146,7 @@
     ]
   },
   "src/ControlCenterEntry.tsx": {
-    "file": "assets/ControlCenterEntry-8RlCTo_M.js",
+    "file": "assets/ControlCenterEntry-CEepHe7z.js",
     "name": "ControlCenterEntry",
     "src": "src/ControlCenterEntry.tsx",
     "isDynamicEntry": true,
@@ -155,7 +162,7 @@
     ]
   },
   "src/LearnerEntry.tsx": {
-    "file": "assets/LearnerEntry-B5EpQCbB.js",
+    "file": "assets/LearnerEntry-D-Jv69ci.js",
     "name": "LearnerEntry",
     "src": "src/LearnerEntry.tsx",
     "isDynamicEntry": true,
@@ -181,20 +188,20 @@
     ]
   },
   "src/components/AcademyControlCenter.tsx": {
-    "file": "assets/AcademyControlCenter-CGdDpvpe.js",
+    "file": "assets/AcademyControlCenter-CdPgVJ8W.js",
     "name": "AcademyControlCenter",
     "src": "src/components/AcademyControlCenter.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
-      "_usePageStart-DaXnocVc.js"
+      "_usePageStart-DRM0vsgK.js"
     ],
     "css": [
       "assets/AcademyControlCenter-C2oat1tY.css"
     ]
   },
   "src/main.tsx": {
-    "file": "assets/main-BkqtM9w_.js",
+    "file": "assets/main-CIXtnAnX.js",
     "name": "main",
     "src": "src/main.tsx",
     "isDynamicEntry": true,
@@ -216,16 +223,16 @@
     ]
   },
   "src/phaseTwoMain.tsx": {
-    "file": "assets/phaseTwoMain-D7_t27WQ.js",
+    "file": "assets/phaseTwoMain-DE-f0xl0.js",
     "name": "phaseTwoMain",
     "src": "src/phaseTwoMain.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_jsx-runtime-Cltr0gcK.js",
-      "_workbook-CSpAcSKT.js",
+      "_workbook-Dk7a6hsD.js",
+      "_usePageStart-DRM0vsgK.js",
       "_supabase-Z9No2zg3.js",
       "_SignIn-BxiO6g32.js",
-      "_usePageStart-DaXnocVc.js",
       "_academyApi-C6u_L_bb.js",
       "_client-D7P41wCC.js"
     ],

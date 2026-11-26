@@ -173,24 +173,27 @@ export async function handleControlCenter(req, res, config) {
               manifest.video_file===`${stem}-v2.mp4` && manifest.captions_file===`${stem}-v2.vtt` && manifest.poster_file==='poster-v2.webp') introduction=manifest.video_file
           } catch { /* The learner also falls back when the revised manifest is unavailable. */ }
         }
-        const entries=[{label:'Instructor introduction',file:introduction,kind:'video'},
+        const introCaptions=introduction.replace(/\.mp4$/, introduction.endsWith('-v2.mp4')?'.vtt':'.en.vtt')
+        const entries=[{label:'Instructor introduction',file:introduction,captions:introCaptions,kind:'video'},
           ...(report.guided_audio?.file?[{label:'Guided instruction',file:report.guided_audio.file,kind:'audio'}]:[]),
-          ...(report.demonstrations||[]).map((item,index)=>({label:`Demonstration ${index+1} · ${item.title}`,file:item.file,kind:'video'}))]
+          ...(report.demonstrations||[]).map((item,index)=>({label:`Demonstration ${index+1} · ${item.title}`,file:item.file,captions:item.captions,kind:'video'}))]
         if (config.privatePhaseTwoMedia) {
           const bundle = await signPhaseTwoMedia(db, lesson.page_id, 900)
           for (const item of entries) {
             const url = bundle.files[`/${folder}/${item.file}`]
             if (!url) throw new Error('Private media missing from inventory')
-            media.push({label:item.label,kind:item.kind,url})
+            media.push({label:item.label,kind:item.kind,url,...(item.captions?{captions_url:bundle.files[`/${folder}/${item.captions}`]}:{})})
           }
         } else {
-          for(const item of entries){if(typeof item.file!=='string'||basename(item.file)!==item.file)continue;try{const file=await stat(join(config.root,folder,item.file));if(file.isFile())media.push({label:item.label,kind:item.kind,url:`${automation.appUrl.replace(/\/$/,'')}/${folder}/${encodeURIComponent(item.file)}`})}catch{ /* An absent asset is not represented as ready. */ }}
+          const captionBundle = await signPhaseTwoMedia(db, lesson.page_id, 900)
+          for(const item of entries){if(typeof item.file!=='string'||basename(item.file)!==item.file)continue;try{const file=await stat(join(config.root,folder,item.file));if(file.isFile())media.push({label:item.label,kind:item.kind,url:`${automation.appUrl.replace(/\/$/,'')}/${folder}/${encodeURIComponent(item.file)}`,...(item.captions?{captions_url:captionBundle.files[`/${folder}/${item.captions}`]}:{})})}catch{ /* An absent asset is not represented as ready. */ }}
         }
       } else {
         for(const [key,title,kind] of [['video_path','Lesson video','video'],['audio_path','Guided audio','audio']]){
           if(!lesson.content?.[key])continue
           const signed=checked(await db.storage.from('aca-learning-media').createSignedUrl(lesson.content[key],900))
-          media.push({label:title,kind,url:signed.signedUrl})
+          const caption=kind==='video'&&lesson.content.video_caption_path?checked(await db.storage.from('aca-learning-media').createSignedUrl(lesson.content.video_caption_path,900)):null
+          media.push({label:title,kind,url:signed.signedUrl,...(caption?{captions_url:caption.signedUrl}:{})})
         }
       }
       return reply(res,200,{title:lesson.title,page_id:lesson.page_id,phase_number:course.phase_number,media,outcomes:(course.phase_number===2?lesson.content?.phase_two_production?.outcomes:lesson.content?.outcomes)||[]})

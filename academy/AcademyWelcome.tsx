@@ -12,7 +12,7 @@ export function AcademyWelcome({ mediaUrl, captionUrl, onContinue }: { mediaUrl:
       <h1 id="academy-welcome-title">Welcome to the Academy</h1>
       <p className="academy-welcome-introduction">Before you begin Journey 1, hear from the founders and instructors.</p>
       <div className="academy-welcome-player">
-        <CaptionedVideo controls preload="metadata" playsInline crossOrigin="anonymous" src={mediaUrl}>{captionUrl ? <track kind="captions" src={captionUrl} srcLang="en" label="English" /> : null}Your browser does not support the Academy welcome film.</CaptionedVideo>
+        <CaptionedVideo controls preload="metadata" playsInline crossOrigin="anonymous" src={mediaUrl}>{captionUrl ? <track kind="captions" src={captionUrl} srcLang="en" label="English" default /> : null}Your browser does not support the Academy welcome film.</CaptionedVideo>
       </div>
       <button className="academy-welcome-continue" onClick={onContinue}>Continue to ChatGPT</button>
     </section>

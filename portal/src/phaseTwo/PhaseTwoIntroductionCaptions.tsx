@@ -29,5 +29,5 @@ export function PhaseTwoIntroductionCaptions({ lessonId, enrollmentId, pageId, a
     return () => { cancelled = true; controller.abort(); clearTimeout(timer) }
   }, [lessonId, enrollmentId, path, access.private])
   const source = access.private ? access.resolve(path) : url
-  return source ? <track kind="captions" label="English" srcLang="en" src={source} /> : null
+  return source ? <track kind="captions" label="English" srcLang="en" src={source} default /> : null
 }

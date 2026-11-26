@@ -54,7 +54,7 @@ export function JourneyIntroductionView({
               <CaptionedVideo controls playsInline preload="metadata" crossOrigin="anonymous" poster={content.poster_url}
                 style={{ display: 'block', width: '100%', maxWidth: 640, height: 'auto', margin: '0 auto 16px' }}>
                 <source src={mediaUrl} />
-                {captionUrl ? <track kind="captions" src={captionUrl} srcLang="en" label="English" /> : null}
+                {captionUrl ? <track kind="captions" src={captionUrl} srcLang="en" label="English" default /> : null}
                 Your browser does not support video playback. Read the introduction below.
               </CaptionedVideo>
             ) : (
@@ -84,7 +84,7 @@ export function JourneyIntroductionView({
                 <CaptionedVideo controls preload="metadata" crossOrigin="anonymous">
                   <source src={mediaUrl} />
                   {captionUrl ? (
-                    <track kind="captions" src={captionUrl} srcLang="en" label="English" />
+                    <track kind="captions" src={captionUrl} srcLang="en" label="English" default />
                   ) : null}
                   Your browser does not support the video player. Use the transcript below.
                 </CaptionedVideo>

@@ -75,5 +75,5 @@ it('shows one approved video without a misplaced workbook tab',()=>{
    const {container}=render(<JourneyIntroductionView introduction={introduction} mediaUrl="/welcome.mp4" captionUrl="/welcome.vtt" onBack={()=>{}} onContinue={()=>{}} />)
    const track=container.querySelector('video track')
    expect(track?.getAttribute('src')).toBe('/welcome.vtt')
-   expect(track?.hasAttribute('default')).toBe(false)
+   expect(track?.hasAttribute('default')).toBe(true)
  })

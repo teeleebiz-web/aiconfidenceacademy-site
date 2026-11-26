@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { CaptionedVideo } from '../../../academy/CaptionedVideo'
-import { bindCaptionControl, mountPlaybackControls } from '../../../assets/caption-controls.js'
+import { bindCaptionControl, mountPlaybackControls, mountVideoSeal } from '../../../assets/caption-controls.js'
 
 function trackList(mode: TextTrackMode = 'disabled') {
   const events = new EventTarget()
@@ -14,18 +14,18 @@ function trackList(mode: TextTrackMode = 'disabled') {
 }
 
 describe('visible caption control', () => {
-  it.each(['disabled', 'showing'] as const)('reflects native %s mode, toggles with the keyboard and preserves playback', async mode => {
+  it.each(['disabled', 'showing'] as const)('starts on despite initial native %s mode, toggles with the keyboard and preserves playback', async mode => {
     const tracks = trackList(mode)
     const getter = vi.spyOn(HTMLMediaElement.prototype, 'textTracks', 'get').mockReturnValue(tracks as unknown as TextTrackList)
     const { container } = render(<CaptionedVideo aria-label="Lesson video" controls><track kind="captions" src="/en.vtt" /></CaptionedVideo>)
     const video = container.querySelector('video')!
     video.currentTime = 45
-    const button = await screen.findByRole('button', { name: `Turn captions ${mode === 'showing' ? 'off' : 'on'}` })
+    const button = await screen.findByRole('button', { name: 'Turn captions off' })
     expect(button.getAttribute('aria-controls')).toBe(video.id)
-    expect(button.getAttribute('aria-pressed')).toBe(String(mode === 'showing'))
+    expect(button.getAttribute('aria-pressed')).toBe('true')
     button.focus()
     await userEvent.setup().keyboard(' ')
-    expect(tracks[0].mode).toBe(mode === 'showing' ? 'disabled' : 'showing')
+    expect(tracks[0].mode).toBe('disabled')
     expect(tracks[1].mode).toBe('hidden')
     expect(video.currentTime).toBe(45)
     expect(document.activeElement).toBe(button)
@@ -37,7 +37,7 @@ describe('visible caption control', () => {
     const tracks = trackList()
     const getter = vi.spyOn(HTMLMediaElement.prototype, 'textTracks', 'get').mockReturnValue(tracks as unknown as TextTrackList)
     render(<CaptionedVideo><track kind="captions" src="/en.vtt" /></CaptionedVideo>)
-    await screen.findByRole('button', { name: 'Turn captions on' })
+    await screen.findByRole('button', { name: 'Turn captions off' })
     act(() => { tracks[0].mode = 'showing'; tracks.dispatchEvent(new Event('change')) })
     expect(screen.getByRole('button', { name: 'Turn captions off' }).getAttribute('aria-pressed')).toBe('true')
     act(() => { tracks[0].mode = 'disabled'; tracks.dispatchEvent(new Event('change')) })
@@ -51,12 +51,12 @@ describe('visible caption control', () => {
     const { rerender } = render(<CaptionedVideo />)
     expect(screen.queryByRole('button', {name: /Turn captions/})).toBeNull()
     rerender(<CaptionedVideo><track kind="captions" src="/first.vtt" /></CaptionedVideo>)
-    const button = await screen.findByRole('button', { name: 'Turn captions on' })
+    const button = await screen.findByRole('button', { name: 'Turn captions off' })
     fireEvent.click(button)
-    tracks[0].mode = 'disabled'
+    tracks[0].mode = 'showing'
     rerender(<CaptionedVideo><track kind="captions" src="/renewed.vtt" /></CaptionedVideo>)
-    await waitFor(() => expect(tracks[0].mode).toBe('showing'))
-    expect(screen.getByRole('button', { name: 'Turn captions off' })).toBe(button)
+    await waitFor(() => expect(tracks[0].mode).toBe('disabled'))
+    expect(screen.getByRole('button', { name: 'Turn captions on' })).toBe(button)
     getter.mockRestore()
   })
 
@@ -70,7 +70,7 @@ describe('visible caption control', () => {
     Object.defineProperty(video, 'textTracks', { value: tracks })
     const renderState = vi.fn()
     const controller = bindCaptionControl(video, renderState)
-    expect(renderState).toHaveBeenLastCalledWith({ available: true, enabled: true, on: false, failed: true })
+    expect(renderState).toHaveBeenLastCalledWith({ available: true, enabled: true, on: true, failed: true })
     controller.destroy()
     renderState.mockClear()
     tracks.dispatchEvent(new Event('change'))
@@ -98,10 +98,10 @@ describe('visible caption control', () => {
     expect(video.closest('media-container')?.contains(button)).toBe(true)
     expect(button.closest('.aca-playback-bar')).toBeTruthy()
     expect(button.textContent).toBe('CC')
-    expect(button.getAttribute('aria-label')).toBe('Turn captions on')
-    fireEvent.click(button)
-    expect(tracks[0].mode).toBe('showing')
     expect(button.getAttribute('aria-label')).toBe('Turn captions off')
+    fireEvent.click(button)
+    expect(tracks[0].mode).toBe('disabled')
+    expect(button.getAttribute('aria-label')).toBe('Turn captions on')
     expect(button.getAttribute('aria-controls')).toBe(video.id)
     host.remove()
     getter.mockRestore()
@@ -161,4 +161,66 @@ it('routes the integrated play and mute controls to the original video', async (
   fireEvent.click(await screen.findByRole('button', { name: 'Unmute' }))
   expect(video.muted).toBe(false)
   expect(container.querySelector('video')).toBe(video)
+})
+
+
+it('positions the seal inside the picture during letterboxed fullscreen and removes it on cleanup', () => {
+  const frame = document.createElement('div'), video = document.createElement('video')
+  frame.append(video)
+  Object.defineProperties(video, { videoWidth: {value: 1920}, videoHeight: {value: 1080}, readyState: {value: 4} })
+  video.currentTime = 10
+  frame.getBoundingClientRect = () => ({left:0, top:0}) as DOMRect
+  video.getBoundingClientRect = () => ({left:0, top:0, width:1000, height:800}) as DOMRect
+  const controller = mountVideoSeal(video, frame)
+  const seal = frame.querySelector<HTMLImageElement>('.aca-video-seal')!
+  expect(seal.style.width).toBe('50px')
+  expect(seal.style.left).toBe('20px')
+  expect(seal.style.top).toBe('133.75px')
+  expect(seal.hidden).toBe(false)
+  video.currentTime = 0
+  fireEvent(video, new Event('emptied'))
+  expect(seal.hidden).toBe(true)
+  controller.destroy()
+  expect(frame.querySelector('.aca-video-seal')).toBeNull()
+})
+
+it('does not double-brand films with an embedded seal', () => {
+  const frame = document.createElement('div'), video = document.createElement('video')
+  video.dataset.acaSeal = 'embedded'
+  frame.append(video)
+  const controller = mountVideoSeal(video, frame)
+  expect(frame.querySelector('img')).toBeNull()
+  controller.destroy()
+})
+
+it('enables the first asynchronously authorized track without user interaction', () => {
+  const video = document.createElement('video')
+  const tracks = trackList()
+  const caption = tracks.shift()!
+  Object.defineProperty(video, 'textTracks', {value:tracks})
+  const controller = bindCaptionControl(video, () => {})
+  tracks.unshift(caption)
+  tracks.dispatchEvent(new Event('addtrack'))
+  expect(caption.mode).toBe('showing')
+  controller.toggle()
+  expect(caption.mode).toBe('disabled')
+  video.dispatchEvent(new Event('loadedmetadata'))
+  expect(caption.mode).toBe('disabled')
+  controller.destroy()
+})
+
+it('starts a different film on while retaining an off choice through signed-URL renewal', async () => {
+  const video = document.createElement('video')
+  video.src = 'https://private.test/lesson-a.mp4?token=first'
+  const tracks = trackList()
+  Object.defineProperty(video, 'textTracks', {value:tracks})
+  const controller = bindCaptionControl(video, () => {})
+  controller.toggle()
+  video.src = 'https://private.test/lesson-a.mp4?token=renewed'
+  await new Promise(resolve => setTimeout(resolve, 0))
+  expect(tracks[0].mode).toBe('disabled')
+  video.src = 'https://private.test/lesson-b.mp4?token=next'
+  await new Promise(resolve => setTimeout(resolve, 0))
+  expect(tracks[0].mode).toBe('showing')
+  controller.destroy()
 })
