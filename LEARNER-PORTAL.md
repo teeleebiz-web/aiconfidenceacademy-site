@@ -1866,3 +1866,25 @@ the existing Welcome → ChatGPT orientation → Lesson 1.1 browser acceptance,
 then the named release gates above. Keep monitoring paused, preserve backups,
 and do not republish installed media or repeat completed diagnostics. Domain
 inspection approval does not authorize the still-pending delivery/DNS switch.
+
+
+## Homepage welcome greeting — November 27, 2026
+
+Terrence authorized adding only “Welcome to AI Confidence Academy” after the
+existing “Hey there” in his blue-suit homepage introduction. The original
+HeyGen source is `e13b66794a39fa288ce349b4dfe6c995`; the matching brief greeting
+is `a63524a1270d84877fd647b2ac055bb4`, using the same avatar and voice at the
+saved 0.95 voice-generation speed. Retained footage is played at 1.0×.
+
+The five-word portion (new source 1.12–3.92 seconds) is inserted at original
+4.08 seconds. Only the original 2–12 second media fragment is re-encoded, with
+matching H.264 parameters; the opening card and all 33 following media fragments
+are unchanged. The film grows by 2.800 seconds to 335.080 seconds. The first
+caption is split around the greeting; subsequent caption cues shift by 2.800
+seconds. A word comparison confirms the five words are the only transcript
+addition. The existing seal, default-on captions, controls, poster, presenters
+and layout are unchanged.
+
+Validation: the changed passage and its next original fragment decode without
+errors; the encoded H.264 initialization data matches the source exactly.
+Publication and live player verification are pending at this checkpoint.
