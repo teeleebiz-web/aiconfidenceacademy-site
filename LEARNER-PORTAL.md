@@ -1887,4 +1887,10 @@ and layout are unchanged.
 
 Validation: the changed passage and its next original fragment decode without
 errors; the encoded H.264 initialization data matches the source exactly.
-Publication and live player verification are pending at this checkpoint.
+Published as `6934196b6a56848ddbc6545137ca5245dee2dd73`; Pages run
+`45976541940` completed successfully. All four live media/playlist/caption files
+match the release bytes. Live browser playback passed the inserted greeting
+and the 14.8-second transition into unchanged footage; at 6 seconds the blue-suit
+avatar displays “Welcome to AI Confidence Academy.” with captions on and the
+ACA seal present. Original framed layout remains intact. No remaining work
+for this five-word addition.
